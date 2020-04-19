@@ -17,10 +17,12 @@ import 'material-icons/iconfont/material-icons.css' //Material Icons
 import 'vuesax/dist/vuesax.css'; // Vuesax
 Vue.use(Vuesax)
 
+// Febos Config
+//import febosConfig from "./febos/servicios/febosConfig.js"
 
 // axios
-import axios from "./axios.js"
-Vue.prototype.$http = axios
+import clienteAPI from "./febos/servicios/clienteAPI";
+Vue.prototype.$http = clienteAPI
 
 
 // Theme Configurations

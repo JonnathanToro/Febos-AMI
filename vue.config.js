@@ -9,7 +9,7 @@
 
 
 module.exports = {
-  publicPath: '/',
+  publicPath: `/${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}/`,
   transpileDependencies: [
     'vue-echarts',
     'resize-detector'
