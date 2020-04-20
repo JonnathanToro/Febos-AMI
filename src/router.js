@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import rutasChile from "./router/chile/rutasChile";
 import autenticacion from "./febos/servicios/autenticacion";
 
+
 Vue.use(Router)
 
 var rutas = [];
@@ -20,7 +21,7 @@ const router = new Router({
   },
   routes: [
     ...rutas,
-    {
+      {
       path: '*',
       redirect: '/pages/error-404'
     }
@@ -29,14 +30,21 @@ const router = new Router({
 
 
 router.beforeEach((hacia, desde, siguiente) => {
-  if(autenticacion.estaLogueado()){
-    if(autenticacion.tienePermiso(hacia)){
-      siguiente();
+  let key=`${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.redirect`
+
+  if(hacia.meta.requiereLogin){
+    if(autenticacion.estaLogueado()){
+      if(autenticacion.tienePermiso(hacia)){
+        siguiente();
+      }else{
+        localStorage.setItem(key,hacia.fullPath)
+        siguiente('/no-autorizado')
+      }
     }else{
-      siguiente('/no-autorizado')
+      siguiente('/ingreso')
     }
   }else{
-    siguiente('/ingreso')
+    siguiente();
   }
 })
 

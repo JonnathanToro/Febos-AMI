@@ -44,10 +44,11 @@ import '@/assets/css/main.css'
 // Vue Router
 import router from './router'
 
-
 // Vuex Store
 import store from './store/store'
+//import { sync } from 'vuex-router-sync'
 
+//sync(store, router)
 
 // Vuejs - Vue wrapper for hammerjs
 import { VueHammer } from 'vue2-hammer'

@@ -6,8 +6,18 @@ export default {
       const response = await io_login(payload.correo,payload.clave);
       if(response.data.codigo != 10) throw response.data
       commit('SET_USUARIO', response.data);
+      commit('SET_TOKEN', response.data);
+      return response.data;
     } catch (error) {
       console.log("ERROR",error)
+      return error;
     }
+  },
+  revalidarSesion({ commit }){
+    const segundo=1000;
+    const minutos=60*segundo;
+
+    commit('SET_ULTIMO_REQUEST', {ultimoRequest: new Date().getTime()});
+    commit('SET_VENCIMIENTO_SESION', {vencimiento: new Date().getTime() + (14 * minutos) });
   }
 }

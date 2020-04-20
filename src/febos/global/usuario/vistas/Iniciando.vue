@@ -14,7 +14,7 @@
               <div class="p-8 login-tabs-container">
 
                 <div class="vx-card__title mb-10">
-                  <h4 class="mb-4">Ingreso</h4>
+                  <h4 class="mb-4">PRE_INGRESO</h4>
                   <p>Hola! porfavor ingresa tus credenciales de acceso. Si tu empresa utiliza <B>Single Sign On</B> con
                     <B>Febos</B>, no debes ingresar tu correo, si no que tu usuario de empresa de siempre!</p>
                 </div>
@@ -27,8 +27,7 @@
                     icon-pack="feather"
                     label-placeholder="Correo o nombre de usuario"
                     v-model="correo"
-                    class="w-full"
-                    @keyup.enter.native="ingresar()"/>
+                    class="w-full"/>
 
                   <vs-input
                     type="password"
@@ -38,11 +37,10 @@
                     icon-pack="feather"
                     label-placeholder="Clave"
                     v-model="clave"
-                    class="w-full mt-8"
-                    @keyup.enter.native="ingresar()"/>
+                    class="w-full mt-8"/>
 
                   <div class="flex flex-wrap justify-between my-5">
-                    <vs-checkbox v-model="recordar" class="mb-3">Recordar mi usuario</vs-checkbox>
+                    <vs-checkbox v-model="recordar" class="mb-3">Recordar credenciales</vs-checkbox>
                     <router-link to="">Olvidaste tu contraseña?</router-link>
                   </div>
                   <vs-button type="border">Registrarme como Proveedor</vs-button>
@@ -73,26 +71,11 @@
         correo: "",
         clave: "",
         recordar: false,
-        keyRecordar:`${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.correo`
       }
-    },
-    mounted(){
-      if(localStorage.getItem(this.keyRecordar)){
-        this.correo=localStorage.getItem(this.keyRecordar);
-        if(this.correo!=''){
-          this.recordar=true;
-        }
-       }
     },
     methods: {
       ...mapActions("usuario", {login: "ingreso"}),
       ingresar: function () {
-        if(this.recordar){
-          localStorage.setItem(this.keyRecordar,this.correo);
-        }else{
-          localStorage.setItem(this.keyRecordar,'');
-        }
-
         this.$vs.loading();
         this.login({
           correo:this.correo,
@@ -100,7 +83,7 @@
         }).then((response) =>{
           this.$vs.loading.close();
           if(response.codigo === 10){
-            this.$router.push({name:'iniciando'});
+            console.log("login OK");
           }else{
             this.$vs.dialog({
               color:'danger',

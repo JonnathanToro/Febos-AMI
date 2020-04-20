@@ -6,7 +6,14 @@ const layoutPaginas = [
       {
         path: '/ingreso',
         name: 'ingreso',
+        meta:{requiereLogin:false},
         component: () => import('@/febos/global/usuario/vistas/Ingreso.vue')
+      },
+      {
+        path: '/iniciando',
+        name: 'iniciando',
+        meta:{requiereLogin:true},
+        component: () => import('@/febos/global/usuario/vistas/Iniciando.vue')
       },
       {
         path: '/pages/error-404',

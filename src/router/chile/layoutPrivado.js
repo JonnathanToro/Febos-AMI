@@ -12,7 +12,7 @@ const layoutPrivado = [
       {
         path: '/page2',
         name: 'page-2',
-        meta: {permiso: 'WB002'},
+        meta: {permiso: 'WB002',requiereLogin:true},
         component: () => import('@/views/Page2.vue')
       },
     ],

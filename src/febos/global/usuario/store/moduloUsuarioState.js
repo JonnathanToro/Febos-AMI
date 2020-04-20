@@ -5,12 +5,10 @@ export default {
   alias: '',
   cargo: '',
   avatar: '',
-  autenticacion:{
-      token:'',
-      ultimoUso:0,
-      vencimiento:0
-  },
+  token: '',
+  ultimoUso: 0,
+  vencimiento: 0,
   roles: [],
   permisos: [],
-  empresas:[]
+  empresas: []
 }

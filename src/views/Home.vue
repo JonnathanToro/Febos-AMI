@@ -2,7 +2,7 @@
   <h4>You are in home.</h4>
 </template>
 <script>
-  import { mapActions, mapGetters , mapState} from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
 
   export default {
     components: {

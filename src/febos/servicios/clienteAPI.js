@@ -1,5 +1,5 @@
-// axios
 import axios from 'axios'
+import store from "../../store/store";
 
 let config = {
   baseURL: `https://api.febos.${process.env.VUE_APP_CODIGO_PAIS}/${process.env.VUE_APP_AMBIENTE}`
@@ -8,9 +8,25 @@ let config = {
 const clienteAPI = axios.create(config);
 
 const authInterceptor = config => {
-  //config.headers.token="xxxxxx";
+  config.headers.token=store.getters['usuario/tokenDeUsuario']
   return config;
 };
+
+const revalidarSesion = () => {
+  store.dispatch('usuario/revalidarSesion');
+}
+
+const ocultarClaves = (parametros) => {
+  const parametrosTipoClave = ['clave','password'];
+  for (let parametro in parametros) {
+    if (parametros.hasOwnProperty(parametro)) {
+      if(parametrosTipoClave.includes(parametro)){
+          parametros[parametro]='*******';
+      }
+    }
+  }
+  return parametros;
+}
 
 const loggerInterceptor = config => {
   const llamadaAPI={
@@ -21,9 +37,11 @@ const loggerInterceptor = config => {
     'parametros':JSON.parse(JSON.stringify(config.data))
   }
   delete llamadaAPI.parametros.operacionId;
+  llamadaAPI.parametros=ocultarClaves(llamadaAPI.parametros);
   console.log(`>> Llamada API (request): ${llamadaAPI.operacionId}`,llamadaAPI);
   return config;
 }
+
 
 clienteAPI.interceptors.request.use(authInterceptor);
 clienteAPI.interceptors.request.use(loggerInterceptor);
@@ -36,6 +54,7 @@ clienteAPI.interceptors.response.use(
         httpCode:response.status,
         data:response.data
       }
+      if(response.data.codigo>=10)revalidarSesion();
     console.log(">> Respuesta de API (response): "+opracionId,respuestaAPI)
     return response;
   },

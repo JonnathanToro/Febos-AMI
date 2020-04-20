@@ -1,4 +1,5 @@
 
+
 export default {
   SET_USUARIO (state, payload) {
     state.id=payload.usuario.id;
@@ -9,6 +10,15 @@ export default {
     state.avatar=payload.usuario.avatar;
     state.cambiarClave=payload.usuario.cambiarClave;
     state.estado=payload.usuario.estado;
+    state.autenticacion.token=payload.token;
+  },
+  SET_TOKEN(state,payload){
     state.token=payload.token;
+  },
+  SET_ULTIMO_REQUEST(state,payload){
+    state.ultimoUso=payload.ultimoRequest;
+  },
+  SET_VENCIMIENTO_SESION(state,payload){
+    state.vencimiento=payload.vencimiento;
   }
 }
