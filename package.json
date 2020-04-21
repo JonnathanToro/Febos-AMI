@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve-desa-cloud": "vue-cli-service serve --mode desarrollo.cloud",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
