@@ -22,7 +22,7 @@
 
                 <div>
                   <vs-divider></vs-divider>
-                  <div class="cargador" v-for="cargador in cargadores">
+                  <div class="cargador" v-for="(cargador,index) in cargadores" :key="index">
                     <vs-icon :icon="cargador.icono" :bg="cargador.color" color="white" round></vs-icon>
                     {{ cargador.texto }}
                   </div>
@@ -53,7 +53,7 @@
       }
     },
     watch: {
-      cargadoresListos(valorNuevo, valorAntiguo) {
+      cargadoresListos(valorNuevo) {
         if (valorNuevo === this.cargadores.length) {
           this.$router.push({name: 'selectorEmpresa'});
         }
@@ -70,7 +70,7 @@
       ...mapActions("empresas", {empresas: "listarEmpresas"}),
       actualizarCargador: function (id) {
         this.cargadoresListos++;
-        this.cargadores.forEach(function (cargador, index) {
+        this.cargadores.forEach(function (cargador) {
           if (cargador.id === id) {
             cargador.color = 'green';
             cargador.icono = 'done';
@@ -80,17 +80,16 @@
       cargarPermisos: function () {
         this.permisos({
           iut: this.iut
-        }).then((response) => {
+        }).then(() => {
           this.actualizarCargador('P01');
         })
       },
       cargarEmpresas: function () {
-        var that=this;
         this.empresas({
           pagina: 1,
           filas: 10000,
           busquedaSimple: 'si'
-        }).then((response) => {
+        }).then(() => {
           this.actualizarCargador('E01');
         })
       }

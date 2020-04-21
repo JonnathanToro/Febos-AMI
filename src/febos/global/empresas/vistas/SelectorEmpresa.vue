@@ -22,7 +22,7 @@
                     <vs-list-item :title="empresa.fantasia" :subtitle="empresa.razonSocial"
                                   v-for="(empresa,index) in empresasFiltradas" v-if="index <= maximoDeEmpresas"
                                   v-on:click.native="seleccionarEmpresa(empresa)"
-                                  class="pt-3 pb-3 empresa">
+                                  class="pt-3 pb-3 empresa" :key="empresa.iut">
                       <vs-chip color="success" v-if="empresa.canalDescripcion">{{ empresa.canalDescripcion }}</vs-chip>
                       <vs-chip color="warning">{{ formatear(empresa.iut) }}</vs-chip>
                     </vs-list-item>
@@ -87,7 +87,7 @@
           pagina: 1,
           filas: 10000,
           busquedaSimple: 'si'
-        }).then(function (response) {
+        }).then(function () {
 
         });
       }
