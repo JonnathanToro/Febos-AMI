@@ -20,5 +20,12 @@ export default {
   },
   SET_VENCIMIENTO_SESION(state,payload){
     state.vencimiento=payload.vencimiento;
+  },
+  SET_PERMISOS(state,payload){
+    let permisos=[];
+    payload.permisos.forEach(function(item,index){
+      permisos.push(item.codigo);
+    });
+    state.permisos=permisos;
   }
 }

@@ -14,42 +14,17 @@
               <div class="p-8 login-tabs-container">
 
                 <div class="vx-card__title mb-10">
-                  <h4 class="mb-4">PRE_INGRESO</h4>
-                  <p>Hola! porfavor ingresa tus credenciales de acceso. Si tu empresa utiliza <B>Single Sign On</B> con
-                    <B>Febos</B>, no debes ingresar tu correo, si no que tu usuario de empresa de siempre!</p>
+                  <h4 class="mb-4">Hola <b>{{ alias }}</b>! Bienvenido!</h4>
+                  <p>
+                    Danos unos segundos para verificar algunas cosas antes de comenzar...
+                  </p>
                 </div>
 
                 <div>
-                  <vs-input
-                    name="correo"
-                    icon-no-border
-                    icon="icon icon-user"
-                    icon-pack="feather"
-                    label-placeholder="Correo o nombre de usuario"
-                    v-model="correo"
-                    class="w-full"/>
-
-                  <vs-input
-                    type="password"
-                    name="clave"
-                    icon-no-border
-                    icon="icon icon-lock"
-                    icon-pack="feather"
-                    label-placeholder="Clave"
-                    v-model="clave"
-                    class="w-full mt-8"/>
-
-                  <div class="flex flex-wrap justify-between my-5">
-                    <vs-checkbox v-model="recordar" class="mb-3">Recordar credenciales</vs-checkbox>
-                    <router-link to="">Olvidaste tu contraseña?</router-link>
-                  </div>
-                  <vs-button type="border">Registrarme como Proveedor</vs-button>
-                  <vs-button class="float-right" v-on:click="ingresar()">Ingresar</vs-button>
-
-                  <vs-divider>O</vs-divider>
-                  También puedes ingresar con <B>Clave Única</B> del <B>Registro Civil</B>
-                  <div class="flex flex-wrap mt-5 clave-unica">
-                    <img src="@/assets/images/logo_clave_unica.png"/>
+                  <vs-divider></vs-divider>
+                  <div class="cargador" v-for="cargador in cargadores">
+                    <vs-icon :icon="cargador.icono" :bg="cargador.color" color="white" round></vs-icon>
+                    {{ cargador.texto }}
                   </div>
                 </div>
 
@@ -63,39 +38,66 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import {mapActions, mapState} from 'vuex'
 
   export default {
     data() {
       return {
-        correo: "",
-        clave: "",
         recordar: false,
+        cargadores: [
+          {id: 'P01', color: 'blue', 'texto': 'Verificando permisos', icono: 'autorenew'},
+          {id: 'E01', color: 'blue', 'texto': 'Verificando relacion con empresas', icono: 'autorenew'},
+         // {id: 'C01', color: 'blue', 'texto': 'Recuperando configuraciones', icono: 'autorenew'},
+        ],
+        cargadoresListos: 0
       }
     },
+    watch: {
+      cargadoresListos(valorNuevo, valorAntiguo) {
+        if (valorNuevo === this.cargadores.length) {
+          this.$router.push({name: 'selectorEmpresa'});
+        }
+      }
+    },
+    computed: {
+      ...mapState("usuario", {
+        iut: state => state.iut,
+        alias: state => state.alias
+      })
+    },
     methods: {
-      ...mapActions("usuario", {login: "ingreso"}),
-      ingresar: function () {
-        this.$vs.loading();
-        this.login({
-          correo:this.correo,
-          clave:this.clave
-        }).then((response) =>{
-          this.$vs.loading.close();
-          if(response.codigo === 10){
-            console.log("login OK");
-          }else{
-            this.$vs.dialog({
-              color:'danger',
-              title: `Ups!`,
-              text: `${response.mensaje}`,
-              acceptText:'Ok',
-              //accept:this.acceptAlert,
-            })
+      ...mapActions("usuario", {permisos: "cargarPermisos"}),
+      ...mapActions("empresas", {empresas: "listarEmpresas"}),
+      actualizarCargador: function (id) {
+        this.cargadoresListos++;
+        this.cargadores.forEach(function (cargador, index) {
+          if (cargador.id === id) {
+            cargador.color = 'green';
+            cargador.icono = 'done';
           }
         })
-
+      },
+      cargarPermisos: function () {
+        this.permisos({
+          iut: this.iut
+        }).then((response) => {
+          this.actualizarCargador('P01');
+        })
+      },
+      cargarEmpresas: function () {
+        var that=this;
+        this.empresas({
+          pagina: 1,
+          filas: 10000,
+          busquedaSimple: 'si'
+        }).then((response) => {
+          this.actualizarCargador('E01');
+        })
       }
+    },
+    mounted() {
+      this.cargarPermisos();
+      this.cargarEmpresas();
     }
   }
 </script>

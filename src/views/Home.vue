@@ -24,11 +24,7 @@
       ...mapActions("usuario", {login: "ingreso"})
     },
     created() {
-      console.log(process.env);
-      this.login({
-        correo:"sysadmin@febos.io",
-        clave:"ia$olution$**"
-      })
+
     }
   }
 </script>

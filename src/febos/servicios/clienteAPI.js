@@ -8,7 +8,9 @@ let config = {
 const clienteAPI = axios.create(config);
 
 const authInterceptor = config => {
-  config.headers.token=store.getters['usuario/tokenDeUsuario']
+  config.headers.token=store.getters['usuario/tokenDeUsuario'];
+  config.headers.Accept='application/json';
+  config.headers['Content-Type']='application/json';
   return config;
 };
 
@@ -30,13 +32,19 @@ const ocultarClaves = (parametros) => {
 
 const loggerInterceptor = config => {
   const llamadaAPI={
-    'operacionId':`${config.data.operacionId}`,
+    'operacionId':`${config.operacionId}`,
     'url':`${config.baseURL+config.url}`,
     'verbo':config.method,
     'cabeceras':config.headers,
-    'parametros':JSON.parse(JSON.stringify(config.data))
+    'parametros':config.data?JSON.parse(JSON.stringify(config.data)):{}
   }
+  // limpieza de variables residuales
   delete llamadaAPI.parametros.operacionId;
+  let verbos=['post','get','delete','put','patch','head','common'];
+  verbos.forEach(function(verbo,index){
+    delete llamadaAPI.cabeceras[verbo];
+  })
+
   llamadaAPI.parametros=ocultarClaves(llamadaAPI.parametros);
   console.log(`>> Llamada API (request): ${llamadaAPI.operacionId}`,llamadaAPI);
   return config;
@@ -48,7 +56,7 @@ clienteAPI.interceptors.request.use(loggerInterceptor);
 
 clienteAPI.interceptors.response.use(
   response => {
-    let opracionId=JSON.parse(response.config.data).operacionId
+    let opracionId=response.config.operacionId
     let respuestaAPI={
         headers:response.headers,
         httpCode:response.status,

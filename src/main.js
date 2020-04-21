@@ -71,6 +71,7 @@ require('./assets/css/iconfont.css')
 
 Vue.config.productionTip = false
 
+
 new Vue({
     router,
     store,

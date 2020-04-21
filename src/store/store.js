@@ -9,6 +9,7 @@ import actions from "./actions"
 
 
 import moduloUsuario from "../febos/global/usuario/store/moduloUsuario";
+import moduloEmpresas from "../febos/global/empresas/store/moduloEmpresas";
 
 Vue.use(Vuex)
 
@@ -18,7 +19,8 @@ export default new Vuex.Store({
     state,
     actions,
     modules:{
-      usuario:moduloUsuario
+      usuario:moduloUsuario,
+      empresas:moduloEmpresas
     },
     plugins: [createPersistedState({
       key:`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`,
