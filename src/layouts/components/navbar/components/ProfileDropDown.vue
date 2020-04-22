@@ -1,11 +1,15 @@
 <template>
   <div class="the-navbar__user-meta flex items-center">
-
+    <div class="text-right leading-tight hidden sm:block">
+      <p class="font-semibold">{{ empresaSeleccionada.fantasia }}</p>
+    </div>
+    <div class="text-right leading-tight hidden sm:block">
+      &nbsp;
+    </div>
     <div class="text-right leading-tight hidden sm:block">
       <p class="font-semibold">{{ alias }}</p>
       <small>En Línea</small>
     </div>
-
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
       <div class="con-img ml-3">
@@ -67,6 +71,9 @@
         iut: state => state.iut,
         alias: state => state.alias,
         avatar: state => state.avatar,
+      }),
+      ...mapState("empresas", {
+        empresaSeleccionada: state => state.empresa
       }),
       activeUserInfo() {
         return this.$store.state.AppActiveUser
