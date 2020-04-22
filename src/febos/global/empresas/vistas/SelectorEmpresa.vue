@@ -17,10 +17,20 @@
                   <vs-divider></vs-divider>
                   <vs-input icon="search" placeholder="Buscar" v-model="buscadorDeEmpresa" class="w-full"/>
                   <div class="mt-5">{{ mensajeEmpresasQueNoseVen }}</div>
+                  <vs-divider v-if="!!empresaSeleccionada && !!empresaSeleccionada.iut"></vs-divider>
+                  <vs-list v-if="!!empresaSeleccionada && !!empresaSeleccionada.iut">
+                    <vs-list-item :title="empresaSeleccionada.fantasia" :subtitle="empresaSeleccionada.razonSocial"
+                                  v-on:click.native="seleccionar(empresaSeleccionada)"
+                                  class="pt-3 pb-3 empresa" :key="empresaSeleccionada.iut">
+                      <vs-chip color="primary">Ultima seleccionada</vs-chip>
+                      <vs-chip color="success" v-if="empresaSeleccionada.canalDescripcion">{{ empresaSeleccionada.canalDescripcion }}</vs-chip>
+                      <vs-chip color="warning">{{ formatear(empresaSeleccionada.iut) }}</vs-chip>
+                    </vs-list-item>
+                  </vs-list>
                   <vs-divider></vs-divider>
                   <vs-list>
                     <vs-list-item :title="empresa.fantasia" :subtitle="empresa.razonSocial"
-                                  v-for="(empresa,index) in empresasFiltradas" v-if="index <= maximoDeEmpresas"
+                                  v-for="(empresa,index) in empresasFiltradas" v-if="index <= maximoDeEmpresas &&(!empresaSeleccionada || empresaSeleccionada.iut != empresa.iut)"
                                   v-on:click.native="seleccionar(empresa)"
                                   class="pt-3 pb-3 empresa" :key="empresa.iut">
                       <vs-chip color="success" v-if="empresa.canalDescripcion">{{ empresa.canalDescripcion }}</vs-chip>
@@ -55,7 +65,8 @@
         alias: state => state.alias
       }),
       ...mapState("empresas", {
-        empresas: state => state.empresas
+        empresas: state => state.empresas,
+        empresaSeleccionada: state => state.empresa
       }),
       empresasFiltradas() {
         var that = this;
@@ -78,9 +89,10 @@
     methods: {
       ...mapActions("empresas", {
         listarEmpresas: "listarEmpresas",
-        seleccionarEmpresa: "seleccionarEmpresa"
+        seleccionarEmpresa: "seleccionarEmpresa",
+        empresaSeleccionada: "empresaSeleccionada"
       }),
-      seleccionar: function(empresa){
+      seleccionar: function (empresa) {
         this.seleccionarEmpresa(empresa);
         //TODO: ver si necesita actualizar la información de su empresa, y redirigir a esa ventana
         this.$router.push({name: 'home'});
@@ -96,8 +108,12 @@
 
         });
       }
-      if(this.empresas.length == 1){
+      if (this.empresas.length == 1) {
         this.seleccionar(this.empresas[0]);
+      } else {
+        if (this.empresa) {
+          console.log("seleccionada", this.empresa);
+        }
       }
     }
   }

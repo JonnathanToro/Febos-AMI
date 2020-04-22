@@ -13,7 +13,10 @@ export default {
     }
   },
   seleccionarEmpresa({commit},payload){
-    console.log("SELECCIONADO EMPRESA");
+    console.log("SELECCIONADO EMPRESA",payload);
     commit('SET_EMPRESA',payload);
+  },
+  empresaSeleccionada(state){
+    return state.empresa;
   }
 }
