@@ -47,7 +47,7 @@
             class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
             @click="logout">
             <feather-icon icon="LogOutIcon" svgClasses="w-4 h-4"/>
-            <span class="ml-2">Logout</span>
+            <span class="ml-2">Salir</span>
           </li>
         </ul>
       </vs-dropdown-menu>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import {mapActions, mapState} from 'vuex'
 
   export default {
     data() {
@@ -73,8 +73,13 @@
       }
     },
     methods: {
+      ...mapActions("usuario", {salir: "salir"}),
       logout() {
-        this.$router.push('/pages/login').catch(() => {
+        const $this=this;
+        this.salir().then(function (salio) {
+          console.log("salio",salio)
+          $this.$router.push('/ingreso').catch(() => {
+          })
         })
       },
     }

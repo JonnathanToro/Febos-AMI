@@ -14,6 +14,15 @@ export default {
       return error;
     }
   },
+  async salir({commit}) {
+    try {
+      commit('LIMPIAR_SESION', {});
+      return true;
+    } catch (error) {
+      console.log("ERROR", error)
+      return false;
+    }
+  },
   async cargarPermisos({commit}, payload) {
     try {
       const response = await io_usuario_permisos(payload.iut);

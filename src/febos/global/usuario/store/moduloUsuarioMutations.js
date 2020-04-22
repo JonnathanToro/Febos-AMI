@@ -1,6 +1,17 @@
 
 
 export default {
+  LIMPIAR_SESION(state) {
+    state.id=undefined;
+    state.nombre=undefined;
+    state.iut=undefined;
+    state.correo=undefined;
+    state.alias=undefined;
+    state.avatar=undefined;
+    state.cambiarClave=undefined;
+    state.estado=undefined;
+    state.token=undefined;
+  },
   SET_USUARIO (state, payload) {
     state.id=payload.usuario.id;
     state.nombre=payload.usuario.nombre;
@@ -10,10 +21,6 @@ export default {
     state.avatar=payload.usuario.avatar;
     state.cambiarClave=payload.usuario.cambiarClave;
     state.estado=payload.usuario.estado;
-    if(!state.autenticacion){
-      state.autenticacion={};
-    }
-    state.autenticacion.token=payload.token;
   },
   SET_TOKEN(state,payload){
     state.token=payload.token;
@@ -26,7 +33,7 @@ export default {
   },
   SET_PERMISOS(state,payload){
     let permisos=[];
-    payload.permisos.forEach(function(item,index){
+    payload.permisos.forEach(function(item){
       permisos.push(item.codigo);
     });
     state.permisos=permisos;
