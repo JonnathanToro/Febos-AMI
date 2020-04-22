@@ -5,6 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "serve-desa-cloud": "vue-cli-service serve --mode desarrollo.cloud",
+    "serve-pruebas-cloud": "vue-cli-service serve --mode pruebas.cloud",
+    "serve-certificacion-cloud": "vue-cli-service serve --mode certificacion.cloud",
+    "serve-produccion-cloud": "vue-cli-service serve --mode produccion.cloud",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
