@@ -6,7 +6,7 @@ const layoutPrivado = [
       {
         path: '/',
         name: 'home',
-        meta: {permiso: 'WB001'},
+        meta: {permiso: 'WB001',requiereLogin:true},
         component: () => import('@/views/Home.vue')
       },
       {
