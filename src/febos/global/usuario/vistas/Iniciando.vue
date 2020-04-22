@@ -55,6 +55,7 @@
     watch: {
       cargadoresListos(valorNuevo) {
         if (valorNuevo === this.cargadores.length) {
+          //TODO: ver si necesita cambiar su contraseña y redirigir a esa ventana
           this.$router.push({name: 'selectorEmpresa'});
         }
       }

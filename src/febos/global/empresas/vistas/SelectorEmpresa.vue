@@ -21,7 +21,7 @@
                   <vs-list>
                     <vs-list-item :title="empresa.fantasia" :subtitle="empresa.razonSocial"
                                   v-for="(empresa,index) in empresasFiltradas" v-if="index <= maximoDeEmpresas"
-                                  v-on:click.native="seleccionarEmpresa(empresa)"
+                                  v-on:click.native="seleccionar(empresa)"
                                   class="pt-3 pb-3 empresa" :key="empresa.iut">
                       <vs-chip color="success" v-if="empresa.canalDescripcion">{{ empresa.canalDescripcion }}</vs-chip>
                       <vs-chip color="warning">{{ formatear(empresa.iut) }}</vs-chip>
@@ -79,7 +79,12 @@
       ...mapActions("empresas", {
         listarEmpresas: "listarEmpresas",
         seleccionarEmpresa: "seleccionarEmpresa"
-      })
+      }),
+      seleccionar: function(empresa){
+        this.seleccionarEmpresa(empresa);
+        //TODO: ver si necesita actualizar la información de su empresa, y redirigir a esa ventana
+        this.$router.push({name: 'home'});
+      }
     },
     mounted() {
       if (this.empresas.length === 0) {
@@ -90,6 +95,9 @@
         }).then(function () {
 
         });
+      }
+      if(this.empresas.length == 1){
+        this.seleccionar(this.empresas[0]);
       }
     }
   }
