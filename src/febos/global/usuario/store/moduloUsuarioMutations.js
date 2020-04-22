@@ -10,6 +10,9 @@ export default {
     state.avatar=payload.usuario.avatar;
     state.cambiarClave=payload.usuario.cambiarClave;
     state.estado=payload.usuario.estado;
+    if(!state.autenticacion){
+      state.autenticacion={};
+    }
     state.autenticacion.token=payload.token;
   },
   SET_TOKEN(state,payload){
