@@ -1,13 +1,17 @@
 <template>
   <div class="the-navbar__user-meta flex items-center">
-
+    <div class="text-right leading-tight hidden sm:block">
+      <p class="font-semibold">{{ empresaSeleccionada.fantasia }}</p>
+    </div>
+    <div class="text-right leading-tight hidden sm:block">
+      &nbsp;
+    </div>
     <div class="text-right leading-tight hidden sm:block">
       <p class="font-semibold">{{ alias }}</p>
       <small class="empresa" v-on:click="seleccionarEmpresa()">
         <span class="nombreEmpresa">{{ fantasia }}</span>:: {{ formatear(iutEmpresa) }}
       </small>
     </div>
-
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
       <div class="con-img ml-3">
@@ -75,7 +79,8 @@
       ...mapState("empresas", {
         iutEmpresa: state => state.empresa.iut,
         fantasia: state => state.empresa.fantasia,
-      })
+        empresaSeleccionada: state => state.empresa
+      }),
     },
     methods: {
       ...mapActions("usuario", {salir: "salir"}),
