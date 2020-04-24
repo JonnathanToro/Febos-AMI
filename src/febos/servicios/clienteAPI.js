@@ -6,6 +6,7 @@ let config = {
 };
 
 const clienteAPI = axios.create(config);
+const noLoguearEstosLambdas=["io.usuario.latido"];
 
 const authInterceptor = config => {
   config.headers.token=store.getters['usuario/tokenDeUsuario'];
@@ -46,7 +47,9 @@ const loggerInterceptor = config => {
   })
 
   llamadaAPI.parametros=ocultarClaves(llamadaAPI.parametros);
-  console.log(`>> Llamada API (request): ${llamadaAPI.operacionId}`,llamadaAPI);
+  if(!noLoguearEstosLambdas.includes(llamadaAPI.operacionId)) {
+    console.log(`>> Llamada API (request): ${llamadaAPI.operacionId}`, llamadaAPI);
+  }
   return config;
 }
 
@@ -63,7 +66,9 @@ clienteAPI.interceptors.response.use(
         data:response.data
       }
       if(response.data.codigo>=10)revalidarSesion();
-    console.log(">> Respuesta de API (response): "+opracionId,respuestaAPI)
+    if(!noLoguearEstosLambdas.includes(response.config.operacionId)) {
+      console.log(">> Respuesta de API (response): " + opracionId, respuestaAPI);
+    }
     return response;
   },
   error => {

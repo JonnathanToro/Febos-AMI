@@ -2,15 +2,10 @@ import clienteAPI from "../clienteAPI";
 
 const RECURSO = '/usuarios';
 
-const io_login = (correo, clave) => clienteAPI.post(RECURSO + '/login', { 'correo':correo, 'clave':clave},{'operacionId':'io.login'});
-
-//const ejemploConParametros = (user_id) => clienteAPI.get(END_POINT, { user_id });
-//const ejemploComoPost = (username, password) => clienteAPI.post(END_POINT, { username, password });
-
+const io_usuario_login = (correo, clave) => clienteAPI.post(RECURSO + '/login', { 'correo':correo, 'clave':clave},{'operacionId':'io.usuario.login'});
+const io_usuario_latido = (usuarioId) => clienteAPI.head(RECURSO + '/'+usuarioId, {'operacionId':'io.usuario.latido'});
 
 export {
-  //io_empresas_listar,
-  io_login,
-  //ejemploComoPost,
-  //ejemploConParametros
+  io_usuario_latido,
+  io_usuario_login,
 }

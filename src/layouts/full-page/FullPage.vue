@@ -13,3 +13,10 @@
     <router-view></router-view>
   </div>
 </template>
+<script>
+  import IdleMixin from "../../febos/global/_vue/mixins/IdleMixin";
+
+  export default {
+    mixins:[IdleMixin]
+  }
+</script>

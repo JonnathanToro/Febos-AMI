@@ -90,7 +90,6 @@
       ...mapActions("empresas", {
         listarEmpresas: "listarEmpresas",
         seleccionarEmpresa: "seleccionarEmpresa",
-        empresaSeleccionada: "empresaSeleccionada"
       }),
       seleccionar: function (empresa) {
         this.seleccionarEmpresa(empresa);
@@ -119,7 +118,7 @@
   }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
   .empresa:hover {
     cursor: pointer;
     border-left-color: green;

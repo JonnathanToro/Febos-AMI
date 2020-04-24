@@ -1,10 +1,10 @@
-import {io_login} from "../../../servicios/api/usuarios.api";
+import {io_usuario_login, io_usuario_latido} from "../../../servicios/api/usuarios.api";
 import {io_usuario_permisos} from "../../../servicios/api/permisos.api";
 
 export default {
   async ingreso({commit}, payload) {
     try {
-      const response = await io_login(payload.correo, payload.clave);
+      const response = await io_usuario_login(payload.correo, payload.clave);
       if (response.data.codigo != 10) throw response.data
       commit('SET_USUARIO', response.data);
       commit('SET_TOKEN', response.data);
@@ -13,6 +13,9 @@ export default {
       console.log("ERROR", error)
       return error;
     }
+  },
+  async latido(payload){
+    await io_usuario_latido(payload.id);
   },
   async salir({commit}) {
     try {

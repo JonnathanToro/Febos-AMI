@@ -54,6 +54,14 @@ import store from './store/store'
 import { VueHammer } from 'vue2-hammer'
 Vue.use(VueHammer)
 
+// idle
+import IdleVue from 'idle-vue'
+
+const eventsHub = new Vue()
+Vue.use(IdleVue, {
+    eventEmitter: eventsHub,
+    idleTime: 1000*60*15 //idle al no hacer nada por 15 minutos
+})
 
 // PrismJS
 import 'prismjs'
@@ -77,3 +85,4 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app')
+

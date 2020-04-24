@@ -3,7 +3,9 @@
 
     <div class="text-right leading-tight hidden sm:block">
       <p class="font-semibold">{{ alias }}</p>
-      <small>En Línea</small>
+      <small class="empresa" v-on:click="seleccionarEmpresa()">
+        <span class="nombreEmpresa">{{ fantasia }}</span>:: {{ formatear(iutEmpresa) }}
+      </small>
     </div>
 
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
@@ -57,8 +59,10 @@
 
 <script>
   import {mapActions, mapState} from 'vuex'
+  import RutMixin from "../../../../febos/chile/_vue/mixins/RutMixin";
 
   export default {
+    mixins: [RutMixin],
     data() {
       return {}
     },
@@ -68,9 +72,10 @@
         alias: state => state.alias,
         avatar: state => state.avatar,
       }),
-      activeUserInfo() {
-        return this.$store.state.AppActiveUser
-      }
+      ...mapState("empresas", {
+        iutEmpresa: state => state.empresa.iut,
+        fantasia: state => state.empresa.fantasia,
+      })
     },
     methods: {
       ...mapActions("usuario", {salir: "salir"}),
@@ -82,6 +87,21 @@
           })
         })
       },
+      seleccionarEmpresa(){
+        this.$router.push({name:"selectorEmpresa"})
+      }
     }
   }
 </script>
+<style lang="scss">
+  .empresa:hover{
+    cursor:pointer;
+  }
+  .nombreEmpresa{
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-flex;
+    text-overflow: ellipsis;
+  }
+</style>

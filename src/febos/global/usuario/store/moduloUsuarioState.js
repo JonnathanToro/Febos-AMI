@@ -1,4 +1,5 @@
 export default {
+  id:'',
   nombre: '',
   iut: '',
   correo: '',
