@@ -31,8 +31,14 @@
 
           <!-- Logo -->
           <router-link tag="div" class="vx-logo cursor-pointer flex items-center" to="/">
-            <logo class="w-10 mr-4 fill-current text-primary" />
-            <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span>
+            <!--<logo class="w-10 mr-4 fill-current text-primary" />
+            <span class="vx-logo-text text-primary" v-show="isMouseEnter || !reduce" v-if="title">{{ title }}</span>-->
+            <div v-if="!reduce || isMouseEnter">
+              <img v-bind:src="logoFull" style="width:190px"/>
+            </div>
+            <div v-if="reduce && !isMouseEnter">
+              <img v-bind:src="logoMini" style="width:35px"/>
+            </div>
           </router-link>
           <!-- /Logo -->
 
@@ -117,6 +123,8 @@
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import VNavMenuGroup from './VerticalNavMenuGroup.vue'
 import VNavMenuItem from './VerticalNavMenuItem.vue'
+import PersonalizacionMixin from "@/febos/global/empresas/mixins/PersonalizacionMixin";
+import { mapState} from 'vuex'
 
 import Logo from "../Logo.vue"
 
@@ -126,7 +134,8 @@ export default {
     VNavMenuGroup,
     VNavMenuItem,
     VuePerfectScrollbar,
-    Logo
+    Logo,
+    PersonalizacionMixin
   },
   props: {
     logo:             { type: String },
@@ -149,6 +158,10 @@ export default {
     showShadowBottom    : false,
   }),
   computed: {
+    ...mapState('Personalizacion', {
+      logoFull: state => state.menu.logo,
+      logoMini: state => state.menu.miniLogo
+    }),
     isGroupActive() {
       return (item) => {
         const path        = this.$route.fullPath

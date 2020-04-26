@@ -123,8 +123,12 @@ import TheNavbarVertical   from '@/layouts/components/navbar/TheNavbarVertical.v
 import TheFooter           from '@/layouts/components/TheFooter.vue'
 import themeConfig         from '@/../themeConfig.js'
 import VNavMenu            from '@/layouts/components/vertical-nav-menu/VerticalNavMenu.vue'
+import I18nMixin from "@/febos/global/_vue/mixins/I18nMixin";
+import PersonalizacionMixin from "@/febos/global/empresas/mixins/PersonalizacionMixin";
+import {mapState} from "vuex";
 
 export default {
+  mixins: [I18nMixin, PersonalizacionMixin],
   components: {
     BackToTop,
     HNavMenu,
@@ -158,6 +162,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('Personalizacion', {
+      colorNavbar: state => state.colores.navbar
+    }),
     bodyOverlay() { return this.$store.state.bodyOverlay },
     contentAreaClass() {
       if(this.mainLayoutType === "vertical") {
@@ -212,8 +219,7 @@ export default {
     }
   },
   created() {
-    const color = this.navbarColor == "#fff" && this.isThemeDark ? "#10163a" : this.navbarColor
-    this.updateNavbarColor(color)
+    this.updateNavbarColor(this.colorNavbar)
     this.setNavMenuVisibility(this.$store.state.mainLayoutType)
   }
 }

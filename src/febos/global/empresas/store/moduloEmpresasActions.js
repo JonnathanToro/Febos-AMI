@@ -1,4 +1,4 @@
-import {io_empresas_listar} from "../../../servicios/api/empresas.api";
+import {io_empresas_listar} from "@/febos/servicios/api/empresas.api";
 
 export default {
   async listarEmpresas({commit}, payload) {
@@ -8,7 +8,7 @@ export default {
       commit('SET_LISTADO_EMPRESAS', response.data);
       return response.data;
     } catch (error) {
-      console.log("ERROR", error)
+      error("ERROR", error)
       return error;
     }
   },

@@ -21,8 +21,8 @@ Vue.use(Vuesax)
 //import febosConfig from "./febos/servicios/febosConfig.js"
 
 // axios
-import clienteAPI from "./febos/servicios/clienteAPI";
-Vue.prototype.$http = clienteAPI
+import clienteFebosAPI from "./febos/servicios/clienteFebosAPI";
+Vue.prototype.$http = clienteFebosAPI
 
 
 // Theme Configurations

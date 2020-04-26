@@ -21,7 +21,7 @@ const router = new Router({
   },
   routes: [
     ...rutas,
-      {
+    {
       path: '*',
       redirect: '/pages/error-404'
     }
@@ -30,20 +30,20 @@ const router = new Router({
 
 
 router.beforeEach((hacia, desde, siguiente) => {
-  let key=`${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.redirect`
+  let key = `${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.redirect`
 
-  if(hacia.meta.requiereLogin){
-    if(autenticacion.estaLogueado()){
-      if(autenticacion.tienePermiso(hacia)){
+  if (hacia.meta.requiereLogin) {
+    if (autenticacion.estaLogueado()) {
+      if (autenticacion.tienePermiso(hacia)) {
         siguiente();
-      }else{
-        localStorage.setItem(key,hacia.fullPath)
+      } else {
+        localStorage.setItem(key, hacia.fullPath)
         siguiente('/no-autorizado')
       }
-    }else{
+    } else {
       siguiente('/ingreso')
     }
-  }else{
+  } else {
     siguiente();
   }
 })

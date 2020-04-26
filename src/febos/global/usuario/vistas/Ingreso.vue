@@ -14,9 +14,8 @@
               <div class="p-8 login-tabs-container">
 
                 <div class="vx-card__title mb-10">
-                  <h4 class="mb-4">Ingreso</h4>
-                  <p>Hola! porfavor ingresa tus credenciales de acceso. Si tu empresa utiliza <B>Single Sign On</B> con
-                    <B>Febos</B>, no debes ingresar tu correo, si no que tu usuario de empresa de siempre!</p>
+                  <h4 class="mb-4" v-html="titulo"></h4>
+                  <p v-html="bienvenida"></p>
                 </div>
 
                 <div>
@@ -25,7 +24,7 @@
                     icon-no-border
                     icon="icon icon-user"
                     icon-pack="feather"
-                    label-placeholder="Correo o nombre de usuario"
+                    :label-placeholder="campoUsuario"
                     v-model="correo"
                     class="w-full"
                     @keyup.enter.native="ingresar()"/>
@@ -36,7 +35,7 @@
                     icon-no-border
                     icon="icon icon-lock"
                     icon-pack="feather"
-                    label-placeholder="Clave"
+                    :label-placeholder="campoClave"
                     v-model="clave"
                     class="w-full mt-8"
                     @keyup.enter.native="ingresar()"/>
@@ -45,13 +44,17 @@
                     <vs-checkbox v-model="recordar" class="mb-3">Recordar mi usuario</vs-checkbox>
                     <router-link to="">Olvidaste tu contraseña?</router-link>
                   </div>
-                  <vs-button type="border">Registrarme como Proveedor</vs-button>
-                  <vs-button class="float-right" v-on:click="ingresar()">Ingresar</vs-button>
-
-                  <vs-divider>O</vs-divider>
-                  También puedes ingresar con <B>Clave Única</B> del <B>Registro Civil</B>
-                  <div class="flex flex-wrap mt-5 clave-unica">
-                    <img src="@/assets/images/logo_clave_unica.png"/>
+                  <vs-button type="border" v-if="mostrarBtnPP">{{ textoBotonPP }}
+                  </vs-button>
+                  <vs-button class="float-right btn-ingresar" v-on:click="ingresar()">
+                    {{ textoBotonIngreso }}
+                  </vs-button>
+                  <div id="clave-unica" v-if="mostrarBtnClaveUnica">
+                    <vs-divider>O</vs-divider>
+                    También puedes ingresar con <B>Clave Única</B> del <B>Registro Civil</B>
+                    <div class="flex flex-wrap mt-5 clave-unica">
+                      <img src="@/assets/images/logo_clave_unica.png"/>
+                    </div>
                   </div>
                 </div>
 
@@ -65,48 +68,66 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import {mapActions, mapState} from 'vuex';
+  import I18nMixin from "@/febos/global/_vue/mixins/I18nMixin";
+  import PersonalizacionMixin from "@/febos/global/empresas/mixins/PersonalizacionMixin";
 
   export default {
+    mixins: [I18nMixin, PersonalizacionMixin],
     data() {
       return {
         correo: "",
         clave: "",
         recordar: false,
-        keyRecordar:`${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.correo`
+        keyRecordar: `${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.correo`,
       }
     },
-    mounted(){
-      if(localStorage.getItem(this.keyRecordar)){
-        this.correo=localStorage.getItem(this.keyRecordar);
-        if(this.correo!=''){
-          this.recordar=true;
+    computed: {
+      ...mapState('Personalizacion', {
+        titulo: state => state.ingreso.tituloIngreso,
+        bienvenida: state => state.ingreso.textoHtml,
+        mostrarBtnClaveUnica: state => state.ingreso.botonClaveUnica,
+        mostrarBtnPP: state => state.ingreso.botonRegistroProveedor,
+        textoBotonPP: state => state.ingreso.nombreBotonRegistroProveedores,
+        textoBotonIngreso: state => state.ingreso.nombreBotonIngreso,
+        campoClave: state => state.ingreso.nombreCampoClave,
+        campoUsuario: state => state.ingreso.nombreCampoUsuario,
+        imagenIngreso: state => state.ingreso.imagenIngreso,
+        colorFondoImagenIngreso: state => state.ingreso.colorFondoImagenIngreso,
+        imagenFondo: state => state.ingreso.imagenFondo
+      })
+    },
+    mounted() {
+      if (localStorage.getItem(this.keyRecordar)) {
+        this.correo = localStorage.getItem(this.keyRecordar);
+        if (this.correo != '') {
+          this.recordar = true;
         }
-       }
+      }
     },
     methods: {
-      ...mapActions("usuario", {login: "ingreso"}),
+      ...mapActions("Usuario", {login: "ingreso"}),
       ingresar: function () {
-        if(this.recordar){
-          localStorage.setItem(this.keyRecordar,this.correo);
-        }else{
-          localStorage.setItem(this.keyRecordar,'');
+        if (this.recordar) {
+          localStorage.setItem(this.keyRecordar, this.correo);
+        } else {
+          localStorage.setItem(this.keyRecordar, '');
         }
 
         this.$vs.loading();
         this.login({
-          correo:this.correo,
-          clave:this.clave
-        }).then((response) =>{
+          correo: this.correo,
+          clave: this.clave
+        }).then((response) => {
           this.$vs.loading.close();
-          if(response.codigo === 10){
-            this.$router.push({name:'iniciando'});
-          }else{
+          if (response.codigo === 10) {
+            this.$router.push({name: 'iniciando'})//.catch((a,b,c) => { console.log("error",a,b,c)});
+          } else {
             this.$vs.dialog({
-              color:'danger',
+              color: 'danger',
               title: `Ups!`,
               text: `${response.mensaje}`,
-              acceptText:'Ok',
+              acceptText: 'Ok',
               //accept:this.acceptAlert,
             })
           }

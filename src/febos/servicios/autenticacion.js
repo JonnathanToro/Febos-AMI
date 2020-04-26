@@ -1,16 +1,16 @@
-import moduloUsuarios from "../global/usuario/store/moduloUsuario";
+import moduloUsuarios from "../global/usuario/store/moduloUsuarioStore";
 
-const autenticacion={
-  tienePermiso:function(ruta){
-    if(ruta.meta.permiso){
+const autenticacion = {
+  tienePermiso: function (ruta) {
+    if (ruta.meta.permiso) {
       return true;
-    }else{
+    } else {
       // si la vista no requiere permiso, se deja el paso libre
       return true;
     }
   },
-  estaLogueado:function(){
-    return moduloUsuarios.getters.sesionEstaActiva();
+  estaLogueado: function () {
+      return moduloUsuarios.getters.sesionEstaActiva();
   }
 }
 

@@ -1,16 +1,18 @@
 <template>
   <div class="the-navbar__user-meta flex items-center">
     <div class="text-right leading-tight hidden sm:block">
-      <p class="font-semibold">{{ empresaSeleccionada.fantasia }}</p>
     </div>
     <div class="text-right leading-tight hidden sm:block">
       &nbsp;
     </div>
     <div class="text-right leading-tight hidden sm:block">
-      <p class="font-semibold">{{ alias }}</p>
+      <p class="font-semibold" style="margin-top:-5px">{{ alias }}</p>
+      <vx-tooltip text="Click para cambiar de empresa" position="left" >
       <small class="empresa" v-on:click="seleccionarEmpresa()">
-        <span class="nombreEmpresa">{{ fantasia }}</span>:: {{ formatear(iutEmpresa) }}
+        <div style="margin-top:-2px" class="nombreEmpresa">{{ fantasia }}</div>
+        <div style="margin-top:-2px">{{ formatear(iutEmpresa) }}</div>
       </small>
+      </vx-tooltip>
     </div>
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
 
@@ -71,23 +73,22 @@
       return {}
     },
     computed: {
-      ...mapState("usuario", {
+      ...mapState("Usuario", {
         iut: state => state.iut,
         alias: state => state.alias,
         avatar: state => state.avatar,
       }),
-      ...mapState("empresas", {
+      ...mapState("Empresas", {
         iutEmpresa: state => state.empresa.iut,
         fantasia: state => state.empresa.fantasia,
         empresaSeleccionada: state => state.empresa
       }),
     },
     methods: {
-      ...mapActions("usuario", {salir: "salir"}),
+      ...mapActions("Usuario", {salir: "salir"}),
       logout() {
         const $this=this;
-        this.salir().then(function (salio) {
-          console.log("salio",salio)
+        this.salir().then(function () {
           $this.$router.push('/ingreso').catch(() => {
           })
         })
@@ -103,7 +104,7 @@
     cursor:pointer;
   }
   .nombreEmpresa{
-    max-width: 200px;
+    max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
     display: inline-flex;

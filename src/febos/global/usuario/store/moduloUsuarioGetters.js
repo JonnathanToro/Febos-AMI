@@ -9,8 +9,8 @@ export default {
   sesionEstaActiva: () =>  {
     let ahora=new Date().getTime();
     let storage=JSON.parse(localStorage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`));
-    if(storage.usuario.vencimiento) {
-      return ahora < storage.usuario.vencimiento;
+    if(storage.Usuario && storage.Usuario.vencimiento) {
+      return ahora < storage.Usuario.vencimiento;
     }else return false;
   },
   tokenDeUsuario: state  =>  {

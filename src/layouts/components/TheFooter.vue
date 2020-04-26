@@ -18,7 +18,7 @@
           <span class="hidden sm:inline-block">, Todos los derechos reservados.</span>
         </p>
         <span class="md:flex hidden items-center">
-            <span>Desarrollado con amor</span>
+            <span>Fabricado con amor</span>
             <feather-icon icon="HeartIcon" svgClasses="stroke-current text-danger w-6 h-6" class="ml-2" />
         </span>
     </footer>

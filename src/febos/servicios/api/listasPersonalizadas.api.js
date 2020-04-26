@@ -1,8 +1,8 @@
-import clienteAPI from "../ClienteAPI";
+import clienteFebosAPI from "../clienteFebosAPI";
 
 const RECURSO = '/empresas';
 
-const io_empresas_listar = () => clienteAPI.get(END_POINT);
+const io_empresas_listar = () => clienteFebosAPI.get(END_POINT);
 
 const ejemploConParametros = (user_id) => httpClient.get(END_POINT, { user_id });
 const ejemploComoPost = (username, password) => httpClient.post(END_POINT, { username, password });

@@ -15,13 +15,13 @@
       }
     },
     computed: {
-      ...mapGetters("usuario", {usuarioActual: "usuarioActual"})
+      ...mapGetters("Usuario", {usuarioActual: "usuarioActual"})
     },
     mounted() {
 
     },
     methods: {
-      ...mapActions("usuario", {login: "ingreso"})
+      ...mapActions("Usuario", {login: "ingreso"})
     },
     created() {
 

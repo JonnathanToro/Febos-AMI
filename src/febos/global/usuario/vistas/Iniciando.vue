@@ -56,19 +56,19 @@
       cargadoresListos(valorNuevo) {
         if (valorNuevo === this.cargadores.length) {
           //TODO: ver si necesita cambiar su contraseña y redirigir a esa ventana
-          this.$router.push({name: 'selectorEmpresa'});
+          this.$router.push({name: 'selectorEmpresa'}).catch(e => { console.log("error",e)});
         }
       }
     },
     computed: {
-      ...mapState("usuario", {
+      ...mapState("Usuario", {
         iut: state => state.iut,
         alias: state => state.alias
       })
     },
     methods: {
-      ...mapActions("usuario", {permisos: "cargarPermisos"}),
-      ...mapActions("empresas", {empresas: "listarEmpresas"}),
+      ...mapActions("Usuario", {permisos: "cargarPermisos"}),
+      ...mapActions("Empresas", {empresas: "listarEmpresas"}),
       actualizarCargador: function (id) {
         this.cargadoresListos++;
         this.cargadores.forEach(function (cargador) {

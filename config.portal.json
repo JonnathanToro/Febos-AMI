@@ -1,0 +1,23 @@
+{
+  "colores":{
+    "primario":"#ff8000",
+    "navbar":"#03a9f4"
+  },
+	"menu":{
+		"logo":"https://archivos.febos.io/publico/portales/header_full.png",
+		"miniLogo":"https://archivos.febos.io/publico/portales/header_mini.png"
+	},
+	"ingreso":{
+		"imagenIngreso":"http://...",
+    "colorFondoImagenIngreso": "#eff2f7",
+    "imagenFondo": "http://...",
+    "tituloIngreso": "Ingreso",
+		"textoHtml":"Hola! porfavor ingresa tus credenciales de acceso. Si tu empresa utiliza <b>Single Sign On</b> con <b>Febos</b>, no debes ingresar tu correo, si no que tu usuario de organización de siempre!",
+		"nombreCampoUsuario":"Correo o nombre de usuario",
+		"nombreCampoClave":"Contraseña",
+		"nombreBotonIngreso":"Ingresar",
+		"nombreBotonRegistroProveedores":"Registrarme como proveedor",
+		"botonClaveUnica":true,
+    "botonRegistroProveedor": true
+	}
+}

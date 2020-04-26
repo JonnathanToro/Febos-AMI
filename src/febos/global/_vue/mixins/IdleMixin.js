@@ -7,20 +7,19 @@ export default {
     }
   },
   methods: {
-    ...mapGetters('usuario', {
+    ...mapGetters('Usuario', {
       sesionEstaActiva: 'sesionEstaActiva',
     }),
-    ...mapActions('usuario', {
+    ...mapActions('Usuario', {
       latido: 'latido',
     })
   },
   computed: {
-    ...mapState('usuario', {_usuarioId: 'id'})
+    ...mapState('Usuario', {_usuarioId: 'id'})
   },
   onIdle() {
     // cuando entra en estado IDLE quiere decir que el usuario hace 15 minutos que no hace nada en la pagina
     // ni siquiera mueve el mouse, entonces se deja de enviar el heartbeat a Febos
-    console.log("IDLE!");
     clearInterval(this._keepAliveSession)
   },
   onActive() {
