@@ -7,11 +7,17 @@
     </div>
     <div class="text-right leading-tight hidden sm:block">
       <p class="font-semibold" style="margin-top:-5px">{{ alias }}</p>
-      <vx-tooltip text="Click para cambiar de empresa" position="left" >
-      <small class="empresa" v-on:click="seleccionarEmpresa()">
-        <div style="margin-top:-2px" class="nombreEmpresa">{{ fantasia }}</div>
-        <div style="margin-top:-2px">{{ formatear(iutEmpresa) }}</div>
-      </small>
+      <vx-tooltip text="Click para cambiar de empresa" position="left" style="display:inline-block">
+        <small class="empresa" v-on:click="seleccionarEmpresa()">
+          <div style="margin-top:-2px" class="nombreEmpresa">{{ fantasia }}</div>
+          <div style="margin-top:-2px">{{ formatear(iutEmpresa) }}</div>
+        </small>
+      </vx-tooltip>
+      <vx-tooltip v-if="esPortalProveedores" text="Click para cambiar cliente" position="bottom" style="display:inline-block" class="ml-5">
+        <small class="empresa" v-on:click="seleccionarEmpresa()">
+          <div style="margin-top:-2px" class="nombreEmpresa">{{ fantasia }}</div>
+          <div style="margin-top:-2px">{{ formatear(iutEmpresa) }}</div>
+        </small>
       </vx-tooltip>
     </div>
     <vs-dropdown vs-custom-content vs-trigger-click class="cursor-pointer">
@@ -26,27 +32,17 @@
 
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4"/>
-            <span class="ml-2">Profile</span>
-          </li>
-
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="MailIcon" svgClasses="w-4 h-4"/>
-            <span class="ml-2">Inbox</span>
+            <span class="ml-2">Perfil</span>
           </li>
 
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4"/>
-            <span class="ml-2">Tasks</span>
+            <span class="ml-2">Tareas</span>
           </li>
 
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4"/>
-            <span class="ml-2">Chat</span>
-          </li>
-
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="HeartIcon" svgClasses="w-4 h-4"/>
-            <span class="ml-2">Wish List</span>
+            <span class="ml-2">Soporte</span>
           </li>
 
           <vs-divider class="m-1"/>
@@ -83,27 +79,32 @@
         fantasia: state => state.empresa.fantasia,
         empresaSeleccionada: state => state.empresa
       }),
+      esPortalProveedores(){
+        let portal=process.env.VUE_APP_PORTAL;
+        return portal=='proveedores';
+      }
     },
     methods: {
       ...mapActions("Usuario", {salir: "salir"}),
       logout() {
-        const $this=this;
+        const $this = this;
         this.salir().then(function () {
           $this.$router.push('/ingreso').catch(() => {
           })
         })
       },
-      seleccionarEmpresa(){
-        this.$router.push({name:"selectorEmpresa"})
+      seleccionarEmpresa() {
+        this.$router.push({name: "selectorEmpresa"})
       }
     }
   }
 </script>
 <style lang="scss">
-  .empresa:hover{
-    cursor:pointer;
+  .empresa:hover {
+    cursor: pointer;
   }
-  .nombreEmpresa{
+
+  .nombreEmpresa {
     max-width: 250px;
     white-space: nowrap;
     overflow: hidden;
