@@ -12,10 +12,11 @@
 <template functional>
     <footer class="the-footer flex-wrap justify-between" :class="classes">
         <p>
-          <span>COPYRIGHT &copy;</span>
+          <span>Copyright &copy;</span>
           <span>{{ new Date().getFullYear() }} </span>
           <a href="https://www.febos.cl" target="_blank" rel="nofollow">Febos S.A.</a>
           <span class="hidden sm:inline-block">, Todos los derechos reservados.</span>
+          <span>Ambiente de {{ ambiente }}</span>
         </p>
         <span class="md:flex hidden items-center">
             <span>Fabricado con amor</span>
@@ -31,6 +32,11 @@ export default {
         classes: {
             type: String,
         }
+    },
+    computed:{
+      ambiente() {
+        return `${process.env.VUE_APP_AMBIENTE}`;
+      }
     }
 }
 </script>

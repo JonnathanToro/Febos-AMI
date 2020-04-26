@@ -17,3 +17,5 @@ vuexy-shell-scripts
 .idea
 .idea/*
 *.iml
+coverage
+coverage/*
