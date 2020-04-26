@@ -10,33 +10,32 @@
 
 
 <template functional>
-    <footer class="the-footer flex-wrap justify-between" :class="classes">
-        <p>
-          <span>Copyright &copy;</span>
-          <span>{{ new Date().getFullYear() }} </span>
-          <a href="https://www.febos.cl" target="_blank" rel="nofollow">Febos S.A.</a>
-          <span class="hidden sm:inline-block">, Todos los derechos reservados.</span>
-          <span>Ambiente de {{ ambiente }}</span>
-        </p>
-        <span class="md:flex hidden items-center">
-            <span>Fabricado con amor</span>
-            <feather-icon icon="HeartIcon" svgClasses="stroke-current text-danger w-6 h-6" class="ml-2" />
-        </span>
-    </footer>
+  <footer class="the-footer flex-wrap justify-between" :class="classes">
+    <p>
+      <span>Copyright &copy;</span>
+      <span>{{ new Date().getFullYear() }} </span>
+      <a href="https://www.febos.cl" target="_blank" rel="nofollow">Febos S.A.</a>
+      <span class="hidden sm:inline-block">, Todos los derechos reservados.</span>
+    </p>
+    <span class="md:flex hidden items-center">
+      <span>Fabricado con amor</span>
+      <feather-icon icon="HeartIcon" svgClasses="stroke-current text-danger w-6 h-6" class="ml-2"/>
+      <span class="ml-3">  Ambiente de <strong>{{ props.ambiente }}</strong></span>
+    </span>
+
+  </footer>
 </template>
 
 <script>
-export default {
+  export default {
     name: "the-footer",
     props: {
-        classes: {
-            type: String,
-        }
-    },
-    computed:{
-      ambiente() {
-        return `${process.env.VUE_APP_AMBIENTE}`;
+      classes: {
+        type: String,
+      },
+      ambiente: {
+        type: String,
       }
     }
-}
+  }
 </script>

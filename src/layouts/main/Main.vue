@@ -108,7 +108,7 @@
           </div>
         </div>
       </div>
-      <the-footer />
+      <the-footer :ambiente="ambiente"/>
     </div>
   </div>
 </template>
@@ -165,6 +165,9 @@ export default {
     ...mapState('Personalizacion', {
       colorNavbar: state => state.colores.navbar
     }),
+    ambiente(){
+      return process.env.VUE_APP_AMBIENTE;
+    },
     bodyOverlay() { return this.$store.state.bodyOverlay },
     contentAreaClass() {
       if(this.mainLayoutType === "vertical") {
