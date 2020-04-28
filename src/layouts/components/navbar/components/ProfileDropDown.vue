@@ -13,7 +13,8 @@
           <div style="margin-top:-2px">{{ formatear(iutEmpresa) }}</div>
         </small>
       </vx-tooltip>
-      <vx-tooltip v-if="esPortalProveedores" text="Click para cambiar cliente" position="bottom" style="display:inline-block" class="ml-5">
+      <vx-tooltip v-if="esPortalProveedores" text="Click para cambiar cliente" position="bottom"
+                  style="display:inline-block" class="ml-5">
         <small class="empresa" v-on:click="seleccionarEmpresa()">
           <div style="margin-top:-2px" class="nombreEmpresa">{{ fantasia }}</div>
           <div style="margin-top:-2px">{{ formatear(iutEmpresa) }}</div>
@@ -30,11 +31,11 @@
       <vs-dropdown-menu class="vx-navbar-dropdown">
         <ul style="min-width: 9rem">
 
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
-            <feather-icon icon="UserIcon" svgClasses="w-4 h-4"/>
+          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+              @click="$router.push('/usuario/perfil')">
+            <feather-icon icon="UserIcon" svgClasses="w-4 h-4"></feather-icon>
             <span class="ml-2">Perfil</span>
           </li>
-
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4"/>
             <span class="ml-2">Tareas</span>
@@ -79,9 +80,9 @@
         fantasia: state => state.empresa.fantasia,
         empresaSeleccionada: state => state.empresa
       }),
-      esPortalProveedores(){
-        let portal=process.env.VUE_APP_PORTAL;
-        return portal=='proveedores';
+      esPortalProveedores() {
+        let portal = process.env.VUE_APP_PORTAL;
+        return portal == 'proveedores';
       }
     },
     methods: {

@@ -10,7 +10,7 @@
 
 import Vue from 'vue'
 import App from './App.vue'
-
+import './filters/filters'
 // Vuesax Component Framework
 import Vuesax from 'vuesax'
 import 'material-icons/iconfont/material-icons.css' //Material Icons
