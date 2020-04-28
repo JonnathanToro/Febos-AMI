@@ -16,7 +16,7 @@
 		"nombreCampoUsuario":"Correo o nombre de usuario",
 		"nombreCampoClave":"Contraseña",
 		"nombreBotonIngreso":"Ingresar",
-		"nombreBotonRegistroProveedores":"Registrarme como proveedor",
+		"nombreBotonRegistroProveedores":"Soy proveedor",
 		"botonClaveUnica":true,
     "botonRegistroProveedor": true
 	}

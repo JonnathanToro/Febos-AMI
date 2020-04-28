@@ -108,7 +108,7 @@
           </div>
         </div>
       </div>
-      <the-footer :ambiente="ambiente"/>
+      <the-footer :ambiente="ambiente" :version="version"/>
     </div>
   </div>
 </template>
@@ -126,6 +126,7 @@ import VNavMenu            from '@/layouts/components/vertical-nav-menu/Vertical
 import I18nMixin from "@/febos/global/_vue/mixins/I18nMixin";
 import PersonalizacionMixin from "@/febos/global/empresas/mixins/PersonalizacionMixin";
 import {mapState} from "vuex";
+import config from '@/../package.json'
 
 export default {
   mixins: [I18nMixin, PersonalizacionMixin],
@@ -167,6 +168,10 @@ export default {
     }),
     ambiente(){
       return process.env.VUE_APP_AMBIENTE;
+    },
+    version(){
+      console.log('version',config);
+      return config.version;
     },
     bodyOverlay() { return this.$store.state.bodyOverlay },
     contentAreaClass() {
