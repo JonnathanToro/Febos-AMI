@@ -11,13 +11,15 @@
                   class="border-2 border-solid border-white"
                   id="avatar"
                   :src=consultarAvatar
-                  size="100px"></vs-avatar>
+                  size="100px"
+                  @click="abrirPrompAvatar"
+                ></vs-avatar>
               </div>
               <div class="text-center">
                 <h4 id="alias-usuario-actual">{{ usuario.alias }}</h4>
                 <p id="nombre-usuario-actual" class="text-grey">({{ usuario.nombre }})</p>
                 <p id="correo-usuario-actual" class="text-grey">{{ usuario.correo }}</p>
-                <p id="iut-usuario-actual" class="text-grey">{{ formatearIut(usuario.iut) }}</p>
+                <p id="iut-usuario-actual" class="text-grey">{{ usuario.iut }}</p>
               </div>
             </div>
             <div class="vx-card__footer">
@@ -40,18 +42,6 @@
         <vx-card title="Editar perfil" class="card-top">
           <form id="editar-perfil">
             <div class="vx-row mb-1">
-              <div class="vx-col sm:w-auto md:w-full lg:w-3/4">
-                <vs-input
-                  v-validate="'required|min:5|max:50'"
-                  class="w-full"
-                  name="nombre"
-                  icon-pack="material-icons"
-                  icon="account_circle"
-                  icon-no-border
-                  label="Nombre"
-                  :value="usuario.nombre"></vs-input>
-                <span class="text-danger text-sm">{{ errors.first('nombre') }}</span>
-              </div>
               <div class="vx-col lg:w-1/4 md:w-1/2 sm:w-auto">
                 <label for="iut" class="lbl">Rut</label>
                 <vs-input
@@ -62,8 +52,24 @@
                   icon-pack="material-icons"
                   icon="fingerprint"
                   icon-no-border
-                  :value="usuario.iut"></vs-input>
+                  :value="usuario.iut"
+                  :disabled="true"
+                ></vs-input>
                 <span class="text-danger text-sm">{{ errors.first('iut') }}</span>
+              </div>
+              <div class="vx-col sm:w-auto md:w-full lg:w-3/4">
+                <vs-input
+                  v-validate="'required|min:5|max:50'"
+                  class="w-full"
+                  name="nombre"
+                  icon-pack="material-icons"
+                  icon="account_circle"
+                  icon-no-border
+                  label="Nombre"
+                  :value="usuario.nombre"
+                  @input="actualiza('nombre', $event)"
+                ></vs-input>
+                <span class="text-danger text-sm">{{ errors.first('nombre') }}</span>
               </div>
             </div>
             <div class="vx-row mt-5 mb-5">
@@ -76,7 +82,9 @@
                   icon="favorite"
                   icon-no-border
                   label="Alias"
-                  :value="usuario.alias"></vs-input>
+                  :value="usuario.alias"
+                  @input="actualiza('alias', $event)"
+                ></vs-input>
                 <span class="text-danger text-sm">{{ errors.first('alias') }}</span>
               </div>
               <div class="vx-col lg:w-3/4 md:w-1/2 sm:w-auto">
@@ -89,7 +97,9 @@
                   icon="email"
                   icon-no-border
                   label="Correo"
-                  :value="usuario.correo"></vs-input>
+                  :value="usuario.correo"
+                  @input="actualiza('correo', $event)"
+                ></vs-input>
                 <span class="text-danger text-sm">{{ errors.first('correo') }}</span>
               </div>
             </div>
@@ -399,6 +409,7 @@ export default {
       alias: state => state.alias,
       avatar: state => state.avatar,
       correo: state => state.correo,
+      nombre: state => state.nombre,
     }),
     totalPaginas() {
       return this.$store.getters['usuarios/totalPaginas'];
@@ -452,10 +463,10 @@ export default {
       return this.$store.getters['configuraciones/listadoPermisos'];
     },
     validarFormularioPerfil() {
-      return false;
+      return !this.errors.any() && this.correo !== '' && this.alias !== '' && this.iut !== '' && this.nombre !== '';
     },
     validarFormularioClave() {
-      return false;
+      return !this.errors.any() && this.claveActual !== '' && this.nuevaClave !== '' && this.reNuevaClave !== '';
     },
     validarImagenVacia() {
       return this.imagenPreviaCropper !== '';
@@ -508,30 +519,8 @@ export default {
       this.transformaImagenFile(this.imagenPreviaCropper, 'perfil.jpg')
         .then((imagen) => {
           this.imagenASubir = imagen;
+          console.log("Imagen a subir",imagen);
         });
-      // Imagen.solicitarURL()
-      //   .then((response) => {
-      //     if (response.data.codigo === 10) {
-      //       Imagen.cargarAvatar(response.data.url, this.imagenASubir);
-      //       this.$vs.notify({
-      //         title: 'Su imagen se esta subiendo.',
-      //         text: 'En breves instantes se actualizara tu imagen..',
-      //         iconPack: 'feather',
-      //         icon: 'icon-alert-circle',
-      //         color: 'success'
-      //       });
-            // Usuario.modificarUsuario(this.usuario)
-            //   .then(() => {
-            //     setTimeout(() => { // Tiempo considerado debido a que no existe respuesta de la carga.
-            //       let fecha = new Date();
-            //       this.$store.commit('configuraciones/actualizarImagen',  `https://archivos.febos.io/cl/desarrollo/usuario/${this.usuario.iut}/perfil.jpg?t=` + fecha.getTime());
-            //     }, 5000);
-            //   })
-          // }
-        // })
-        // .catch((err) => {
-        //   console.error('Error: ',err);
-        // });
     },
     cerrarPromptAvatar() {
       this.promtpAvatar = false;
@@ -548,26 +537,27 @@ export default {
     },
     modificarPerfil() {
       this.$vs.loading();
-      this.payload = {
+      const payload = {
         ...this.payload,
         usuarioActual: this.usuario
       };
-      this.$store.dispatch('configuraciones/modificarPerfil', this.payload);
+      setTimeout(function(){
+        payload.cerrarAnimacion();
+      },2000)
     },
     modificarClave() {
       this.$vs.loading();
-      this.payload = {
+      const payload = {
         ...this.payload,
         usuario: this.usuario = {
           ...this.usuario,
           clave: this.nuevaClave
         }
       };
-      this.$store.dispatch('configuraciones/modificarClave', this.payload);
-      this.claveActual = this.nuevaClave = this.reNuevaClave = '';
-    },
-    formatearIut(iut) {
-      return (iut);
+      setTimeout(function(){
+        this.claveActual = this.nuevaClave = this.reNuevaClave = '';
+        payload.cerrarAnimacion();
+      },2000)
     },
     /* END Metodos para modificar los usuarios */
 
@@ -691,7 +681,4 @@ export default {
   /* Tabla de actividades */
 
   /* END Tabla de actividades */
-
-
-
 </style>
