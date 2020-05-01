@@ -1,7 +1,6 @@
 <template>
   <div id="perfil">
     <div class="vx-row">
-
       <!-- Display Usuario -->
       <div class="vx-col w-full lg:w-1/4">
         <div class="vx-card p-2 card-top">
@@ -43,45 +42,46 @@
             <div class="vx-row mb-1">
               <div class="vx-col sm:w-auto md:w-full lg:w-3/4">
                 <vs-input
+                  v-validate="'required|min:5|max:50'"
                   class="w-full"
                   name="nombre"
                   icon-pack="material-icons"
                   icon="account_circle"
                   icon-no-border
                   label="Nombre"
-                  :value="usuario.nombre"
-                  @input="actualiza('nombre', $event)"></vs-input>
-                <span class="text-danger text-sm"></span>
+                  :value="usuario.nombre"></vs-input>
+                <span class="text-danger text-sm">{{ errors.first('nombre') }}</span>
               </div>
               <div class="vx-col lg:w-1/4 md:w-1/2 sm:w-auto">
-                <label for="iut" class="lbl"></label>
+                <label for="iut" class="lbl">Rut</label>
                 <vs-input
+                  v-validate="'required'"
                   class="w-full"
                   id="iut"
                   name="iut"
                   icon-pack="material-icons"
                   icon="fingerprint"
                   icon-no-border
-                  :value="usuario.iut"
-                  @input="actualiza('iut', $event)"></vs-input>
-                <span class="text-danger text-sm"></span>
+                  :value="usuario.iut"></vs-input>
+                <span class="text-danger text-sm">{{ errors.first('iut') }}</span>
               </div>
             </div>
             <div class="vx-row mt-5 mb-5">
               <div class="vx-col lg:w-1/4 md:w-1/2 sm:w-auto">
                 <vs-input
+                  v-validate="'required|min:3|max:50'"
                   class="w-full"
                   name="alias"
                   icon-pack="material-icons"
                   icon="favorite"
                   icon-no-border
                   label="Alias"
-                  :value="usuario.alias"
-                  @input="actualiza('alias, $event')"></vs-input>
-                <span class="text-danger text-sm"></span>
+                  :value="usuario.alias"></vs-input>
+                <span class="text-danger text-sm">{{ errors.first('alias') }}</span>
               </div>
               <div class="vx-col lg:w-3/4 md:w-1/2 sm:w-auto">
                 <vs-input
+                  v-validate="'required|email|min:10|max:150'"
                   type="email"
                   name="correo"
                   class="w-full"
@@ -89,9 +89,8 @@
                   icon="email"
                   icon-no-border
                   label="Correo"
-                  :value="usuario.correo"
-                  @input="actualiza('correo', $event)"></vs-input>
-                <span class="text-danger text-sm"></span>
+                  :value="usuario.correo"></vs-input>
+                <span class="text-danger text-sm">{{ errors.first('correo') }}</span>
               </div>
             </div>
             <div class="vs-row mt-6">
@@ -120,6 +119,7 @@
             <div class="vx-row mb-1">
               <div class="vx-col w-full">
                 <vs-input
+                  v-validate="'required|min:4|max:20'"
                   autocomplete="current-password"
                   class="w-full"
                   icon-pack="material-icons"
@@ -130,12 +130,13 @@
                   label="Clave actual"
                   name="clave-actual"
                   v-model="claveActual"></vs-input>
-                <span class="text-danger text-sm"></span>
+                <span class="text-danger text-sm">{{ errors.first('claveActual') }}</span>
               </div>
             </div>
             <div class="vx-row mb-1">
               <div class="vx-col w-full">
                 <vs-input
+                  v-validate="'required|min:4|max:20'"
                   ref="password"
                   autocomplete="new-password"
                   class="w-full"
@@ -147,12 +148,13 @@
                   placeholder="************"
                   name="nueva-clave"
                   v-model="nuevaClave"></vs-input>
-                <span class="text-danger text-sm"></span>
+                <span class="text-danger text-sm">{{ errors.first('nuevaClave') }}</span>
               </div>
             </div>
             <div class="vx-row mb-1">
               <div class="vx-col w-full">
                 <vs-input
+                  v-validate="'required|min:4|max:20|confirmed:password'"
                   autocomplete="new-password"
                   class="w-full"
                   icon-pack="material-icons"
@@ -163,7 +165,7 @@
                   placeholder="************"
                   name="re-nueva-clave"
                   v-model="reNuevaClave"></vs-input>
-                <span class="text-danger text-sm"></span>
+                <span class="text-danger text-sm">{{ errors.first('reNuevaClave') }}</span>
               </div>
             </div>
             <div class="vs-row">
@@ -334,7 +336,10 @@ import EmpresaItem from './EmpresaItem';
 import PermisosItem from './PermisosItem';
 import { Cropper, CircleStencil } from 'vue-advanced-cropper';
 import ListadoActividades from './ListadoActividades';
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
+import { Validator } from 'vee-validate';
+import dict from "./validaciones";
+Validator.localize("cloud", dict);
 
 export default {
   components: {
@@ -348,7 +353,6 @@ export default {
   },
   data() {
     return {
-      usuario: {},
       payload: {
         cerrarAnimacion: this.$vs.loading.close,
         notify: this.$vs.notify
@@ -389,6 +393,7 @@ export default {
 
   },
   computed: {
+    ...mapGetters("Usuario", {usuario: "usuarioActual"}),
     ...mapState("Usuario", {
       iut: state => state.iut,
       alias: state => state.alias,
@@ -539,7 +544,7 @@ export default {
 
     /* Metodos para modificar los usuarios */
     actualiza (key, value) {
-      this.$store.commit('configuraciones/actualizarUsuario', { usuario: this.usuario, key: key, value: value })
+      this.usuario[key]=value;
     },
     modificarPerfil() {
       this.$vs.loading();
