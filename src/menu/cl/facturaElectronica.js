@@ -26,11 +26,11 @@ export default [{
       permiso:'WB000',
       submenu: [
         {
-          url: '/factura-electronica/emision/33',
-          name: 'Factura Afecta',
+          url: '/factura-electronica/recibidos/todos',
+          name: 'Todos',
           slug: 'fe-emision-afecta',
-          icon: 'HomeIcon',
           permiso:'WB000',
+          descripcion:'Visualización de todos los documentos recibidos'
         },
       ]
     },

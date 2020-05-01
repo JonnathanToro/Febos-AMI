@@ -1,12 +1,13 @@
 <template>
-    <span>
-      {{ documento.razonSocialReceptor }}
-    </span>
+  <div>
+    {{ documento.fechaEmision }}
+  </div>
 </template>
 
 <script>
+
   export default {
-    name: "CampoRazonSocialReceptor",
+    name: "CampoFechaEmision",
     props: {
       documento: {
         type: Object,
@@ -27,5 +28,8 @@
 </script>
 
 <style scoped>
-
+  div {
+    width:100%;
+    text-align: right;
+  }
 </style>
