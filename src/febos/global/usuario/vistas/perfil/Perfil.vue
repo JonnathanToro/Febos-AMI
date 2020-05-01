@@ -43,7 +43,6 @@
             <div class="vx-row mb-1">
               <div class="vx-col sm:w-auto md:w-full lg:w-3/4">
                 <vs-input
-                  v-validate="'required|min:5|max:50'"
                   class="w-full"
                   name="nombre"
                   icon-pack="material-icons"
@@ -57,7 +56,6 @@
               <div class="vx-col lg:w-1/4 md:w-1/2 sm:w-auto">
                 <label for="iut" class="lbl"></label>
                 <vs-input
-                  v-validate="'required'"
                   class="w-full"
                   id="iut"
                   name="iut"
@@ -72,7 +70,6 @@
             <div class="vx-row mt-5 mb-5">
               <div class="vx-col lg:w-1/4 md:w-1/2 sm:w-auto">
                 <vs-input
-                  v-validate="'required|min:3|max:50'"
                   class="w-full"
                   name="alias"
                   icon-pack="material-icons"
@@ -85,7 +82,6 @@
               </div>
               <div class="vx-col lg:w-3/4 md:w-1/2 sm:w-auto">
                 <vs-input
-                  v-validate="'required|email|min:10|max:150'"
                   type="email"
                   name="correo"
                   class="w-full"
@@ -124,7 +120,6 @@
             <div class="vx-row mb-1">
               <div class="vx-col w-full">
                 <vs-input
-                  v-validate="'required|min:4|max:20'"
                   autocomplete="current-password"
                   class="w-full"
                   icon-pack="material-icons"
@@ -141,7 +136,6 @@
             <div class="vx-row mb-1">
               <div class="vx-col w-full">
                 <vs-input
-                  v-validate="'required|min:4|max:20'"
                   ref="password"
                   autocomplete="new-password"
                   class="w-full"
@@ -159,7 +153,6 @@
             <div class="vx-row mb-1">
               <div class="vx-col w-full">
                 <vs-input
-                  v-validate="'required|min:4|max:20|confirmed:password'"
                   autocomplete="new-password"
                   class="w-full"
                   icon-pack="material-icons"
@@ -293,7 +286,7 @@
 
           <!-- Paginado -->
           <div class="mt-4">
-            <vs-pagination :total="totalPaginas" v-model="paginaActual" @change="cambiarPaginaActividades"></vs-pagination>
+<!--            <vs-pagination :total="totalPaginas" v-model="paginaActual" @change="cambiarPaginaActividades"></vs-pagination>-->
           </div>
           <!-- END Paginado -->
 
@@ -340,58 +333,8 @@ import FiltroPerfil from "./FiltroPerfil";
 import EmpresaItem from './EmpresaItem';
 import PermisosItem from './PermisosItem';
 import { Cropper, CircleStencil } from 'vue-advanced-cropper';
-import { Validator } from 'vee-validate';
-import entorno from '@/utils/entorno';
-import Usuario from "@/api/usuarios/Usuario";
-import Imagen from '@/api/archivos/Imagenes';
 import ListadoActividades from './ListadoActividades';
 import {mapState} from "vuex";
-
-// TODO Limpiar componente
-const dict = {
-  custom: {
-    nombre: {
-      required: 'Debes ingresar un nombre.',
-      min: "Un nombre tan corto? (Minimo 5 caracteres).",
-      max: "Un nombre tal largo? (Maximo 50 caracteres)."
-    },
-    iut: {
-      required: 'Debes ingresar tu Identificacion.',
-    },
-    alias: {
-      required: 'Debes ingresar un Alias.',
-      min: 'Un alias tan corto? (Minimo 3 caracteres).',
-      max: 'Un alias tan largo? (MAximo 50 caracteres).',
-      attributes: {
-        email: 'El correo no es valido.'
-      }
-    },
-    correo: {
-      required: 'Debes ingresar un correo electronico.',
-      email: "No es un correo electrónico válido",
-      min: 'Un correo tan corto? (Minimo 10 caracteres).',
-      max: 'Un correo tan largo? (Maximo 150 caracteres).'
-    },
-    claveActual: {
-      required: 'Debes ingresar una contraseña',
-      min: "Una contraseña tan corta?",
-      max: "Una contraseña tan larga?"
-    },
-    nuevaClave: {
-      required: 'Debes ingresar una contraseña',
-      min: "Una contraseña tan corta?",
-      max: "Una contraseña tan larga?"
-    },
-    reNuevaClave: {
-      required: 'Debes ingresar una contraseña',
-      min: "Una contraseña tan corta?",
-      max: "Una contraseña tan larga?",
-      confirmed: 'No coincide con la nueva clave!'
-    },
-  }
-};
-
-Validator.localize(entorno.obtenerTld(), dict);
 
 export default {
   components: {
@@ -518,24 +461,22 @@ export default {
 
     /* Metodos listado de actividades */
     cambiarPaginaActividades(pagina) {
-      if(this.$store.state.usuarios.actividades.paginaActual !== pagina) {
-        let payload = {
-          id: this.usuario.id,
-          pagina
-        };
-        this.$vs.loading({color: '#0004AC', text: 'Consultando actividades...', type: 'sound'});
-        this.$store.dispatch('usuarios/listarActividades', payload)
-          .then(() => {
-            this.$vs.loading.close();
-            this.actividadesArray = this.$store.state.usuarios.actividades.data;
-          });
-      }
+      console.log(pagina)
+      // if(this.$store.state.usuarios.actividades.paginaActual !== pagina) {
+      //   let payload = {
+      //     id: this.usuario.id,
+      //     pagina
+      //   };
+      //   this.$vs.loading({color: '#0004AC', text: 'Consultando actividades...', type: 'sound'});
+      //   this.$store.dispatch('usuarios/listarActividades', payload)
+      //     .then(() => {
+      //       this.$vs.loading.close();
+      //       this.actividadesArray = this.$store.state.usuarios.actividades.data;
+      //     });
+      // }
     },
     /* END Metodos listado de actividades */
 
-    imagenAlternativa() {
-      return document.getElementById('avatar').src = `https://api.adorable.io/avatars/285/${this.usuario.email}`;
-    },
 
     /* Metodos para el tratado del avatar */
     transformaImagenFile(url, filename, mimeType) {
@@ -563,29 +504,29 @@ export default {
         .then((imagen) => {
           this.imagenASubir = imagen;
         });
-      Imagen.solicitarURL()
-        .then((response) => {
-          if (response.data.codigo === 10) {
-            Imagen.cargarAvatar(response.data.url, this.imagenASubir);
-            this.$vs.notify({
-              title: 'Su imagen se esta subiendo.',
-              text: 'En breves instantes se actualizara tu imagen..',
-              iconPack: 'feather',
-              icon: 'icon-alert-circle',
-              color: 'success'
-            });
-            Usuario.modificarUsuario(this.usuario)
-              .then(() => {
-                setTimeout(() => { // Tiempo considerado debido a que no existe respuesta de la carga.
-                  let fecha = new Date();
-                  this.$store.commit('configuraciones/actualizarImagen',  `https://archivos.febos.io/cl/desarrollo/usuario/${this.usuario.iut}/perfil.jpg?t=` + fecha.getTime());
-                }, 5000);
-              })
-          }
-        })
-        .catch((err) => {
-          console.error('Error: ',err);
-        });
+      // Imagen.solicitarURL()
+      //   .then((response) => {
+      //     if (response.data.codigo === 10) {
+      //       Imagen.cargarAvatar(response.data.url, this.imagenASubir);
+      //       this.$vs.notify({
+      //         title: 'Su imagen se esta subiendo.',
+      //         text: 'En breves instantes se actualizara tu imagen..',
+      //         iconPack: 'feather',
+      //         icon: 'icon-alert-circle',
+      //         color: 'success'
+      //       });
+            // Usuario.modificarUsuario(this.usuario)
+            //   .then(() => {
+            //     setTimeout(() => { // Tiempo considerado debido a que no existe respuesta de la carga.
+            //       let fecha = new Date();
+            //       this.$store.commit('configuraciones/actualizarImagen',  `https://archivos.febos.io/cl/desarrollo/usuario/${this.usuario.iut}/perfil.jpg?t=` + fecha.getTime());
+            //     }, 5000);
+            //   })
+          // }
+        // })
+        // .catch((err) => {
+        //   console.error('Error: ',err);
+        // });
     },
     cerrarPromptAvatar() {
       this.promtpAvatar = false;
