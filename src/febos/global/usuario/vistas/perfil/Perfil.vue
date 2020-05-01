@@ -346,7 +346,7 @@ import EmpresaItem from './EmpresaItem';
 import PermisosItem from './PermisosItem';
 import { Cropper, CircleStencil } from 'vue-advanced-cropper';
 import ListadoActividades from './ListadoActividades';
-import {mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 import { Validator } from 'vee-validate';
 import dict from "./validaciones";
 Validator.localize("cloud", dict);
@@ -474,7 +474,7 @@ export default {
   },
 
   methods: {
-
+    ...mapActions("Usuario", {actualizarMiPerfil: "actualizarMiPerfil"}),
     /* Metodos listado de actividades */
     cambiarPaginaActividades(pagina) {
       console.log(pagina)
@@ -539,11 +539,15 @@ export default {
       this.$vs.loading();
       const payload = {
         ...this.payload,
-        usuarioActual: this.usuario
+        usuario: this.usuario
       };
-      setTimeout(function(){
+      this.actualizarMiPerfil(payload).then(function(modificado){
+        console.log("modificado",modificado);
         payload.cerrarAnimacion();
-      },2000)
+      }).catch(function(error){
+        console.log("error",error);
+        payload.cerrarAnimacion();
+      });
     },
     modificarClave() {
       this.$vs.loading();
