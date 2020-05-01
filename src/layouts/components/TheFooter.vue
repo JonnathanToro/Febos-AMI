@@ -20,7 +20,7 @@
     <span class="md:flex hidden items-center">
       <span>Fabricado con amor</span>
       <feather-icon icon="HeartIcon" svgClasses="stroke-current text-danger w-6 h-6" class="ml-2"/>
-      <span class="ml-3">  Ambiente de <strong>{{ props.ambiente }}</strong></span>
+      <span class="ml-3">  Ambiente de <strong>{{ props.ambiente }}</strong> <span style="font-size:70%">v.{{ props.version }}</span></span>
     </span>
 
   </footer>
@@ -34,6 +34,9 @@
         type: String,
       },
       ambiente: {
+        type: String,
+      },
+      version: {
         type: String,
       }
     }

@@ -1,11 +1,13 @@
 import layoutPrivado from "./layoutPrivado";
 import layoutPublico from "./layoutPublico";
-import layoutPaginas from "./layoutPaginas";
+import layoutPaginasPublicas from "./layoutPaginasPublicas";
+import layoutPaginasPrivadas from "./layoutPaginasPrivadas";
 
 const rutasChile=[
   ...layoutPrivado,
   ...layoutPublico,
-  ...layoutPaginas
+  ...layoutPaginasPublicas,
+  ...layoutPaginasPrivadas
 ]
 
 export default rutasChile

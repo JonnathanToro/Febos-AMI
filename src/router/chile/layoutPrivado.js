@@ -1,3 +1,5 @@
+import rutasFacturaElectronica from "./rutasFacturaElectronica";
+
 const layoutPrivado = [
   {
     path: '',
@@ -20,6 +22,7 @@ const layoutPrivado = [
         meta: {permiso: 'WB002', requiereLogin: true},
         component: () => import('@/views/Page2.vue')
       },
+      ...rutasFacturaElectronica
     ],
   }
 ]

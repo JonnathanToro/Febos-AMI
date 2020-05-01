@@ -1,5 +1,5 @@
 import clienteAPI from "@/febos/servicios/clienteAPI";
-import { mapState,mapActions} from "vuex";
+import { mapActions} from "vuex";
 
 export default {
   computed:{
@@ -11,18 +11,14 @@ export default {
   },
   methods:{
     ...mapActions('Empresas',{_cargarPersonalizacionEnState:'cargarPersonalizacion'}),
-    _yaEstaCargadaLaPersonalizacion: function(){
-      if(!this._datosPersonalizacion || this._datosPersonalizacion.dominio != this._dominioActual){
-        return false;
-      }
-      return true;
-    },
     async _cargarPersonalizacion(){
       let pais=`${process.env.VUE_APP_CODIGO_PAIS}`;
       let ambiente=`${process.env.VUE_APP_AMBIENTE}`;
-      let url=`https://archivos.febos.io/${pais}/${ambiente}/portales/${this._dominioActual}.json`;
+      let url=`https://s3.amazonaws.com/archivos.febos.io/${pais}/${ambiente}/portales/${this._dominioActual}.json`;
       var self=this;
+      console.log("Cargando personalización de portal...");
       clienteAPI.get(url).then(function(response){
+        console.log("Personalización de portal cargada.");
         self._cargarPersonalizacionEnState(response.data);
         self.$emit('updateNavbarColor', response.data.colores.navbar);
         self.$vs.theme({ primary: response.data.colores.primario });
@@ -31,8 +27,6 @@ export default {
     },
   },
   created(){
-    if(!this._yaEstaCargadaLaPersonalizacion()){
-      this._cargarPersonalizacion();
-    }
+    this._cargarPersonalizacion();
   }
 }

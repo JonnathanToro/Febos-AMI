@@ -1,14 +1,8 @@
-const layoutPaginas = [
+const layoutPaginasPublicas = [
   {
     path: '',
     component: () => import('@/layouts/full-page/FullPage.vue'),
     children: [
-      {
-        path: '/ingreso',
-        name: 'ingreso',
-        meta:{requiereLogin:false},
-        component: () => import('@/febos/global/usuario/vistas/Ingreso.vue')
-      },
       {
         path: '/iniciando',
         name: 'iniciando',
@@ -21,17 +15,12 @@ const layoutPaginas = [
         meta:{requiereLogin:true},
         component: () => import('@/febos/global/empresas/vistas/SelectorEmpresa.vue')
       },
-      {
-        path: '/pages/error-404',
-        name: 'page-error-404',
-        component: () => import('@/views/pages/Error404.vue')
-      },
     ]
   }
 
 ]
 
-export default layoutPaginas
+export default layoutPaginasPublicas
 
 
 

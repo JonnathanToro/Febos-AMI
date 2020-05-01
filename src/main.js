@@ -75,9 +75,11 @@ require('./assets/css/iconfont.css')
 // Vue select css
 // Note: In latest version you have to add it separately
 // import 'vue-select/dist/vue-select.css';
-
-process.env.VUE_APP_VERSION = require('../package.json').version
-
+/*let archivoPackage=require('../package.json');
+console.log("config",archivoPackage);
+process.env.VUE_APP_VERSION = archivoPackage.version;
+console.log("VERSION: ",process.env.VUE_APP_VERSION)
+*/
 Vue.config.productionTip = false
 
 
