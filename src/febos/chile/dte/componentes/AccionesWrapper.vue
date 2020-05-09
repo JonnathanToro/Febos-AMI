@@ -48,9 +48,6 @@
         if(permiso)return true;
         else false;
       }
-    },
-    mounted() {
-
     }
   }
 </script>

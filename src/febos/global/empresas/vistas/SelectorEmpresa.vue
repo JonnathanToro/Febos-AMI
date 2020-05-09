@@ -94,7 +94,7 @@
       seleccionar: function (empresa) {
         this.seleccionarEmpresa(empresa);
         //TODO: ver si necesita actualizar la información de su empresa, y redirigir a esa ventana
-        this.$router.push({name: 'home'});
+        this.$router.push({name: 'inicio'});
       }
     },
     mounted() {

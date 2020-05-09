@@ -4,4 +4,8 @@ export default {
   acccionesIndividuales:['Bitacora','EnviarAprobacion','VerReferencias','AsociarDocumento','DescargarPdf','DescargarXml','EnviarDte','RecuperarCorreoSii','ModificarTipoVenta','CopiarDocumento','AyudaEnDocumento'],
   accionesMasivas:[],
   seleccionMasiva:true,
+  categoria:'emitidos',
+  filtrosFijos:{},
+  filtrosPorDefecto: {},
+  filtrosVariables: {}
 }

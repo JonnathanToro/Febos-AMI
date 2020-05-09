@@ -25,9 +25,6 @@
         type: Object,
       },
     },
-    data() {
-      return {}
-    },
     computed: {
       ...mapState('Empresas', {
         iut: state => state.iut,
@@ -36,17 +33,10 @@
         colores: state => state.colores,
       }),
       razonSocial() {
-        if (this.iut != this.documento.rutEmisor) {
+        if (this.iut == this.documento.rutEmisor) {
           return this.documento.razonSocialReceptor;
         } else return this.documento.razonSocialEmisor;
       }
-    },
-    created() {
-
-    },
-    methods: {},
-    mounted() {
-
     }
   }
 </script>

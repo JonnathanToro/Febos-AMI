@@ -8,7 +8,7 @@ export default {
       commit('SET_LISTADO_EMPRESAS', response.data);
       return response.data;
     } catch (error) {
-      error("ERROR", error)
+      console.log("ERROR", error)
       return error;
     }
   },

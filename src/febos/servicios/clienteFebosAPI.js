@@ -9,8 +9,14 @@ const clienteFebosAPI = axios.create(config);
 const noLoguearEstosLambdas=["io.usuario.latido"];
 
 const authInterceptor = config => {
-  config.headers.token=store.getters['Usuario/tokenDeUsuario'];
-  config.headers.Accept='application/json';
+  let storage=JSON.parse(localStorage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`));
+  config.headers.token=storage.Usuario.token;
+  try{
+    config.headers.empresa = storage.Empresas.empresa.iut;
+  }catch(e){
+    console.log("llamada sin rut de empresa");
+  }
+  //config.headers.Accept='application/json';
   config.headers['Content-Type']='application/json';
   return config;
 };
@@ -77,4 +83,13 @@ clienteFebosAPI.interceptors.response.use(
   }
 );
 
+clienteFebosAPI.queryParams=function(json){
+  let params=[];
+  for (let llave in json) {
+    if (json.hasOwnProperty(llave)) {
+      params.push(`${llave}=${json[llave]}`);
+    }
+  }
+  return encodeURI(params.join('&'));
+}
 export default clienteFebosAPI;

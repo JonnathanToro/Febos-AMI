@@ -79,14 +79,6 @@
           }
         }
       }
-    },
-    computed: {},
-    created() {
-
-    },
-    methods: {},
-    mounted() {
-
     }
   }
 </script>

@@ -4,6 +4,13 @@ export default [{
   permiso:'M01',
   items: [
     {
+      url: '/factura-electronica/panel',
+      name: 'Panel',
+      icon: 'GridIcon',
+      slug: 'panel',
+      permiso: 'WB000'
+    },
+    {
       url: null,
       name: "Emitidos",
       icon: "ExternalLinkIcon",

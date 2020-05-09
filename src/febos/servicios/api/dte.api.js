@@ -1,14 +1,12 @@
 import clienteFebosAPI from "../clienteFebosAPI";
 
-const RECURSO = '/empresas';
+const RECURSO = '/v2/documentos';
 
-const io_empresas_listar = () => clienteFebosAPI.get(END_POINT);
-
-const ejemploConParametros = (user_id) => httpClient.get(END_POINT, { user_id });
-const ejemploComoPost = (username, password) => httpClient.post(END_POINT, { username, password });
+const cl_dtes_listar = (payload) => {
+  let params = clienteFebosAPI.queryParams(payload);
+  return clienteFebosAPI.get(RECURSO +'?'+params,{'operacionId':'cl.dtes.listar'});
+}
 
 export {
-  io_empresas_listar,
-  ejemploComoPost,
-  ejemploConParametros
+  cl_dtes_listar,
 }

@@ -7,9 +7,9 @@ const layoutPrivado = [
     children: [
       {
         path: '/',
-        name: 'home',
+        name: 'inicio',
         meta: {permiso: 'WB001',requiereLogin:true},
-        component: () => import('@/views/Home.vue')
+        component: () => import('@/febos/global/inicio/vistas/Inicio.vue')
       },
       {
         path: '/page2',

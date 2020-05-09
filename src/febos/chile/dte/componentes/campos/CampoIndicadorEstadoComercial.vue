@@ -67,17 +67,19 @@
             icono:"verified_user",
             color:"green",
             tooltip:"Recepción de servicios y mercaderías en el SII"
-          }
+          },
+          8:{
+            icono:"check_outline",
+            color:"green",
+            tooltip:"Aceptado por omisión en el SII"
+          },
+          10:{
+            icono:"visibility",
+            color:"gray",
+            tooltip:"Sin acción"
+          },
         }
       }
-    },
-    computed: {},
-    created() {
-
-    },
-    methods: {},
-    mounted() {
-
     }
   }
 </script>

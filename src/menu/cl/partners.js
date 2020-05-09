@@ -1,8 +1,15 @@
 export default [{
-  header: 'Rendiciones',
+  header: 'Partners',
   icon: 'PackageIcon',
   i18n: 'Apps',
   items: [
+    {
+      url: '/partners/panel',
+      name: 'Panel',
+      icon: 'GridIcon',
+      slug: 'panel',
+      permiso: 'WB000'
+    },
     {
       url: null,
       name: "Bandeja de Entrada",

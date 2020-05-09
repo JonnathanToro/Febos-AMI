@@ -72,7 +72,8 @@
       ...mapState("Usuario", {
         iut: state => state.iut,
         alias: state => state.alias,
-        avatar: state => state.avatar,
+        correo: state => state.correo,
+        avatarOriginal: state => state.avatar,
       }),
       ...mapState("Empresas", {
         iutEmpresa: state => state.empresa.iut,
@@ -82,6 +83,10 @@
       esPortalProveedores(){
         let portal=process.env.VUE_APP_PORTAL;
         return portal=='proveedores';
+      },
+      avatar(){
+        if(this.avatarOriginal && this.avatarOriginal!='' && this.avatarOriginal!=null)return this.avatarOriginal;
+        else return 'https://api.adorable.io/avatars/285/'+this.correo;
       }
     },
     methods: {

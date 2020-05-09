@@ -14,17 +14,6 @@
       documento: {
         type: Object,
       },
-    },
-    data() {
-      return {}
-    },
-    computed: {},
-    created() {
-
-    },
-    methods: {},
-    mounted() {
-
     }
   }
 </script>
