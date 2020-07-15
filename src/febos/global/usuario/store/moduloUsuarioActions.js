@@ -1,4 +1,4 @@
-import {io_usuario_login, io_usuario_latido} from "../../../servicios/api/usuarios.api";
+import {io_usuario_login, io_usuario_latido,io_usuario_modificar} from "../../../servicios/api/usuarios.api";
 import {io_usuario_permisos} from "../../../servicios/api/permisos.api";
 
 export default {
@@ -40,8 +40,13 @@ export default {
   revalidarSesion({commit}) {
     const segundo = 1000;
     const minutos = 60 * segundo;
-
     commit('SET_ULTIMO_REQUEST', {ultimoRequest: new Date().getTime()});
     commit('SET_VENCIMIENTO_SESION', {vencimiento: new Date().getTime() + (14 * minutos)});
+  }
+  ,async actualizarMiPerfil({commit},payload){
+    const response = await io_usuario_modificar(payload.id,payload.iut,payload.nombre,payload.alias,payload.correo);
+    if (response.data.codigo != 10) throw response.data
+    commit('SET_USUARIO', payload);
+    return response.data;
   }
 }

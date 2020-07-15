@@ -10,11 +10,16 @@ const layoutPrivado = [
         name: 'inicio',
         meta: {permiso: 'WB001',requiereLogin:true},
         component: () => import('@/febos/global/inicio/vistas/Inicio.vue')
+      }, {
+        path: '/usuario/perfil',
+        name: 'Perfil de Usuario',
+        meta: {permiso: 'WB001', requiereLogin: true},
+        component: () => import('@/febos/global/usuario/vistas/perfil/Perfil.vue')
       },
       {
         path: '/page2',
         name: 'page-2',
-        meta: {permiso: 'WB002',requiereLogin:true},
+        meta: {permiso: 'WB002', requiereLogin: true},
         component: () => import('@/views/Page2.vue')
       },
       ...rutasFacturaElectronica
