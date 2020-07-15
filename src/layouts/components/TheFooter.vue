@@ -12,10 +12,10 @@
 <template functional>
   <footer class="the-footer flex-wrap justify-between" :class="classes">
     <p>
-      <span>Copyright &copy;</span>
-      <span>{{ new Date().getFullYear() }} </span>
-      <a href="https://www.febos.cl" target="_blank" rel="nofollow">Febos S.A.</a>
-      <span class="hidden sm:inline-block">, Todos los derechos reservados.</span>
+      <!--<span class="letras-escritorio"><b>E S C R I T O R I O</b></span><span class="letras-digital">DIGITAL</span>
+      <span> es un servicio de </span>
+      <a href="https://www.febos.cl" target="_blank" rel="nofollow" style="color:#323f48"><B>Febos.</B></a>-->
+      Este es un servicio de <strong>Febos AMI SpA</strong>
     </p>
     <span class="md:flex hidden items-center">
       <span>Fabricado con amor</span>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+  // prueba
   export default {
     name: "the-footer",
     props: {
@@ -42,3 +43,14 @@
     }
   }
 </script>
+<style>
+  .letras-escritorio{
+    color: #323f48;
+    font-size:85%;
+  }
+  .letras-digital{
+    color: #662483;
+    margin-left:10px;
+    font-size:85%;
+  }
+</style>

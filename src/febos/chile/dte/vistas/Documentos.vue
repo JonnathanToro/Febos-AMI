@@ -37,7 +37,6 @@
               @keyup.enter.native="informacionExtendida = false">
 
     </vs-popup>
-
   </vx-card>
 </template>
 

@@ -104,6 +104,7 @@
           this.recordar = true;
         }
       }
+      this._cargarPersonalizacion();
     },
     methods: {
       ...mapActions("Usuario", {login: "ingreso"}),

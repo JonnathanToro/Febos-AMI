@@ -15,16 +15,19 @@ export default {
   methods:{
     ...mapActions('Personalizacion',{_cargarPersonalizacionEnState:'cargarPersonalizacion'}),
     _yaEstaCargadaLaPersonalizacion: function(){
-      if(!this._datosPersonalizacion || this._datosPersonalizacion.dominio != this._dominioActual){
-        return false;
-      }
-      return true;
+      //if(!this._datosPersonalizacion || this._datosPersonalizacion.dominio != this._dominioActual){
+      //  return false;
+      //}
+      //return true;
+      console.log("NO esta cargada");
+      return false;
     },
     async _cargarPersonalizacion(){
       let pais=`${process.env.VUE_APP_CODIGO_PAIS}`;
       let ambiente=`${process.env.VUE_APP_AMBIENTE}`;
       let url=`https://s3.amazonaws.com/archivos.febos.io/${pais}/${ambiente}/portales/${this._dominioActual}.json`;
       var self=this;
+      console.log("bajando archivo: "+url);
       clienteAPI.get(url).then(function(response){
         self._cargarPersonalizacionEnState(response.data);
         self.$emit('updateNavbarColor', response.data.colores.navbar);
