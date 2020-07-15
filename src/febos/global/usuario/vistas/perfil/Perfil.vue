@@ -319,13 +319,13 @@
       id="prompt-avatar"
     >
       <div class="con-exemple-prompt">
-        <cropper
-          classname="cropper"
-          :src="imagenPreviaCropper"
-          :stencilProps="{previewClassname: 'preview'}"
-          :stencilComponent="$options.components.CircleStencil"
-          ref="cropper"
-        />
+<!--        <cropper-->
+<!--          classname="cropper"-->
+<!--          :src="imagenPreviaCropper"-->
+<!--          :stencilProps="{previewClassname: 'preview'}"-->
+<!--          :stencilComponent="$options.components.CircleStencil"-->
+<!--          ref="cropper"-->
+<!--        />-->
         <div class="button-wrapper">
           <span class="button-imagen vs-button-primary vs-button-border" @click="$refs.imagen.click()">
             <input type="file" ref="imagen" @change="seleccionarImagen($event)" accept="image/*">
@@ -344,7 +344,7 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import FiltroPerfil from "./FiltroPerfil";
 import EmpresaItem from './EmpresaItem';
 import PermisosItem from './PermisosItem';
-import { Cropper, CircleStencil } from 'vue-advanced-cropper';
+// import { Cropper, CircleStencil } from 'vue-advanced-cropper';
 import ListadoActividades from './ListadoActividades';
 import {mapActions, mapGetters, mapState} from "vuex";
 import { Validator } from 'vee-validate';
@@ -358,8 +358,8 @@ export default {
     EmpresaItem,
     VuePerfectScrollbar,
     PermisosItem,
-    Cropper,
-    CircleStencil,
+    // Cropper,
+    // CircleStencil,
   },
   data() {
     return {
