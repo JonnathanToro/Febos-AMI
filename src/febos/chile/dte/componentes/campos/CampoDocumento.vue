@@ -3,13 +3,15 @@
     <span class="razonSocial">{{ razonSocial }}</span>
     <div>
       <vs-chip :color="colores.navbar">
-        Factura Electrónica
+        {{ traducitTipoDocumentoEnPalabras(documento.tipoDocumento) }}
       </vs-chip>
       <vs-chip color="#aaa">
-        # 432
+        # {{ documento.folio }}
       </vs-chip>
       <vs-chip color="primary">
-        29 días
+        <vs-tooltip text="Días faltantes para pago, tomando en cuenta 30 días" position="top">
+          {{ documento.diasParaPago}}
+        </vs-tooltip>
       </vs-chip>
     </div>
   </div>
@@ -17,9 +19,11 @@
 
 <script>
   import {mapState} from 'vuex'
+  import TiposDteMixin from "../../mixins/TiposDteMixin";
 
   export default {
     name: "CampoDocumento",
+    mixins:[TiposDteMixin],
     props: {
       documento: {
         type: Object,
@@ -27,15 +31,17 @@
     },
     computed: {
       ...mapState('Empresas', {
-        iut: state => state.iut,
+        empresaActual: state => state.empresa,
       }),
       ...mapState('Personalizacion', {
         colores: state => state.colores,
       }),
       razonSocial() {
-        if (this.iut == this.documento.rutEmisor) {
+        if (this.empresaActual.iut == this.documento.rutEmisor) {
           return this.documento.razonSocialReceptor;
-        } else return this.documento.razonSocialEmisor;
+        } else{
+          return this.documento.razonSocialEmisor;
+        }
       }
     }
   }

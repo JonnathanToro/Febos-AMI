@@ -89,6 +89,7 @@
     methods: {
       ...mapActions("Empresas", {
         listarEmpresas: "listarEmpresas",
+        limpiarListadoDocumentos:"limpiarListadoDocumentos",
         seleccionarEmpresa: "seleccionarEmpresa",
       }),
       seleccionar: function (empresa) {

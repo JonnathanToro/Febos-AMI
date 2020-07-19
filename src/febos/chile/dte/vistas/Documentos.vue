@@ -1,5 +1,32 @@
 <template>
   <vx-card :title="configuracion.titulo">
+    <template slot="actions">
+      <span>
+        Viendo documentos que ingresaron a <strong>Febos</strong>
+      </span>
+      <span v-if="periodoSeleccionado.valor != 'personalizado'">
+        {{ periodoSeleccionado.nombre }}
+      </span>
+      <span v-if="periodoSeleccionado.valor == 'personalizado'">
+        entre el
+        <input type="date" class="fecha" v-model="periodoDesde">
+        y el
+        <input type="date" class="fecha" v-model="periodoHasta">
+      </span>
+      <vs-dropdown style="margin-left: 15px">
+        <a class="a-icon" href="#">
+          Cambiar
+          <vs-icon class="" icon="expand_more"></vs-icon>
+        </a>
+        <vs-dropdown-menu>
+          <vs-dropdown-item style="width:200px" v-for="periodo in periodos" :key="periodo.valor" v-on:click.native="seleccionarPeriodo(periodo)">
+            {{ periodo.nombre }}
+          </vs-dropdown-item>
+        </vs-dropdown-menu>
+      </vs-dropdown>
+    </template>
+
+    <filtros-dte :configuracion-vista="configuracion"></filtros-dte>
     <table id="listado-documentos">
       <thead>
       <tr>
@@ -17,7 +44,7 @@
         </td>
       </tr>
       <template v-for="doc in documentos">
-        <tr :key="doc.febosId" class="fila" v-on:dblclick="mostrarInfoExtendida(doc)">
+        <tr :key="doc.febosId + random()" class="fila" v-on:dblclick="mostrarInfoExtendida(doc)">
           <td class="selector">
             <vs-checkbox></vs-checkbox>
           </td>
@@ -31,43 +58,80 @@
       </template>
       </tbody>
     </table>
-    <fb-paginacion :total="paginasTotales" :max="10" v-model="pagina" class="mt-10"></fb-paginacion>
+    <vs-row>
+      <vs-col vs-offset="2" vs-type="flex" vs-justify="center" vs-align="center" vs-w="8">
+        <info-tabla-basica :items-de-esta-pagina="documentos.length" :items-por-pagina="registrosPorPagina"
+                           :pagina="pagina" :registros-totales="registrosEncontrados"></info-tabla-basica>
+      </vs-col>
+    </vs-row>
+    <vs-row>
+      <vs-col vs-w="3">
+        <selector-cantidad-registros v-model="registrosPorPagina" class="mt-7"></selector-cantidad-registros>
+      </vs-col>
+      <vs-col vs-w="9">
+        <fb-paginacion :total="paginasTotales" :max="10" v-model="pagina" class="mt-7"></fb-paginacion>
+      </vs-col>
+    </vs-row>
+
 
     <vs-popup fullscreen title="Información extendida" :active.sync="informacionExtendida"
               @keyup.enter.native="informacionExtendida = false">
-
     </vs-popup>
   </vx-card>
 </template>
 
 <script>
+  import Vue from 'vue';
   import CamposListadoFacturaElectronicaMixin from "../mixins/CamposListadoFacturaElectronicaMixin";
   import AccionesWrapper from "../componentes/AccionesWrapper";
   import configVistas from "./configVistas";
   import {mapActions, mapState} from 'vuex'
   import FbPaginacion from "../../_vue/componentes/FbPaginacion";
+  import SelectorCantidadRegistros from "../componentes/SelectorCantidadRegistros";
+  import InfoTablaBasica from "../../../global/_vue/componentes/tabla/InfoTablaBasica";
+  import FiltrosDte from "../componentes/FiltrosDte";
+  import SelectorRangoFecha from "../componentes/SelectorRangoFecha";
 
   export default {
-    components: {AccionesWrapper, FbPaginacion},
+    components: {
+      SelectorRangoFecha,
+      FiltrosDte, InfoTablaBasica, SelectorCantidadRegistros, AccionesWrapper, FbPaginacion},
     mixins: [CamposListadoFacturaElectronicaMixin],
     data() {
       return {
+        periodos:[
+          {nombre:'las últimas 4 semanas',valor:'ultimas4semanas'},
+          {nombre:'este mes',valor:'esteMes'},
+          {nombre:'este mes y el anterior',valor:'esteMesConAnterior'},
+          {nombre:'los últimos 3 meses',valor:'ultimos3meses'},
+          {nombre:'los últimos 6 meses',valor:'ultimos6meses'},
+          {nombre:'* Rango personalizado',valor:'personalizado'}
+        ],
+        periodoSeleccionado: {nombre:'las últimas 4 semanas',valor:'ultimas4semanas'},
+        periodoDesde:'',
+        periodoHasta:'',
         informacionExtendida: false,
-        configuracion: configVistas[this.$route.params.categoria][this.$route.params.vista],
+        configuracion: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista],
         componentes: {},
         pagina: 1,
-        paginax: 1,
-        registrosPorPagina: 15,
+        registrosPorPagina: 10,
         camposApi: '',
-        filtrosFijos: configVistas[this.$route.params.categoria][this.$route.params.vista].filtrosFijos,
-        filtrosPorDefecto: configVistas[this.$route.params.categoria][this.$route.params.vista].filtrosPorDefecto,
-        filtrosVariables: configVistas[this.$route.params.categoria][this.$route.params.vista].filtrosVariables
+        filtrosFijos: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista].filtrosFijos,
+        filtrosPorDefecto: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista].filtrosPorDefecto,
+        filtrosVariables: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista].filtrosVariables
       }
     },
     watch: {
       pagina(nuevoValor) {
         //console.log("CAMBIO DE PAGINA",nuevoValor);
         this.listar(nuevoValor);
+      },
+      registrosPorPagina() {
+        if(this.pagina==1){
+          this.listar(1);
+        }else {
+          this.pagina = 1;
+        }
       },
       cargandoDocumentos(nuevoValor) {
         if (nuevoValor) {
@@ -81,6 +145,9 @@
       }
     },
     computed: {
+      ...mapState('Empresas', {
+        empresaActual: state => state.empresa,
+      }),
       ...mapState('Dtes', {
         cargandoDocumentos: state => state.cargando,
         documentos: state => state.documentos,
@@ -99,6 +166,11 @@
           campos.push(self.obtenerCampoTabla(obj));
         });
         return campos;
+      },
+      filtros() {
+        let campoRut = this.configuracion.categoria == 'emitidos' ? 'rutEmisor' : 'rutReceptor';
+        let rut = this.empresaActual.iut;
+        return campoRut + ":" + rut + "|fechaCreacion:2020-05-01--2020-07-01|tipoDocumento:33,34,43,46,56,61,110,111,112|estadoSii:0,1,2,3,4,5,6,7,8,9|incompleto:N";
       }
     },
     methods: {
@@ -106,6 +178,29 @@
         listarDocumentos: "listarDocumentos",
         setDocumentoActual: "setDocumentoActual",
       }),
+      seleccionarPeriodo(periodo){
+        switch(this.periodoSeleccionado.valor){
+          case 'ultimas4semanas':
+            this.periodoDesde=Vue.moment().subtract(28, 'days').format('YYYY-MM-DD');
+            this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
+            break;
+          case 'esteMes':
+            this.periodoDesde=Vue.moment().startOf('month').format('YYYY-MM-DD');
+            this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
+            break;
+          case 'esteMesConAnterior':
+            break;
+          case 'ultimos3meses':
+            break;
+          case 'ultimos6meses':
+            break;
+        }
+        console.log(this.periodoDesde,this.periodoHasta);
+        this.periodoSeleccionado=periodo;
+      },
+      random() {
+        return Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '').substr(0, 25);
+      },
       cargarComponenteCampo(nombreCampo) {
         if (!this.componentes[nombreCampo]) {
           this.componentes[nombreCampo] = () => import(`@/febos/chile/dte/componentes/campos/Campo${nombreCampo}.vue`);
@@ -118,8 +213,8 @@
           categoria: this.configuracion.categoria,
           inicio: pagina,
           cantidad: this.registrosPorPagina,
-          consulta: this.camposApi,
-          filtros: "rutEmisor:76179952-5|fechaCreacion:2020-04-01--2020-05-01|tipoDocumento:33,34,43,46,56,61,110,111,112|estadoSii:0,1,2,3,4,5,6,7,8,9|incompleto:N",
+          consulta: '*',//this.camposApi,
+          filtros: this.filtros,//"rutEmisor:76179952-5|fechaCreacion:2020-05-01--2020-07-01|tipoDocumento:33,34,43,46,56,61,110,111,112|estadoSii:0,1,2,3,4,5,6,7,8,9|incompleto:N",
           orden: "-fechaCreacion",
           dominioPortal: window.location.hostname,
         })
@@ -140,11 +235,27 @@
     mounted() {
       this.extraerCampos();
       this.listar(1);
+      this.periodoDesde=Vue.moment().subtract(28, 'days').format('YYYY-MM-DD');
+      this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
     }
 
   }
 </script>
 <style lang="css">
+  input::-webkit-calendar-picker-indicator{
+    padding-left: 0px;
+    margin-left: 0px;
+
+
+  }
+  .fecha{
+    width:105px;
+    text-align:center;
+    border: none;
+    border-bottom: dashed 1px #ccc;
+    font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  }
+
   table {
     border-spacing: 0;
     width: 100%;

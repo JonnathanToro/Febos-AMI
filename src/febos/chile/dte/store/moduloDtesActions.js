@@ -17,4 +17,5 @@ export default {
   setDocumentoActual({commit},payload){
     commit('SET_DOCUMENTO_ACTUAL', payload);
   }
+
 }

@@ -16,6 +16,7 @@ import Vuesax from 'vuesax'
 import 'material-icons/iconfont/material-icons.css' //Material Icons
 import 'vuesax/dist/vuesax.css'; // Vuesax
 Vue.use(Vuesax)
+Vue.use(require('vue-moment'));
 
 // Febos Config
 //import febosConfig from "./febos/servicios/febosConfig.js"

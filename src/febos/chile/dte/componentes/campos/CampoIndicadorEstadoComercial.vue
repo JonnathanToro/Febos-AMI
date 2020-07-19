@@ -31,27 +31,27 @@
           0:{
             icono:"visibility",
             color:"gray",
-            tooltip:"Sin acción"
+            tooltip:"Sin gestión comercial"
           },
           1:{
             icono:"done",
             color:"green",
-            tooltip:"Aceptado"
+            tooltip:"Pre-Aceptado comercialmente"
           },
           2:{
             icono:"done_all",
             color:"green",
-            tooltip:"Aceptado con vinculación al SII"
+            tooltip:"Aceptado comercialmente con vinculación al SII"
           },
           3:{
             icono:"pan_tool",
             color:"red",
-            tooltip:"Rechazado"
+            tooltip:"Pre-Rechazado comercialmente"
           },
           4:{
             icono:"clear",
             color:"red",
-            tooltip:"Rechazado con vinculación al SII"
+            tooltip:"Rechazado comercialmente con vinculación al SII"
           },
           5:{
             icono:"error",
@@ -76,7 +76,7 @@
           10:{
             icono:"visibility",
             color:"gray",
-            tooltip:"Sin acción"
+            tooltip:"Sin gestión comercial"
           },
         }
       }
