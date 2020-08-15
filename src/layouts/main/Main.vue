@@ -108,7 +108,7 @@
           </div>
         </div>
       </div>
-      <the-footer :ambiente="ambiente" :version="version"/>
+      <the-footer :ambiente="ambiente" :version="version" :footer="footer"/>
     </div>
   </div>
 </template>
@@ -164,7 +164,8 @@ export default {
   },
   computed: {
     ...mapState('Personalizacion', {
-      colorNavbar: state => state.colores.navbar
+      colorNavbar: state => state.colores.navbar,
+      footer: state => state.general.footer
     }),
     ...mapState('Menus', {
       navMenuItems: state => state.menus

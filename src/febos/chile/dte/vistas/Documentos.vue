@@ -2,7 +2,7 @@
   <vx-card :title="configuracion.titulo">
     <template slot="actions">
       <span>
-        Viendo documentos que ingresaron a <strong>Febos</strong>
+        Viendo documentos que ingresaron
       </span>
       <span v-if="periodoSeleccionado.valor != 'personalizado'">
         {{ periodoSeleccionado.nombre }}

@@ -14,6 +14,9 @@ module.exports = {
     'vue-echarts',
     'resize-detector'
   ],
+  devServer: {
+    disableHostCheck: true
+  },
   configureWebpack: {
     optimization: {
       splitChunks: {

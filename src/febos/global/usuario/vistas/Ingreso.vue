@@ -1,9 +1,9 @@
 <template>
-  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login">
+  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login" v-bind:style="{ 'background-image': 'url(' + imagenFondo + ') !important' }">
+    <img :src="ingresoLogo.imagen" id="logo" v-bind:style="_estiloLogo">
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vx-card>
         <div slot="no-body" class="full-page-bg-color">
-
           <div class="vx-row no-gutter justify-center items-center">
 
             <div class="vx-col hidden lg:block lg:w-1/2">
@@ -46,7 +46,7 @@
                   </div>
                   <vs-button type="border" v-if="mostrarBtnPP">{{ textoBotonPP }}
                   </vs-button>
-                  <vs-button class="float-right btn-ingresar" v-on:click="ingresar()">
+                  <vs-button class="float-right btn-ingresar mb-10" v-on:click="ingresar()">
                     {{ textoBotonIngreso }}
                   </vs-button>
                   <div id="clave-unica" v-if="mostrarBtnClaveUnica">
@@ -94,7 +94,9 @@
         campoUsuario: state => state.ingreso.nombreCampoUsuario,
         imagenIngreso: state => state.ingreso.imagenIngreso,
         colorFondoImagenIngreso: state => state.ingreso.colorFondoImagenIngreso,
-        imagenFondo: state => state.ingreso.imagenFondo
+        imagenFondo: state => state.ingreso.imagenFondo,
+        logo: state => state.menu.logo,
+        ingresoLogo: state => state.ingreso.logo
       })
     },
     mounted() {
@@ -105,6 +107,7 @@
         }
       }
       this._cargarPersonalizacion();
+      console.log("estilo logo",this._estiloLogo);
     },
     methods: {
       ...mapActions("Usuario", {login: "ingreso"}),

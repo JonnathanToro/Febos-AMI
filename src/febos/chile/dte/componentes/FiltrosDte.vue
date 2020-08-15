@@ -18,7 +18,7 @@
         Agregar
       </vs-chip>
       <vs-dropdown-menu>
-        <vs-dropdown-item v-for="filtro in filtrosDisponibles" :key="filtro.campo" v-on:click.native="agregarFiltro(filtro)">
+        <vs-dropdown-item v-for="filtro in filtrosDisponibles" :key="filtro.campo" v-on:click.native="agregarFiltro(filtro)" style="width:200px">
           {{ filtro.nombre }}
         </vs-dropdown-item>
       </vs-dropdown-menu>

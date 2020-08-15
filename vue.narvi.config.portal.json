@@ -1,0 +1,36 @@
+{
+  "colores":{
+    "primario":"#FF2961",
+    "navbar":"#FF2961"
+  },
+  "menu":{
+    "logo":"https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/logo_narvi_full.png",
+    "miniLogo":"https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/logo_narvi_mini.png"
+  },
+  "ingreso":{
+    "imagenIngreso":"http://...",
+    "colorFondoImagenIngreso": "#eff2f7",
+    "imagenFondo": "https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/Fondo_Keynote_03.jpg",
+    "tituloIngreso": "Ingreso",
+    "textoHtml":"Hola! Bienvenido al portal Narvi, porfavor ingresa tus credenciales de acceso.",
+    "nombreCampoUsuario":"Correo Electrónico",
+    "nombreCampoClave":"Contraseña",
+    "nombreBotonIngreso":"Ingresar",
+    "nombreBotonRegistroProveedores":"Registrarme como proveedor",
+    "botonClaveUnica":false,
+    "botonRegistroProveedor": false,
+    "logo": {
+      "imagen": "https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/logo-narvi-t.png",
+      "alto": "95px",
+      "ancho": "200px",
+      "margen": "10px",
+      "ubicacionVertical": "superior",
+      "ubicacionHorizontal": "derecha"
+    }
+  },
+  "general": {
+    "favicon": "https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/favicon-narvi.png",
+    "titulo": "Narvi",
+    "footer":"<b>Narvi</b> - La boleta electrónica hecho en simple."
+  }
+}

@@ -1,5 +1,6 @@
 <template>
-  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login">
+  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login" v-bind:style="{ 'background-image': 'url(' + imagenFondo + ') !important' }">
+    <img :src="ingresoLogo.imagen" id="logo" v-bind:style="_estiloLogo">
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vx-card>
         <div slot="no-body" class="full-page-bg-color">
@@ -39,8 +40,11 @@
 
 <script>
   import {mapActions, mapState} from 'vuex'
+  import PersonalizacionMixin from "@/febos/global/empresas/mixins/PersonalizacionMixin";
+  import IdleMixin from "../../_vue/mixins/IdleMixin";
 
   export default {
+    mixins: [PersonalizacionMixin,IdleMixin],
     data() {
       return {
         recordar: false,
@@ -64,7 +68,14 @@
       ...mapState("Usuario", {
         iut: state => state.iut,
         alias: state => state.alias
-      })
+      }),
+      computed: {
+        ...mapState('Personalizacion', {
+          imagenFondo: state => state.ingreso.imagenFondo,
+          logo: state => state.menu.logo,
+          ingresoLogo: state => state.ingreso.logo
+        })
+      },
     },
     methods: {
       ...mapActions("Usuario", {permisos: "cargarPermisos"}),

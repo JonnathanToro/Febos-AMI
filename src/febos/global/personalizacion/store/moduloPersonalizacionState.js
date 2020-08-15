@@ -23,5 +23,10 @@ export default {
     "nombreBotonRegistroProveedores": "Registrarme como proveedor",
     "botonClaveUnica": true,
     "botonRegistroProveedor": true
+  },
+  "general": {
+    "favicon": "https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/favicon-narvi.png",
+    "titulo": "Cargando...",
+    "footer":"Este es un servicio de <B>Febos AMI SpA</B>"
   }
 }

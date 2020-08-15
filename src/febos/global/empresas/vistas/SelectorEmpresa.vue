@@ -1,5 +1,6 @@
 <template>
-  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login">
+  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login" v-bind:style="{ 'background-image': 'url(' + imagenFondo + ') !important' }" >
+    <img :src="ingresoLogo.imagen" id="logo" v-bind:style="_estiloLogo">
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vx-card>
         <div slot="no-body" class="full-page-bg-color">
@@ -48,11 +49,13 @@
 </template>
 
 <script>
-  import {mapActions, mapState} from 'vuex';
+  import {mapActions,mapState} from 'vuex';
   import RutMixin from "../../../chile/_vue/mixins/RutMixin";
+  import PersonalizacionMixin from "@/febos/global/empresas/mixins/PersonalizacionMixin";
+  import IdleMixin from "../../_vue/mixins/IdleMixin";
 
   export default {
-    mixins: [RutMixin],
+    mixins: [RutMixin,PersonalizacionMixin,IdleMixin],
     data() {
       return {
         buscadorDeEmpresa: '',
@@ -68,6 +71,13 @@
         empresas: state => state.empresas,
         empresaSeleccionada: state => state.empresa
       }),
+      computed: {
+        ...mapState('Personalizacion', {
+          imagenFondo: state => state.ingreso.imagenFondo,
+          logo: state => state.menu.logo,
+          ingresoLogo: state => state.ingreso.logo
+        })
+      },
       empresasFiltradas() {
         var that = this;
         return this.empresas.filter(function (empresa) {

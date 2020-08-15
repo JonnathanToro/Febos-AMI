@@ -28,6 +28,5 @@ export default {
   },
   created(){
     this._cargarPersonalizacion();
-
   }
 }
