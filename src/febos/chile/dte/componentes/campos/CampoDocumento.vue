@@ -8,7 +8,7 @@
       <vs-chip color="#aaa">
         # {{ documento.folio }}
       </vs-chip>
-      <vs-chip color="primary">
+      <vs-chip color="primary" v-if="documento.diasParaPago>0">
         <vs-tooltip text="Días faltantes para pago, tomando en cuenta 30 días" position="top">
           {{ documento.diasParaPago}}
         </vs-tooltip>

@@ -1,5 +1,6 @@
 <template>
-  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login" v-bind:style="{ 'background-image': 'url(' + imagenFondo + ') !important' }" >
+  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login"
+       v-bind:style="{ 'background-image': 'url(' + imagenFondo + ') !important' }">
     <img :src="ingresoLogo.imagen" id="logo" v-bind:style="_estiloLogo">
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vx-card>
@@ -24,14 +25,17 @@
                                   v-on:click.native="seleccionar(empresaSeleccionada)"
                                   class="pt-3 pb-3 empresa" :key="empresaSeleccionada.iut">
                       <vs-chip color="primary">Ultima seleccionada</vs-chip>
-                      <vs-chip color="success" v-if="empresaSeleccionada.canalDescripcion">{{ empresaSeleccionada.canalDescripcion }}</vs-chip>
+                      <vs-chip color="success" v-if="empresaSeleccionada.canalDescripcion">{{
+                        empresaSeleccionada.canalDescripcion }}
+                      </vs-chip>
                       <vs-chip color="warning">{{ formatear(empresaSeleccionada.iut) }}</vs-chip>
                     </vs-list-item>
                   </vs-list>
                   <vs-divider></vs-divider>
                   <vs-list>
                     <vs-list-item :title="empresa.fantasia" :subtitle="empresa.razonSocial"
-                                  v-for="(empresa,index) in empresasFiltradas" v-if="index <= maximoDeEmpresas &&(!empresaSeleccionada || empresaSeleccionada.iut != empresa.iut)"
+                                  v-for="(empresa,index) in empresasFiltradas"
+                                  v-if="index <= maximoDeEmpresas &&(!empresaSeleccionada || empresaSeleccionada.iut != empresa.iut)"
                                   v-on:click.native="seleccionar(empresa)"
                                   class="pt-3 pb-3 empresa" :key="empresa.iut">
                       <vs-chip color="success" v-if="empresa.canalDescripcion">{{ empresa.canalDescripcion }}</vs-chip>
@@ -49,13 +53,13 @@
 </template>
 
 <script>
-  import {mapActions,mapState} from 'vuex';
+  import {mapActions, mapState} from 'vuex';
   import RutMixin from "../../../chile/_vue/mixins/RutMixin";
   import PersonalizacionMixin from "@/febos/global/empresas/mixins/PersonalizacionMixin";
   import IdleMixin from "../../_vue/mixins/IdleMixin";
 
   export default {
-    mixins: [RutMixin,PersonalizacionMixin,IdleMixin],
+    mixins: [RutMixin, PersonalizacionMixin, IdleMixin],
     data() {
       return {
         buscadorDeEmpresa: '',
@@ -71,13 +75,11 @@
         empresas: state => state.empresas,
         empresaSeleccionada: state => state.empresa
       }),
-      computed: {
-        ...mapState('Personalizacion', {
-          imagenFondo: state => state.ingreso.imagenFondo,
-          logo: state => state.menu.logo,
-          ingresoLogo: state => state.ingreso.logo
-        })
-      },
+      ...mapState('Personalizacion', {
+        imagenFondo: state => state.ingreso.imagenFondo,
+        logo: state => state.menu.logo,
+        ingresoLogo: state => state.ingreso.logo
+      }),
       empresasFiltradas() {
         var that = this;
         return this.empresas.filter(function (empresa) {
@@ -99,7 +101,7 @@
     methods: {
       ...mapActions("Empresas", {
         listarEmpresas: "listarEmpresas",
-        limpiarListadoDocumentos:"limpiarListadoDocumentos",
+        limpiarListadoDocumentos: "limpiarListadoDocumentos",
         seleccionarEmpresa: "seleccionarEmpresa",
       }),
       seleccionar: function (empresa) {

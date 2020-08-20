@@ -9,9 +9,10 @@
       </span>
       <span v-if="periodoSeleccionado.valor == 'personalizado'">
         entre el
-        <input type="date" class="fecha" v-model="periodoDesde">
+        <!--<input type="date" class="fecha" v-model="periodoDesde">-->
+        <datetime v-model="periodoDesde" input-class="fecha" :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"></datetime>
         y el
-        <input type="date" class="fecha" v-model="periodoHasta">
+        <datetime v-model="periodoHasta" input-class="fecha" :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"></datetime>
       </span>
       <vs-dropdown style="margin-left: 15px">
         <a class="a-icon" href="#">
@@ -26,7 +27,7 @@
       </vs-dropdown>
     </template>
 
-    <filtros-dte :configuracion-vista="configuracion"></filtros-dte>
+    <filtros :configuracion-vista="configuracion"></filtros>
     <table id="listado-documentos">
       <thead>
       <tr>
@@ -89,13 +90,13 @@
   import FbPaginacion from "../../_vue/componentes/FbPaginacion";
   import SelectorCantidadRegistros from "../componentes/SelectorCantidadRegistros";
   import InfoTablaBasica from "../../../global/_vue/componentes/tabla/InfoTablaBasica";
-  import FiltrosDte from "../componentes/FiltrosDte";
+  import Filtros from "../../../global/_vue/componentes/Filtros";
   import SelectorRangoFecha from "../componentes/SelectorRangoFecha";
 
   export default {
     components: {
       SelectorRangoFecha,
-      FiltrosDte, InfoTablaBasica, SelectorCantidadRegistros, AccionesWrapper, FbPaginacion},
+      Filtros, InfoTablaBasica, SelectorCantidadRegistros, AccionesWrapper, FbPaginacion},
     mixins: [CamposListadoFacturaElectronicaMixin],
     data() {
       return {
@@ -242,6 +243,9 @@
   }
 </script>
 <style lang="css">
+
+
+
   input::-webkit-calendar-picker-indicator{
     padding-left: 0px;
     margin-left: 0px;
@@ -249,11 +253,13 @@
 
   }
   .fecha{
-    width:105px;
+    width:185px;
     text-align:center;
     border: none;
+    display: inline-block;
     border-bottom: dashed 1px #ccc;
     font-family: "Montserrat", Helvetica, Arial, sans-serif;
+    cursor: pointer;
   }
 
   table {

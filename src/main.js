@@ -33,6 +33,10 @@ import '../themeConfig.js'
 // Globally Registered Components
 import './globalComponents.js'
 
+// Date Time
+import { Datetime } from 'vue-datetime';
+Vue.component('datetime', Datetime);
+import 'vue-datetime/dist/vue-datetime.css'
 
 // Styles: SCSS
 import './assets/scss/main.scss'

@@ -10,5 +10,9 @@ export default {
   "folio": {
     nombre: "Folio",
     tipo: "numero"
+  },
+  "tipoDocumento":{
+    nombre:"Tipo Documento",
+    tipo:"multi"
   }
 }

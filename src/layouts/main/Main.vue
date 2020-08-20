@@ -237,4 +237,20 @@ export default {
 }
 
 </script>
+<style>
+  /* CSS para el datetime, global */
+  .vdatetime{
+    display: inline-block;
+  }
+  .vdatetime-popup__header,
+  .vdatetime-calendar__month__day--selected > span > span, .vdatetime-calendar__month__day--selected > span > span:hover {
+    background: rgba(var(--vs-primary));
+  }
+  .vdatetime-popup__actions__button,
+  .vdatetime-year-picker__item--selected,
+  .vdatetime-month-picker__item--selected{
+    color: rgba(var(--vs-primary));
+  }
+  /* fin css para datetime */
+</style>
 

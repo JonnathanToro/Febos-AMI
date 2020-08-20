@@ -1,5 +1,6 @@
 <template>
-  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login" v-bind:style="{ 'background-image': 'url(' + imagenFondo + ') !important' }">
+  <div class="h-screen flex w-full bg-img vx-row no-gutter items-center justify-center" id="page-login"
+       v-bind:style="{ 'background-image': 'url(' + imagenFondo + ') !important' }">
     <img :src="ingresoLogo.imagen" id="logo" v-bind:style="_estiloLogo">
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vx-card>
@@ -44,14 +45,14 @@
   import IdleMixin from "../../_vue/mixins/IdleMixin";
 
   export default {
-    mixins: [PersonalizacionMixin,IdleMixin],
+    mixins: [PersonalizacionMixin, IdleMixin],
     data() {
       return {
         recordar: false,
         cargadores: [
           {id: 'P01', color: 'blue', 'texto': 'Verificando permisos', icono: 'autorenew'},
           {id: 'E01', color: 'blue', 'texto': 'Verificando relacion con empresas', icono: 'autorenew'},
-         // {id: 'C01', color: 'blue', 'texto': 'Recuperando configuraciones', icono: 'autorenew'},
+          // {id: 'C01', color: 'blue', 'texto': 'Recuperando configuraciones', icono: 'autorenew'},
         ],
         cargadoresListos: 0
       }
@@ -60,7 +61,9 @@
       cargadoresListos(valorNuevo) {
         if (valorNuevo === this.cargadores.length) {
           //TODO: ver si necesita cambiar su contraseña y redirigir a esa ventana
-          this.$router.push({name: 'selectorEmpresa'}).catch(e => { console.log("error",e)});
+          this.$router.push({name: 'selectorEmpresa'}).catch(e => {
+            console.log("error", e)
+          });
         }
       }
     },
@@ -69,13 +72,11 @@
         iut: state => state.iut,
         alias: state => state.alias
       }),
-      computed: {
-        ...mapState('Personalizacion', {
-          imagenFondo: state => state.ingreso.imagenFondo,
-          logo: state => state.menu.logo,
-          ingresoLogo: state => state.ingreso.logo
-        })
-      },
+      ...mapState('Personalizacion', {
+        imagenFondo: state => state.ingreso.imagenFondo,
+        logo: state => state.menu.logo,
+        ingresoLogo: state => state.ingreso.logo
+      })
     },
     methods: {
       ...mapActions("Usuario", {permisos: "cargarPermisos"}),
