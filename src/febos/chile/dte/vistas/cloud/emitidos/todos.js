@@ -10,7 +10,8 @@ posibles tipos:
 export default {
   titulo: 'Documentos emitidos',
   campos: ['EstadosEmision', 'MontoTotal', 'Documento', 'TrackId', 'FechaEnvioSii', 'FechaEmision'],
-  acccionesIndividuales: ['Bitacora', 'EnviarAprobacion', 'VerReferencias', 'AsociarDocumento', 'DescargarPdf', 'DescargarXml', 'EnviarDte', 'RecuperarCorreoSii', 'ModificarTipoVenta', 'CopiarDocumento', 'AyudaEnDocumento'],
+  //acccionesIndividuales: ['Bitacora', 'EnviarAprobacion', 'VerReferencias', 'AsociarDocumento', 'DescargarPdf', 'DescargarXml', 'EnviarDte', 'RecuperarCorreoSii', 'ModificarTipoVenta', 'CopiarDocumento', 'AyudaEnDocumento'],
+  acccionesIndividuales: ['DescargarPdf'],
   accionesMasivas: [],
   seleccionMasiva: true,
   categoria: 'emitidos',

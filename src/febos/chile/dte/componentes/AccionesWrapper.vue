@@ -5,49 +5,40 @@
     </a>
 
     <vs-dropdown-menu>
-      <vs-dropdown-item class="menu-accion" v-for="accion in despliegueDeAcciones" :key="accion.accion" v-if="evaluar(documento,accion.accion) && tienePermiso(accion.permiso)">
-        <div class="icono">
-          <vs-icon :icon="accion.icono" size="small"></vs-icon>
-        </div>
-        <div class="accion">
-          {{ accion.nombre}}
-        </div>
-      </vs-dropdown-item>
+      <component v-for="accion in acciones" :key="accion" :is="cargarComponenteAccion(accion)" :documento="documento">
+
+      </component>
     </vs-dropdown-menu>
   </vs-dropdown>
 </template>
 
 <script>
-  import AccionesListadoFacturaElectronicaMixin from "../mixins/AccionesListadoFacturaElectronicaMixin";
+  //import AccionesListadoFacturaElectronicaMixin from "../mixins/AccionesListadoFacturaElectronicaMixin";
 
   export default {
     name: "AccionesWrapper",
-    mixins: [AccionesListadoFacturaElectronicaMixin],
     props: {
       acciones: Array,
       documento: Object
     },
     data() {
       return {
-        despliegueDeAcciones:[]
+        despliegueDeAcciones:[],
+        componentes: {}
       }
     },
     computed: {},
     created() {
-      for(let i=0;i<this.acciones.length;i++){
-        this.despliegueDeAcciones.push(this.obtenerAccion(this.acciones[i]));
-      }
+
     },
     methods: {
-      evaluar(documento,accion){
-        //TODO: diferenciar cuando mostrar una accion o no segun el documento
-        if(documento && accion)return true;
-        return false;
-      },
-      tienePermiso(permiso){
-        if(permiso)return true;
-        else false;
+      cargarComponenteAccion(accion){
+        if (!this.componentes[accion]) {
+          this.componentes[accion] = () => import(`@/febos/chile/dte/componentes/acciones/Accion${accion}.vue`);
+        }
+        return this.componentes[accion];
       }
+
     }
   }
 </script>
