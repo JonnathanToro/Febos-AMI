@@ -42,42 +42,34 @@ export default [{
       ]
     },
     {
-      url: null,
+      url: '/factura-electronica/emision/basica',
       name: "Nuevo",
+      slug: 'fe-emision-basica',
       icon: "FileIcon",
-      permiso:'WB000',
-      submenu: [
-        {
-          url: '/factura-electronica/emision/33',
-          name: 'Factura Afecta',
-          slug: 'fe-emision-afecta',
-          icon: 'HomeIcon',
-          permiso:'WB000',
-        },
-        {
-          url: '/factura-electronica/emision/34',
-          name: 'Factura Exenta',
-          slug: 'fe-emision-exenta',
-          icon: 'HomeIcon',
-          permiso:'WB000',
-        },
-      ]
+      permiso:'WB000'
     },
     {
       url: null,
       name: "Configuraciones",
-      icon: "BellIcon",
+      icon: "HomeIcon",
       permiso:'WB000',
       submenu: [
         {
-          url: '/factura-electronica/emision/33',
-          name: 'Factura Afecta',
-          slug: 'fe-emision-afecta',
+          url: '/configuraciones/empresa',
+          name: 'Empresa',
+          slug: 'configuracion-empresa',
+          icon: 'HomeIcon',
+          permiso:'WB000',
+        },
+        {
+          url: '/configuraciones/usuarios',
+          name: 'Usuarios',
+          slug: 'configuracion-usuarios',
           icon: 'HomeIcon',
           permiso:'WB000',
         },
       ]
-    },
+    },/*
     {
       url: null,
       name: "Eventos",
@@ -92,6 +84,6 @@ export default [{
           permiso:'WB000',
         },
       ]
-    },
+    },*/
   ]
 }]
