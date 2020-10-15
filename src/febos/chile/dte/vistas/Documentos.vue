@@ -238,6 +238,8 @@
       this.listar(1);
       this.periodoDesde=Vue.moment().subtract(28, 'days').format('YYYY-MM-DD');
       this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
+      console.log("CONFIGVISTA: ", configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista]);
+      console.log("Parametro de ruta: ", process.env.VUE_APP_PORTAL);
     }
 
   }
