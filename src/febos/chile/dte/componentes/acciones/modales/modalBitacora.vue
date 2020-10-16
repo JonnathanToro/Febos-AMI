@@ -52,7 +52,7 @@
                   <p class="font-semibold">{{elemento.usuarioNombre}}</p>
                   <span class="activity-desc">{{elemento.mensaje}}</span>
                 </div>
-                <small class="text-grey activity-e-time">{{elemento.fecha | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}</small>
+                <small class="text-grey activity-e-time">{{elemento.fecha | moment("DD-MM-YYYY, hh:mm")}}</small>
                 </div>
                 <div v-else>
 
@@ -95,7 +95,7 @@
                   <p class="font-semibold">{{elemento.usuarioNombre}}</p>
                   <span class="activity-desc">{{elemento.mensaje}}</span>
                 </div>
-                <small class="text-grey activity-e-time">{{elemento.fecha | moment("dddd, MMMM Do YYYY, h:mm:ss a")}}</small>
+                <small class="text-grey activity-e-time">{{elemento.fecha | moment("DD-MM-YYYY, hh:mm")}}</small>
             </li>
           </ul>
         </div>
@@ -135,6 +135,7 @@ export default {
   },
   mounted() {
     console.log("GetData: ",this.getData);
+
   },
   data() {
     return {

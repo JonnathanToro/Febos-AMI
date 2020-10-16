@@ -46,6 +46,8 @@ export default {
         this.tipo = element;
       }
     });
+    this.datos.febosId = this.getData.febosId;
+    this.datos.tipoTransaccionVenta = ""+this.tipo.code+"";
   },
   data() {
     return {
@@ -59,7 +61,11 @@ export default {
         //{ code: 6, label: "Supermercado" },
       ],
       tipo: null,
-      datos: Object
+      datos: {
+        febosId: null,
+        tipoTransaccionVenta: null,
+        tipoTransaccionCompra: 0
+      }
     };
   },
   methods: {
@@ -73,7 +79,7 @@ export default {
 
       //adjuntar objeto
       this.datos.febosId = this.getData.febosId;
-      this.datos.tipoTransaccionVenta = this.tipo;
+      this.datos.tipoTransaccionVenta = this.tipo.code;
           //tipoTransaccionCompra: 0
 
       clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.datos).then((response) => {

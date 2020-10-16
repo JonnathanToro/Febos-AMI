@@ -69,8 +69,7 @@ export default {
         contactoEmailContato: '',
         contactoTelefonoContacto: ''
       }
-
-    };
+    }
   },
   methods: {
     cerrarVentana: function () {
@@ -79,15 +78,7 @@ export default {
       // this.alertaCierre();
     },
     enviarCeder() {
-      this.ceder.push({
-        cesionarioRut : this.cesionarioRut,
-        cesionarioRazonSocial : this.cesionarioRazonSocial,
-        cesionarioDireccion : this.cesionarioDireccion,
-        cesionarioMail : this.cesionarioMail,
-        contactoNombreContacto : this.contactoNombreContacto,
-        contactoEmailContato : this.contactoEmailContato,
-        contactoTelefonoContacto : this.contactoTelefonoContacto
-      })
+      console.log("DATOS: ", this.ceder);
     }
   },
 };
