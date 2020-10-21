@@ -10,11 +10,18 @@ const layoutPrivado = [
         name: 'inicio',
         meta: {permiso: 'WB001',requiereLogin:true},
         component: () => import('@/febos/global/inicio/vistas/Inicio.vue')
-      }, {
+      },
+      {
         path: '/usuario/perfil',
         name: 'Perfil de Usuario',
         meta: {permiso: 'WB001', requiereLogin: true},
         component: () => import('@/febos/global/usuario/vistas/perfil/Perfil.vue')
+      },
+      {
+        path: '/configuraciones/empresa',
+        name: 'Perfil de Empresa',
+        meta: {permiso: 'WB001', requiereLogin: true},
+        component: () => import('@/febos/global/empresas/vistas/perfilEmpresa.vue')
       },
       {
         path: '/page2',
