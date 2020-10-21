@@ -135,6 +135,9 @@ export default {
         this.$vs.loading.close();
       });
 
+      this.envio.adjuntarXml = false;
+      this.envio.adjuntarPdf = true;
+      this.envio.recibirCopia = true;
     }
   },
 };
