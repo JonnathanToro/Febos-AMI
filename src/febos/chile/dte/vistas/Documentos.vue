@@ -210,15 +210,17 @@
       },
       listar(pagina) {
         console.log("listando documentos");
-        this.listarDocumentos({
-          categoria: this.configuracion.categoria,
-          inicio: pagina,
-          cantidad: this.registrosPorPagina,
-          consulta: '*',//this.camposApi,
-          filtros: this.filtros,//"rutEmisor:76179952-5|fechaCreacion:2020-05-01--2020-07-01|tipoDocumento:33,34,43,46,56,61,110,111,112|estadoSii:0,1,2,3,4,5,6,7,8,9|incompleto:N",
-          orden: "-fechaCreacion",
-          dominioPortal: window.location.hostname,
-        })
+
+          this.listarDocumentos({
+            categoria: this.configuracion.categoria,
+            inicio: pagina,
+            cantidad: this.registrosPorPagina,
+            consulta: '*',//this.camposApi,
+            filtros: this.filtros,//"rutEmisor:76179952-5|fechaCreacion:2020-05-01--2020-07-01|tipoDocumento:33,34,43,46,56,61,110,111,112|estadoSii:0,1,2,3,4,5,6,7,8,9|incompleto:N",
+            orden: "-fechaCreacion",
+            dominioPortal: window.location.hostname,
+          });
+
       },
       extraerCampos() {
         var campos = [];
@@ -238,8 +240,11 @@
       this.listar(1);
       this.periodoDesde=Vue.moment().subtract(28, 'days').format('YYYY-MM-DD');
       this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
-      console.log("CONFIGVISTA: ", configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista]);
+      console.log("CONFIGURACION: ", configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista]);
+      console.log("CONFIGURACION 1 : ", configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria]);
       console.log("Parametro de ruta: ", process.env.VUE_APP_PORTAL);
+      console.log("PARAMS: ", this.configuracion.categoria);
+      console.log("CONFIGURACION COMPONENTE: ",this.configuracion);
     }
 
   }

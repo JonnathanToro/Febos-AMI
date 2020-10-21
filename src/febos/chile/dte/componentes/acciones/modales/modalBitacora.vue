@@ -10,22 +10,23 @@
 
       <vs-col vs-type="flex" vs-justify="center" vs-align="flex-start" vs-w="4">
       <div v-if="getData != null" vs-w="12">
-    <div class="vx-card">
+    <div class="vx-card margen-inferior">
       <div class="vx-card__header">
         <div class="vx-card__title">
           <h4 class>Resumen Actividad</h4>
           <label for="">Todos / Importantes</label>
-          <vs-switch v-model="switch1" @click="metodoSwitch()"/>
+          <vs-switch v-model="switchImportantes"/>
           <!---->
         </div>
         <!---->
       </div>
-      <div v-if="switch1" class="vx-card__collapsible-content vs-con-loading__container" style="width:100%; height:100%;">
+      <div v-if="switchImportantes" class="vx-card__collapsible-content vs-con-loading__container" style="width:100%; height:100%;">
         <div class="vx-card__body" style="width:100%; height:100%;">
 
           <ul class="vx-timeline" style="width:100%; height:100%;">
-            <li v-for="elemento in getData.bitacora" :key="elemento.bitacoraId">
-                <div v-if="elemento.tipoVista !== 6">
+            <div v-if="importantes.length > 0">
+              <li v-for="elemento in importantes" :key="elemento.bitacoraId">
+                <div v-if="elemento.tipoVista == 2">
                   <div class="timeline-icon bg-primary">
                   <span class="feather-icon select-none relative">
                     <svg
@@ -54,22 +55,29 @@
                 </div>
                 <small class="text-grey activity-e-time">{{elemento.fecha | moment("DD-MM-YYYY, hh:mm")}}</small>
                 </div>
-                <div v-else>
 
-                </div>
             </li>
+            </div>
+            <div v-else>
+              <li>
+                <span>
+                  Sin registros importantes para mostrar
+                </span>
+              </li>
+            </div>
+
           </ul>
-          <span>No existen registros</span>
         </div>
         <!---->
       </div>
 
-      <div v-else class="vx-card__collapsible-content vs-con-loading__container">
-        <div class="vx-card__body">
+      <div v-if="!switchImportantes" class="vx-card__collapsible-content vs-con-loading__container" style="width:100%; height:100%;">
+        <div class="vx-card__body" style="width:100%; height:100%;">
 
-          <ul class="vx-timeline">
-            <li v-for="elemento in getData.bitacora" :key="elemento.bitacoraId">
-                <div class="timeline-icon bg-primary">
+          <ul class="vx-timeline" style="width:100%; height:100%;">
+            <div v-if="todos.length > 0">
+              <li v-for="elemento in todos" :key="elemento.bitacoraId">
+                  <div class="timeline-icon bg-primary">
                   <span class="feather-icon select-none relative">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -96,11 +104,23 @@
                   <span class="activity-desc">{{elemento.mensaje}}</span>
                 </div>
                 <small class="text-grey activity-e-time">{{elemento.fecha | moment("DD-MM-YYYY, hh:mm")}}</small>
+
+
             </li>
+            </div>
+            <div v-else>
+              <li>
+                <span>
+                  Sin registros para mostrar
+                </span>
+              </li>
+            </div>
+
           </ul>
         </div>
         <!---->
       </div>
+
       <div class="vx-card__code-container collapsed" style="max-height: 0px; display: none;">
         <div class="code-content">
           <pre class="language-markup"><code class="language-markup"></code></pre>
@@ -135,16 +155,27 @@ export default {
   },
   mounted() {
     console.log("GetData: ",this.getData);
+    this.getData.bitacora.forEach(element => {
+      if (element.tipoVista == 2) {
+        this.importantes.push(element);
+      }else{
+        this.todos.push(element);
+      }
+    });
+    console.log("IMPORTANTES: ", this.importantes);
+    console.log("TODOS: ", this.todos);
 
   },
   data() {
     return {
-      switch1: false
+      todos: [],
+      importantes: [],
+      switchImportantes: true
     };
   },
   methods: {
     metodoSwitch() {
-      console.log(this.switch1);
+      console.log(this.importantes);
     }
   },
 };
@@ -188,5 +219,8 @@ ol,
 }
 [dir] .bg-primary {
   background-color: rgb(24, 14, 138) !important;
+}
+.margen-inferior {
+  margin-bottom: 15px;;
 }
 </style>

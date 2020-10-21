@@ -1,22 +1,21 @@
 <template>
   <div>
     <div class="mt-5">
-      <vs-tabs alignment="left">
+      <vs-tabs alignment="center">
         <!--<vs-tab label="Referencias hacia este documento">-->
           <vs-tab label="Referencias a este documento">
           <div>
             <vs-collapse>
-              <vs-collapse-item open="true">
+              <vs-collapse-item :open="true">
                 <div slot="header" align="center">
                   <h4>Documentos Tributarios Electronicos (DTE)</h4>
                 </div>
-                <div v-if="datas.referenciasTipoDte.length > 0">
+                <div align="center" v-if="datas.referenciasTipoDte.length > 0">
                   <vs-table :data="datas.referenciasTipoDte">
                     <template slot="thead">
                       <vs-th>Tipo</vs-th>
                       <vs-th>Folio</vs-th>
                       <vs-th>Fecha</vs-th>
-                      <vs-th>Acción</vs-th>
                     </template>
                     <template slot-scope="{data}">
                       <vs-tr :key="indextr" v-for="(tr, indextr) in data">
@@ -30,8 +29,6 @@
                         <div v-else>
                           <vs-td>No disponible</vs-td>
                         </div>
-
-                        <vs-td>Acciones</vs-td>
                       </vs-tr>
                     </template>
                   </vs-table>
@@ -41,7 +38,7 @@
                 </div>
               </vs-collapse-item>
 
-              <vs-collapse-item open="true">
+              <vs-collapse-item :open="true">
                 <div slot="header" align="center">
                   <h4>Documentos No Tributarios (DNT)</h4>
                 </div>
@@ -51,7 +48,6 @@
                       <vs-th>Tipo</vs-th>
                       <vs-th>Folio</vs-th>
                       <vs-th>Fecha</vs-th>
-                      <vs-th>Acción</vs-th>
                     </template>
                     <template slot-scope="{data}">
                       <vs-tr :key="indextr" v-for="(tr, indextr) in data">
@@ -65,8 +61,6 @@
                         <div v-else>
                           <vs-td>No disponible</vs-td>
                         </div>
-
-                        <vs-td>Acciones</vs-td>
                       </vs-tr>
                     </template>
                   </vs-table>
@@ -84,7 +78,7 @@
         <vs-tab label="Referencias en este documento">
           <div>
             <vs-collapse>
-              <vs-collapse-item open="true">
+              <vs-collapse-item :open="true">
                 <div slot="header" align="center">
                   <h4>Documentos tributarios electronicos (DTE)</h4>
                 </div>
@@ -94,7 +88,6 @@
                       <vs-th>Tipo</vs-th>
                       <vs-th>Folio</vs-th>
                       <vs-th>Fecha</vs-th>
-                      <vs-th>Acción</vs-th>
                     </template>
                     <template slot-scope="{data}">
                       <vs-tr :key="indextr" v-for="(tr, indextr) in data">
@@ -108,8 +101,6 @@
                         <div v-else>
                           <vs-td>No disponible</vs-td>
                         </div>
-
-                        <vs-td>Acciones</vs-td>
                       </vs-tr>
                     </template>
                   </vs-table>
@@ -121,7 +112,7 @@
             </vs-collapse>
 
             <vs-collapse>
-              <vs-collapse-item open="true">
+              <vs-collapse-item :open="true">
                 <div slot="header" align="center">
                   <center><h4>Documentos No Tributarios (DNT)</h4></center>
                 </div>
@@ -131,7 +122,6 @@
                       <vs-th>Tipo</vs-th>
                       <vs-th>Folio</vs-th>
                       <vs-th>Fecha</vs-th>
-                      <vs-th>Acción</vs-th>
                     </template>
                     <template slot-scope="{data}">
                       <vs-tr :key="indextr" v-for="(tr, indextr) in data">
@@ -145,8 +135,6 @@
                         <div v-else>
                           <vs-td>No disponible</vs-td>
                         </div>
-
-                        <vs-td>Acciones</vs-td>
                       </vs-tr>
                     </template>
                   </vs-table>

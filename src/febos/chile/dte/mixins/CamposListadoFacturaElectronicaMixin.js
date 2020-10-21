@@ -31,6 +31,36 @@ export default {
           ancho:'130',
           nombre:'Envío al SII',
           camposApi:['fechaEnvioSii']
+        },
+        NCND:{
+          ancho:'100',
+          nombre:'NC/ND',
+          camposApi:['tieneNc', 'tieneNd']
+        },
+        EstadoPago:{
+          ancho:'100',
+          nombre:'Estado Pago',
+          camposApi:['estadoComercial']
+        },
+        Plazo:{
+          ancho:'100',
+          nombre:'Plazo',
+          camposApi:['plazo']
+        },
+        RecepcionSii:{
+          ancho:'100',
+          nombre:'Recepción SII',
+          camposApi:['fechaRecepcionSii']
+        },
+        RecepcionFebos:{
+          ancho:'100',
+          nombre:'Recepción Febos',
+          camposApi:['fechaRecepcion']
+        },
+        IndicadorEstadoComercial: {
+          ancho: '140',
+          nombre: 'Estados',
+          camposApi: ['estadoComercial']
         }
       }
     }
