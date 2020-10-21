@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       icono: "edit",
-      nombre: "Modificar Tipo Venta",
+      nombre: "Modificar Tipo Compra",
       permiso: "DTE28"
     };
   },
@@ -37,9 +37,10 @@ export default {
       modalStore.commit("mostrarLoading");
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalModificarTipoVenta.vue`);
  //     clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/bitacora?pagina=1&filas=15").then((response) => {
-        modalStore.commit("setTitulo", "Modificar Tipo de Venta");
-        modalStore.commit("mostrarBitacora", modalComponente);
+        modalStore.commit("setTitulo", "Modificar Tipo de Compra");
+
         modalStore.commit("setData", this.documento);
+        modalStore.commit("mostrarBitacora", modalComponente);
         //console.log(response);
 
   //      }).catch(() => {

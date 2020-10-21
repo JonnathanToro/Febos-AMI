@@ -35,13 +35,11 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO CEDER", this.documento);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCeder.vue`);
       // clienteFebosAPI.post("/sii/dte/cesion").then((response) => {
        modalStore.commit("setTitulo", "Ceder");
        modalStore.commit("mostrarBitacora", modalComponente);
       //  modalStore.commit("setData", response.data);
-      this.$vs.loading.close();
       //  console.log(response);
 
       //   }).catch(() => {

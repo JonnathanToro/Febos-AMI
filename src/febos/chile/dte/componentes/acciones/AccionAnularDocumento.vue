@@ -42,13 +42,11 @@ export default {
   methods: {
     ejecutarAccion(){
         console.log("EJECUTANDO ANULAR DOCUMENTO ",this.documento);
-        this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
         const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalAnularDocumento.vue`);
           //clienteFebosAPI.put("/documentos/datos/" + this.documento.febosId + "/estado=10").then((response) => {
           modalStore.commit("setTitulo", "Anular Documento");
           modalStore.commit("mostrarBitacora", modalComponente);
           modalStore.commit("setData", this.documento);
-          this.$vs.loading.close();
           //console.log(response);
 
         //}).catch(() => {
