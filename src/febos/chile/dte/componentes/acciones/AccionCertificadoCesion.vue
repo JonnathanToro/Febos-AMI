@@ -36,21 +36,25 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO DESCARGAR CESION", this.documento);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCertificadoCesion.vue`);
       //cambiar lo de bitacora
       clienteFebosAPI.get("/sii/dte/cesion/consulta").then((response) => {
-
-      if(response.data.imagenLink) {
-        window.open(response.data.imagenLink);
-      }else{
+        if(response.data.imagenLink) {
+          window.open(response.data.imagenLink);
+          this.$vs.loading.close();
+        }else{
+          modalStore.commit("setTitulo", "Certificado de Cesión");
+          modalStore.commit("mostrarBitacora", modalComponente);
+          modalStore.commit("setData", {tipo: "El documento requerido no existe"});
+          this.$vs.loading.close();
+        }
+      }).catch(() => {
         modalStore.commit("setTitulo", "Certificado de Cesión");
         modalStore.commit("mostrarBitacora", modalComponente);
-        modalStore.commit("setData", response.data);
-      }
-      this.$vs.loading.close();
-
-      })
+        modalStore.commit("setData", {tipo: "Ocurrio un error, reintente mas tarde o contacte a soporte"});
+        this.$vs.loading.close();
+      });
 
     },
     desplegar() {

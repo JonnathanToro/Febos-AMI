@@ -12,8 +12,8 @@
         ></div>
       </div>
   -->
-  <vs-alert title="Error en la descarga" active="true" color="danger">
-    El documento requerido no existe
+  <vs-alert title="Error en la descarga" :active="true" color="danger">
+    {{ getData.tipo }}
   </vs-alert>
   </div>
 </template>
@@ -32,33 +32,9 @@ export default {
   },
   data() {
     return {
-      types: [
-        'default'
-      ],
-    activeLoading:false,
+
     };
-  },
-   mounted(){
-    this.types.forEach((type)=>{
-      this.$vs.loading({
-        container: `#loading-${type}`,
-        type,
-        text:''
-      })
-    })
-  },
-  methods: {
-    openLoading(type){
-      this.activeLoading = true
-      this.$vs.loading({
-        type:type,
-      }),
-      setTimeout( ()=> {
-        this.activeLoading = false
-        this.$vs.loading.close()
-      }, 3000);
-    },
-  },
+  }
 };
 </script>
 

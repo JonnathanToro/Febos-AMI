@@ -15,7 +15,6 @@
 
 <script>
   import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-  import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
   import modalStore from "../../../../../store/modals/acciones";
 
 export default {
@@ -36,17 +35,10 @@ export default {
   methods: {
       ejecutarAccion(){
         console.log("EJECUTANDO COPIAR DOCUMENTO ",this.documento);
-        modalStore.commit("mostrarLoading");
         const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCopiarDocumento.vue`);
-        clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/bitacora?pagina=1&filas=15").then((response) => {
           modalStore.commit("setTitulo", "Copiar Documento");
           modalStore.commit("mostrarBitacora", modalComponente);
-          modalStore.commit("setData", response.data);
-          console.log(response);
-
-        }).catch(() => {
-        })
-
+          modalStore.commit("setData", this.documento);
       },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

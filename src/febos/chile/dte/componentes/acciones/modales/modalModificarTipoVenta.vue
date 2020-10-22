@@ -14,6 +14,16 @@
       <br />
     </div>
     <br />
+    <div class="margin-bot">
+        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
+          Modificación realizada correctamente
+          <br>
+        </vs-alert>
+        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
+          Error al realizar la operación, reintente o contacte a soporte
+          <br>
+        </vs-alert>
+    </div>
     <div align="right">
       <div>
         <vs-button color="primary" type="filled" v-on:click="modificarTipoVenta()">Si, Modificalo</vs-button>
@@ -65,7 +75,8 @@ export default {
         febosId: null,
         tipoTransaccionVenta: null,
         tipoTransaccionCompra: 0
-      }
+      },
+      respuesta: null
     };
   },
   methods: {
@@ -75,7 +86,7 @@ export default {
       // this.alertaCierre();
     },
     modificarTipoVenta() {
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" });
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
 
       //adjuntar objeto
       this.datos.febosId = this.getData.febosId;
@@ -84,6 +95,16 @@ export default {
 
       clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.datos).then((response) => {
         console.log(response.data);
+        if(response.data.codigo == 10) {
+          this.respuesta = true;
+          this.$vs.loading.close();
+        }else{
+          this.respuesta = false;
+          this.$vs.loading.close();
+        }
+        this.$vs.loading.close();
+      }).catch(() => {
+        this.respuesta = false;
         this.$vs.loading.close();
       });
     }

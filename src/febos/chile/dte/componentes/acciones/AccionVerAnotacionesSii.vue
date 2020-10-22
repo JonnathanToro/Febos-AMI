@@ -15,7 +15,6 @@
 
 <script>
   import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-  import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
   import modalStore from "../../../../../store/modals/acciones";
 
 export default {
@@ -34,18 +33,12 @@ export default {
     };
   },
   methods: {
-          ejecutarAccion(){
+    ejecutarAccion(){
         console.log("EJECUTANDO Ver Anotacion Sii ",this.documento);
-        modalStore.commit("mostrarLoading");
         const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalVerAnotacionSii.vue`);
-        clienteFebosAPI.get("sii/dte/eventos").then((response) => {
-            modalStore.commit("setTitulo", "Consultando anotaciones en el Sii Documento N°"+this.documento.folio);
-            modalStore.commit("mostrarBitacora", modalComponente);
-            modalStore.commit("setData", response.data);
-            console.log(response);
-        }).catch(() => {
-        })
-
+        modalStore.commit("setTitulo", "Consultando anotaciones en el Sii Documento N°"+this.documento.folio);
+        modalStore.commit("mostrarBitacora", modalComponente);
+        modalStore.commit("setData", this.documento);
       },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

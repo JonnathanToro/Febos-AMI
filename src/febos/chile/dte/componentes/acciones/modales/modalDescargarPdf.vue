@@ -3,18 +3,6 @@
     <vs-alert title="Error en la descarga" active="true" color="danger">
       El documento requerido no existe
     </vs-alert>
-  <!--
-      <div class="fill-row-loading" >
-        <h4>Descargando PDF</h4>
-        <div
-          :class="{'activeLoading':activeLoading}"
-          v-for="type in types"
-          :id="[`loading-${type}`]"
-          class="vs-con-loading__container loading-example"
-          v-bind:key="type"
-        ></div>
-      </div>
-    -->
   </div>
 </template>
 
@@ -37,26 +25,7 @@ export default {
       ],
     activeLoading:false,
     };
-  },
-   mounted(){
-    this.$vs.loading({
-      container: `#loading-${'default'}`,
-      type: 'default',
-      text:''
-    })
-  },
-  methods: {
-    openLoading(type){
-      this.activeLoading = true
-      this.$vs.loading({
-        type:type,
-      }),
-      setTimeout( ()=> {
-        this.activeLoading = false
-        this.$vs.loading.close()
-      }, 3000);
-    },
-  },
+  }
 };
 </script>
 

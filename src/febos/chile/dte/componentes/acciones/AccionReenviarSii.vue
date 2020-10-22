@@ -15,6 +15,7 @@
 
 <script>
 import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
+import modalStore from "../../../../../store/modals/acciones";
 
 export default {
   name: "AccionReenviarSii",
@@ -33,7 +34,11 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO REENVIARSII", this.documento);
+      console.log("EJECUTANDO REENVIAR SII: ", this.documento);
+      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalReenviarSii.vue`);
+        modalStore.commit("setTitulo", "Reenviar al SII documento #"+this.documento.folio);
+        modalStore.commit("mostrarBitacora", modalComponente);
+        modalStore.commit("setData", this.documento);
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

@@ -15,12 +15,13 @@
 
 <script>
 import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
+import TiposDteMixin from "../../mixins/TiposDteMixin";
 import modalStore from "../../../../../store/modals/acciones";
 import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
 
 export default {
   name: "AccionInformacionPago",
-  mixins: [PermisoAccionMixin],
+  mixins: [PermisoAccionMixin, TiposDteMixin],
   props: {
     documento: {
       type: Object
@@ -36,10 +37,11 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO INFORMACIONPAGO", this.documento);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalInformacionPago.vue`);
-       clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/pagos").then((response) => {
-        modalStore.commit("setTitulo", "Información Pago Documento N°"+this.documento.folio);
+      clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/pagos").then((response) => {
+
+        modalStore.commit("setTitulo", "Información del Documento "+this.traducitTipoDocumentoEnPalabras(this.documento.tipoDocumento)+" Número "+this.documento.folio+" emitido para "+this.documento.razonSocialReceptor);
         modalStore.commit("mostrarBitacora", modalComponente);
         response.data.febosId = this.documento.febosId;
         modalStore.commit("setData", response.data);

@@ -38,7 +38,7 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO REFERENCIAS", this.documento);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalVerReferencias.vue`);
       //cambiar lo de bitacora
         clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/referencias").then((response) => {

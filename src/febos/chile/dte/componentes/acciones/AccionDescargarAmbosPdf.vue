@@ -30,7 +30,7 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO DESCARGAR PDF", this.documento);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () =>
         import(
           `@/febos/chile/dte/componentes/acciones/modales/modalDescargarPdf.vue`

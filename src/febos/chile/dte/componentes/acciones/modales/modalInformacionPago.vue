@@ -4,76 +4,100 @@
       <h4 class="margin-bot">Información de pago</h4>
       <vs-row class="margin-bot">
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
-              <h3>
-                Tipo de pago
-              </h3>
+              <span>
+                <b>
+                  Tipo de pago
+                </b>
+              </span>
             </div>
             <div>
-              <span>{{ tipo.label }}</span>
+              <span>{{ tipo_c.label }}</span>
             </div>
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
-              <h4>
-                Medio de pago
-              </h4>
+              <span>
+                <b>
+                  Medio de pago
+                </b>
+              </span>
             </div>
             <div>
-              <span>{{ medio.label }}</span>
+              <span>{{ medio_c.label }}</span>
             </div>
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
-              <h3>
-                Monto
-              </h3>
+              <span>
+                <b>
+                  Monto
+                </b>
+              </span>
             </div>
-            <div>
+            <div v-if="elemento.monto !== ''">
               <span>{{ elemento.monto }}</span>
+            </div>
+            <div v-else>
+              Sin Información
             </div>
           </vs-card>
         </vs-col>
       </vs-row>
       <vs-row class="margin-bot">
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
-              <h3>
-                Lugar
-              </h3>
+              <span>
+                <b>
+                  Lugar
+                </b>
+              </span>
             </div>
-            <div>
+            <div v-if="elemento.lugar !== ''">
               <span>{{ elemento.lugar }}</span>
             </div>
+            <div v-else>
+              Sin Información
+            </div>
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
-              <h3>
-                Fecha
-              </h3>
+              <span>
+                <b>
+                  Fecha
+                </b>
+              </span>
             </div>
-            <div>
+            <div v-if="elemento.updated !== '' && elemento.updated !== 'Invalid date'">
               <span>{{ elemento.updated }}</span>
             </div>
+            <div v-else>
+              Sin Información
+            </div>
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
-              <h3>
-                Comentario
-              </h3>
+              <span>
+                <b>
+                  Comentario
+                </b>
+              </span>
             </div>
-            <div>
+            <div v-if="elemento.comentario && elemento.comentario !== ''">
               <span>{{ elemento.comentario }}</span>
+            </div>
+            <div v-else>
+              Sin Información
             </div>
           </vs-card>
         </vs-col>
@@ -134,7 +158,7 @@
         <div class="vx-row mb-2">
           <div class="vx-col w-full">
             <span>Fecha:</span>
-            <datepicker :format="format" placeholder="Fecha" v-model="elemento.updated"></datepicker>
+            <datepicker :format="format" placeholder="" v-model="elemento.updated"></datepicker>
           </div>
         </div>
         <br/>
@@ -245,21 +269,30 @@ export default {
         { code: 'OT', label: "Otro" },
       ],
       elemento: {},
-      respuesta: null
+      respuesta: null,
+      tipo_c: '',
+      medio_c: ''
     };
   },
   mounted()  {
     this.elemento = this.getData.infoPago[0];
-    this.elemento.updated = moment(this.elemento.updated).format('DD-MM-YYYY');
-    console.log("GET DATA: ",this.getData.febosId);
+    this.tipo_c = this.tipo;
+    this.medio_c = this.medio;
+    if( this.elemento.updated !== 'Invalid date' && this.elemento.updated !== '' ) {
+      this.elemento.updated = moment(this.elemento.updated).format('DD-MM-YYYY');
+    }else{
+      this.elemento.updated = '';
+    }
+
+    console.log("GET DATA: ",this.getData);
   },
   methods: {
     tmpGuardar()  {
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
 
       this.elemento.updated = moment(this.elemento.updated).format('YYYY-MM-DD');
-      console.log("ANTES DE ENVIAR: ",this.elemento);
 
+      console.log("ANTES DE ENVIAR: ",this.elemento);
       clienteFebosAPI.post("/documentos/" + this.getData.febosId + "/pagos", this.elemento).then((response) => {
         console.log(response);
         if(response.data.codigo == 10) {

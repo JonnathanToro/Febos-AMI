@@ -2,7 +2,7 @@
   <div align="center">
     <h4>Advertencia</h4>
     <br />
-    <p>Esta acción no puede deshacerse ... Estas seguro que deseas anular la guia?</p>
+    <p>¿Esta acción no puede deshacerse ... Estas seguro que deseas anular este documento?</p>
     <br />
     <div align="center">
       <div class="margin-bot">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div>
-      <vs-button color="primary" type="filled" v-on:click="alertaCierre">Si, Anular</vs-button>
+      <vs-button color="primary" type="filled" @click="anular">Si, Anular</vs-button>
       <vs-button color="primary" type="border" v-on:click="cerrarVentana">Me arrepentí</vs-button>
     </div>
   </div>
@@ -40,7 +40,6 @@ export default {
     return {
       vista: false,
       modificar: false,
-      colorLoading: "#ff8000",
       documento: {},
       respuesta: null
     };
@@ -50,55 +49,27 @@ export default {
     console.log("DOCUMENTO: ", this.documento);
   },
   methods: {
-    openLoadingColor() {
-      this.$vs.loading({ color: this.colorLoading });
-      setTimeout(() => {
-        this.$vs.loading.close();
-      }, 2000);
-    },
-
     cerrarVentana: function () {
       modalStore.commit("ocultarBitacora");
     },
 
-    alertaCierre() {
+    anular() {
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       console.log("Anular");
       clienteFebosAPI.put("/documentos/datos/" + this.documento.febosId + "/estado=10").then((response) => {
         if(response.data.codigo == 10) {
           this.respuesta = true;
-          setTimeout(() => {
-            this.cierrame();
-          }, 4000);
+          this.$vs.loading.close();
         }else{
           this.respuesta = false;
-          setTimeout(() => {
-            this.respuesta = null;
-          }, 5000);
+          this.$vs.loading.close();
         }
       }).catch(() => {
         this.respuesta = false;
-          setTimeout(() => {
-            this.respuesta = null;
-          }, 5000);
-      });
-      /*
-      this.openLoadingColor();
-      modalStore.commit("ocultarBitacora");
-      this.$vs.notify({
-        color: "primary",
-        title: "Se ha realizado,",
-        text: "Anulaste la guia",
-      });
-      */
-    },
-    cancelarCierre() {
-      const modalComponente = () =>
-        import(
-          `@/febos/chile/dte/componentes/acciones/modales/modalAnularDocumento.vue`
-        );
-      modalStore.commit("setTitulo", "Información Pago");
-      modalStore.commit("mostrarBitacora", modalComponente);
-    },
+        this.$vs.loading.close();
+      })
+
+    }
   },
   components: {
     "v-select": vSelect,

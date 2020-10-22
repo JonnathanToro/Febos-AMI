@@ -15,8 +15,8 @@
 
 <script>
 import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-//import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-//import modalStore from "../../../../../store/modals/acciones";
+import modalStore from "../../../../../store/modals/acciones";
+
 export default {
   name: "AccionEnviarAprobacion",
   mixins: [PermisoAccionMixin],
@@ -35,10 +35,10 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO ENVIAR A APROBACION", this.documento);
-      //const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarDte.vue`);
-      //modalStore.commit("setTitulo", "Enviar DTE Documento N°"+this.documento.folio);
-      //modalStore.commit("mostrarBitacora", modalComponente);
-      //modalStore.commit("setData", this.documento);
+      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarAprobacion.vue`);
+      modalStore.commit("setTitulo", "Enviar a aprobación documento N°"+this.documento.folio);
+      modalStore.commit("mostrarBitacora", modalComponente);
+      modalStore.commit("setData", this.documento);
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);
