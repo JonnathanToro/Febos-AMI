@@ -418,7 +418,20 @@ export default {
           ejecutar: () => {
             console.log("ejecutar acción de enviarDTE");
           }
-        }
+        },
+        {
+          accion: "ModificarTipoCompra",
+          icono: "picture_as_pdf",
+          nombre: "Modificar Tipo Compra",
+          permiso: "DTE28",
+          esAplicable: () => {
+            console.log("modificarCompra es aplicable");
+            return true;
+          },
+          ejecutar: () => {
+            console.log("ejecutar acción de modificarCompra");
+          }
+        },
       ]
     }
   }

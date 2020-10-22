@@ -1,6 +1,5 @@
 <template>
-  <vs-dropdown-item class="menu-accion" v-if="desplegar()" v-on:click.native="ejecutarAccion()"
-  @click="openLoading">
+  <vs-dropdown-item class="menu-accion" v-if="desplegar()" v-on:click.native="ejecutarAccion()">
     <div class="icono">
       <vs-icon :icon="icono" size="small"></vs-icon>
     </div>
@@ -29,30 +28,17 @@ export default {
     };
   },
   methods: {
-    openLoading() {
-      this.$vs.loading();
-      setTimeout(() => {
-        this.$vs.loading.close();
-      }, 2000);
-    },
     ejecutarAccion() {
-      console.log("EJECUTANDO CONSULTA ESTADO SII ", this.documento);
-      modalStore.commit("mostrarLoading");
-      const modalComponente = () =>
-        import(
-          `@/febos/chile/dte/componentes/acciones/modales/modalConsultarEstadoSii.vue`
-        );
-      clienteFebosAPI
-        .get("/sii/dte/consulta" ).then((response) => {
-          modalStore.commit(
-            "setTitulo",
-            "Consultar Estado Sii de la factura electronica #1"
-          );
+      console.log("EJECUTANDO CONSULTA ESTADO SII: ", this.documento);
+      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalConsultarEstadoSii.vue`);
+        clienteFebosAPI.get("/sii/dte/consulta").then((response) => {
+          modalStore.commit("setTitulo","Consultar Estado Sii de la factura electronica #"+this.documento.folio);
           modalStore.commit("mostrarBitacora", modalComponente);
           modalStore.commit("setData", response.data);
-          console.log(response);
-        })
-        .catch(() => {});
+          console.log("RESPUESTA SII: ", response);
+          this.$vs.loading.close();
+        });
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

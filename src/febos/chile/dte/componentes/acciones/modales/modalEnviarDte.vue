@@ -61,7 +61,7 @@
     </div>
     <div align="right">
       <div>
-        <vs-button :disabled="activo" color="primary" type="filled submit" v-on:click="enviarDte">Si, envialo</vs-button>
+        <vs-button  color="primary" type="filled submit" v-on:click="enviarDte">Si, envialo</vs-button>
         <vs-button color="primary" type="border" v-on:click="cerrarVentana">No, me arrepenti</vs-button>
       </div>
     </div>
@@ -91,7 +91,6 @@ export default {
         destinatario: "",
         copias:"",
       },
-      activo: false,
       respuesta: null
     };
   },
@@ -104,9 +103,8 @@ export default {
       //this.confirmaCierre();
       // this.alertaCierre();
     },
-     enviarDte(){
+    async enviarDte(){
       this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" });
-      this.activo = true;
 
       if(this.envio.adjuntarXml == true){
         this.envio.adjuntarXml = "si";
@@ -124,13 +122,12 @@ export default {
         this.envio.recibirCopia = "no";
       }
 
-       clienteFebosAPI.post("/documentos/" + this.getData.febosId + "/envio", this.envio).then((response) => {
+       await clienteFebosAPI.post("/documentos/" + this.getData.febosId + "/envio", this.envio).then((response) => {
 
         if(response.data.codigo == 10) {
           this.respuesta = true;
         }else{
           this.respuesta = false;
-          this.activo = false;
         }
         this.$vs.loading.close();
       });

@@ -4,10 +4,12 @@
       <div>
         <h3></h3>
         <br />
-        <label for>Tipo de Venta</label>
+        <label for>Tipo de Compra</label>
         <div class="vx-row mb-2">
           <div class="vx-col w-full">
-            <v-select v-model="tipo" :options="tipo_de_venta" />
+            <vs-select :value="tipo" :options="codigos_iva" @input="cargarSegundoSelect()">
+              <!--<vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in codigos_iva" />-->
+            </vs-select>
           </div>
         </div>
       </div>
@@ -50,31 +52,77 @@ export default {
   },
   mounted() {
     console.log("DATA MODIFICAR TIPO VENTA", this.getData);
-    //this.tipo = parseInt(this.getData.tpoTraVenta);
-    this.tipo_de_venta.forEach(element => {
-      if(element.code == parseInt(this.getData.tpoTraVenta)){
-        this.tipo = element;
-      }
-    });
+    this.tipo = null;
+
     this.datos.febosId = this.getData.febosId;
-    this.datos.tipoTransaccionVenta = ""+this.tipo.code+"";
+    //this.datos.tipoTransaccionCompra = ""+this.tipo.code+"";
   },
   data() {
     return {
-      tipo_de_venta:[
-        { code: 0, label: "Activo fijo" },
-        { code: 1, label: "Bien raíz" },
-        { code: 2, label: "Del giro" },
-        //{ code: 3, label: "Iva uso común" },
-        //{ code: 4, label: "No incluir" },
-        //{ code: 5, label: "Sin derecho" },
-        //{ code: 6, label: "Supermercado" },
+      codigos_iva: [
+        {
+          value: 1,
+          label: 'Del Giro',
+          cod_iva: [{ value: 1, label: '1. Del giro' }]
+        },
+        {
+          value: 2,
+          label: 'Supermercados',
+          cod_iva: [{ value: 1, label: '1. Del giro' }, { value: 2, label: '2. Uso Común' }]
+        },
+        {
+          value: 3,
+          label: 'Bien Raíz',
+          cod_iva: [{ value: 1, label: '1. Del giro' }, { value: 2, label: '2. Uso Común' }]
+        },
+        {
+          value: 4,
+          label: 'Activo Fijo',
+          cod_iva: [{ value: 1, label: '1. Del giro' }, { valor: 2, label: 'Uso Común' }]
+        },
+        {
+          value: 5,
+          label: 'IVA Uso Común',
+          cod_iva: [{ value: 2, label: '2. Uso Común' }]
+        },
+        {
+          value: 6,
+          label: 'Sin derecho',
+          cod_iva: [
+            {
+              value: 1,
+              label: '1. Compras destinadas a IVA a generar operaciones no gravados o exentas'
+            },
+            {
+              value: 2,
+              label: '2. Facturas de proveedores registradas   fuera de plazo'
+            },
+            {
+              value: 3,
+              label: '3. Gastos rechazados'
+            },
+            {
+              value: 4,
+              label: '4. Entregas gratuitas recibidas'
+            },
+            {
+              value: 9,
+              label: '9. Otros'
+            }
+          ]
+        },
+        {
+          value: 7,
+          label: 'No Inculir',
+          cod_iva: [{ value: 9, label: '9. Otros' }]
+        }
       ],
       tipo: null,
       datos: {
         febosId: null,
-        tipoTransaccionVenta: null,
-        tipoTransaccionCompra: 0
+        tipoTransaccionVenta: 0,
+        tipoTransaccionCompra: null,
+        tipoTransaccionCompraCodIva: null
       },
       respuesta: null
     };
@@ -84,6 +132,9 @@ export default {
       modalStore.commit("ocultarBitacora");
       //this.confirmaCierre();
       // this.alertaCierre();
+    },
+    cargarSegundoSelect(value) {
+      console.log("tipo 1er select: ",value);
     },
     modificarTipoVenta() {
       this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" });
@@ -110,7 +161,7 @@ export default {
     }
   },
   components: {
-    "v-select": vSelect,
+    "vs-select": vSelect,
   },
 };
 </script>

@@ -5,17 +5,17 @@
         <h3>Datos del Cesionario</h3>
         <br />
         <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <vs-input color="danger" label-placeholder="Rut" v-model="ceder.cesionarioRut"  />
+          <div class="vx-col w-full margen-inferior">
+            <vs-input color="danger" label-placeholder="Rut 11111111-1" type="text" v-model="ceder.cesionarioRut"  />
           </div>
-          <div class="vx-col w-full">
-            <vs-input color="danger" label-placeholder="Razón" v-model="ceder.cesionarioRazonSocial"  />
+          <div class="vx-col w-full margen-inferior">
+            <vs-input color="danger" label-placeholder="Razón" type="text" v-model="ceder.cesionarioRazonSocial"  />
           </div>
-          <div class="vx-col w-full">
-            <vs-input color="danger" label-placeholder="Dirección" v-model="ceder.cesionarioDireccion"  />
+          <div class="vx-col w-full margen-inferior">
+            <vs-input color="danger" label-placeholder="Dirección" type="text" v-model="ceder.cesionarioDireccion"  />
           </div>
-          <div class="vx-col w-full">
-            <vs-input color="danger" label-placeholder="Correo" v-model="ceder.cesionarioMail"  />
+          <div class="vx-col w-full margen-inferior">
+            <vs-input color="danger" label-placeholder="Correo" required type="email" v-model="ceder.cesionarioMail"  />
           </div>
         </div>
       </div>
@@ -23,20 +23,37 @@
       <div>
         <h3>Datos de Contacto de Cesión</h3>
         <br />
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <vs-input color="danger" label-placeholder="Nombre" v-model="ceder.contactoNombreContacto" />
+        <div class="vx-row mb-2 ">
+          <div class="vx-col w-full margen-inferior">
+            <vs-input color="danger" label-placeholder="Nombre" type="text" v-model="ceder.contactoNombreContacto" />
           </div>
-          <div class="vx-col w-full">
-            <vs-input color="danger" label-placeholder="Correo Notificación" v-model="ceder.contactoEmailContato"  />
+          <div class="vx-col w-full margen-inferior">
+            <vs-input color="danger" label-placeholder="Correo Notificación" type="email" v-model="ceder.contactoEmailContato"  />
           </div>
-          <div class="vx-col w-full">
-            <vs-input color="danger" label-placeholder="Teléfono +569" v-model="ceder.contactoTelefonoContacto" />
+          <div class="vx-col w-full margen-inferior">
+            <vs-input color="danger" label-placeholder="Teléfono" type="number" v-model="ceder.contactoTelefonoContacto" />
           </div>
         </div>
       </div>
     </div>
     <br />
+    <div align="center">
+      <div class="margin-bot">
+        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
+          Cesion realizada correctamente
+          <br>
+        </vs-alert>
+        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
+          <div v-if="error">
+            {{ error }}
+          </div>
+          <div v-else>
+            Error al realizar la operación, reintente o contacte a soporte
+          </div>
+          <br>
+        </vs-alert>
+      </div>
+    </div>
     <div align="right">
       <div>
         <vs-button color="primary" type="filled" v-on:click="enviarCeder()">Si, Cedelo</vs-button>
@@ -48,6 +65,7 @@
 
 <script>
 import modalStore from "@/store/modals/acciones";
+import clienteFebosAPI from "../../../../../servicios/clienteFebosAPI";
 
 export default {
   name: "modalCeder",
@@ -58,6 +76,9 @@ export default {
       },
     },
   },
+  mounted() {
+    this.ceder.febosId = this.getData.febosId
+  },
   data() {
     return {
       ceder: {
@@ -67,8 +88,11 @@ export default {
         cesionarioMail: '',
         contactoNombreContacto: '',
         contactoEmailContato: '',
-        contactoTelefonoContacto: ''
-      }
+        contactoTelefonoContacto: '569',
+        febosId: null
+      },
+      respuesta: null,
+      error: null
     }
   },
   methods: {
@@ -79,6 +103,23 @@ export default {
     },
     enviarCeder() {
       console.log("DATOS: ", this.ceder);
+      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      clienteFebosAPI.post("/sii/dte/cesion", this.ceder).then((response) => {
+        console.log(response);
+        if(response.data.codigo == 10) {
+          this.respuesta = true;
+          this.$vs.loading.close();
+        }else{
+          if (response.data.codigo == 162) {
+            this.error = response.data.mensaje
+          }
+          this.respuesta = false;
+          this.$vs.loading.close();
+        }
+      }).catch(() => {
+        this.respuesta = false;
+        this.$vs.loading.close();
+      });
     }
   },
 };
@@ -120,5 +161,8 @@ export default {
 [dir] .vs-button:not(.vs-radius):not(.includeIconOnly):not(.small):not(.large) {
   padding: -0.25rem 2rem;
   margin: 10px;
+}
+.margen-inferior {
+  margin-bottom: 15px;
 }
 </style>
