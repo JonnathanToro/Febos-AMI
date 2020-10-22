@@ -288,7 +288,7 @@ export default {
   },
   methods: {
     tmpGuardar()  {
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
 
       this.elemento.updated = moment(this.elemento.updated).format('YYYY-MM-DD');
 

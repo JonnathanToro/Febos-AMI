@@ -104,7 +104,7 @@ export default {
       // this.alertaCierre();
     },
     async enviarDte(){
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" });
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
 
       if(this.envio.adjuntarXml == true){
         this.envio.adjuntarXml = "si";

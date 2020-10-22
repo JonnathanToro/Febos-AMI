@@ -37,7 +37,7 @@ export default {
     },
     methods:{
       ejecutarAccion(){
-        this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+        this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
         console.log("EJECUTANDO BITACORA ",this.documento);
         const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalBitacora.vue`);
         clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/bitacora?pagina=1&filas=15").then(async (response) => {

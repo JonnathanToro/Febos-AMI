@@ -42,19 +42,7 @@ export default {
         text:''
       })
     })
-  },
-  methods: {
-    openLoading(type){
-      this.activeLoading = true
-      this.$vs.loading({
-        type:type,
-      }),
-      setTimeout( ()=> {
-        this.activeLoading = false
-        this.$vs.loading.close()
-      }, 3000);
-    },
-  },
+  }
 };
 </script>
 
@@ -96,6 +84,6 @@ export default {
   z-index: 100;
   width: 30%;
   margin: 10px;
-  
+
 }
 </style>

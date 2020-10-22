@@ -103,7 +103,7 @@ export default {
     },
     enviarCeder() {
       console.log("DATOS: ", this.ceder);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       clienteFebosAPI.post("/sii/dte/cesion", this.ceder).then((response) => {
         console.log(response);
         if(response.data.codigo == 10) {

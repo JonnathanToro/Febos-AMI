@@ -86,7 +86,7 @@ export default {
       // this.alertaCierre();
     },
     modificarTipoVenta() {
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" });
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
 
       //adjuntar objeto
       this.datos.febosId = this.getData.febosId;

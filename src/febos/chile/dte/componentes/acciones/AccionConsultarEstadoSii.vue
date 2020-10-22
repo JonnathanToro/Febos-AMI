@@ -30,7 +30,7 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO CONSULTA ESTADO SII: ", this.documento);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalConsultarEstadoSii.vue`);
         clienteFebosAPI.get("/sii/dte/consulta").then((response) => {
           modalStore.commit("setTitulo","Consultar Estado Sii de la factura electronica #"+this.documento.folio);

@@ -36,7 +36,7 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO INFORMACIONPAGO", this.documento);
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalInformacionPago.vue`);
        clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/pagos").then((response) => {
         modalStore.commit("setTitulo", "Información Pago Documento N°"+this.documento.folio);

@@ -54,7 +54,7 @@ export default {
     },
 
     anular() {
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       console.log("Anular");
       clienteFebosAPI.get("/sii/dte/reenviodocumento", {febosId: this.documento.febosId}).then((response) => {
         if(response.data.codigo == 10) {

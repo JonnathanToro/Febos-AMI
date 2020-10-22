@@ -95,7 +95,7 @@ export default {
       modalStore.commit("ocultarBitacora");
     },
     consultarSii() {
-      this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" });
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
       clienteFebosAPI.get("/sii/dte/eventos", {febosId: this.getData.febosId}).then((response) => {
         if(response.data !== 10) {
           this.error = true;
