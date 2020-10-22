@@ -4,12 +4,70 @@
       <div>
         <h3></h3>
         <br />
-        <label for>Tipo de Compra</label>
+        <label>Tipo de Compra</label>
         <div class="vx-row mb-2">
           <div class="vx-col w-full">
-            <vs-select :value="tipo" :options="codigos_iva" @input="cargarSegundoSelect()">
-              <!--<vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in codigos_iva" />-->
-            </vs-select>
+            <vs-select v-model="tipo" :options="codigos_iva" @change="cargarSegundoSelect"/>
+          </div>
+        </div>
+        <div style="height:60px">
+          <div v-if="tipo !== null">
+              <div v-if="tipo.code == 1">
+                <label>Codigo IVA e Impuestos</label>
+                  <div class="vx-row mb-2">
+                    <div class="vx-col w-full">
+                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code1" />
+                    </div>
+                  </div>
+              </div>
+              <div v-if="tipo.code == 2">
+                <label>Codigo IVA e Impuestos</label>
+                  <div class="vx-row mb-2">
+                    <div class="vx-col w-full">
+                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code2" />
+                    </div>
+                  </div>
+              </div>
+              <div v-if="tipo.code == 3">
+                <label>Codigo IVA e Impuestos</label>
+                  <div class="vx-row mb-2">
+                    <div class="vx-col w-full">
+                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code3" />
+                    </div>
+                  </div>
+              </div>
+              <div v-if="tipo.code == 4">
+                <label>Codigo IVA e Impuestos</label>
+                  <div class="vx-row mb-2">
+                    <div class="vx-col w-full">
+                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code4" />
+                    </div>
+                  </div>
+              </div>
+              <div v-if="tipo.code == 5">
+                <label>Codigo IVA e Impuestos</label>
+                  <div class="vx-row mb-2">
+                    <div class="vx-col w-full">
+                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code5" />
+                    </div>
+                  </div>
+              </div>
+              <div v-if="tipo.code == 6">
+                <label>Codigo IVA e Impuestos</label>
+                  <div class="vx-row mb-2">
+                    <div class="vx-col w-full">
+                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code6" />
+                    </div>
+                  </div>
+              </div>
+              <div v-if="tipo.code == 7">
+                <label>Codigo IVA e Impuestos</label>
+                  <div class="vx-row mb-2">
+                    <div class="vx-col w-full">
+                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code7" />
+                    </div>
+                  </div>
+              </div>
           </div>
         </div>
       </div>
@@ -42,7 +100,7 @@ import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
 
 
 export default {
-  name: "modalModificarTipoVenta",
+  name: "modalModificarTipoCompra",
   computed: {
     getData: {
       get() {
@@ -51,72 +109,80 @@ export default {
     },
   },
   mounted() {
-    console.log("DATA MODIFICAR TIPO VENTA", this.getData);
+    console.log("DATA MODIFICAR TIPO COMPRA", this.getData);
     this.tipo = null;
 
     this.datos.febosId = this.getData.febosId;
     //this.datos.tipoTransaccionCompra = ""+this.tipo.code+"";
+    this.codigos_iva.forEach(element => {
+      if(element.code == parseInt(this.getData.tpoTranCompra)){
+        this.tipo = element;
+      }
+    });
+
+
+
   },
   data() {
     return {
       codigos_iva: [
         {
-          value: 1,
+          code: 1,
           label: 'Del Giro',
-          cod_iva: [{ value: 1, label: '1. Del giro' }]
         },
         {
-          value: 2,
+          code: 2,
           label: 'Supermercados',
-          cod_iva: [{ value: 1, label: '1. Del giro' }, { value: 2, label: '2. Uso Común' }]
         },
         {
-          value: 3,
+          code: 3,
           label: 'Bien Raíz',
-          cod_iva: [{ value: 1, label: '1. Del giro' }, { value: 2, label: '2. Uso Común' }]
         },
         {
-          value: 4,
+          code: 4,
           label: 'Activo Fijo',
-          cod_iva: [{ value: 1, label: '1. Del giro' }, { valor: 2, label: 'Uso Común' }]
         },
         {
-          value: 5,
+          code: 5,
           label: 'IVA Uso Común',
-          cod_iva: [{ value: 2, label: '2. Uso Común' }]
         },
         {
-          value: 6,
+          code: 6,
           label: 'Sin derecho',
-          cod_iva: [
-            {
-              value: 1,
-              label: '1. Compras destinadas a IVA a generar operaciones no gravados o exentas'
-            },
-            {
-              value: 2,
-              label: '2. Facturas de proveedores registradas   fuera de plazo'
-            },
-            {
-              value: 3,
-              label: '3. Gastos rechazados'
-            },
-            {
-              value: 4,
-              label: '4. Entregas gratuitas recibidas'
-            },
-            {
-              value: 9,
-              label: '9. Otros'
-            }
-          ]
         },
         {
-          value: 7,
+          code: 7,
           label: 'No Inculir',
-          cod_iva: [{ value: 9, label: '9. Otros' }]
         }
       ],
+      code1: [{ code: 1, label: '1. Del giro' }],
+      code2: [{ code: 1, label: '1. Del giro' }, { code: 2, label: '2. Uso Común' }],
+      code3: [{ code: 1, label: '1. Del giro' }, { code: 2, label: '2. Uso Común' }],
+      code4: [{ code: 1, label: '1. Del giro' }, { code: 2, label: 'Uso Común' }],
+      code5: [{ code: 2, label: '2. Uso Común' }],
+      code6: [
+        {
+          code: 1,
+          label: '1. Compras destinadas a IVA a generar operaciones no gravados o exentas'
+        },
+        {
+          code: 2,
+          label: '2. Facturas de proveedores registradas   fuera de plazo'
+        },
+        {
+          code: 3,
+          label: '3. Gastos rechazados'
+        },
+        {
+          code: 4,
+          label: '4. Entregas gratuitas recibidas'
+        },
+        {
+          code: 9,
+          label: '9. Otros'
+        }
+      ],
+      code7: [{ code: 9, label: '9. Otros' }],
       tipo: null,
       datos: {
         febosId: null,
@@ -124,7 +190,8 @@ export default {
         tipoTransaccionCompra: null,
         tipoTransaccionCompraCodIva: null
       },
-      respuesta: null
+      respuesta: null,
+      temp: null
     };
   },
   methods: {
@@ -133,29 +200,37 @@ export default {
       //this.confirmaCierre();
       // this.alertaCierre();
     },
-    cargarSegundoSelect(value) {
-      console.log("tipo 1er select: ",value);
+    saberTipocompraYCodigo() {
+
     },
-    modificarTipoVenta() {
+    cargarSegundoSelect() {
+      console.log("tipo 1er select: ",this.tipo);
+    },
+    async modificarTipoVenta() {
       this.$vs.loading({ color: "#ff8000", text: "Espera un momento por favor" });
 
       //adjuntar objeto
       this.datos.febosId = this.getData.febosId;
-      this.datos.tipoTransaccionVenta = this.tipo.code;
-          //tipoTransaccionCompra: 0
+      this.datos.tipoTransaccionCompra = this.tipo.code;
+      console.log(this.datos.tipoTransaccionCompraCodIva.code);
+      this.temp = this.datos.tipoTransaccionCompraCodIva;
+      this.datos.tipoTransaccionCompraCodIva = this.datos.tipoTransaccionCompraCodIva.code;
 
-      clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.datos).then((response) => {
+      await clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.datos).then((response) => {
         console.log(response.data);
         if(response.data.codigo == 10) {
           this.respuesta = true;
+          this.datos.tipoTransaccionCompraCodIva = this.temp;
           this.$vs.loading.close();
         }else{
           this.respuesta = false;
+          this.datos.tipoTransaccionCompraCodIva = this.temp;
           this.$vs.loading.close();
         }
         this.$vs.loading.close();
       }).catch(() => {
         this.respuesta = false;
+        this.datos.tipoTransaccionCompraCodIva = this.temp;
         this.$vs.loading.close();
       });
     }
