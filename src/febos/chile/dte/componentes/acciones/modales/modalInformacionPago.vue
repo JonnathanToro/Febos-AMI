@@ -4,7 +4,7 @@
       <h4 class="margin-bot">Información de pago</h4>
       <vs-row class="margin-bot">
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
               <span>
                 <b>
@@ -18,7 +18,7 @@
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
               <span>
                 <b>
@@ -32,7 +32,7 @@
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
               <span>
                 <b>
@@ -51,7 +51,7 @@
       </vs-row>
       <vs-row class="margin-bot">
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
               <span>
                 <b>
@@ -68,7 +68,7 @@
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
               <span>
                 <b>
@@ -85,7 +85,7 @@
           </vs-card>
         </vs-col>
         <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px;">
+          <vs-card style="margin: 5px; height: 92px;">
             <div slot="header">
               <span>
                 <b>
