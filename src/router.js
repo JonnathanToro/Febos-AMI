@@ -31,7 +31,6 @@ const router = new Router({
 
 router.beforeEach((hacia, desde, siguiente) => {
   let key = `${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.redirect`
-  console.log(hacia,desde);
   if (hacia.meta.requiereLogin) {
     if (autenticacion.estaLogueado()) {
       if (autenticacion.tienePermiso(hacia)) {
