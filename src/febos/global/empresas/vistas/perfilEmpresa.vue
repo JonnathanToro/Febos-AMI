@@ -10,13 +10,14 @@
           <empresa-casa-matriz v-if="datos" :iut="datos.iut" :sucursales="sucursales"></empresa-casa-matriz>
         </vs-tab>
         <vs-tab label="Sucursales">
-          <empresa-sucrusales v-if="datos" :iud="datos.iut" :sucursales="sucursales"></empresa-sucrusales>
+          <empresa-sucrusales v-if="datos" :iud="datos.iut" :codigoSii="datos.codigoSII" :sucursales="sucursales"></empresa-sucrusales>
         </vs-tab>
 <!--        <vs-tab label="Cuentas Bancarias">
           Cuentas bancarias
         </vs-tab>-->
       </vs-tabs>
     </vx-card>
+
 
   </div>
 </template>
