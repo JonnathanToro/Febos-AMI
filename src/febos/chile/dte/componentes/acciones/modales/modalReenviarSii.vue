@@ -10,7 +10,12 @@
           Reenvio correcto
         </vs-alert>
         <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
-          Error al realizar la operación, reintente o contacte a soporte
+          <div v-if="msjRespuesta !== null">
+            {{ this.msjRespuesta }}
+          </div>
+          <div v-else>
+            Error al realizar la operación, reintente o contacte a soporte
+          </div>
         </vs-alert>
       </div>
     </div>
@@ -41,7 +46,8 @@ export default {
       vista: false,
       modificar: false,
       documento: {},
-      respuesta: null
+      respuesta: null,
+      msjRespuesta: null
     };
   },
   mounted() {
@@ -61,6 +67,9 @@ export default {
           this.respuesta = true;
           this.$vs.loading.close();
         }else{
+
+          if(response.data.codigo == 121)
+            this.msjRespuesta = "No se puede encontrar el archivo especificado";
           this.respuesta = false;
           this.$vs.loading.close();
         }
