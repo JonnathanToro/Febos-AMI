@@ -16,9 +16,11 @@
 <script>
 import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
 import modalStore from "../../../../../store/modals/acciones";
+import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+
 
 export default {
-  name: "AccionEnviarAprobacion",
+  name: "AccionAsociarDocumento",
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -27,18 +29,25 @@ export default {
   },
   data() {
     return {
-      icono: "call_split",
-      nombre: "Enviar a aprobación",
-      permiso: "DTE21"
+      icono: "class",
+      nombre: "Asociar Documento",
+      permiso: "DTE26"
     };
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO ENVIAR A APROBACION", this.documento);
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarAprobacion.vue`);
-      modalStore.commit("setTitulo", "Información del flujo");
-      modalStore.commit("mostrarBitacora", modalComponente);
-      modalStore.commit("setData", this.documento);
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
+      console.log("EJECUTANDO ASOCIAR DOCUMENTO", this.documento);
+      clienteFebosAPI.get('/documentos/dnt').then((response) => {
+        console.log("RESPUESTA DOC DNT: ",response);
+        const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalAsociarDocumento.vue`);
+        modalStore.commit("setTitulo", "Asociar Documento");
+        modalStore.commit("mostrarBitacoraFull", modalComponente);
+        this.documento.datas = response.data;
+        modalStore.commit("setData", this.documento);
+        this.$vs.loading.close();
+      });
+      this.$vs.loading.close();
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

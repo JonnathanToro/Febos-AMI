@@ -26,35 +26,33 @@
           <ul class="vx-timeline" style="width:100%; height:100%;">
             <div v-if="importantes.length > 0">
               <li v-for="elemento in importantes" :key="elemento.bitacoraId">
-                <div v-if="elemento.tipoVista == 2">
                   <div class="timeline-icon bg-primary">
-                  <span class="feather-icon select-none relative">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24px"
-                      height="24px"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="feather feather-plus text-white stroke-current w-5 h-5"
-                      data-darkreader-inline-fill
-                      data-darkreader-inline-stroke
-                      style="--darkreader-inline-fill:none; --darkreader-inline-stroke:currentColor;"
-                    >
-                      <line x1="12" y1="5" x2="12" y2="19" />
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                  </span>
-                </div>
-                <div class="timeline-info">
-                  <p class="font-semibold">{{elemento.usuarioNombre}}</p>
-                  <span class="activity-desc">{{elemento.mensaje}}</span>
-                </div>
-                <small class="text-grey activity-e-time">{{elemento.fecha | moment("DD-MM-YYYY, hh:mm")}}</small>
-                </div>
+                    <span class="feather-icon select-none relative">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-plus text-white stroke-current w-5 h-5"
+                        data-darkreader-inline-fill
+                        data-darkreader-inline-stroke
+                        style="--darkreader-inline-fill:none; --darkreader-inline-stroke:currentColor;"
+                      >
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="timeline-info">
+                    <p class="font-semibold">{{elemento.usuarioNombre}}</p>
+                    <span class="activity-desc">{{elemento.mensaje}}</span>
+                  </div>
+                  <small class="text-grey activity-e-time">{{elemento.fecha | moment("DD-MM-YYYY, hh:mm")}}</small>
 
             </li>
             </div>
@@ -156,10 +154,12 @@ export default {
   mounted() {
     console.log("GetData: ",this.getData);
     this.getData.bitacora.forEach(element => {
-      if (element.tipoVista == 2) {
-        this.importantes.push(element);
-      }else{
+      if (element.tipo == 29 || element.tipo == 30) {
+        //this.importantes.push(element);
         this.todos.push(element);
+      }else{
+        this.importantes.push(element);
+        //this.todos.push(element);
       }
     });
     console.log("IMPORTANTES: ", this.importantes);
