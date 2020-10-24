@@ -33,13 +33,13 @@
               />
             </vs-select>
           </div>
-          <div class="vx-col md:w-1/2 w-full pt-3">
-            <vs-switch color="success" v-model="encabezado.nominativa"
+          <div class="vx-col md:w-1/2 w-full pt-4">
+            <vs-switch color="success" v-model="encabezado.nominativa" style="width: 100px;"
                        v-if="encabezado.tipoDocumento == 39 || encabezado.tipoDocumento == 41">
               <span slot="on">Nominativa</span>
-              <span slot="off">Anónimo</span>
+              <span slot="off">Portador</span>
             </vs-switch>
-            <vs-switch color="primary" v-model="encabezado.detalle" style="margin-top: 2px;"
+            <vs-switch color="primary" v-model="encabezado.detalle" style="margin-top: 2px; width: 100px;"
                        v-if="encabezado.tipoDocumento == 39 || encabezado.tipoDocumento == 41">
               <span slot="on">Detalle</span>
               <span slot="off">Sin detalle</span>
@@ -169,7 +169,7 @@
               name="valor"
               maxlength="10"
               v-validate="'required|min:0'"
-              v-if="!encabezado.detalle"
+              v-if="!tieneDetalle"
               :min="0"
             />
           </div>
@@ -385,48 +385,30 @@
               v-if="
                 encabezado.tipoDocumento == 34 ||
                 encabezado.tipoDocumento == 39 ||
-                encabezado.tipoDocumento == 56 ||
-                encabezado.tipoDocumento == 61
-              "
-            >
-              <vs-col vs-w="3" class="p-1" style="font-weight: bolder"
-              >Total</vs-col
-              >
-              <vs-col vs-w="9" class="p-1" style="text-align: right"
-              >$
+                encabezado.tipoDocumento == 41
+              ">
+              <vs-col vs-w="3" class="p-1" style="font-weight: bolder">Total</vs-col>
+              <vs-col vs-w="9" class="p-1" style="text-align: right">$
                 {{
                   new Intl.NumberFormat().format(total).replace(/,/g, ".")
-                }}</vs-col
-              >
+                }}</vs-col>
             </vs-row>
             <vs-row v-if="encabezado.tipoDocumento == 33">
-              <vs-col vs-w="4" class="p-1" style="font-weight: bolder"
-              >Total Neto</vs-col
-              >
-              <vs-col vs-w="8" class="p-1" style="text-align: right"
-              >$
+              <vs-col vs-w="4" class="p-1" style="font-weight: bolder">Total Neto</vs-col>
+              <vs-col vs-w="8" class="p-1" style="text-align: right">$
                 {{
                   new Intl.NumberFormat().format(total).replace(/,/g, ".")
-                }}</vs-col
-              >
-              <vs-col vs-w="4" class="p-1" style="font-weight: bolder"
-              >IVA</vs-col
-              >
-              <vs-col vs-w="8" class="p-1" style="text-align: right"
-              >$
+                }}</vs-col>
+              <vs-col vs-w="4" class="p-1" style="font-weight: bolder">IVA</vs-col>
+              <vs-col vs-w="8" class="p-1" style="text-align: right">$
                 {{
                   new Intl.NumberFormat().format(iva).replace(/,/g, ".")
-                }}</vs-col
-              >
-              <vs-col vs-w="4" class="p-1" style="font-weight: bolder"
-              >Total</vs-col
-              >
-              <vs-col vs-w="8" class="p-1" style="text-align: right"
-              >$
+                }}</vs-col>
+              <vs-col vs-w="4" class="p-1" style="font-weight: bolder">Total</vs-col>
+              <vs-col vs-w="8" class="p-1" style="text-align: right">$
                 {{
                   new Intl.NumberFormat().format(total + iva).replace(/,/g, ".")
-                }}</vs-col
-              >
+                }}</vs-col>
             </vs-row>
           </vx-card>
         </vs-col>
@@ -585,7 +567,7 @@ export default {
         {value:'41',text:'Boleta exenta'},
         /*{value:'56',text:'Nota de Débito'},
         {value:'61',text:'Nota de Crédito'},*/
-      ]
+      ],
     }
   },
   computed: {
@@ -600,14 +582,33 @@ export default {
         return (this.encabezado.tipoDocumento == 33 || this.encabezado.tipoDocumento == 34 ||
                 (this.encabezado.nominativa && (this.encabezado.tipoDocumento == 39 || this.encabezado.tipoDocumento == 41)))
       }
+    },
+    tieneDetalle: {
+      get() {
+        console.log(this.encabezado);
+        return (this.encabezado.tipoDocumento == 33 || this.encabezado.tipoDocumento == 34 ||
+                (this.encabezado.detalle && (this.encabezado.tipoDocumento == 39 || this.encabezado.tipoDocumento==42)))
+      }
     }
   },
+  mounted() {
+    this.cargarDefault();
+  },
   methods: {
-
+    cargarDefault() {
+      const defaultEmision = JSON.parse(localStorage.getItem("emision"));
+      if (defaultEmision) {
+        this.encabezado.tipoDocumento = defaultEmision.tipoDocumento;
+        this.encabezado.nominativa = defaultEmision.nominativa;
+        this.encabezado.detalle = defaultEmision.detalle;
+      }
+    },
     validarEncabezado() {
       return new Promise((resolve, reject) => {
         this.$validator.validateAll("formularioEncabezado").then((result) => {
           if (result) {
+            const emision = { tipoDocumento: this.encabezado.tipoDocumento, nominativa: this.encabezado.nominativa, detalle: this.encabezado.detalle };
+            localStorage.setItem("emision", JSON.stringify(emision));
             resolve(true);
           } else {
             reject(false);
