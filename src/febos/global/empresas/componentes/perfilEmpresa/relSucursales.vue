@@ -1,7 +1,7 @@
 <template>
   <div>
     <vs-button size="small" style="margin-bottom: 10px;" @click="agregarSucursal">Agregar</vs-button>
-    <vs-button size="small" style="margin-bottom: 10px;" @click="cargarSucursales" color="warning">Recargar</vs-button>
+    <!--<vs-button size="small" style="margin-bottom: 10px;" @click="cargarSucursales" color="warning">Recargar</vs-button>-->
     <vs-table :data="registros">
       <template slot="thead">
         <vs-th>Comuna</vs-th>
@@ -174,7 +174,7 @@ export default {
     },
     agregarSucursal() {
       this.registro = {
-        id: null,
+        id: null, rutEmpresa: this.idEmpresa,
         direccion: null, correoElectronico: null, telefono: null, comuna: null, ciudad: null, codigoSii: null, casaMatriz: "no"
       }
       this.$refs['modalSucursal'].open();
@@ -297,6 +297,7 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == "10") {
             this.registros = response.data.sucursales;
+            this.filtrarSucursales();
         } else {
           this.$vs.notify({
             color: "danger", title: "Sucursal", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
