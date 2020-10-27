@@ -1,95 +1,29 @@
 <template>
-  <div>
-    <div class="mt-5">
+  <div style="width: 100%; min-height: 260px">
+    <form data-vv-scope="perfilEmpresa" style="width: 100%; margin-top: 30px;">
+
+      <vs-row>
+        <vs-col vs-type="flex" vs-justify="left" vs-align="left" vs-w="12">Tipo de Compra</vs-col>
+      </vs-row>
+      <vs-row>
+        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+          <vs-select v-model="selectedCompra" :options="codigos" style="width: 100%;" />
+        </vs-col>
+      </vs-row>
+      <vs-row>
+        <vs-col vs-type="flex" vs-justify="left" vs-align="left" vs-w="12" style="margin-top: 10px;">Código IVA e impuestos</vs-col>
+      </vs-row>
+      <vs-row>
+        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+          <vs-select v-model="selectedCodigoIVA" :options="codigoIVA" required style="width: 100%;" />
+        </vs-col>
+      </vs-row>
       <div>
-        <h3></h3>
-        <br />
-        <label>Tipo de Compra</label>
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <vs-select v-model="tipo" :options="codigos_iva" @change="cargarSegundoSelect"/>
-          </div>
-        </div>
-        <div style="height:60px">
-          <div v-if="tipo !== null">
-              <div v-if="tipo.code == 1">
-                <label>Codigo IVA e Impuestos</label>
-                  <div class="vx-row mb-2">
-                    <div class="vx-col w-full">
-                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code1" />
-                    </div>
-                  </div>
-              </div>
-              <div v-if="tipo.code == 2">
-                <label>Codigo IVA e Impuestos</label>
-                  <div class="vx-row mb-2">
-                    <div class="vx-col w-full">
-                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code2" />
-                    </div>
-                  </div>
-              </div>
-              <div v-if="tipo.code == 3">
-                <label>Codigo IVA e Impuestos</label>
-                  <div class="vx-row mb-2">
-                    <div class="vx-col w-full">
-                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code3" />
-                    </div>
-                  </div>
-              </div>
-              <div v-if="tipo.code == 4">
-                <label>Codigo IVA e Impuestos</label>
-                  <div class="vx-row mb-2">
-                    <div class="vx-col w-full">
-                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code4" />
-                    </div>
-                  </div>
-              </div>
-              <div v-if="tipo.code == 5">
-                <label>Codigo IVA e Impuestos</label>
-                  <div class="vx-row mb-2">
-                    <div class="vx-col w-full">
-                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code5" />
-                    </div>
-                  </div>
-              </div>
-              <div v-if="tipo.code == 6">
-                <label>Codigo IVA e Impuestos</label>
-                  <div class="vx-row mb-2">
-                    <div class="vx-col w-full">
-                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code6" />
-                    </div>
-                  </div>
-              </div>
-              <div v-if="tipo.code == 7">
-                <label>Codigo IVA e Impuestos</label>
-                  <div class="vx-row mb-2">
-                    <div class="vx-col w-full">
-                      <vs-select v-model="datos.tipoTransaccionCompraCodIva" :options="code7" />
-                    </div>
-                  </div>
-              </div>
-          </div>
+        <div style="text-align: right; margin-top: 50px;">
+          <vs-button color="primary" type="filled" v-on:click="modificarTipoCompra()">Modificar</vs-button>
         </div>
       </div>
-      <br />
-    </div>
-    <br />
-    <div class="margin-bot">
-        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
-          Modificación realizada correctamente
-          <br>
-        </vs-alert>
-        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
-          Error al realizar la operación, reintente o contacte a soporte
-          <br>
-        </vs-alert>
-    </div>
-    <div align="right">
-      <div>
-        <vs-button color="primary" type="filled" v-on:click="modificarTipoVenta()">Si, Modificalo</vs-button>
-        <vs-button color="primary" type="border" v-on:click="cerrarVentana">No, me arrepenti</vs-button>
-      </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -101,142 +35,147 @@ import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
 
 export default {
   name: "modalModificarTipoCompra",
+  components: {
+    "vs-select": vSelect,
+  },
   computed: {
     getData: {
       get() {
         return modalStore.state.data;
       },
     },
-  },
-  mounted() {
-    console.log("DATA MODIFICAR TIPO COMPRA", this.getData);
-    this.tipo = null;
-
-    this.datos.febosId = this.getData.febosId;
-    //this.datos.tipoTransaccionCompra = ""+this.tipo.code+"";
-    this.codigos_iva.forEach(element => {
-      if(element.code == parseInt(this.getData.tpoTranCompra)){
-        this.tipo = element;
+    selectedCompra:  {
+      get() {
+        const selected = this.codigos.find(elemento => elemento.code == this.compra.tipoTransaccionCompra);
+        if (selected === undefined) return null;
+        return selected;
+      },
+      set(val)  {
+        this.compra.tipoTransaccionCompraCodIva = null;
+        this.compra.tipoTransaccionCompra = val.code;
       }
-    });
-
-
-
+    },
+    selectedCodigoIVA:  {
+      get() {
+        const selected = this.codigoIVA.find(elemento => elemento.code == this.compra.tipoTransaccionCompraCodIva);
+        if (selected === undefined) return null;
+        return selected;
+      },
+      set(val)  {
+        this.compra.tipoTransaccionCompraCodIva = val.code;
+      }
+    },
+    codigoIVA: {
+      get() {
+        console.log(this.compra.tipoTransaccionCompra);
+        switch (this.compra.tipoTransaccionCompra) {
+          case 1:
+            return this.code1;
+          case 2:
+            return this.code2;
+          case 3:
+            return this.code3;
+          case 4:
+            return this.code4;
+          case 5:
+            return this.code5;
+          case 6:
+            return this.code6;
+          case 7:
+            return this.code7;
+        }
+        return [];
+      }
+    }
   },
-  data() {
+  data: function () {
     return {
-      codigos_iva: [
-        {
-          code: 1,
-          label: 'Del Giro',
-        },
-        {
-          code: 2,
-          label: 'Supermercados',
-        },
-        {
-          code: 3,
-          label: 'Bien Raíz',
-        },
-        {
-          code: 4,
-          label: 'Activo Fijo',
-        },
-        {
-          code: 5,
-          label: 'IVA Uso Común',
-        },
-        {
-          code: 6,
-          label: 'Sin derecho',
-        },
-        {
-          code: 7,
-          label: 'No Inculir',
-        }
+      codigos: [
+        { code: 1, label: 'Del Giro' },
+        { code: 2, label: 'Supermercados' },
+        { code: 3, label: 'Bien Raíz' },
+        { code: 4, label: 'Activo Fijo' },
+        { code: 5, label: 'IVA Uso Común' },
+        { code: 6, label: 'Sin derecho' },
+        { code: 7, label: 'No Inculir' }
       ],
-      code1: [{ code: 1, label: '1. Del giro' }],
-      code2: [{ code: 1, label: '1. Del giro' }, { code: 2, label: '2. Uso Común' }],
-      code3: [{ code: 1, label: '1. Del giro' }, { code: 2, label: '2. Uso Común' }],
-      code4: [{ code: 1, label: '1. Del giro' }, { code: 2, label: 'Uso Común' }],
-      code5: [{ code: 2, label: '2. Uso Común' }],
+      code1: [{code: 1, label: '1. Del giro'}],
+      code2: [{code: 1, label: '1. Del giro'}, {code: 2, label: '2. Uso Común'}],
+      code3: [{code: 1, label: '1. Del giro'}, {code: 2, label: '2. Uso Común'}],
+      code4: [{code: 1, label: '1. Del giro'}, {code: 2, label: 'Uso Común'}],
+      code5: [{code: 2, label: '2. Uso Común'}],
       code6: [
-        {
-          code: 1,
-          label: '1. Compras destinadas a IVA a generar operaciones no gravados o exentas'
-        },
-        {
-          code: 2,
-          label: '2. Facturas de proveedores registradas   fuera de plazo'
-        },
-        {
-          code: 3,
-          label: '3. Gastos rechazados'
-        },
-        {
-          code: 4,
-          label: '4. Entregas gratuitas recibidas'
-        },
-        {
-          code: 9,
-          label: '9. Otros'
-        }
+        { code: 1, label: '1. Compras destinadas a IVA a generar operaciones no gravados o exentas' },
+        { code: 2, label: '2. Facturas de proveedores registradas   fuera de plazo' },
+        { code: 3, label: '3. Gastos rechazados' },
+        { code: 4, label: '4. Entregas gratuitas recibidas' },
+        { code: 9, label: '9. Otros' }
       ],
-      code7: [{ code: 9, label: '9. Otros' }],
-      tipo: null,
-      datos: {
+      code7: [{code: 9, label: '9. Otros'}],
+      compra: {
         febosId: null,
         tipoTransaccionVenta: 0,
         tipoTransaccionCompra: null,
         tipoTransaccionCompraCodIva: null
       },
-      respuesta: null,
-      temp: null
+
+
     };
   },
+  mounted() {
+    console.log("DATA MODIFICAR TIPO COMPRA", this.getData);
+    this.compra.febosId = this.getData.febosId;
+    this.compra.tipoTransaccionCompra = this.getData.tpoTranCompra;
+    this.compra.tipoTransaccionCompraCodIva = this.getData.tpoTranCompraCodIva;
+
+  },
   methods: {
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
-      //this.confirmaCierre();
-      // this.alertaCierre();
-    },
-    saberTipocompraYCodigo() {
-
-    },
-    cargarSegundoSelect() {
-      console.log("tipo 1er select: ",this.tipo);
-    },
-    async modificarTipoVenta() {
+    modificarTipoCompra() {
+      if (!this.compra.tipoTransaccionCompra || !this.compra.tipoTransaccionCompraCodIva) {
+        this.$vs.notify({
+          color: 'danger', title: 'Modificar Tipo Compra', text: 'Debe seleccionar tipo y código SII'
+        });
+        return false;
+      }
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-
-      //adjuntar objeto
-      this.datos.febosId = this.getData.febosId;
-      this.datos.tipoTransaccionCompra = this.tipo.code;
-      console.log(this.datos.tipoTransaccionCompraCodIva.code);
-      this.temp = this.datos.tipoTransaccionCompraCodIva;
-      this.datos.tipoTransaccionCompraCodIva = this.datos.tipoTransaccionCompraCodIva.code;
-
-      await clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.datos).then((response) => {
-        console.log(response.data);
+      clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.compra).then((response) => {
+        this.$vs.loading.close();
         if(response.data.codigo == 10) {
-          this.respuesta = true;
-          this.datos.tipoTransaccionCompraCodIva = this.temp;
-          this.$vs.loading.close();
+          this.updateDTEs();
+          this.$vs.notify({
+            color: 'success', title: 'Modificar Tipo Compra', text: 'Tipo de compra actualizada'
+          });
+          this.cerrarVentana();
         }else{
-          this.respuesta = false;
-          this.datos.tipoTransaccionCompraCodIva = this.temp;
-          this.$vs.loading.close();
+          this.$vs.notify({
+            color: "danger", title: "Modificar Tipo Compra", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+          });
         }
         this.$vs.loading.close();
       }).catch(() => {
-        this.respuesta = false;
-        this.datos.tipoTransaccionCompraCodIva = this.temp;
+        this.$vs.notify({
+          color: "danger", title: "Modificar Tipo Compra", text: "No fue posible modificar el tipo de compra"
+        });
         this.$vs.loading.close();
       });
+    },
+    cerrarVentana: function () {
+      modalStore.commit("ocultarBitacora");
+    },
+    updateDTEs()  {
+      var data = JSON.parse(
+        localStorage.getItem(
+          `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
+        )
+      );
+      data.Dtes.documentos.forEach(element => {
+        if (element.febosId == this.compra.febosId) {
+          element.tpoTranCompra = this.compra.tipoTransaccionCompra;
+          element.tpoTranCompraCodIva = this.compra.tipoTransaccionCompraCodIva;
+        }
+      });
+      localStorage.setItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`, JSON.stringify(data));
     }
-  },
-  components: {
-    "vs-select": vSelect,
   },
 };
 </script>

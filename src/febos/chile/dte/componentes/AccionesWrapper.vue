@@ -69,7 +69,7 @@
       }
     },
     mounted() {
-      console.log(this.acciones);
+      // console.log(this.acciones);
     },
     methods: {
       cargarComponenteAccion(accion){

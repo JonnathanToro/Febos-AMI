@@ -9,8 +9,8 @@
       </vs-col>
 
       <vs-col vs-type="flex" vs-justify="center" vs-align="flex-start" vs-w="4">
-      <div v-if="getData != null" vs-w="12">
-    <div class="vx-card margen-inferior">
+      <div v-if="getData != null" vs-w="12" style="width: 100%; margin-left: 15px;">
+    <div class="vx-card margen-inferior" style="width: 100%;">
       <div class="vx-card__header">
         <div class="vx-card__title">
           <h4 class>Resumen Actividad</h4>
@@ -20,8 +20,8 @@
         </div>
         <!---->
       </div>
-      <div v-if="switchImportantes" class="vx-card__collapsible-content vs-con-loading__container" style="width:100%; height:100%;">
-        <div class="vx-card__body" style="width:100%; height:100%;">
+      <div class="vx-card__collapsible-content vs-con-loading__container" style="width:100%; height:100%;">
+        <div class="vx-card__body" style="width:100%; height:100%;" v-if="switchImportantes">
 
           <ul class="vx-timeline" style="width:100%; height:100%;">
             <div v-if="importantes.length > 0">
@@ -67,10 +67,10 @@
           </ul>
         </div>
         <!---->
-      </div>
+      <!--</div>
 
-      <div v-if="!switchImportantes" class="vx-card__collapsible-content vs-con-loading__container" style="width:100%; height:100%;">
-        <div class="vx-card__body" style="width:100%; height:100%;">
+      <div class="vx-card__collapsible-content vs-con-loading__container" style="width:100%; height:100%;">-->
+        <div class="vx-card__body" style="width:100%; height:100%;" v-if="!switchImportantes">
 
           <ul class="vx-timeline" style="width:100%; height:100%;">
             <div v-if="todos.length > 0">

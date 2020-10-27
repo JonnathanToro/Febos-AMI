@@ -34,19 +34,10 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO ENVIARDTE", this.documento);
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarDte.vue`);
       modalStore.commit("setTitulo", "Enviar DTE Documento N°"+this.documento.folio);
       modalStore.commit("mostrarBitacora", modalComponente);
       modalStore.commit("setData", this.documento);
-      /*clienteFebosAPI.post("/documentos/" + this.documento.febosId + "/envio").then((response) => {
-        modalStore.commit("setTitulo", "Enviar DTE");
-        modalStore.commit("mostrarBitacora", modalComponente);
-        modalStore.commit("setData", response.data);
-        console.log(response);
-
-        }).catch(() => {
-        })*/
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);
