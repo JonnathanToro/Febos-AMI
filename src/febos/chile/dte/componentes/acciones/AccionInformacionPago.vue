@@ -34,18 +34,21 @@ export default {
       permiso: "DTE18"
     };
   },
+  mounted() {
+    console.log("Información de Pago");
+  },
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO INFORMACIONPAGO", this.documento);
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalInformacionPago.vue`);
       clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/pagos").then((response) => {
-
-        modalStore.commit("setTitulo", "Información del Documento "+this.traducitTipoDocumentoEnPalabras(this.documento.tipoDocumento)+" Número "+this.documento.folio+" emitido para "+this.documento.razonSocialReceptor);
+        // modalStore.commit("setTitulo", "Información del Documento "+this.traducitTipoDocumentoEnPalabras(this.documento.tipoDocumento)+" Número "+this.documento.folio+" emitido para "+this.documento.razonSocialReceptor);
+        modalStore.commit("setTitulo", "Información de pago");
         modalStore.commit("mostrarBitacora", modalComponente);
-        response.data.febosId = this.documento.febosId;
-        modalStore.commit("setData", response.data);
-        console.log(response);
+        // response.data.febosId = this.documento.febosId;
+        const datos = { documento: this.documento, pago: response.data.infoPago};
+        modalStore.commit("setData", datos);
         this.$vs.loading.close();
         }).catch(() => {
        })
