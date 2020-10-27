@@ -66,7 +66,7 @@ export default {
     let vh = window.innerHeight * 0.01;
     // Then we set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    let favicon=document.getElementById("custom-favicon");
+    let favicon=document.getElementById("favicon");
     switch(process.env.VUE_APP_PRODUCTO){
       case "narvi":
         favicon.href=favicon.href.replace("favicon.png","narvi_favicon.png");break;
