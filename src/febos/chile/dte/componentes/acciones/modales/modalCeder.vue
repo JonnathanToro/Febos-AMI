@@ -1,63 +1,124 @@
 <template>
   <div>
-    <div class="mt-5">
-      <div>
-        <h3>Datos del Cesionario</h3>
-        <br />
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full margen-inferior">
-            <vs-input color="danger" label-placeholder="Rut 11111111-1" type="text" v-model="ceder.cesionarioRut"  />
-          </div>
-          <div class="vx-col w-full margen-inferior">
-            <vs-input color="danger" label-placeholder="Razón" type="text" v-model="ceder.cesionarioRazonSocial"  />
-          </div>
-          <div class="vx-col w-full margen-inferior">
-            <vs-input color="danger" label-placeholder="Dirección" type="text" v-model="ceder.cesionarioDireccion"  />
-          </div>
-          <div class="vx-col w-full margen-inferior">
-            <vs-input color="danger" label-placeholder="Correo" required type="email" v-model="ceder.cesionarioMail"  />
-          </div>
+    <h4>{{ titulo }}</h4>
+    <h5 style="color: #aaaaaa;">{{ subtitulo }}</h5>
+
+    <form data-vv-scope="formularioCeder" style="width: 100%; margin-top: 30px;">
+
+      <h5>Datos del Cesionario</h5>
+
+      <div class="vx-row mt-3">
+        <div class="vx-col md:w-1/2 w-full">
+          <vs-input
+            label="RUT (sin puntos, con guión)"
+            maxlength="10"
+            v-model="ceder.cesionarioRut"
+            class="w-full"
+            name="cesionarioRut"
+            v-validate="'required|validaRut'" />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('cesionarioRut') == 'required'">RUT es obligatorio</span>
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('cesionarioRut') == 'rut'">Formato de RUT incorrecto</span>
+        </div>
+        <div class="vx-col w-full mt-2">
+          <vs-input
+            label="Razón Social"
+            maxlength="60"
+            v-model="ceder.cesionarioRazonSocial"
+            class="w-full"
+            name="cesionarioRazonSocial"
+            v-validate="'required'" />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('cesionarioRazonSocial') == 'required'">Razón social es oblitagorio</span>
+        </div>
+        <div class="vx-col w-full mt-2">
+          <vs-input
+            label="Dirección"
+            maxlength="80"
+            v-model="ceder.cesionarioDireccion"
+            class="w-full"
+            name="cesionarioDireccion"
+            v-validate="'required'" />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('cesionarioDireccion') == 'required'">Dirección es obligatoria</span>
+        </div>
+        <div class="vx-col w-full mt-2">
+          <vs-input
+            type="email"
+            label="Email"
+            maxlength="90"
+            v-model="ceder.cesionarioMail"
+            class="w-full"
+            name="cesionarioMail"
+            v-validate="'required|email'"
+          />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('cesionarioMail') == 'required'">Correo electrónico es obligatorio</span>
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('cesionarioMail') == 'email'">Correo electrónico es incorrecto</span>
         </div>
       </div>
-      <br />
-      <div>
-        <h3>Datos de Contacto de Cesión</h3>
-        <br />
-        <div class="vx-row mb-2 ">
-          <div class="vx-col w-full margen-inferior">
-            <vs-input color="danger" label-placeholder="Nombre" type="text" v-model="ceder.contactoNombreContacto" />
-          </div>
-          <div class="vx-col w-full margen-inferior">
-            <vs-input color="danger" label-placeholder="Correo Notificación" type="email" v-model="ceder.contactoEmailContato"  />
-          </div>
-          <div class="vx-col w-full margen-inferior">
-            <vs-input color="danger" label-placeholder="Teléfono" type="number" v-model="ceder.contactoTelefonoContacto" />
-          </div>
+
+      <h5 class="mt-4">Datos de contacto</h5>
+
+      <div class="vx-row mt-3">
+        <div class="vx-col w-full">
+          <vs-input
+            label="Nombre"
+            maxlength="60"
+            v-model="ceder.contactoNombreContacto"
+            class="w-full"
+            name="contactoNombreContacto"
+            v-validate="'required|alpha_spaces'" />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('contactoNombreContacto') == 'required'">Nombre del contacto es necesario</span>
+        </div>
+        <div class="vx-col md:w-1/2 w-full mt-2">
+          <vs-input
+            type="email"
+            label="Email"
+            maxlength="90"
+            v-model="ceder.contactoEmailContato"
+            class="w-full"
+            name="contactoEmailContato"
+            v-validate="'required|email'"
+          />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('contactoEmailContato') == 'required'">Correo electrónico es obligatorio</span>
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('contactoEmailContato') == 'email'">Correo electrónico es incorrecto</span>
+        </div>
+
+        <div class="vx-col md:w-1/2 w-full">
+          <vs-input
+            label="Teléfono"
+            maxlength="12"
+            placeholder="569"
+            v-model="ceder.contactoTelefonoContacto"
+            class="w-full"
+            name="contactoTelefonoContacto"
+            v-validate="'required|numeric'" />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('contactoTelefonoContacto') == 'required'">Número de contacto es requerido</span>
         </div>
       </div>
-    </div>
-    <br />
-    <div align="center">
-      <div class="margin-bot">
-        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
-          Cesion realizada correctamente
-          <br>
-        </vs-alert>
-        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
-          <div v-if="error">
-            {{ error }}
-          </div>
-          <div v-else>
-            Error al realizar la operación, reintente o contacte a soporte
-          </div>
-          <br>
-        </vs-alert>
-      </div>
-    </div>
+
+    </form>
+
     <div align="right">
       <div>
-        <vs-button color="primary" type="filled" v-on:click="enviarCeder()">Si, Cedelo</vs-button>
-        <vs-button color="primary" type="border" v-on:click="cerrarVentana()">No, me arrepenti</vs-button>
+        <vs-button color="primary" type="filled" @click="enviarCeder">Ceder</vs-button>
       </div>
     </div>
   </div>
@@ -66,63 +127,142 @@
 <script>
 import modalStore from "@/store/modals/acciones";
 import clienteFebosAPI from "../../../../../servicios/clienteFebosAPI";
+import vSelect from "vue-select";
+import Datepicker from "vuejs-datepicker";
+import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
+import { Validator } from "vee-validate";
+import es from "vee-validate/dist/locale/es";
+
+Validator.localize("es", es);
+Validator.extend("validaRut", {
+  getMessage: (field) => field + " incorrecto",
+  validate: (value) => {
+    var esCorrecto = validaRUT(value);
+    return esCorrecto;
+  },
+});
 
 export default {
   name: "modalCeder",
-  computed: {
-    getData: {
-      get() {
-        return modalStore.state.data;
-      },
-    },
-  },
-  mounted() {
-    this.ceder.febosId = this.getData.febosId
+  mixins: [ TiposDteMixin ],
+  components: {
+    "vs-select": vSelect,
+    Datepicker,
   },
   data() {
     return {
       ceder: {
-        cesionarioRut: '',
-        cesionarioRazonSocial: '',
-        cesionarioDireccion: '',
-        cesionarioMail: '',
-        contactoNombreContacto: '',
-        contactoEmailContato: '',
-        contactoTelefonoContacto: '569',
+        cesionarioRut: null,
+        cesionarioRazonSocial: null,
+        cesionarioDireccion: null,
+        cesionarioMail: null,
+        contactoNombreContacto: null,
+        contactoEmailContato: null,
+        contactoTelefonoContacto: null,
         febosId: null
       },
       respuesta: null,
       error: null
     }
   },
+  computed: {
+    getData: {
+      get() {
+        return modalStore.state.data;
+      },
+    },
+    subtitulo: {
+      get() {
+        return "Emitida a " + this.getData.razonSocialReceptor + ", RUT " + this.getData.rutReceptor;
+      }
+    },
+    titulo: {
+      get() {
+        return this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento) + " Nº " + this.getData.folio;
+      }
+    },
+  },
+  mounted() {
+    this.ceder.febosId = this.getData.febosId
+  },
   methods: {
     cerrarVentana: function () {
       modalStore.commit("ocultarBitacora");
-      //this.confirmaCierre();
-      // this.alertaCierre();
     },
     enviarCeder() {
-      console.log("DATOS: ", this.ceder);
+      this.$validator.validateAll("formularioCeder").then((result) => {
+        if (result) {
+          this.__enviarCeder();
+        } else {
+          this.$vs.notify({
+            color: 'danger', title: 'Cesión de documento', text: 'Debe ingresar todos los datos de forma correcta'
+          });
+        }
+      });
+    },
+    __enviarCeder() {
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       clienteFebosAPI.post("/sii/dte/cesion", this.ceder).then((response) => {
-        console.log(response);
+        this.$vs.loading.close();
         if(response.data.codigo == 10) {
-          this.respuesta = true;
-          this.$vs.loading.close();
-        }else{
-          if (response.data.codigo == 162) {
-            this.error = response.data.mensaje
-          }
-          this.respuesta = false;
-          this.$vs.loading.close();
+          this.$vs.notify({
+            color: 'success', title: 'Cesión de documento', text: 'Documento cedido'
+          });
+          this.cerrarVentana();
+        } else {
+          this.$vs.notify({
+            color: "danger", title: "Cesión de documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+          });
         }
-      }).catch(() => {
-        this.respuesta = false;
+      }).catch((error) => {
+        console.log(error);
+        this.$vs.notify({
+          color: "danger", title: "Cesión de documento", text: "No fue posible procesar la cesión del documento", fixed: true
+        });
         this.$vs.loading.close();
       });
-    }
+    },
+    /* Validación Encabezado */
+    getError(par) {
+      let retorno = null;
+      const ret = this.errors.items.find(elemento => elemento.field == par);
+      if (ret !== undefined && retorno === null)  {
+        if (par == "cesionarioRut" && ret.rule == "validaRut")  {
+          return "rut";
+        }
+        if (par == "email" && ret.rule == "email") {
+          return "email";
+        }
+        if (ret.rule == "required") {
+          return "required";
+        }
+        console.log(ret);
+      }
+      return null;
+    },
   },
+
+
 };
+
+function validaRUT(rutCompleto) {
+  rutCompleto = rutCompleto.replace("‐", "-");
+  if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
+  var tmp = rutCompleto.split("-");
+  var digv = tmp[1];
+  var rut = tmp[0];
+  if (digv == "K") digv = "k";
+
+  return dv(rut) == digv;
+}
+
+function dv(T) {
+  var M = 0,
+    S = 1;
+  for (; T; T = Math.floor(T / 10)) S = (S + (T % 10) * (9 - (M++ % 6))) % 11;
+  return S ? S - 1 : "k";
+}
+
 </script>
 
 <style>

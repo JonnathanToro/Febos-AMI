@@ -75,7 +75,6 @@
       cargarComponenteAccion(accion){
         if (!this.componentes[accion]) {
            this.componentes[accion] = () => import(`@/febos/chile/dte/componentes/acciones/Accion${accion}.vue`);
-          //this.componentes[accion] = () => import(`@/febos/chile/dte/componentes/acciones/AccionGeneral.vue`);
         }
         return this.componentes[accion];
 
