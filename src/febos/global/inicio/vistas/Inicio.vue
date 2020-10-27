@@ -2,17 +2,20 @@
   <div>
     <vs-row>
       <vs-col vs-type="flex" vs-justify="left" vs-align="left" vs-w="6">
-        <vx-card title="Mi empresa" subtitle="Febos S.A." class="mr-2">
+        <vx-card title="Mi empresa" :subtitle="empresa.fantasia" class="mr-2" v-if="empresa">
           <vs-row>
-            <vs-col vs-w="12">Razón Social: <strong>Febos S.A.</strong></vs-col>
-          </vs-row>
-          <vs-row>
-            <vs-col vs-w="6">Nombre de Fantasía: <strong>Febos</strong></vs-col>
-            <vs-col vs-w="6">RUT: <strong>76.123.456-7</strong></vs-col>
+            <vs-col vs-w="3">Razón Social</vs-col>
+            <vs-col vs-w="9" style="font-weight: bolder;">{{ empresa.razonSocial }}</vs-col>
+            <vs-col vs-w="3">Nombre de fantasía</vs-col>
+            <vs-col vs-w="9" style="font-weight: bolder;">{{ empresa.fantasia }}</vs-col>
+            <vs-col vs-w="3">RUT</vs-col>
+            <vs-col vs-w="9" style="font-weight: bolder;">{{ empresa.iut }}</vs-col>
+            <vs-col vs-w="3" class="mt-3">Usuario</vs-col>
+            <vs-col vs-w="9" class="mt-3">{{ usuario.alias }}</vs-col>
           </vs-row>
         </vx-card>
       </vs-col>
-      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+      <!--<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
         <vx-card title="Novedades" subtitle="Que hay de nuevo en Febos?" class="ml-2">
           <vs-list>
             <vs-list-item icon="check" title="Snickerdoodle" subtitle="An excellent companion"></vs-list-item>
@@ -21,11 +24,11 @@
             <vs-list-item icon="verified_user" title="Veronika Ossi" subtitle="Has not watched anything recently"></vs-list-item>
           </vs-list>
         </vx-card>
-      </vs-col>
-    </vs-row>
-    <vs-row>
-      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-        <vx-card title="Mis módulos" class="mt-4">
+      </vs-col>-->
+    <!--</vs-row>
+    <vs-row>-->
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+        <vx-card title="Mis módulos" class="ml-2">
           <div class="container">
           <div class="centrador">
             <div class="modulo mr-5 mt-5 pt-5" v-for="modulo in modulos" :key="modulo.nombre" v-if="modulo.visible && modulo.habilitado" v-on:click="seleccionarModulo(modulo.nombre)">
@@ -54,8 +57,10 @@
     },
     data() {
       return {
+        empresa: null, usuario: null,
         modulos:[
           {nombre:'facturaElectronica',descripcion:"Factura Electrónica",tooltip:"",icono:"description",habilitado:true,visible:true},
+          /*
           {nombre:'aprobaciones',descripcion:"Aprobaciones",tooltip:"",icono:"done_all",habilitado:true,visible:true},
           {nombre:'escritorioDigital',descripcion:"Escritorio Digital",tooltip:"",icono:"all_inbox",habilitado:false,visible:true},
           {nombre:'compras',descripcion:"Gestión de Compras",tooltip:"",icono:"shopping_cart",habilitado:false,visible:true},
@@ -63,6 +68,7 @@
           {nombre:'gastos',descripcion:"Rendición de Gastos",tooltip:"",icono:"receipt",habilitado:false,visible:true},
           {nombre:'partners',descripcion:"Partners",tooltip:"",icono:"widgets",habilitado:false,visible:true},
           {nombre:'configuracion',descripcion:"Configuración",tooltip:"",icono:"settings",habilitado:false,visible:true},
+          */
         ]
       }
     },
@@ -71,7 +77,12 @@
       ...mapState("Menus", {moduloActual: "moduloActual"})
     },
     mounted() {
-
+      var data = JSON.parse(
+        localStorage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}` )
+      );
+      this.empresa = data.Empresas.empresa;
+      this.usuario = data.Usuario;
+      console.log(data);
     },
     methods: {
       ...mapActions("Menus", {seleccionarModulo: "seleccionarModulo"})

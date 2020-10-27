@@ -13,21 +13,21 @@
       </div>
       <br />
     </div>
-    <br />
-    <div class="margin-bot">
-        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
-          Modificación realizada correctamente
-          <br>
-        </vs-alert>
-        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
-          Error al realizar la operación, reintente o contacte a soporte
-          <br>
-        </vs-alert>
-    </div>
+<!--    <br />-->
+<!--    <div class="margin-bot">-->
+<!--        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">-->
+<!--          Modificación realizada correctamente-->
+<!--          <br>-->
+<!--        </vs-alert>-->
+<!--        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">-->
+<!--          Error al realizar la operación, reintente o contacte a soporte-->
+<!--          <br>-->
+<!--        </vs-alert>-->
+<!--    </div>-->
     <div align="right">
-      <div>
-        <vs-button color="primary" type="filled" v-on:click="modificarTipoVenta()">Si, Modificalo</vs-button>
-        <vs-button color="primary" type="border" v-on:click="cerrarVentana">No, me arrepenti</vs-button>
+      <div style="text-align: right">
+        <vs-button color="primary" type="filled" v-on:click="modificarTipoVenta()">Modificar</vs-button>
+<!--        <vs-button color="primary" type="border" v-on:click="cerrarVentana">No, me arrepenti</vs-button>-->
       </div>
     </div>
   </div>
@@ -82,31 +82,44 @@ export default {
   methods: {
     cerrarVentana: function () {
       modalStore.commit("ocultarBitacora");
-      //this.confirmaCierre();
-      // this.alertaCierre();
     },
     modificarTipoVenta() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-
-      //adjuntar objeto
+      this.$vs.loading({ color: "#000000", text: "Espera un momento por favor" });
       this.datos.febosId = this.getData.febosId;
       this.datos.tipoTransaccionVenta = this.tipo.code;
-          //tipoTransaccionCompra: 0
 
       clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.datos).then((response) => {
-        console.log(response.data);
-        if(response.data.codigo == 10) {
-          this.respuesta = true;
-          this.$vs.loading.close();
-        }else{
-          this.respuesta = false;
-          this.$vs.loading.close();
-        }
         this.$vs.loading.close();
+        if(response.data.codigo == 10) {
+          this.updateDTEs();
+          this.$vs.notify({
+            color: 'success', title: 'Modificar Tipo Venta', text: 'Tipo de venta actualizada'
+          });
+          this.cerrarVentana();
+        }else{
+          this.$vs.notify({
+            color: "danger", title: "Modificar Tipo Venta", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+          });
+        }
       }).catch(() => {
-        this.respuesta = false;
+        this.$vs.notify({
+          color: "danger", title: "Modificar Tipo Venta", text: "No fue posible modificar el tipo de compra", fixed: true
+        });
         this.$vs.loading.close();
       });
+    },
+    updateDTEs()  {
+      var data = JSON.parse(
+        localStorage.getItem(
+          `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
+        )
+      );
+      data.Dtes.documentos.forEach(element => {
+        if (element.febosId == this.datos.febosId) {
+          element.tpoTraVenta = this.datos.tipoTransaccionVenta;
+        }
+      });
+      localStorage.setItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`, JSON.stringify(data));
     }
   },
   components: {

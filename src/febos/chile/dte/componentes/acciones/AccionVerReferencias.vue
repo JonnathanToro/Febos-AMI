@@ -38,15 +38,32 @@ export default {
   methods: {
     ejecutarAccion() {
       console.log("EJECUTANDO REFERENCIAS", this.documento);
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalVerReferencias.vue`);
+
       //cambiar lo de bitacora
         clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/referencias").then((response) => {
-          modalStore.commit("setTitulo", "Ver Referencias Documento N°"+this.documento.folio);
-          modalStore.commit("mostrarBitacoraFull", modalComponente);
-          modalStore.commit("setData", response.data);
           this.$vs.loading.close();
+
+          if (response.data.referenciadosTipoDnt.length == 0 &&
+              response.data.referenciadosTipoDte.length == 0 &&
+              response.data.referenciasTipoDnt.length == 0 &&
+              response.data.referenciasTipoDte.length == 0) {
+            modalStore.commit("mostrarBitacora", modalComponente);
+          } else {
+            modalStore.commit("mostrarBitacoraFull", modalComponente);
+
+          }
+
+          modalStore.commit("setTitulo", "Ver Referencias Documento N°"+this.documento.folio);
+          modalStore.commit("setData", response.data);
           console.log(response);
+        }).catch((error) => {
+          this.$vs.loading.close();
+          console.log(error);
+          this.$vs.notify({
+            color: 'danger', title: 'Ver Referencias', text: 'No fue posible acceder a plataforma'
+          });
         })
 
     },

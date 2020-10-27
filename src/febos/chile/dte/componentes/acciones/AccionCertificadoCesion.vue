@@ -16,7 +16,7 @@
 <script>
 import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
 import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+// import modalStore from "../../../../../store/modals/acciones";
 
 export default {
   name: "AccionCertificadoCesion",
@@ -37,22 +37,29 @@ export default {
     ejecutarAccion() {
       console.log("EJECUTANDO DESCARGAR CESION", this.documento);
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCertificadoCesion.vue`);
-      //cambiar lo de bitacora
+      //const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCertificadoCesion.vue`);
       clienteFebosAPI.get("/sii/dte/cesion/consulta").then((response) => {
+        this.$vs.loading.close();
+        console.log(response);
         if(response.data.imagenLink) {
           window.open(response.data.imagenLink);
-          this.$vs.loading.close();
         }else{
-          modalStore.commit("setTitulo", "Certificado de Cesión");
+          this.$vs.notify({
+            color: 'danger', title: 'Certificado de sesión', text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+          });
+/*          modalStore.commit("setTitulo", "Certificado de Cesión");
           modalStore.commit("mostrarBitacora", modalComponente);
-          modalStore.commit("setData", {tipo: "El documento requerido no existe"});
-          this.$vs.loading.close();
+          modalStore.commit("setData", {tipo: "El documento requerido no existe"});*/
+
         }
       }).catch(() => {
-        modalStore.commit("setTitulo", "Certificado de Cesión");
+        this.$vs.notify({
+          color: 'danger', title: 'Certificado de sesión', text: "No fue posible realizar la consulta"
+        });
+
+/*        modalStore.commit("setTitulo", "Certificado de Cesión");
         modalStore.commit("mostrarBitacora", modalComponente);
-        modalStore.commit("setData", {tipo: "Ocurrio un error, reintente mas tarde o contacte a soporte"});
+        modalStore.commit("setData", {tipo: "Ocurrio un error, reintente mas tarde o contacte a soporte"});*/
         this.$vs.loading.close();
       });
 

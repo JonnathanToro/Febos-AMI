@@ -1,68 +1,56 @@
 <template>
   <div>
-    <div class="mt-5">
-      <div>
-        <h3>Formulario de Envío</h3>
-        <br />
-      </div>
+    <form data-vv-scope="envioDTE">
       <div class="centerx">
         <div class="vx-row mb-2">
           <div class="vx-col w-full">
             <vs-input
-              color="danger"
-              label-placeholder="Destinatario (ej: msalas@gmail.com) *"
+              label="Correo del destinatario"
+              maxlength="100"
+              type="email"
               v-model="envio.destinatario"
-            />
+              class="w-full"
+              name="destinatario"
+              v-validate="'required|email'"/>
+            <span
+              class="text-danger text-sm form-error-message"
+              v-if="getError('destinatario')" >Debe ingresar un email válido</span>
           </div>
         </div>
-        <ul class="demo-alignment">
-          <li>
+        <div class="vx-row mb-5">
+          <div class="vx-col md:w-1/3 w-full">
             <vs-checkbox color="danger" v-model="envio.adjuntarXml">Adjuntar XML</vs-checkbox>
-          </li>
-        </ul>
-        <ul class="demo-alignment">
-          <li>
+          </div>
+          <div class="vx-col md:w-1/3 w-full">
             <vs-checkbox color="danger" v-model="envio.adjuntarPdf">Adjuntar PDF</vs-checkbox>
-            <p>
-              <small>(Debe seleccionar al menos uno) *</small>
-            </p>
-          </li>
-        </ul>
-        <ul class="demo-alignment">
-          <li>
+          </div>
+          <div class="vx-col md:w-1/3 w-full">
             <vs-checkbox color="danger" v-model="envio.recibirCopia">Recibir Copia</vs-checkbox>
-          </li>
-        </ul>
-        <br />
-        <div class="vx-row mb-2">
+          </div>
+        </div>
+        <div class="vx-row mb-2 mt-2">
           <div class="vx-col w-full">
             <vs-input
-              color="danger"
-              label-placeholder=" Con Copia a Otros (ej: jperez@gmail.com,pjdiego@empresa.com,supervisor@mail.com)"
+              label="Copias (correos electrónicos separados por coma)"
+              maxlength="150"
+              type="email"
               v-model="envio.copias"
-            />
+              class="w-full"
+              name="copias"/>
           </div>
         </div>
         <br />
         <div>
-          <vs-textarea label="Mensaje" v-model="envio.mensaje" />
+          <vs-textarea label="Mensaje" v-model="envio.mensaje" name="mensaje" v-validate="'required|min:10'" />
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('mensaje')" >Debe definir un mensaje de al menos 10 caracteres</span>
         </div>
       </div>
-    </div>
-    <div align="center">
-      <div>
-        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
-          DTE Enviada correctamente
-        </vs-alert>
-        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
-          La DTE no ha sido enviada, verifique el destinatario y que el mensaje tenga un largo minimo de 10 caracteres.
-        </vs-alert>
-      </div>
-    </div>
+    </form>
     <div align="right">
       <div>
-        <vs-button  color="primary" type="filled submit" v-on:click="enviarDte">Si, envialo</vs-button>
-        <vs-button color="primary" type="border" v-on:click="cerrarVentana">No, me arrepenti</vs-button>
+        <vs-button  color="primary" type="filled submit" v-on:click="enviarDte">Enviar</vs-button>
       </div>
     </div>
   </div>
@@ -98,44 +86,67 @@ export default {
     console.log("OBJETO", this.getData.febosId);
   },
   methods: {
+    getError(par) {
+      let retorno = null;
+      const ret = this.errors.items.find(elemento => elemento.field == par);
+      if (par == "copias") console.log(ret);
+      if (ret !== undefined && retorno === null)  {
+        if (par == "email" && ret.rule == "email") {
+          return "email";
+        }
+        if (ret.rule == "required") {
+          return "required";
+        }
+      }
+      return null;
+    },
     cerrarVentana: function () {
       modalStore.commit("ocultarBitacora");
-      //this.confirmaCierre();
-      // this.alertaCierre();
     },
-    async enviarDte(){
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-
-      if(this.envio.adjuntarXml == true){
-        this.envio.adjuntarXml = "si";
-      }else{
-        this.envio.adjuntarXml = "no";
-      }
-      if(this.envio.adjuntarPdf == true){
-        this.envio.adjuntarPdf = "si";
-      }else{
-        this.envio.adjuntarPdf = "no";
-      }
-      if(this.envio.recibirCopia == true){
-        this.envio.recibirCopia = "si";
-      }else{
-        this.envio.recibirCopia = "no";
-      }
-
-       await clienteFebosAPI.post("/documentos/" + this.getData.febosId + "/envio", this.envio).then((response) => {
-
-        if(response.data.codigo == 10) {
-          this.respuesta = true;
-        }else{
-          this.respuesta = false;
+    enviarDte() {
+      this.$validator.validateAll("envioDTE").then((result) => {
+        if (result) {
+          this.__enviarDte();
+        } else {
+          this.$vs.notify({
+            color: "danger", title: "Envío DTE", text: "Debe ingresar todos los datos requeridos"
+          });
         }
+      }).catch((error) => {
+        console.log(error);
+      })
+    },
+
+    __enviarDte() {
+
+      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
+      this.envio.adjuntarXml = (this.envio.adjuntarXml == true) ? "si" : "no";
+      this.envio.adjuntarPdf = (this.envio.adjuntarPdf == true) ? "si" : "no";
+      this.envio.recibirCopia = (this.envio.recibirCopia == true) ? "si" : "no";
+      clienteFebosAPI.post("/documentos/" + this.getData.febosId + "/envio", this.envio).then((response) => {
+        this.$vs.loading.close();
+        if (response.data.codigo == 10) {
+          this.$vs.notify({
+            color: 'success', title: 'Envío DTE', text: 'Información de pago actualizada correctamente.'
+          });
+          this.cerrarVentana();
+        } else {
+          this.$vs.notify({
+            color: "danger", title: "Envío DTE", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+          });
+
+        }
+      }).catch((error) => {
+        console.log(error);
+        this.$vs.notify({
+          color: "danger", title: "Envío DTE", text: "No fue posible enviar el documento", fixed: true
+        });
         this.$vs.loading.close();
       });
 
-      this.envio.adjuntarXml = false;
-      this.envio.adjuntarPdf = true;
-      this.envio.recibirCopia = true;
     }
+
+
   },
 };
 </script>

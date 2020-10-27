@@ -1,199 +1,84 @@
 <template>
   <div>
-    <div v-if="!modificar">
-      <h4 class="margin-bot">Información de pago</h4>
-      <vs-row class="margin-bot">
-        <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px; height: 92px;">
-            <div slot="header">
-              <span>
-                <b>
-                  Tipo de pago
-                </b>
-              </span>
-            </div>
-            <div>
-              <span>{{ tipo_c.label }}</span>
-            </div>
-          </vs-card>
-        </vs-col>
-        <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px; height: 92px;">
-            <div slot="header">
-              <span>
-                <b>
-                  Medio de pago
-                </b>
-              </span>
-            </div>
-            <div>
-              <span>{{ medio_c.label }}</span>
-            </div>
-          </vs-card>
-        </vs-col>
-        <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px; height: 92px;">
-            <div slot="header">
-              <span>
-                <b>
-                  Monto
-                </b>
-              </span>
-            </div>
-            <div v-if="elemento.monto !== ''">
-              <span>{{ elemento.monto }}</span>
-            </div>
-            <div v-else>
-              Sin Información
-            </div>
-          </vs-card>
-        </vs-col>
-      </vs-row>
-      <vs-row class="margin-bot">
-        <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px; height: 92px;">
-            <div slot="header">
-              <span>
-                <b>
-                  Lugar
-                </b>
-              </span>
-            </div>
-            <div v-if="elemento.lugar !== ''">
-              <span>{{ elemento.lugar }}</span>
-            </div>
-            <div v-else>
-              Sin Información
-            </div>
-          </vs-card>
-        </vs-col>
-        <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px; height: 92px;">
-            <div slot="header">
-              <span>
-                <b>
-                  Fecha
-                </b>
-              </span>
-            </div>
-            <div v-if="elemento.updated !== '' && elemento.updated !== 'Invalid date'">
-              <span>{{ elemento.updated }}</span>
-            </div>
-            <div v-else>
-              Sin Información
-            </div>
-          </vs-card>
-        </vs-col>
-        <vs-col  vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
-          <vs-card style="margin: 5px; height: 92px;">
-            <div slot="header">
-              <span>
-                <b>
-                  Comentario
-                </b>
-              </span>
-            </div>
-            <div v-if="elemento.comentario && elemento.comentario !== ''">
-              <span>{{ elemento.comentario }}</span>
-            </div>
-            <div v-else>
-              Sin Información
-            </div>
-          </vs-card>
-        </vs-col>
-      </vs-row>
-      <div style="width: 100%; margin-top: 15px;">
-        <div align="right">
-          <vs-button color="primary" style="margin-right: 10px;" type="filled" v-on:click="modificar = true">Modifícame</vs-button>
-          <vs-button color="primary" type="border" v-on:click="cierrame">Cerrar</vs-button>
+    <h4>{{ titulo }}</h4>
+    <label style="color: #aaaaaa">{{ subtitulo }}</label>
+    <vs-row v-if="!getPago.id && !modificar">
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12" style="margin-top: 20px; margin-bottom: 20px;">
+        Sin información de pago
+      </vs-col>
+    </vs-row>
+    <form data-vv-scope="informacionPago" style="width: 100%; margin-top: 30px; min-height: 400px;">
+      <div v-if="getPago.id || modificar">
+
+        <div class="vx-row">
+          <div class="vx-col w-full emu-label">Estado de pago</div>
+          <div class="vx-col w-full">
+            <vs-select v-model="tipo" :options="estadosPago" :disabled="!modificar" />
+          </div>
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('tipo') && modificar" >Debe indicar el tipo de pago</span>
         </div>
+        <div class="vx-row mt-2">
+          <div class="vx-col w-full emu-label">Medio de pago</div>
+          <div class="vx-col w-full">
+            <vs-select name="medio" v-model="medio" :options="mediosPago" style="width: 100%;" :disabled="!modificar" />
+          </div>
+          <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('medio') && modificar" >Debe indicar el medio de pago</span>
+        </div>
+        <div class="vx-row mt-2">
+          <div class="vx-col md:w-1/2 w-full">
+            <div for="" class="vs-input--label" style="width: 100% !important; display: block; margin-top: 4px;">Fecha</div>
+            <div class="vs-con-input" style="width: 100% !important; display: block">
+              <datepicker name="fecha" :format="format" placeholder="" v-model="fecha" style="width: 90%" monday-first :language="es" :disabled="!modificar"></datepicker>
+              <span
+                class="text-danger text-sm form-error-message"
+                v-if="getError('fecha') && modificar" >Fecha de pago es requerida</span>
+            </div>
+          </div>
+          <div class="vx-col md:w-1/2 w-full">
+            <vs-input
+              label="Monto"
+              maxlength="10"
+              type="number"
+              v-model="pago.monto"
+              class="w-full"
+              name="monto" :disabled="!modificar"
+              v-validate="'required|numeric'"/>
+            <span
+            class="text-danger text-sm form-error-message"
+            v-if="getError('monto') && modificar" >Debe ingresar el monto</span>
+          </div>
+          <div class="vx-col w-full">
+            <vs-input
+              label="Lugar"
+              maxlength="60"
+              type="text"
+              v-model="pago.lugar"
+              class="w-full"
+              name="lugar" :disabled="!modificar"
+              v-validate="'max:60'"
+            />
+          </div>
+          <div class="vx-col w-full mt-3">
+            <vs-textarea label="Comentarios" v-model="pago.comentario" :disabled="!modificar" />
+          </div>
+        </div>
+      </div>
+    </form>
+    <div v-if="!modificar">
+      <div style="text-align: right;">
+        <vs-button color="primary" style="margin-right: 10px;" type="border" v-on:click="modificar = true">Modifícame</vs-button>
       </div>
     </div>
     <div v-if="modificar">
-      <div v-for="elemento in getData.infoPago" :key="elemento.id">
-        <!-- formulario -->
-        <h4>Información de pago</h4>
-        <br />
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <span>Estado de pago:</span>
-            <v-select
-              v-model="tipo"
-              :options="estados_de_pago"
-              placeholder="Estado de pago"
-            />
-          </div>
-        </div>
-        <br />
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <span>Medio de pago:</span>
-            <v-select
-              v-model="medio"
-              :options="medios_de_pago"
-              placeholder="Medio de Pago"
-            />
-          </div>
-        </div>
-        <br/>
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <span>Monto:</span>
-            <vs-input
-              type="number"
-              class="w-full"
-              v-model="elemento.monto"
-              min="0"
-            />
-          </div>
-        </div>
-        <br/>
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <span>Lugar:</span>
-            <vs-input class="w-full" v-model="elemento.lugar" />
-          </div>
-        </div>
-        <br />
-        <div class="vx-row mb-2">
-          <div class="vx-col w-full">
-            <span>Fecha:</span>
-            <datepicker :format="format" placeholder="" v-model="elemento.updated"></datepicker>
-          </div>
-        </div>
-        <br/>
-        <div class="vx-row mb-6">
-          <div class="vx-col w-full">
-            <span>Información adicional:</span>
-            <vs-input
-              class="w-full"
-              v-model="elemento.comentario"
-            />
-          </div>
-        </div>
-        <div align="center">
-          <div class="margin-bot">
-            <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
-              Modificación realizada correctamente
-            </vs-alert>
-            <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
-              Error, al realizar la operación, reintente o contacte a soporte.
-            </vs-alert>
-          </div>
-        </div>
-        <div class="vx-row">
-          <div class="vx-col w-full">
-            <vs-button class="mr-3 mb-2" v-on:click="tmpGuardar()">Guárdame</vs-button>
-            <vs-button
-              color="warning"
-              type="border"
-              class="mb-2"
-              v-on:click="cierrame"
-            >Cancelar</vs-button>
-          </div>
-        </div>
+      <div style="text-align: right;">
+        <vs-button color="primary" style="margin-right: 10px;" type="filled" @click="validarPago">Actualizar</vs-button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -202,21 +87,60 @@
 import modalStore from "@/store/modals/acciones";
 import vSelect from "vue-select";
 import Datepicker from "vuejs-datepicker";
+import { es } from 'vuejs-datepicker/dist/locale'
 import moment from 'moment';
+import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
 import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
 
 export default {
   name: "modalInformacionPago",
   components: {
-    "v-select": vSelect,
+    "vs-select": vSelect,
     Datepicker,
   },
-  props: {
-    documento: {
-      type: Object
-    }
-  },
+  mixins: [ TiposDteMixin ],
+  props: {},
   computed: {
+    subtitulo: {
+      get() {
+        var retorno = "";
+        if (this.getDocumento.tpoTraVenta == 0) {
+          retorno = "Recebida desde " + this.getDocumento.razonSocialEmisor + ", RUT " + this.getDocumento.rutEmisor;
+        } else {
+          retorno = "Emitida a " + this.getDocumento.razonSocialReceptor + ", RUT " + this.getDocumento.rutReceptor;
+        }
+        return retorno;
+      }
+    },
+    titulo: {
+      get() {
+        return this.traducitTipoDocumentoEnPalabras(this.getDocumento.tipoDocumento) + " Nº " + this.getDocumento.folio;
+      }
+    },
+    getDocumento: {
+      get() {
+        return this.getData.documento;
+      }
+    },
+    getPago:  {
+      get() {
+        if (this.getData.pago.length > 0) {
+          return {  id: this.getData.pago[0].id,
+                    fecha: this.getData.pago[0].fecha,
+                    updated: this.getData.pago[0].updated,
+                    lugar: this.getData.pago[0].lugar,
+                    medio: this.getData.pago[0].medio,
+                    monto: this.getData.pago[0].monto,
+                    tipo: this.getData.pago[0].tipo,
+                    comentario: this.getData.pago[0].comentario
+          }
+        }
+        return this.pago;
+      },
+      set(val) {
+        this.pago = val;
+      }
+    },
     getData: {
       get() {
         return modalStore.state.data;
@@ -224,27 +148,25 @@ export default {
     },
     tipo: {
       get() {
-        return this.estados_de_pago.find(element => element.code == this.elemento.tipo);
+        return this.estadosPago.find(element => element.code == this.pago.tipo);
       },
       set(val) {
-        this.elemento.tipo = val.code;
+        this.pago.tipo = val.code;
       }
     },
-  medio: {
-    get(){
-      return this.medios_de_pago.find(element => element.code == this.elemento.medio);
+    medio: {
+      get(){
+        return this.mediosPago.find(element => element.code == this.pago.medio);
+      },
+      set(val) {
+        this.pago.medio = val.code;
+      }
     },
-    set(val) {
-          this.elemento.medio = val.code;
-    }
-  }
-},
+  },
   data() {
     return {
-      vista: true,
-      modificar: false,
-      format: "dd-MM-yyyy",
-      estados_de_pago: [
+      format: "dd/MM/yyyy",
+      estadosPago: [
         { code: 0, label: "Sin Información" },
         { code: 1, label: "Contabilizado" },
         { code: 2, label: "Enviado a Pago" },
@@ -256,7 +178,7 @@ export default {
         { code: 8, label: "En preparación de pago" },
         { code: 9, label: "En nómina de pago" },
       ],
-      medios_de_pago: [
+      mediosPago: [
         { code: '', label: "Sin gestión" },
         { code: 'CH', label: "Cheque" },
         { code: 'CF', label: "Cheque a Fecha" },
@@ -268,50 +190,74 @@ export default {
         { code: 'CO', label: "Confirming" },
         { code: 'OT', label: "Otro" },
       ],
-      elemento: {},
-      respuesta: null,
-      tipo_c: '',
-      medio_c: ''
+      pago: { id: null, fecha: null, updated: null, lugar: null, medio: null, monto: null, tipo: null, comentario: null },
+      fecha: moment().format('YYYY-MM-DD'),
+      modificar: false,
+      es: es
     };
   },
   mounted()  {
-    this.elemento = this.getData.infoPago[0];
-    this.tipo_c = this.tipo;
-    this.medio_c = this.medio;
-    if( this.elemento.updated !== 'Invalid date' && this.elemento.updated !== '' ) {
-      this.elemento.updated = moment(this.elemento.updated).format('DD-MM-YYYY');
-    }else{
-      this.elemento.updated = '';
-    }
-
-    console.log("GET DATA: ",this.getData);
+    this.pago = modalStore.state.data.pago[0];
+    this.fecha = this.pago.fecha;
   },
   methods: {
-    tmpGuardar()  {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
+    validarPago() {
+        this.$validator.validateAll("informacionPago").then((result) => {
+          if (result) {
 
-      this.elemento.updated = moment(this.elemento.updated).format('YYYY-MM-DD');
+            this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
+            this.pago.fecha = moment(this.fecha).format('YYYY-MM-DD');
+            this.pago.updated = this.pago.fecha;
 
-      console.log("ANTES DE ENVIAR: ",this.elemento);
-      clienteFebosAPI.post("/documentos/" + this.getData.febosId + "/pagos", this.elemento).then((response) => {
-        console.log(response);
-        if(response.data.codigo == 10) {
-          this.respuesta = true;
-          this.$vs.loading.close();
-        }else{
-          this.respuesta = false;
-          this.$vs.loading.close();
-        }
-      });
+            console.log(this.getDocumento);
+            console.log(this.pago);
+
+            clienteFebosAPI.post("/documentos/" + this.getDocumento.febosId + "/pagos", this.pago).then((response) => {
+              this.$vs.loading.close();
+              if(response.data.codigo == 10) {
+                this.$vs.notify({
+                  color: 'success', title: 'Información de pago', text: 'Información de pago actualizada correctamente.'
+                });
+                this.cerrarVentana();
+              } else {
+                this.$vs.notify({
+                  color: "danger", title: "Información de pago", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+                });
+              }
+            }).catch((error) => {
+              console.log(error);
+              this.$vs.notify({
+                color: "danger", title: "Información de pago", text: "No fue posible procesar la información de pago", fixed: true
+              });
+              this.$vs.loading.close();
+            });
+
+          } else {
+            console.log(result);
+          }
+        });
     },
     cerrarVentana: function () {
       modalStore.commit("ocultarBitacora");
-      this.confirmaCierre();
-      //this.alertaCierre();
+      // this.confirmaCierre();
     },
     cierrame() {
       modalStore.commit("ocultarBitacora");
     },
+
+    /* Validación Encabezado */
+    getError(par) {
+      let retorno = null;
+      const ret = this.errors.items.find(elemento => elemento.field == par);
+      if (ret !== undefined && retorno === null)  {
+        if (ret.rule == "required") {
+          return "required";
+        }
+        console.log(ret);
+      }
+      return null;
+    },
+
   },
 
 };
@@ -320,5 +266,9 @@ export default {
 <style>
 .margin-bot{
   margin-bottom: 15px;
+}
+.emu-label  {
+  font-size: 0.85rem;
+  padding-left: 5px;
 }
 </style>
