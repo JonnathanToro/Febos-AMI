@@ -1,12 +1,12 @@
 <template>
   <div>
-    <vs-alert title="Error en la descarga" v-if="getData.codigo !== 10">
-      Error al tratar de realizar la consulta al SII
-      <br>
-    </vs-alert>
-    <div v-else>
-      <span>SI EXISTE EL DOC</span>
+    <div v-if="getData.codigo == 10">
+      <b>Glosa SII: </b> {{ getData.glosaSii }}
     </div>
+    <div style="color: red" v-else>
+      No fue posible obtener la información.
+    </div>
+
   </div>
 </template>
 
@@ -27,7 +27,11 @@ export default {
     };
   },
   mounted() {
-    console.log("CONSULTAR ESTADO SII: ", this.getData);
+    if (this.getData.codigo != 10)  {
+      this.$vs.notify({
+        color: "danger", title: "Estado SII", text: this.getData.mensaje + "<br/><b>Seguimiento: </b>" + this.getData.seguimientoId, fixed: true
+      });
+    }
   }
 };
 </script>

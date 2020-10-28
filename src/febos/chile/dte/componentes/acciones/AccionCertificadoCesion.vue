@@ -35,12 +35,9 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO DESCARGAR CESION", this.documento);
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      //const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCertificadoCesion.vue`);
       clienteFebosAPI.get("/sii/dte/cesion/consulta?febosId=" + this.documento.febosId).then((response) => {
         this.$vs.loading.close();
-        console.log(response);
         if(response.data.imagenLink) {
           window.open(response.data.imagenLink);
         }else{

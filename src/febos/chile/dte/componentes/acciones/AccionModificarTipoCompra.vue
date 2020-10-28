@@ -33,18 +33,12 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO MODFVENTA", this.documento);
       modalStore.commit("mostrarLoading");
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalModificarTipoCompra.vue`);
- //     clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/bitacora?pagina=1&filas=15").then((response) => {
         modalStore.commit("setTitulo", "Modificar Tipo de Compra");
-
+        modalStore.commit("febosId", this.documento.febosId);
         modalStore.commit("setData", this.documento);
         modalStore.commit("mostrarBitacora", modalComponente);
-        //console.log(response);
-
-  //      }).catch(() => {
-   //     })
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

@@ -33,7 +33,6 @@ export default {
   },
   mounted() {
     this.documento = this.getData;
-    console.log("DOCUMENTO: ", this.documento);
   },
   methods: {
     cerrarVentana: function () {

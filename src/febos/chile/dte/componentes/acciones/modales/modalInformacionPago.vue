@@ -209,8 +209,6 @@ export default {
             this.pago.fecha = moment(this.fecha).format('YYYY-MM-DD');
             this.pago.updated = this.pago.fecha;
 
-            console.log(this.getDocumento);
-            console.log(this.pago);
 
             clienteFebosAPI.post("/documentos/" + this.getDocumento.febosId + "/pagos", this.pago).then((response) => {
               this.$vs.loading.close();
@@ -232,8 +230,6 @@ export default {
               this.$vs.loading.close();
             });
 
-          } else {
-            console.log(result);
           }
         });
     },
@@ -253,7 +249,6 @@ export default {
         if (ret.rule == "required") {
           return "required";
         }
-        console.log(ret);
       }
       return null;
     },

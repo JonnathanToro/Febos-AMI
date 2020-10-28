@@ -35,19 +35,17 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO DESCARGAR AEC", this.documento);
       modalStore.commit("mostrarLoading");
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalDescargarAec.vue`);
-      //cambiar lo de bitacora
       clienteFebosAPI.get("/sii/dte/cesion/" + this.documento.febosId + "/&incrustar=no").then((response) => {
-      modalStore.commit("setTitulo", " ");
-      modalStore.commit("mostrarBitacora", modalComponente);
-      modalStore.commit("setData", response.data);
-      
-      setTimeout(()=> {
-        modalStore.commit("ocultarBitacora");
-        window.open(response.data.urlArchivoDescargado);
-      }, 2000);
+        modalStore.commit("setTitulo", " ");
+        modalStore.commit("mostrarBitacora", modalComponente);
+        modalStore.commit("setData", response.data);
+
+        setTimeout(()=> {
+          modalStore.commit("ocultarBitacora");
+          window.open(response.data.urlArchivoDescargado);
+        }, 2000);
 
       }).catch(() => {
       })

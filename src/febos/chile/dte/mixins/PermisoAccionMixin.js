@@ -1,6 +1,11 @@
 export default {
   data() {
-    return {}
+    return {
+      usuarioPermisos: null
+    }
+  },
+  created() {
+    console.log("permiso created");
   },
   methods: {
     _tienePermiso(permiso){

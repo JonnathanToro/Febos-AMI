@@ -29,14 +29,13 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO CONSULTA ESTADO SII: ", this.documento);
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalConsultarEstadoSii.vue`);
-        clienteFebosAPI.get("/sii/dte/consulta", {febosId: this.documento.febosId}).then((response) => {
+        clienteFebosAPI.get("/sii/dte/consulta?febosId=" + this.documento.febosId).then((response) => {
           modalStore.commit("setTitulo","Consultar Estado Sii de la factura electronica #"+this.documento.folio);
           modalStore.commit("mostrarBitacora", modalComponente);
+          modalStore.commit("febosId", this.documento.febosId);
           modalStore.commit("setData", response.data);
-          console.log("RESPUESTA SII: ", response);
           this.$vs.loading.close();
         });
     },

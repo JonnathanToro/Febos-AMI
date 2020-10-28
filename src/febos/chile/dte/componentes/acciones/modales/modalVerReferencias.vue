@@ -100,8 +100,6 @@ export default {
     this.datas = this.getData;
   },
   mounted() {
-
-    console.log("DATA COMPLETA: ", this.datas);
   },
   data() {
     return {

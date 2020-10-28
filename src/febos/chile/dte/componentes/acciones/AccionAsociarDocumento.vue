@@ -37,9 +37,7 @@ export default {
   methods: {
     ejecutarAccion() {
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      console.log("EJECUTANDO ASOCIAR DOCUMENTO", this.documento);
       clienteFebosAPI.get('/documentos/dnt').then((response) => {
-        console.log("RESPUESTA DOC DNT: ",response);
         const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalAsociarDocumento.vue`);
         modalStore.commit("setTitulo", "Asociar Documento");
         modalStore.commit("mostrarBitacoraFull", modalComponente);

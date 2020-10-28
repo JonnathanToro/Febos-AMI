@@ -116,7 +116,6 @@ export default {
     this.flujo.documento.descripcion  = 'DTE - '+this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento)+' # '+this.getData.folio+' E: '+this.getData.rutEmisor+' '+this.getData.razonSocialEmisor+' R: '+this.getData.rutReceptor+' '+this.getData.razonSocialReceptor
 
     await clienteFebosAPI.get('/aprobaciones').then((response) => {
-      console.log("LISTADO APROBACIONES: ", response);
       if (response.data.codigo == 10 && response.data.aprobaciones.length < 1) {
         this.habilitado = true;
         this.$vs.loading.close();
@@ -136,7 +135,6 @@ export default {
       modalStore.commit("ocultarBitacora");
     },
     enviar() {
-      console.log("Datos enviados: ",this.flujo);
     }
   },
   components: {

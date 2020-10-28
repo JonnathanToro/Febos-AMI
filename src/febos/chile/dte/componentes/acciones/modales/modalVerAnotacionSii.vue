@@ -123,21 +123,6 @@ export default {
           color: "danger", title: "Ver anotaciones SII", text: "No fue posible realizar la consulta", fixed: true
         });
       });
-
-
-
-/*      if(response.data !== 10) {
-          this.error = true;
-          console.log("RESPUESTA NEGATIVA ANOTACIONES: ", response);
-          this.$vs.loading.close();
-        }else{
-          this.error = false;
-          this.datos = response.data
-          console.log("RESPUESTA POSITIVA ANOTACIONES: ", response);
-          this.$vs.loading.close();
-        }
-      }).catch((err) => {
-        console.log("ERROR DE ANOTACIONES: ",err);*/
     }
   },
 };

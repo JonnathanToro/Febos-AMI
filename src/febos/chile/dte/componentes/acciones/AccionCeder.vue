@@ -34,10 +34,10 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO CEDER", this.documento);
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCeder.vue`);
       modalStore.commit("setTitulo", "Ceder Documento");
       modalStore.commit("mostrarBitacora", modalComponente);
+      modalStore.commit("febosId", this.documento.febosId);
       modalStore.commit("setData", this.documento);
     },
     desplegar() {

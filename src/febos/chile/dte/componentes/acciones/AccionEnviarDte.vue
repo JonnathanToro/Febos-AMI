@@ -37,6 +37,7 @@ export default {
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarDte.vue`);
       modalStore.commit("setTitulo", "Enviar DTE Documento N°"+this.documento.folio);
       modalStore.commit("mostrarBitacora", modalComponente);
+      modalStore.commit("febosId", this.documento.febosId);
       modalStore.commit("setData", this.documento);
     },
     desplegar() {

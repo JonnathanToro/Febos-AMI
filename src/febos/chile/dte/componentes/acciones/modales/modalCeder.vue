@@ -236,7 +236,6 @@ export default {
         if (ret.rule == "required") {
           return "required";
         }
-        console.log(ret);
       }
       return null;
     },
