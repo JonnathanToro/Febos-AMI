@@ -527,8 +527,7 @@ import VsModal from "vs-modal";
 import Datepicker from "vuejs-datepicker";
 import { Validator } from "vee-validate";
 import es from "vee-validate/dist/locale/es";
-// import axios from 'axios';
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import axios from 'axios';
 
 Validator.localize("es", es);
 Validator.extend("validaRut", {
@@ -599,11 +598,6 @@ export default {
           )
         );
       }
-    },
-    defaultEmpresa:  {
-      get() {
-        return JSON.parse(localStorage.getItem("defaultEmpresa"));
-      }
     }
   },
   mounted() {
@@ -617,25 +611,7 @@ export default {
         this.encabezado.nominativa = defaultEmision.nominativa;
         this.encabezado.detalle = defaultEmision.detalle;
       }
-
-      const defaultEmpresa = this.defaultEmpresa;
-      if (defaultEmpresa) {
-        if (defaultEmpresa.iut != this.stored.Empresas.empresa.iut) this.actualizarEmpresa();
-      } else {
-        this.actualizarEmpresa();
-      }
     },
-    actualizarEmpresa() {
-      this.$vs.loading({ color: "#FF2961", text: "Actualizando configuración" });
-      clienteFebosAPI.get("/empresas/" + this.stored.Empresas.empresa.iut).then((response) => {
-        this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
-          localStorage.setItem("defaultEmpresa", JSON.stringify(response.data));
-        }
-      });
-    },
-
-
     validarEncabezado() {
       return new Promise((resolve, reject) => {
         this.$validator.validateAll("formularioEncabezado").then((result) => {
@@ -668,45 +644,12 @@ export default {
     },
 
     enviarDocumento() {
-      this.$vs.loading({ color: "#FF2961", text: "Emitiendo documento" });
       /* GIORGIO */
-      const defaultEmpresa = this.defaultEmpresa;
-      const f2String = this._generarF2(defaultEmpresa);
-      const bodyParams = {
-        entrada: "F2",
-        tipo: this.encabezado.tipoDocumento,
-        foliar: "si",
-        timbrar: "si",
-        firmar: "si",
-        enviar: "si",
-        payload: btoa(f2String),
-      };
-
-      clienteFebosAPI.post("/documentos", bodyParams).then((response) => {
-        this.$vs.loading.close();
-        if (response.data.codigo == 10) {
-          this.$vs.notify({
-            color: 'success', title: 'Emisión DTE', text: 'Documentos emitido'
-          });
-        } else {
-          this.$vs.notify({
-            color: "danger",
-            title: "Emisión DTE",
-            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId,
-            fixed: true
-          });
-        }
-
-      }).catch((error) => {
-        this.$vs.loading.close();
-        console.log(error);
-        this.$vs.notify({
-          color: "danger", title: "Emisión DTE", text: "No fue posible procesar la emisión del documento", fixed: true
-        });
-
-      });
-
-/*
+      var storage = JSON.parse(
+        localStorage.getItem(
+          `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
+        )
+      );
       var rutEmpresa = storage.Empresas.empresa.iut;
       var token = storage.Usuario.token;
       var url = "https://api.febos.cl/" + process.env.VUE_APP_AMBIENTE + "/empresas/" + rutEmpresa;
@@ -739,8 +682,6 @@ export default {
             alert('Documento emitido!');
           });
       });
-
-      */
     },
     _generarF2(data) {
       //DATOS EMISOR (FALTAN DATOS DE OBTENER SUCURSAL)
@@ -756,21 +697,13 @@ export default {
       var ciudadEmpresa = sucursalMatriz.ciudad;
 
       //DATOS RECEPTOR
-      var rutReceptor = "66666666-6";
-      var razonSocialReceptor = "Cliente Genérico";
-      var giroReceptor = "default";
-      var direccionReceptor = "default";
-      var comunaReceptor = sucursalMatriz.comuna;
-      var ciudadReceptor = sucursalMatriz.ciudad;
+      var rutReceptor = this.encabezado.rutReceptor;
+      var razonSocialReceptor = this.encabezado.razonSocial;
+      var giroReceptor = this.encabezado.giro;
+      var direccionReceptor = this.encabezado.direccion;
+      var comunaReceptor = this.encabezado.comuna;
+      var ciudadReceptor = this.encabezado.ciudad;
       var emailReceptor = this.encabezado.email;
-      if (this.encabezado.nominativa) {
-        rutReceptor = this.encabezado.rutReceptor;
-        razonSocialReceptor = this.encabezado.razonSocial;
-        giroReceptor = this.encabezado.giro;
-        direccionReceptor = this.encabezado.direccion;
-        comunaReceptor = this.encabezado.comuna;
-        ciudadReceptor = this.encabezado.ciudad;
-      }
 
       var documentoString = "";
       //identificacion del documento
@@ -1014,7 +947,7 @@ export default {
     getTipoDocumento(td)  {
       const ret = this.tiposDocumento.find(element => element.value == td);
       return ret.text;
-    },
+    }
 
   }
 }

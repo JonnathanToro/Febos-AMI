@@ -55,14 +55,7 @@ export default [{
       permiso:'WB000',
       submenu: [
         {
-          url: '/cafs/cargar',
-          name: 'Cargar CAFs',
-          slug: 'cafs-cargar',
-          icon: 'HomeIcon',
-          permiso:'WB000',
-        },
-        {
-          url: '/cafs/listar',
+          url: '/configuraciones/cafs',
           name: 'Listar CAFs',
           slug: 'cafs-listar',
           icon: 'HomeIcon',
@@ -75,13 +68,13 @@ export default [{
           icon: 'HomeIcon',
           permiso:'WB000',
         },
-        {
-          url: '/configuraciones/certificado',
-          name: 'Certificado Digital',
-          slug: 'configuracion-certificado',
-          icon: 'HomeIcon',
-          permiso:'WB000',
-        },
+        // {
+        //   url: '/configuraciones/certificado',
+        //   name: 'Certificado Digital',
+        //   slug: 'configuracion-certificado',
+        //   icon: 'HomeIcon',
+        //   permiso:'WB000',
+        // },
         {
           url: '/configuraciones/empresa',
           name: 'Empresa',

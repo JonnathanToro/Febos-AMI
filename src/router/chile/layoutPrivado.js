@@ -24,6 +24,18 @@ const layoutPrivado = [
         component: () => import('@/febos/global/empresas/vistas/perfilEmpresa.vue')
       },
       {
+        path: '/configuraciones/usuarios',
+        name: 'Configuración de usuarios',
+        meta: { permiso: 'WB001', requiereLogin: true},
+        component: () => import('@/febos/global/empresas/vistas/gestUsuarios.vue')
+      },
+      {
+        path: '/configuraciones/cafs',
+        name: 'Gestión de CAFs',
+        meta: { permiso: 'WB001', requiereLogin: true},
+        component: () => import('@/febos/global/empresas/vistas/gestCAFs.vue')
+      },
+      {
         path: '/page2',
         name: 'page-2',
         meta: {permiso: 'WB002', requiereLogin: true},
