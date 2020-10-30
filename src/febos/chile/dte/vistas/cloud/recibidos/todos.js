@@ -2,7 +2,9 @@ export default {
   titulo:'Documetos recibidos',
   campos:['IndicadorEstadoComercial', 'NCND', 'Documento', 'EstadoPago', 'Plazo', 'RecepcionSii', 'RecepcionFebos'],
   //acccionesIndividuales:['Bitacora','EnviarAprobacion','VerReferencias','AsociarDocumento','DescargarPdf','DescargarXml','EnviarDte','RecuperarCorreoSii','ModificarTipoVenta','CopiarDocumento','AyudaEnDocumento'],
-  acccionesIndividuales: ['Bitacora', 'EnviarAprobacion', 'VerReferencias', 'AsociarDocumento', 'DescargarAmbosPdf', 'DescargarXml',/* 'GestionComercial',*/ 'InformacionPago', 'VerAnotacionesSii', 'EnviarDte', /*'AsociarContacto',*/ 'ModificarTipoCompra'/*, 'GenerarTicketAyuda'*/],
+  acccionesIndividuales: ['Bitacora', /*'EnviarAprobacion', */'VerReferencias', /*'AsociarDocumento',*/
+                          'DescargarAmbosPdf', 'DescargarXml',/* 'GestionComercial',*/ 'InformacionPago',
+                          'VerAnotacionesSii', 'EnviarDte', /*'AsociarContacto',*/ 'ModificarTipoCompra'/*, 'GenerarTicketAyuda'*/],
   accionesMasivas:[],
   seleccionMasiva:true,
   categoria: 'recibidos',

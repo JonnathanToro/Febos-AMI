@@ -34,10 +34,10 @@ export default {
   },
   methods: {
     ejecutarAccion(){
-        console.log("EJECUTANDO Ver Anotacion Sii ",this.documento);
         const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalVerAnotacionSii.vue`);
-        modalStore.commit("setTitulo", "Consultando anotaciones en el Sii Documento N°"+this.documento.folio);
+        modalStore.commit("setTitulo", "Consultando anotaciones en el Sii");
         modalStore.commit("mostrarBitacora", modalComponente);
+        modalStore.commit("febosId", this.documento.febosId);
         modalStore.commit("setData", this.documento);
       },
     desplegar() {

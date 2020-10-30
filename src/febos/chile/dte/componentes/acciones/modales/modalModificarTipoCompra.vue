@@ -67,7 +67,6 @@ export default {
     },
     codigoIVA: {
       get() {
-        console.log(this.compra.tipoTransaccionCompra);
         switch (this.compra.tipoTransaccionCompra) {
           case 1:
             return this.code1;
@@ -123,7 +122,6 @@ export default {
     };
   },
   mounted() {
-    console.log("DATA MODIFICAR TIPO COMPRA", this.getData);
     this.compra.febosId = this.getData.febosId;
     this.compra.tipoTransaccionCompra = this.getData.tpoTranCompra;
     this.compra.tipoTransaccionCompraCodIva = this.getData.tpoTranCompraCodIva;

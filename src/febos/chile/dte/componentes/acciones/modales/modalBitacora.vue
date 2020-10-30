@@ -152,7 +152,6 @@ export default {
     },
   },
   mounted() {
-    console.log("GetData: ",this.getData);
     this.getData.bitacora.forEach(element => {
       if (element.tipo == 29 || element.tipo == 30) {
         //this.importantes.push(element);
@@ -162,8 +161,6 @@ export default {
         //this.todos.push(element);
       }
     });
-    console.log("IMPORTANTES: ", this.importantes);
-    console.log("TODOS: ", this.todos);
 
   },
   data() {
@@ -175,7 +172,6 @@ export default {
   },
   methods: {
     metodoSwitch() {
-      console.log(this.importantes);
     }
   },
 };

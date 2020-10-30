@@ -27,6 +27,13 @@ export default [{
       ]
     },
     {
+      url: '/factura-electronica/emision/basica',
+      name: "Nuevo DTE",
+      slug: 'fe-emision-basica',
+      icon: "FileIcon",
+      permiso:'WB000'
+    },
+    {
       url: null,
       name: "Recibidos",
       icon: "InboxIcon",
@@ -42,29 +49,36 @@ export default [{
       ]
     },
     {
-      url: '/factura-electronica/emision/basica',
-      name: "Nuevo",
-      slug: 'fe-emision-basica',
-      icon: "FileIcon",
-      permiso:'WB000'
-    },
-    {
       url: null,
-      name: "Configuraciones",
-      icon: "HomeIcon",
+      name: "Operaciones",
+      icon: "SettingsIcon",
       permiso:'WB000',
       submenu: [
         {
-          url: '/configuraciones/empresa',
-          name: 'Empresa',
-          slug: 'configuracion-empresa',
+          url: '/configuraciones/cafs',
+          name: 'Listar CAFs',
+          slug: 'cafs-listar',
           icon: 'HomeIcon',
           permiso:'WB000',
         },
         {
           url: '/configuraciones/usuarios',
-          name: 'Usuarios',
+          name: 'Gestión de Usuarios',
           slug: 'configuracion-usuarios',
+          icon: 'HomeIcon',
+          permiso:'WB000',
+        },
+        // {
+        //   url: '/configuraciones/certificado',
+        //   name: 'Certificado Digital',
+        //   slug: 'configuracion-certificado',
+        //   icon: 'HomeIcon',
+        //   permiso:'WB000',
+        // },
+        {
+          url: '/configuraciones/empresa',
+          name: 'Empresa',
+          slug: 'configuracion-empresa',
           icon: 'HomeIcon',
           permiso:'WB000',
         },

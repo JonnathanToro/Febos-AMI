@@ -83,13 +83,11 @@ export default {
     };
   },
   mounted() {
-    console.log("OBJETO", this.getData.febosId);
   },
   methods: {
     getError(par) {
       let retorno = null;
       const ret = this.errors.items.find(elemento => elemento.field == par);
-      if (par == "copias") console.log(ret);
       if (ret !== undefined && retorno === null)  {
         if (par == "email" && ret.rule == "email") {
           return "email";

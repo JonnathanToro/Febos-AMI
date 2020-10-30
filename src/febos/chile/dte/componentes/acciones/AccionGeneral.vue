@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("ejecutar accion ..... externa ..... ");
       this.localAccion.ejecutar();
     },
     desplegar() {

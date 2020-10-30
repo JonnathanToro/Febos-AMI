@@ -49,7 +49,6 @@ export default {
     },
   },
   mounted() {
-    console.log("DATA MODIFICAR TIPO VENTA", this.getData);
     //this.tipo = parseInt(this.getData.tpoTraVenta);
     this.tipo_de_venta.forEach(element => {
       if(element.code == parseInt(this.getData.tpoTraVenta)){

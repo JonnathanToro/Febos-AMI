@@ -9,11 +9,9 @@ export default {
           nombre: "Descargar PDF",
           permiso: "DTE15",
           esAplicable: () => {
-            console.log("pdf es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de pdf");
           }
         },
         {
@@ -22,11 +20,9 @@ export default {
           nombre: "Bitácora",
           permiso: "DTE03",
           esAplicable: () => {
-            console.log("bitácora es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de bitácora");
           }
         },
         {
@@ -35,11 +31,9 @@ export default {
           nombre: "Enviar a Aprobación",
           permiso: "WB166",
           esAplicable: () => {
-            console.log("aprobacion es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de aprobacion");
           }
         },
         {
@@ -48,11 +42,9 @@ export default {
           nombre: "Notificar Cobranza",
           permiso: "DTE44",
           esAplicable: () => {
-            console.log("bitácora es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de bitácora");
           }
         },
         {
@@ -61,11 +53,9 @@ export default {
           nombre: "Ver Referencias",
           permiso: "DTE26",
           esAplicable: () => {
-            console.log("verReferencia es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de verReferencia");
           }
         },
         {
@@ -74,11 +64,9 @@ export default {
           nombre: "Asociar Documento",
           permiso: "DTE26",
           esAplicable: () => {
-            console.log("asociarDocumento es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de asociarDocumento");
           }
         },
         {
@@ -87,11 +75,9 @@ export default {
           nombre: "Nueva Rendición",
           permiso: "RND01",
           esAplicable: () => {
-            console.log("nuevaRendicion es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de nuevaRendicion");
           }
         },
         {
@@ -100,11 +86,9 @@ export default {
           nombre: "Descargar XML",
           permiso: "DTE15",
           esAplicable: () => {
-            console.log("DescargarXML es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de DescargarXML");
           }
         },
         {
@@ -113,11 +97,9 @@ export default {
           nombre: "Descargar AEC",
           permiso: "DTE01",
           esAplicable: () => {
-            console.log("descargarAec es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de descargarAec");
           }
         },
         {
@@ -126,11 +108,9 @@ export default {
           nombre: "Certificado de Cesión",
           permiso: "SII27",
           esAplicable: () => {
-            console.log("certificadoCesion es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de certificadoCesion");
           }
         },
         {
@@ -139,11 +119,9 @@ export default {
           nombre: "Procesar Nuevamente",
           permiso: "DTE01",
           esAplicable: () => {
-            console.log("procesarNuevamente es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de procesarNuevamente");
           }
         },
         {
@@ -152,11 +130,9 @@ export default {
           nombre: "Información de Pago",
           permiso: "DTE18",
           esAplicable: () => {
-            console.log("informacionPago es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de informacionPago");
           }
         },
         {
@@ -165,11 +141,9 @@ export default {
           nombre: "Anular Guía",
           permiso: "DTE41",
           esAplicable: () => {
-            console.log("anularGuia es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de anularGuia");
           }
         },
         {
@@ -178,11 +152,9 @@ export default {
           nombre: "Consultar Estado SII",
           permiso: "SII08",
           esAplicable: () => {
-            console.log("consultarEstadosii es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de consultarEstadosii");
           }
         },
         {
@@ -191,11 +163,9 @@ export default {
           nombre: "Ver Anotaciones SII",
           permiso: "",
           esAplicable: () => {
-            console.log("veranotacionsii es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de veranotacionsii");
           }
         },
         {
@@ -204,11 +174,9 @@ export default {
           nombre: "Fecha Recepción SII",
           permiso: "",
           esAplicable: () => {
-            console.log("fecharecep es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de fecharecep");
           }
         },
         {
@@ -217,11 +185,9 @@ export default {
           nombre: "Enviar DTE",
           permiso: "DTE21",
           esAplicable: () => {
-            console.log("enviarDTE es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de enviarDTE");
           }
         },
         {
@@ -230,11 +196,9 @@ export default {
           nombre: "Reenviar al SII",
           permiso: "DTE21",
           esAplicable: () => {
-            console.log("reenviarSii es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de reenviarSii");
           }
         },
         {
@@ -243,11 +207,9 @@ export default {
           nombre: "Asociar HES",
           permiso: "DTE05",
           esAplicable: () => {
-            console.log("asociarHes es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de asociarHes");
           }
         },
         {
@@ -256,11 +218,9 @@ export default {
           nombre: "Asociar HEM/MIGO",
           permiso: "DTE05",
           esAplicable: () => {
-            console.log("asociarHem es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de asociarHem");
           }
         },
         {
@@ -269,11 +229,9 @@ export default {
           nombre: "Asociar OC",
           permiso: "DTE05",
           esAplicable: () => {
-            console.log("asociarOc es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de asociarOc");
           }
         },
         {
@@ -282,11 +240,9 @@ export default {
           nombre: "Solicitar DTE",
           permiso: "DTE22",
           esAplicable: () => {
-            console.log("enviarDTE es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de enviarDTE");
           }
         },
         {
@@ -295,11 +251,9 @@ export default {
           nombre: "Reprocesar Documento",
           permiso: "DTE22",
           esAplicable: () => {
-            console.log("enviarDTE es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de enviarDTE");
           }
         },
         {
@@ -308,11 +262,9 @@ export default {
           nombre: "Ceder",
           permiso: "CES01",
           esAplicable: () => {
-            console.log("ceder es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de ceder");
           }
         },
         {
@@ -321,11 +273,9 @@ export default {
           nombre: "Recuperar Correo SII",
           permiso: "DTE31",
           esAplicable: () => {
-            console.log("recuperarCorreo es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de recuperarCorreo");
           }
         },
         {
@@ -334,11 +284,9 @@ export default {
           nombre: "Modificar Tipo Venta",
           permiso: "DTE28",
           esAplicable: () => {
-            console.log("modificarVenta es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de modificarVenta");
           }
         },
         {
@@ -347,11 +295,9 @@ export default {
           nombre: "Enviar DTE",
           permiso: "DTE30",
           esAplicable: () => {
-            console.log("emitirDoc es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de emitirDoc");
           }
         },
         {
@@ -360,11 +306,9 @@ export default {
           nombre: "Copiar Documento",
           permiso: "DTE09",
           esAplicable: () => {
-            console.log("copiarDoc es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de copiarDoc");
           }
         },
         {
@@ -373,11 +317,9 @@ export default {
           nombre: "Editar Documento",
           permiso: "DTE90",
           esAplicable: () => {
-            console.log("enviarDTE es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de enviarDTE");
           }
         },
         {
@@ -386,11 +328,9 @@ export default {
           nombre: "Informe de Actividades",
           permiso: "WB208",
           esAplicable: () => {
-            console.log("enviarDTE es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de enviarDTE");
           }
         },
         {
@@ -399,11 +339,9 @@ export default {
           nombre: "Ver Informes",
           permiso: "WB208",
           esAplicable: () => {
-            console.log("enviarDTE es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de enviarDTE");
           }
         },
         {
@@ -412,11 +350,9 @@ export default {
           nombre: "Generar Ticket",
           permiso: "",
           esAplicable: () => {
-            console.log("enviarDTE es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de enviarDTE");
           }
         },
         {
@@ -425,11 +361,9 @@ export default {
           nombre: "Modificar Tipo Compra",
           permiso: "DTE28",
           esAplicable: () => {
-            console.log("modificarCompra es aplicable");
             return true;
           },
           ejecutar: () => {
-            console.log("ejecutar acción de modificarCompra");
           }
         },
       ]

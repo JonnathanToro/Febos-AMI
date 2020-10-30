@@ -1,27 +1,8 @@
 <template>
   <div align="center">
-    <h4>Advertencia</h4>
-    <br />
     <p>¿Seguro de reenviar al SII?</p>
-    <br />
-    <div align="center">
-      <div class="margin-bot">
-        <vs-alert title="Alerta" class="mensaje" :active="respuesta" color="success">
-          Reenvio correcto
-        </vs-alert>
-        <vs-alert title="Alerta"  :active="respuesta == false" color="danger">
-          <div v-if="msjRespuesta !== null">
-            {{ this.msjRespuesta }}
-          </div>
-          <div v-else>
-            Error al realizar la operación, reintente o contacte a soporte
-          </div>
-        </vs-alert>
-      </div>
-    </div>
-    <div>
-      <vs-button color="primary" type="filled" @click="anular">Si</vs-button>
-      <vs-button color="primary" type="border" v-on:click="cerrarVentana">Me arrepentí</vs-button>
+    <div style="text-align: right; margin-top: 30px;">
+      <vs-button color="primary" type="filled" @click="reenviarDocumento">Reenviar documento</vs-button>
     </div>
   </div>
 </template>
@@ -52,30 +33,32 @@ export default {
   },
   mounted() {
     this.documento = this.getData;
-    console.log("DOCUMENTO: ", this.documento);
   },
   methods: {
     cerrarVentana: function () {
       modalStore.commit("ocultarBitacora");
     },
 
-    anular() {
+    reenviarDocumento() {
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      console.log("Anular");
-      clienteFebosAPI.get("/sii/dte/reenviodocumento", {febosId: this.documento.febosId}).then((response) => {
-        if(response.data.codigo == 10) {
-          this.respuesta = true;
-          this.$vs.loading.close();
-        }else{
-
-          if(response.data.codigo == 121)
-            this.msjRespuesta = "No se puede encontrar el archivo especificado";
-          this.respuesta = false;
-          this.$vs.loading.close();
-        }
-      }).catch(() => {
-        this.respuesta = false;
+      clienteFebosAPI.get("/sii/dte/reenviodocumento?febosId=" + this.getData.febosId).then((response) => {
         this.$vs.loading.close();
+        if(response.data.codigo == 10) {
+          this.$vs.notify({
+            color: 'success', title: 'Reenvío documento', text: 'Documento reenviado satisfactoriamente'
+          });
+          this.cerrarVentana();
+        } else {
+          this.$vs.notify({
+            color: "danger", title: "Reenvío documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+          });
+        }
+      }).catch((error) => {
+        this.$vs.loading.close();
+        console.log(error);
+        this.$vs.notify({
+          color: "danger", title: "Reenvío documento", text: "No fue posible procesar el reenvío del documento", fixed: true
+        });
       })
 
     }

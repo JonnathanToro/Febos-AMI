@@ -35,10 +35,8 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO DESCARGAR XML", this.documento);
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalDescargarXml.vue`);
-      //cambiar lo de bitacora
       clienteFebosAPI.get("/documentos/" + this.documento.febosId + "?dominioPortal=portal.febos.cl&febosId="+ this.documento.febosId +"&incrustar=no&regenerar=no&tipoImagen=0&xml=si&xmlFirmado=si").then((response) => {
 
         if(response.data.xmlLink) {

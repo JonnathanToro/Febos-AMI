@@ -10,6 +10,7 @@ export default new Vuex.Store({
     showModalFull: false,
     tituloModal: null,
     componente: null,
+    febosId: null,
     data: null
   },
   mutations: {
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     ocultarBitacora(state)  {
       state.showModal = false;
       state.componente = null;
+      state.febosId = null;
     },
     mostrarBitacoraFull(state, component)  {
       state.loading = false;
@@ -39,6 +41,7 @@ export default new Vuex.Store({
     ocultarBitacoraFull(state)  {
       state.showModalFull = false;
       state.componente = null;
+      state.febosId = null;
     },
     mostrarVerReferencias(state,component)  {
       state.loading = false;
@@ -48,6 +51,10 @@ export default new Vuex.Store({
     ocultarVerReferencias(state)  {
       state.showModal = false;
       state.componente = null;
+      state.febosId= null;
+    },
+    febosId(state, value) {
+      state.febosId = value;
     },
     setData(state, value) {
       state.data = value;

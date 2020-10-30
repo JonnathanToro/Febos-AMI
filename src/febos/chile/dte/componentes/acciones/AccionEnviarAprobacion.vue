@@ -34,7 +34,6 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO ENVIAR A APROBACION", this.documento);
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarAprobacion.vue`);
       modalStore.commit("setTitulo", "Información del flujo");
       modalStore.commit("mostrarBitacora", modalComponente);

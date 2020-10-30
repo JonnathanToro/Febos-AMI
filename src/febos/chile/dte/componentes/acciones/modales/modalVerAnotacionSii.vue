@@ -1,19 +1,18 @@
 <template>
   <div>
-    <div  v-if="datos == null" class="margen-inferior">
-      <h3>Consultar anotaciones en el Sii del documento</h3>
-      <h5>Factura afecta electronica</h5>
-      <br />
-      <br />
+    <h4>{{ titulo }}</h4>
+    <h5 style="color: #aaaaaa;">{{ subtitulo }}</h5>
+    <div  v-if="datos == null" class="mt-3 mb-4">
       <p>
         Este proceso podría tardar mas de lo esperado, ya que se consulta directamente
         en el servicio de impuestos internos.
       </p>
       <br>
       <p>¿Desea Continuar?</p>
-      <br style="width: 100%;">
-      <vs-button @click="consultarSii" type="filled" color="primary" style="margin-right: 15px;">Si, adelante</vs-button>
-      <vs-button @click="cancelarCierre" type="border" color="primary">No, en otro momento</vs-button>
+      <div class="mt-3" style="text-align: right">
+        <vs-button @click="consultarSii" type="filled" color="primary" style="margin-right: 15px;">Consultar anotaciones</vs-button>
+        <!--      <vs-button @click="cancelarCierre" type="border" color="primary">No, en otro momento</vs-button>-->
+      </div>
     </div>
 
     <!-- TABLA DE RESPUESTA SII -->
@@ -66,7 +65,7 @@
     <!-- ALERTAS DE RESPUESTA SII -->
     <div v-if="error" align="center">
       <vs-alert title="Alerta" class="mensaje" :active="error" color="danger">
-        Error al realizar la operación, reintente o contacte a soporte
+        Error al realizar la operación, reinténtelo más tarde o contacte a soporte Narvi.
       </vs-alert>
     </div>
   </div>
@@ -75,19 +74,31 @@
 <script>
 import modalStore from "@/store/modals/acciones";
 import clienteFebosAPI from "../../../../../servicios/clienteFebosAPI";
+import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
 
 export default {
+  mixins: [ TiposDteMixin ],
   computed: {
     getData: {
       get() {
         return modalStore.state.data;
       },
     },
+    subtitulo: {
+      get() {
+        return "Emitida a " + this.getData.razonSocialReceptor + ", RUT " + this.getData.rutReceptor;
+      }
+    },
+    titulo: {
+      get() {
+        return this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento) + " Nº " + this.getData.folio;
+      }
+    },
   },
   data() {
     return {
       error: false,
-      datos: null
+      datos: null,
     }
   },
   methods: {
@@ -96,20 +107,22 @@ export default {
     },
     consultarSii() {
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.get("/sii/dte/eventos", {febosId: this.getData.febosId}).then((response) => {
-        if(response.data !== 10) {
-          this.error = true;
-          console.log("RESPUESTA NEGATIVA ANOTACIONES: ", response);
-          this.$vs.loading.close();
-        }else{
-          this.error = false;
+      clienteFebosAPI.get("/sii/dte/eventos?febosId=" + this.getData.febosId).then((response) => {
+        this.$vs.loading.close();
+        if(response.data.codigo == 10) {
           this.datos = response.data
-          console.log("RESPUESTA POSITIVA ANOTACIONES: ", response);
-          this.$vs.loading.close();
+        } else {
+          this.$vs.notify({
+            color: "danger", title: "Ver anotaciones SII", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+          });
         }
-      }).catch((err) => {
-        console.log("ERROR DE ANOTACIONES: ",err);
-      })
+      }).catch((error) => {
+        this.$vs.loading.close();
+        console.log(error);
+        this.$vs.notify({
+          color: "danger", title: "Ver anotaciones SII", text: "No fue posible realizar la consulta", fixed: true
+        });
+      });
     }
   },
 };

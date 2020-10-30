@@ -48,17 +48,23 @@
     },
     computed: {
       mostrarModal: {
-        get()     { return modalStore.state.showModal; },
+        get()     {
+          // return modalStore.state.showModal;
+          return modalStore.state.showModal && modalStore.state.febosId == this.documento.febosId;
+        },
         set()  {
           if (modalStore.state.showModal)   { modalStore.commit("ocultarBitacora"); }
                                       else  { modalStore.commit("mostrarBitacora"); }
         }
       },
       mostrarModalFull: {
-        get()     { return modalStore.state.showModalFull; },
+        get()     {
+          // return modalStore.state.showModalFull;
+          return modalStore.state.showModalFull && modalStore.state.febosId == this.documento.febosId;
+        },
         set()  {
           if (modalStore.state.showModalFull)   { modalStore.commit("ocultarBitacoraFull"); }
-                                      else  { modalStore.commit("mostrarBitacoraFull"); }
+                                          else  { modalStore.commit("mostrarBitacoraFull"); }
         }
       },
       getTitulo:  {
@@ -75,7 +81,6 @@
       cargarComponenteAccion(accion){
         if (!this.componentes[accion]) {
            this.componentes[accion] = () => import(`@/febos/chile/dte/componentes/acciones/Accion${accion}.vue`);
-          //this.componentes[accion] = () => import(`@/febos/chile/dte/componentes/acciones/AccionGeneral.vue`);
         }
         return this.componentes[accion];
 

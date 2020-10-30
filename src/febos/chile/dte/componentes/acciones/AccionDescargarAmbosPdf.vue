@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO DESCARGAR PDF", this.documento);
       this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
       const modalComponente = () =>
         import(

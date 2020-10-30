@@ -34,10 +34,10 @@ export default {
   },
   methods: {
     ejecutarAccion() {
-      console.log("EJECUTANDO REENVIAR SII: ", this.documento);
       const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalReenviarSii.vue`);
         modalStore.commit("setTitulo", "Reenviar al SII documento #"+this.documento.folio);
         modalStore.commit("mostrarBitacora", modalComponente);
+        modalStore.commit("febosId", this.documento.febosId);
         modalStore.commit("setData", this.documento);
     },
     desplegar() {
