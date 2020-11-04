@@ -1,6 +1,9 @@
 <template>
 
-  <vs-modal size="s" ref="modalEdicion" title="Usuario" @close="cerrarModal">
+  <vs-modal size="s" ref="modalEdicion" title="Cargar CAF" @close="cerrarModal">
+    <div slot="header" class="p-4">
+      <h4>Cargar CAF</h4>
+    </div>
     <div class="vx-row" v-if="show">
 
       <div class="vx-col w-full">
@@ -27,6 +30,7 @@
           name="inicial"
           class="w-full"
           type="number"
+          readonly="readonly"
         />
       </div>
       <div class="vx-col md:w-1/2 mt-3">
@@ -37,6 +41,7 @@
           name="final"
           class="w-full"
           type="number"
+          readonly="readonly"
         />
       </div>
     </div>
@@ -131,15 +136,29 @@ export default {
         console.log(error);
       });
     },
-
     enviarCAF()  {
-      console.log(this.caf.selectedFile);
       const reader = new FileReader();
       reader.onload = e => this.procesarCAF(e);
       reader.readAsText(this.caf.selectedFile);
     },
+    leerCAF(event)  {
+      let xml = event.currentTarget.result;
+      let rango = xml.substr(xml.indexOf("<RNG>")+5);
+      rango = rango.substr(0, rango.indexOf("</RNG>"));
+      let desde = rango.substr(rango.indexOf("<D>")+3);
+      desde = desde.substr(0, desde.indexOf("</D>"));
+      let hasta = rango.substr(rango.indexOf("<H>")+3);
+      hasta = hasta.substr(0, hasta.indexOf("</H>"));
+
+      this.caf.inicial = desde;
+      this.caf.final = hasta;
+
+    },
     caf_onChange(event) {
       this.caf.selectedFile = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = e => this.leerCAF(e);
+      reader.readAsText(this.caf.selectedFile);
     },
   }
 }

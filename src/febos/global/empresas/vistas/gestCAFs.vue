@@ -123,6 +123,61 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="css">
 
+table {
+  border-spacing: 0;
+  width: 100%;
+  border-collapse: unset !important;
+}
+
+th.selector > div > span.checkbox_x.vs-checkbox {
+  border: 2px solid #ffffff !important;
+}
+
+tr th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  font-size: 100%;
+  background-color: rgba(var(--vs-primary), 1);
+  color: white;
+}
+
+th, td {
+  padding: 0.5em 1em;
+  border-top: 1px solid rgba(var(--vs-primary), 1);;
+}
+
+tr:last-child td {
+  border-bottom: 1px solid rgba(var(--vs-primary), 1);;
+}
+
+th:first-child, td:first-child {
+  border-left: 1px solid rgba(var(--vs-primary), 1);;
+}
+
+th:last-child, td:last-child {
+  border-right: 1px solid rgba(var(--vs-primary), 1);
+}
+
+thead tr:first-child th:first-child {
+  border-radius: 0.6em 0 0 0;
+}
+
+thead tr:first-child th:last-child {
+  border-radius: 0 0.6em 0 0;
+}
+
+tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 0.6em;
+}
+
+tbody tr:last-child td:last-child {
+  border-radius: 0 0 0.6em 0;
+}
+
+.fila:hover {
+  background-color: #efefef;
+}
 </style>

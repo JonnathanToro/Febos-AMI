@@ -38,10 +38,10 @@
 <!--                size="small"-->
 <!--                color="success"-->
 <!--                @click="editarUsuario(tr)">Permisos</vs-button>-->
-              <vs-button
+              <!--<vs-button
                 size="small"
                 color="warning"
-                @click="editarEmpresas(tr)">Empresas</vs-button>
+                @click="editarEmpresas(tr)">Empresas</vs-button>-->
               <vs-button
                 size="small"
                 color="dark"
@@ -56,7 +56,7 @@
   </vx-card>
 
   <modal-usuario :editar="editar" :usuario="usuario" @cerrarEdicionUsuario="cancelarEdicion"></modal-usuario>
-  <modal-empresas :editar="editarEmpresa" :usuario="usuario" :empresas="empresas" @cerrarEdicionUsuarioEmpresas="cancelarEmpresas"></modal-empresas>
+<!--  <modal-empresas :editar="editarEmpresa" :usuario="usuario" :empresas="empresas" @cerrarEdicionUsuarioEmpresas="cancelarEmpresas"></modal-empresas>-->
 
 </div>
 </template>
@@ -64,12 +64,12 @@
 <script>
 import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
 import modalUsuario from "@/febos/global/empresas/componentes/gestUsuarios/modalUsuario";
-import modalEmpresas from "@/febos/global/empresas/componentes/gestUsuarios/modalEmpresas";
+// import modalEmpresas from "@/febos/global/empresas/componentes/gestUsuarios/modalEmpresas";
 
 export default {
   name: "gestUsuarios",
   components: {
-    modalUsuario, modalEmpresas
+    modalUsuario, /*modalEmpresas*/
   },
   data()  {
     return {
@@ -117,10 +117,10 @@ export default {
       this.editar = true;
       this.usuario = { id: val.id, iut: val.iut, nombre: val.nombre, alias: val.alias, correo: val.correo };
     },
-    editarEmpresas(val) {
+/*    editarEmpresas(val) {
       this.editarEmpresa = true;
       this.usuario = val;
-    },
+    },*/
     eliminarUsuario(val)  {
       console.log(val);
     },
@@ -166,7 +166,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style  lang="css">
 
 [dir] .vs-button:not(.vs-radius):not(.includeIconOnly):not(.small):not(.large) {
   padding: -0.25rem 2rem;
@@ -175,5 +175,62 @@ export default {
 [dir] .btn-group button {
   /*padding: 1rem 1.25rem !important;*/
   padding: 6px !important;
+}
+
+
+table {
+  border-spacing: 0;
+  width: 100%;
+  border-collapse: unset !important;
+}
+
+th.selector > div > span.checkbox_x.vs-checkbox {
+  border: 2px solid #ffffff !important;
+}
+
+tr th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  font-size: 100%;
+  background-color: rgba(var(--vs-primary), 1);
+  color: white;
+}
+
+th, td {
+  padding: 0.5em 1em;
+  border-top: 1px solid rgba(var(--vs-primary), 1);;
+}
+
+tr:last-child td {
+  border-bottom: 1px solid rgba(var(--vs-primary), 1);;
+}
+
+th:first-child, td:first-child {
+  border-left: 1px solid rgba(var(--vs-primary), 1);;
+}
+
+th:last-child, td:last-child {
+  border-right: 1px solid rgba(var(--vs-primary), 1);
+}
+
+thead tr:first-child th:first-child {
+  border-radius: 0.6em 0 0 0;
+}
+
+thead tr:first-child th:last-child {
+  border-radius: 0 0.6em 0 0;
+}
+
+tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 0.6em;
+}
+
+tbody tr:last-child td:last-child {
+  border-radius: 0 0 0.6em 0;
+}
+
+.fila:hover {
+  background-color: #efefef;
 }
 </style>

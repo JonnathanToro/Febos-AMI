@@ -1,5 +1,8 @@
 <template>
   <vs-modal size="l" ref="modalEdicion" title="Usuario" @close="cerrarModal">
+    <div slot="header" class="p-4">
+      <h4>Usuario</h4>
+    </div>
 
     <form data-vv-scope="perfilUsuario" v-if="user">
 
@@ -51,6 +54,19 @@
           />
           <span class="text-danger text-sm form-error-message" v-if="getError('correo')" >Correo es obligatorio y debe ser correcto</span >
         </div>
+        <div class="vx-col w-1/4">
+          <div class="mt-3 mb-2" style="font-size: 0.85rem">Perfil de usuario</div>
+          <ul class="leftx">
+            <li>
+              <vs-radio v-model="user.perfil" vs-value="admin">Administrador</vs-radio>
+            </li>
+            <li>
+              <vs-radio v-model="user.perfil" vs-value="usuario">Usuario</vs-radio>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="vx-row">
       </div>
       <div style="text-align: right" class="mt-3">
         <vs-button color="primary" type="filled" @click="validarUsuario" v-if="!user.id">Crear</vs-button>

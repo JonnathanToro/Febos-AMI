@@ -3,6 +3,9 @@
   <div>
 
     <vs-modal ref="modalUsuarioEmpresa" title="Empresas del usuario" @close="cerrarModal">
+      <div slot="header" class="p-4">
+        <h4>Empresas del usuario</h4>
+      </div>
       <div class="vx-row" v-if="empresas && show">
         <div class="vx-col w-full" v-for="elemento in empresas" :key="elemento.id">
           <ul class="centex">

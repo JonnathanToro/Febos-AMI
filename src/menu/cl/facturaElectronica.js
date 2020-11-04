@@ -3,12 +3,19 @@ export default [{
   icon: 'PackageIcon',
   permiso:'M01',
   items: [
-    {
+/*    {
       url: '/factura-electronica/panel',
       name: 'Panel',
       icon: 'GridIcon',
       slug: 'panel',
       permiso: 'WB000'
+    },*/
+    {
+      url: '/factura-electronica/emision/basica',
+      name: "Nuevo DTE",
+      slug: 'fe-emision-basica',
+      icon: "FileIcon",
+      permiso:'WB000'
     },
     {
       url: null,
@@ -25,13 +32,6 @@ export default [{
           descripcion:'Visualización de todos los documentos emitidos'
         },
       ]
-    },
-    {
-      url: '/factura-electronica/emision/basica',
-      name: "Nuevo DTE",
-      slug: 'fe-emision-basica',
-      icon: "FileIcon",
-      permiso:'WB000'
     },
     {
       url: null,

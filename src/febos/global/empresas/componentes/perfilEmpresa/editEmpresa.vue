@@ -58,12 +58,12 @@
             />
             <span class="text-danger text-sm form-error-message" v-if="getError('numeroResolucion')" >Número de resolución obligatorio</span >
           </div>
-          <div class="vx-col md:w-1/8 mt-10" >
+<!--          <div class="vx-col md:w-1/8 mt-10" >
             <vs-switch id="esPyme" name="esPyme" v-model="datos.esPyme"/>
           </div>
           <div class="vx-col md:w-1/8 mt-10 pl-0">
             <label for="esPyme" style="font-size: 12px">Es Pyme</label>
-          </div>
+          </div>-->
         </div>
         <div class="vx-row">
           <div class="vx-col md:w-1/2 mt-3">
@@ -215,7 +215,8 @@ export default {
         nombreRepLegal: this.datos.nombreRepLegal,
         fechaResolucion: this.datos.fechaResolucion,
         numeroResolucion: this.datos.numeroResolucion,
-        esPyme: (this.datos.esPyme) ? "si" : "no",
+        // esPyme: (this.datos.esPyme) ? "si" : "no",
+        esPyme: "si",
       }
       if (this.claveSii)      retorno.claveSii = btoa(this.claveSii);
       if (this.datos.acteco)  retorno.acteco = this.datos.acteco;
