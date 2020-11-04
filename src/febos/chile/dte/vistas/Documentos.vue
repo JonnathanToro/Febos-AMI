@@ -272,6 +272,7 @@
   table {
     border-spacing: 0;
     width: 100%;
+    border-collapse: unset !important;
   }
 
   .selector {
