@@ -95,14 +95,13 @@ export default {
           this.$vs.notify({
             color: "danger",
             title: "Usuario",
-            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId,
-            fixed: true
+            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Usuario", text: "Error de plataforma", fixed: true
+          color: "danger", title: "Usuario", text: "Error de plataforma", time: 10000
         });
       })
 

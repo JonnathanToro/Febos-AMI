@@ -45,19 +45,19 @@ export default {
         this.$vs.loading.close();
         if(response.data.codigo == 10) {
           this.$vs.notify({
-            color: 'success', title: 'Reenvío documento', text: 'Documento reenviado satisfactoriamente'
+            color: 'success', title: 'Reenvío documento', text: 'Documento reenviado a Sii'
           });
           this.cerrarVentana();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Reenvío documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Reenvío documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Reenvío documento", text: "No fue posible procesar el reenvío del documento", fixed: true
+          color: "danger", title: "Reenvío documento", text: "No fue posible procesar el reenvío del documento", time: 10000
         });
       })
 

@@ -153,11 +153,11 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10)  {
           this.$vs.notify({
-            color: "success", title: "Casa Matriz", text: "La Casa Matriz fue definica correctamente"
+            color: "success", title: "Casa Matriz", text: "Casa matriz definida"
           })
         } else {
           this.$vs.notify({
-            color: "danger", title: "Casa Matriz", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Casa Matriz", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           })
         }
       }).catch((error) => {
@@ -175,11 +175,11 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10)  {
           this.$vs.notify({
-            color: "success", title: "Casa Matriz", text: "Los datos fueron actualizados correctamente"
+            color: "success", title: "Casa Matriz", text: "Casa matriz actualizada"
           })
         } else {
           this.$vs.notify({
-            color: "danger", title: "Casa Matriz", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Casa Matriz", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           })
         }
       }).catch((error) => {

@@ -20,8 +20,8 @@
         <div slot="header" align="center">
           <h4>Anotaciones SII Documento #{{ getData.folio }}</h4>
         </div>
-        <div align="center" v-if="datas.referenciasTipoDte.length > 0">
-          <vs-table :data="datas.referenciasTipoDte">
+        <div align="center" v-if="datos.referenciasTipoDte.length > 0">
+          <vs-table :data="datos.referenciasTipoDte">
             <template slot="thead">
               <vs-th>Estado</vs-th>
               <vs-th>Número</vs-th>
@@ -113,14 +113,14 @@ export default {
           this.datos = response.data
         } else {
           this.$vs.notify({
-            color: "danger", title: "Ver anotaciones SII", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Ver anotaciones SII", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Ver anotaciones SII", text: "No fue posible realizar la consulta", fixed: true
+          color: "danger", title: "Ver anotaciones SII", text: "No fue posible realizar la consulta", time: 10000
         });
       });
     }

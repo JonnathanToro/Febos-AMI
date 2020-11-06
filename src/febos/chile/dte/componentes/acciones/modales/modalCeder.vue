@@ -211,13 +211,13 @@ export default {
           this.cerrarVentana();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Cesión de documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Cesión de documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch((error) => {
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Cesión de documento", text: "No fue posible procesar la cesión del documento", fixed: true
+          color: "danger", title: "Cesión de documento", text: "No fue posible procesar la cesión del documento", time: 10000
         });
         this.$vs.loading.close();
       });
