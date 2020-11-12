@@ -424,7 +424,8 @@ export default {
       if(this.avatar) {
         return this.avatar
       } else {
-        return `https://api.adorable.io/avatars/285/${this.correo}`;
+        // return `https://api.adorable.io/avatars/285/${this.correo}`;
+        return 'https://www.flaticon.es/svg/static/icons/svg/149/149071.svg';
       }
     },
 

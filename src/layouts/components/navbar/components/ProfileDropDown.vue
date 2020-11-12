@@ -36,7 +36,7 @@
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4"></feather-icon>
             <span class="ml-2">Perfil</span>
           </li>
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
+<!--          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4"/>
             <span class="ml-2">Tareas</span>
           </li>
@@ -44,7 +44,7 @@
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="MessageSquareIcon" svgClasses="w-4 h-4"/>
             <span class="ml-2">Soporte</span>
-          </li>
+          </li>-->
 
           <vs-divider class="m-1"/>
 
@@ -87,7 +87,8 @@
       },
       avatar(){
         if(this.avatarOriginal && this.avatarOriginal!='' && this.avatarOriginal!=null)return this.avatarOriginal;
-        else return 'https://api.adorable.io/avatars/285/'+this.correo;
+        // else return 'https://api.adorable.io/avatars/285/'+this.correo;
+        else return 'https://www.flaticon.es/svg/static/icons/svg/149/149071.svg';
       }
     },
     methods: {
