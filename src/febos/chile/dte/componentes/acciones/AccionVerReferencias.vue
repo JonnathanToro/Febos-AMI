@@ -43,9 +43,10 @@ export default {
         clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/referencias").then((response) => {
           this.$vs.loading.close();
 
-          modalStore.commit("setTitulo", "Ver Referencias Documento N°"+this.documento.folio);
+          // modalStore.commit("setTitulo", "Ver Referencias Documento N°"+this.documento.folio);
+          modalStore.commit("setTitulo", "Referencias del documento");
           modalStore.commit("febosId", this.documento.febosId);
-          modalStore.commit("setData", response.data);
+          modalStore.commit("setData", { documento: this.documento, referencias: response.data});
 
           if (response.data.referenciadosTipoDnt.length == 0 &&
               response.data.referenciadosTipoDte.length == 0 &&
@@ -53,7 +54,7 @@ export default {
               response.data.referenciasTipoDte.length == 0) {
             modalStore.commit("mostrarBitacora", modalComponente);
           } else {
-            modalStore.commit("mostrarBitacoraFull", modalComponente);
+            modalStore.commit("mostrarBitacora", modalComponente);
 
           }
         }).catch(() => {
