@@ -136,13 +136,13 @@ export default {
           }
         } else {
           this.$vs.notify({
-            color: 'danger', title: 'Empresa', text: 'Debe ingresar correctamente todos los datos solicitados'
+            color: 'danger', title: 'Usuario', text: 'Debe ingresar todos los datos solicitados de forma correcta'
           });
         }
       }).catch((error) => {
         window.console.log(error);
         this.$vs.notify({
-          color: 'danger', title: 'Empresa', text: 'Error de plataforma'
+          color: 'danger', title: 'Ususario', text: 'Error de plataforma'
         });
       })
     },
@@ -158,15 +158,14 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: 'success', title: 'Usuarios', text: 'Usuario actualizado correctamente'
+            color: 'success', title: 'Usuarios', text: 'Usuario actualizado'
           });
           this.cerrarModal();
         } else {
           this.$vs.notify({
             color: "danger",
             title: "Usuario",
-            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId,
-            fixed: true
+            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
 
@@ -174,7 +173,7 @@ export default {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Usuario", text: "Error de plataforma", fixed: true
+          color: "danger", title: "Usuario", text: "Error de plataforma", time: 10000
         });
       })
 
@@ -203,8 +202,7 @@ export default {
           this.$vs.notify({
             color: "danger",
             title: "Usuario",
-            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId,
-            fixed: true
+            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
 
@@ -212,7 +210,7 @@ export default {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Usuario", text: "Error de plataforma", fixed: true
+          color: "danger", title: "Usuario", text: "Error de plataforma", time: 10000
         });
       })
     },

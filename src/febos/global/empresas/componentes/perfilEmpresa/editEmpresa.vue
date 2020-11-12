@@ -191,11 +191,11 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10)  {
           this.$vs.notify({
-            color: "success", title: "Empresa", text: "Los datos fueron actualizados correctamente"
+            color: "success", title: "Empresa", text: "Empresa actualizada"
           })
         } else {
           this.$vs.notify({
-            color: "danger", title: "Empresa", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Empresa", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           })
         }
       }).catch((error) => {

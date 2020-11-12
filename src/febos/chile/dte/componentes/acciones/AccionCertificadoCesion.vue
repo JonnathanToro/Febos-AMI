@@ -42,7 +42,7 @@ export default {
           window.open(response.data.imagenLink);
         }else{
           this.$vs.notify({
-            color: 'danger', title: 'Certificado de sesión', text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: 'danger', title: 'Certificado de sesión', text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch(() => {

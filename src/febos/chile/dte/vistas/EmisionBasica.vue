@@ -686,7 +686,7 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: 'success', title: 'Emisión DTE', text: 'Documentos emitido'
+            color: 'success', title: 'Emisión DTE', text: 'Documento emitido'
           });
         } else {
           this.$vs.notify({
@@ -701,7 +701,7 @@ export default {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Emisión DTE", text: "No fue posible procesar la emisión del documento", fixed: true
+          color: "danger", title: "Emisión DTE", text: "No fue posible procesar la emisión del documento", time: 10000
         });
 
       });

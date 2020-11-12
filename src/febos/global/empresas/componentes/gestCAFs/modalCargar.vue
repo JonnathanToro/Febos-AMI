@@ -121,7 +121,7 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10)  {
           this.$vs.notify({
-            color: 'success', title: 'CAF', text: 'Documentos cargados'
+            color: 'success', title: 'CAF', text: 'Documento cargado'
           });
           this.cerrarModal();
         } else {
@@ -129,7 +129,7 @@ export default {
             color: "danger",
             title: "Usuario",
             text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId,
-            fixed: true
+            time: 10000
           });
         }
       }).catch((error) => {

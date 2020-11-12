@@ -98,13 +98,13 @@ export default {
           console.log(this.usuarios);
         } else {
           this.$vs.notify({
-            color: "danger", title: "Configuración de usuarios", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Configuración de usuarios", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Configuración de usuarios", text: "No fue posible procesar la cesión del documento", fixed: true
+          color: "danger", title: "Configuración de usuarios", text: "No fue posible procesar la cesión del documento", time: 10000
         });
       })
 
@@ -149,13 +149,13 @@ export default {
         } else {
           this.$vs.loading.close();
           this.$vs.notify({
-            color: "danger", title: "Empresas del usuario", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Empresas del usuario", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Empresas del usuario", text: "Error de plataforma", fixed: true
+          color: "danger", title: "Empresas del usuario", text: "Error de plataforma", time: 10000
         });
       })
 
