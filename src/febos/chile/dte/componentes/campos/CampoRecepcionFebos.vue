@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="width: 102px;">
       <div v-if="doc.fechaRecepcion !== null">
-        <span>{{ doc.fechaRecepcion }}</span>
+        <span>{{ doc.fechaRecepcion | moment("DD-MM-YYYY hh:mm") }}</span>
       </div>
       <div v-else>
         <span>Sin información</span>

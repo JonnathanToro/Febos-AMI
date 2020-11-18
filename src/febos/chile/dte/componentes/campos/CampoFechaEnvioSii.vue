@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ documento.fechaRecepcionSii }}
+    {{ documento.fechaRecepcionSii | moment("DD-MM-YYYY hh:mm") }}
   </div>
 </template>
 

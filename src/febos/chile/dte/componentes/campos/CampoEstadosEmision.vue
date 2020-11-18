@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="width: 72px;">
       <span class="en-linea"><CampoIndicadorEstadoSii :documento="documento"></CampoIndicadorEstadoSii></span>
       <span class="en-linea"><CampoIndicadorEstadoComercial :documento="documento"></CampoIndicadorEstadoComercial></span>
     </div>

@@ -2,10 +2,13 @@
 <div>
   <vx-card title="Gestión de usuarios" title-color="primary">
 
-    <vs-button size="small" style="margin-bottom: 10px;" @click="agregarUsuario">Agregar</vs-button>
+
     <vs-table :data="usuarios" :search="true" :pagination="true" :maxItems="10" noDataText="Sin registros encontrados">
+      <template slot="header">
+        <vs-button size="small" style="margin-bottom: 10px;" @click="agregarUsuario">Agregar</vs-button>
+      </template>
       <template slot="thead">
-        <vs-th>Alias</vs-th>
+        <!--<vs-th>Alias</vs-th>-->
         <vs-th>RUT</vs-th>
         <vs-th>Nombre</vs-th>
         <vs-th>Correo</vs-th>
@@ -14,9 +17,9 @@
 
       <template slot-scope="{data}">
         <vs-tr :key="indextr" v-for="(tr, indextr) in data" >
-          <vs-td :data="data[indextr].alias">
+          <!--<vs-td :data="data[indextr].alias">
             {{data[indextr].alias}}
-          </vs-td>
+          </vs-td>-->
           <vs-td :data="data[indextr].iut">
             {{data[indextr].iut}}
           </vs-td>
