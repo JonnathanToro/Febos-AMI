@@ -99,14 +99,14 @@ export default {
           this.cafs = response.data.cafs;
         } else {
           this.$vs.notify({
-            color: "danger", title: "CAFs", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "CAFs", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch((error) => {
         console.error(error);
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "CAFs", text: "No fue posible conectarse con Narvi", fixed: true
+          color: "danger", title: "CAFs", text: "No fue posible conectarse con Narvi", time: 10000
         });
       })
 

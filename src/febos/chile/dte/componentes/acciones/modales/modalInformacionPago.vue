@@ -214,18 +214,18 @@ export default {
               this.$vs.loading.close();
               if(response.data.codigo == 10) {
                 this.$vs.notify({
-                  color: 'success', title: 'Información de pago', text: 'Información de pago actualizada correctamente.'
+                  color: 'success', title: 'Información de pago', text: 'Información de pago actualizada.'
                 });
                 this.cerrarVentana();
               } else {
                 this.$vs.notify({
-                  color: "danger", title: "Información de pago", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+                  color: "danger", title: "Información de pago", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
                 });
               }
             }).catch((error) => {
               console.log(error);
               this.$vs.notify({
-                color: "danger", title: "Información de pago", text: "No fue posible procesar la información de pago", fixed: true
+                color: "danger", title: "Información de pago", text: "No fue posible procesar la información de pago", time: 10000
               });
               this.$vs.loading.close();
             });

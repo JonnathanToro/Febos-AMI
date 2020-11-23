@@ -125,19 +125,19 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: 'success', title: 'Envío DTE', text: 'Información de pago actualizada correctamente.'
+            color: 'success', title: 'Envío DTE', text: 'DTE enviado.'
           });
           this.cerrarVentana();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Envío DTE", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Envío DTE", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
 
         }
       }).catch((error) => {
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Envío DTE", text: "No fue posible enviar el documento", fixed: true
+          color: "danger", title: "Envío DTE", text: "No fue posible enviar el documento", time: 10000
         });
         this.$vs.loading.close();
       });

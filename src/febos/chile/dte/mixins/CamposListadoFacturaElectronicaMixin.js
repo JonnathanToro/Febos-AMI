@@ -54,7 +54,7 @@ export default {
         },
         RecepcionFebos:{
           ancho:'100',
-          nombre:'Recepción Febos',
+          nombre:'Recepción Narvi',
           camposApi:['fechaRecepcion']
         },
         IndicadorEstadoComercial: {

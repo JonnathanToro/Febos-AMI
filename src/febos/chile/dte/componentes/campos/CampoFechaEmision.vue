@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ documento.fechaEmision }}
+    {{ documento.fechaEmision | moment("DD-MM-YYYY") }}
   </div>
 </template>
 

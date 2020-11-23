@@ -50,14 +50,14 @@ export default {
           this.cerrarVentana();
         }else{
           this.$vs.notify({
-            color: "danger", title: "Anulación Documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Anulación Documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Anulación Documento", text: "No fue posible procesar la anulación del documento", fixed: true
+          color: "danger", title: "Anulación Documento", text: "No fue posible procesar la anulación del documento", time: 10000
         });
       })
 

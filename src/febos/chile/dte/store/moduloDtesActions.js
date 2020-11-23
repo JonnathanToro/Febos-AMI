@@ -5,9 +5,9 @@ export default {
     commit('SET_CARGANDO', true);
     try {
       const response = await cl_dtes_listar(payload)
-      if (response.data.codigo != 10) throw response.data
       commit('SET_LISTADO_DTE', response.data);
       commit('SET_CARGANDO', false);
+      if (response.data.codigo != 10) throw response.data
       return response.data;
     } catch (error) {
       console.log("ERROR", error)

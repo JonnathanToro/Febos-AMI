@@ -97,12 +97,12 @@ export default {
           this.cerrarVentana();
         }else{
           this.$vs.notify({
-            color: "danger", title: "Modificar Tipo Venta", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
+            color: "danger", title: "Modificar Tipo Venta", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.notify({
-          color: "danger", title: "Modificar Tipo Venta", text: "No fue posible modificar el tipo de compra", fixed: true
+          color: "danger", title: "Modificar Tipo Venta", text: "No fue posible modificar el tipo de compra", time: 10000
         });
         this.$vs.loading.close();
       });

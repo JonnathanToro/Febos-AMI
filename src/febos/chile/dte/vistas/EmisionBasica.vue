@@ -54,6 +54,7 @@
               v-model="encabezado.rutReceptor"
               class="w-full"
               name="rutReceptor"
+              v-on:change="encontrarReceptor"
               v-validate="'required|validaRut'"
             />
             <span
@@ -74,7 +75,7 @@
               v-model="encabezado.razonSocial"
               class="w-full"
               name="razon_social"
-              v-validate="'required|alpha_spaces'"
+              v-validate="'required'"
             />
             <span
               class="text-danger text-sm form-error-message"
@@ -89,7 +90,7 @@
               v-model="encabezado.giro"
               class="w-full"
               name="giro"
-              v-validate="'required|alpha_spaces'"
+              v-validate="'required'"
             />
             <span
               class="text-danger text-sm form-error-message"
@@ -119,7 +120,7 @@
               v-model="encabezado.comuna"
               class="w-full"
               name="comuna"
-              v-validate="'required|alpha_spaces'"
+              v-validate="'required'"
             />
             <span
               class="text-danger text-sm form-error-message"
@@ -134,7 +135,7 @@
               v-model="encabezado.ciudad"
               class="w-full"
               name="ciudad"
-              v-validate="'required|alpha_spaces'"
+              v-validate="'required'"
             />
             <span
               class="text-danger text-sm form-error-message"
@@ -635,6 +636,29 @@ export default {
       });
     },
 
+    encontrarReceptor() {
+      if (validaRUT(this.encabezado.rutReceptor)) {
+        this.$vs.loading({ color: "#ff2961", text: "Buscando receptor ..." });
+        this._asignarEncabezado(null);
+        clienteFebosAPI.get("empresas/" + this.encabezado.rutReceptor).then((response) => {
+          this.$vs.loading.close();
+          if (response.data.codigo == 10)   this._asignarEncabezado(response.data)
+        })
+      }
+    },
+
+    _asignarEncabezado(valor) {
+      this.encabezado.razonSocial = (valor != null) ? valor.razonSocial : null;
+      this.encabezado.giro = (valor != null) ? valor.giro : null;
+      if (valor != null)  {
+        if (valor.sucursales.length > 0)  {
+          this.encabezado.ciudad = (valor != null) ? valor.sucursales[0].ciudad : null;
+          this.encabezado.comuna = (valor != null) ? valor.sucursales[0].comuna : null;
+          this.encabezado.direccion = (valor != null) ? valor.sucursales[0].direccion : null;
+          this.encabezado.email = (valor != null) ? valor.sucursales[0].correoElectronico : null;
+        }
+      }
+    },
 
     validarEncabezado() {
       return new Promise((resolve, reject) => {
@@ -652,8 +676,6 @@ export default {
 
     validarDetalle()  {
       return new Promise((resolve, reject) => {
-        console.log(this.detalle);
-        console.log(this.detalle.length);
         if (this.detalle.length > 0) {
           resolve(true);
         } else {
@@ -668,7 +690,7 @@ export default {
     },
 
     enviarDocumento() {
-      this.$vs.loading({ color: "#FF2961", text: "Emitiendo documento" });
+      this.$vs.loading({ color: "#ff2961", text: "Emitiendo documento" });
       /* GIORGIO */
       const defaultEmpresa = this.defaultEmpresa;
       const f2String = this._generarF2(defaultEmpresa);
@@ -686,7 +708,7 @@ export default {
         this.$vs.loading.close();
         if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: 'success', title: 'Emisión DTE', text: 'Documentos emitido'
+            color: 'success', title: 'Emisión DTE', text: 'Documento emitido'
           });
         } else {
           this.$vs.notify({
@@ -701,7 +723,7 @@ export default {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Emisión DTE", text: "No fue posible procesar la emisión del documento", fixed: true
+          color: "danger", title: "Emisión DTE", text: "No fue posible procesar la emisión del documento", time: 10000
         });
 
       });
