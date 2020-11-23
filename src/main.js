@@ -17,6 +17,62 @@ import 'material-icons/iconfont/material-icons.css' //Material Icons
 import 'vuesax/dist/vuesax.css'; // Vuesax
 Vue.use(Vuesax)
 Vue.use(require('vue-moment'));
+Vue.moment.locale('es', {
+  months : ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],
+  monthsShort : ['ene.','feb.','mar.','abr.','may.','jun.','jul.','ago.','sep.','oct.','nov.','dic.'],
+  monthsParseExact : true,
+  weekdays : ['domingo','lunes','martes','miércoles','jueves','viernes','sabado'],
+  weekdaysShort : ['dom.','lun.','mar.','mie.','jue.','vie.','sab.'],
+  weekdaysMin : ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
+  weekdaysParseExact : true,
+  longDateFormat : {
+    LT : 'H:mm',
+    LTS : 'H:mm:ss',
+    L : 'DD/MM/YYYY',
+    LL : 'D [de] MMMM [de] YYYY',
+    LLL : 'D [de] MMMM [de] YYYY H:mm',
+    LLLL : 'dddd, D [de] MMMM [de] YYYY H:mm'
+  },
+  calendar : {
+    sameDay : function () {
+      return '[hoy a la' + ((this.hours() !== 1) ? 's' : '') + '] LT';
+    },
+    nextDay : function () {
+      return '[mañana a la' + ((this.hours() !== 1) ? 's' : '') + '] LT';
+    },
+    nextWeek : function () {
+      return 'dddd [a la' + ((this.hours() !== 1) ? 's' : '') + '] LT';
+    },
+    lastDay : function () {
+      return '[ayer a la' + ((this.hours() !== 1) ? 's' : '') + '] LT';
+    },
+    lastWeek : function () {
+      return '[el] dddd [pasado a la' + ((this.hours() !== 1) ? 's' : '') + '] LT';
+    },
+    sameElse : 'L'
+  },
+  relativeTime : {
+    future : 'en %s',
+    past : 'hace %s',
+    s : 'unos segundos',
+    m : 'un minuto',
+    mm : '%d minutos',
+    h : 'una hora',
+    hh : '%d horas',
+    d : 'un día',
+    dd : '%d días',
+    M : 'un mes',
+    MM : '%d meses',
+    y : 'un año',
+    yy : '%d años'
+  },
+  ordinalParse : /\d{1,2}º/,
+  ordinal : '%dº',
+  week : {
+    dow : 1, // Monday is the first day of the week.
+    doy : 4  // The week that contains Jan 4th is the first week of the year.
+  }
+});
 
 // Febos Config
 //import febosConfig from "./febos/servicios/febosConfig.js"

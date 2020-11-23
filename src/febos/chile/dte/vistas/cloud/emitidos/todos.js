@@ -21,7 +21,7 @@ export default {
   filtrosPorDefecto: [
     {campo: 'tipoDocumento', tipo:'multi',valor: [33,34,61,52,43,56]},
     {campo: 'estadoSii', tipo:'multi', valor: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]},
-    {campo: 'fechaEmision', tipo:'multi', valor: 'ultimas3semanas'}
+    {campo: 'fechaEmision', tipo:'multi', valor: 'ultimas4semanas'}
   ],
   filtrosHabilitados: [
     {campo: 'fechaEmision', tipo:'rangoFecha'},

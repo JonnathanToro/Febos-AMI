@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --no-unsafe-inline",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e:cloud": "vue-cli-service test:e2e --mode desarrollo.cloud",
     "lint": "vue-cli-service lint",

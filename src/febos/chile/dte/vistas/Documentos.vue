@@ -27,7 +27,7 @@
       </vs-dropdown>
     </template>
 
-    <filtros :configuracion-vista="configuracion"></filtros>
+    <filtros :configuracion-vista="configuracion" :periodos="periodos"></filtros>
     <table id="listado-documentos">
       <thead>
       <tr>
@@ -102,8 +102,8 @@
       return {
         periodos:[
           {nombre:'las últimas 4 semanas',valor:'ultimas4semanas'},
-          {nombre:'este mes',valor:'esteMes'},
-          {nombre:'este mes y el anterior',valor:'esteMesConAnterior'},
+          {nombre:'éste mes',valor:'esteMes'},
+          {nombre:'éste mes y el anterior',valor:'esteMesConAnterior'},
           {nombre:'los últimos 3 meses',valor:'ultimos3meses'},
           {nombre:'los últimos 6 meses',valor:'ultimos6meses'},
           {nombre:'* Rango personalizado',valor:'personalizado'}
@@ -190,10 +190,16 @@
             this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
           case 'esteMesConAnterior':
+            this.periodoDesde=Vue.moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD');
+            this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
           case 'ultimos3meses':
+            this.periodoDesde=Vue.moment().subtract(2, 'month').startOf('month').format('YYYY-MM-DD');
+            this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
           case 'ultimos6meses':
+            this.periodoDesde=Vue.moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD');
+            this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
         }
         console.log(this.periodoDesde,this.periodoHasta);
