@@ -174,7 +174,7 @@ export default {
       return process.env.VUE_APP_AMBIENTE;
     },
     version(){
-      console.log('version',config);
+      //console.log('version',config);
       return config.version;
     },
     bodyOverlay() { return this.$store.state.bodyOverlay },

@@ -1,5 +1,6 @@
 export default {
   SET_LISTADO_DTE (state, payload) {
+    state.documentos=[];
     state.documentos=payload.documentos;
     state.paginaActual=payload.pagina;
     state.paginasTotales=payload.paginas;

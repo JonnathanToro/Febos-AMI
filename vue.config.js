@@ -15,7 +15,11 @@ module.exports = {
     'resize-detector'
   ],
   devServer: {
-    disableHostCheck: true
+    disableHostCheck: true,
+    host: 'www.narvi.cl'
+  },
+  configureWebpack: {
+    devtool: 'cheap-module-source-map'
   },
   configureWebpack: {
     optimization: {

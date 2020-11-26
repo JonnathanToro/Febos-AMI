@@ -107,7 +107,7 @@
         }
       }
       this._cargarPersonalizacion();
-      console.log("estilo logo",this._estiloLogo);
+      //console.log("estilo logo",this._estiloLogo);
     },
     methods: {
       ...mapActions("Usuario", {login: "ingreso"}),

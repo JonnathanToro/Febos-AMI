@@ -5,13 +5,13 @@ export default {
     }
   },
   created() {
-    console.log("permiso created");
+    //console.log("permiso created");
   },
   methods: {
     _tienePermiso(permiso){
       //TODO: Verificar si el usuario actual tiene el permiso indicado
-      console.log("Validando si usuario tiene el permiso ",permiso);
-      return true;
+    //  console.log("Validando si usuario tiene el permiso ",permiso);
+      return permiso==permiso;
     }
   }
 }

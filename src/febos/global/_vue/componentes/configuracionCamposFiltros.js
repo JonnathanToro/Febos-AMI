@@ -5,7 +5,7 @@ export default {
   },
   "estadoSii": {
     nombre: "Estado SII",
-    tipo: "enum"
+    tipo: "multi"
   },
   "folio": {
     nombre: "Folio",
@@ -14,5 +14,17 @@ export default {
   "tipoDocumento":{
     nombre:"Tipo Documento",
     tipo:"multi"
+  },
+  "rutEmisor": {
+    nombre: "RUT Emisor",
+    tipo: "rut"
+  },
+  "rutReceptor": {
+    nombre: "RUT Receptor",
+    tipo: "rut"
+  },
+  "estadoComercial":{
+    nombre: "Estado Comercial",
+    tipo: "multi"
   }
 }
