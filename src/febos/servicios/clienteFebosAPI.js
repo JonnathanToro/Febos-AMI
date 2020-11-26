@@ -64,7 +64,7 @@ const loggerInterceptor = config => {
 const portalInterceptor = config => {
   config.params = config.params?{...{dominioPortal:`${process.env.VUE_APP_DOMINIO_DEFAULT}`},...config.params}:{dominioPortal:`${process.env.VUE_APP_DOMINIO_DEFAULT}`}
   //condigparams.push(`dominioPortal=${process.env.VUE_APP_DOMINIO_DEFAULT}`);
-  console.log("config",config);
+  //console.log("config",config);
   return config;
 }
 

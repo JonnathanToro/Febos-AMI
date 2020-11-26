@@ -10,9 +10,9 @@
       <span v-if="periodoSeleccionado.valor == 'personalizado'">
         entre el
         <!--<input type="date" class="fecha" v-model="periodoDesde">-->
-        <datetime v-model="periodoDesde" input-class="fecha" :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"></datetime>
+        <datetime v-model="periodoDesde" input-class="fecha" :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}" value-zone="local" format="yyyy-MM-dd"></datetime>
         y el
-        <datetime v-model="periodoHasta" input-class="fecha" :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"></datetime>
+        <datetime v-model="periodoHasta" input-class="fecha" :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}" value-zone="local" format="yyyy-MM-dd"></datetime>
       </span>
       <vs-dropdown style="margin-left: 15px">
         <a class="a-icon" href="#">
@@ -27,7 +27,7 @@
       </vs-dropdown>
     </template>
 
-    <filtros :configuracion-vista="configuracion" :periodos="periodos"></filtros>
+    <filtros :configuracion-vista="configuracion" :periodos="periodos"  v-on:filtros-aplicados="manipularFiltros"></filtros>
     <table id="listado-documentos">
       <thead>
       <tr>
@@ -119,7 +119,9 @@
         camposApi: '',
         filtrosFijos: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista].filtrosFijos,
         filtrosPorDefecto: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista].filtrosPorDefecto,
-        filtrosVariables: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista].filtrosVariables
+        filtrosVariables: configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista].filtrosVariables,
+        filtrosAplicados: "",
+        filtrosDelComponente:"" //se actualiza con el componente de filtros
       }
     },
     watch: {
@@ -157,7 +159,7 @@
         paginaActual: state => state.paginaActual,
         paginasTotales: state => state.paginasTotales,
         registrosEncontrados: state => state.registrosEncontrados,
-        filtros: state => state.filtros,
+       // filtros: state => state.filtros,
         campos: state => state.campos,
       }),
       campos() {
@@ -167,11 +169,6 @@
           campos.push(self.obtenerCampoTabla(obj));
         });
         return campos;
-      },
-      filtros() {
-        let campoRut = this.configuracion.categoria == 'emitidos' ? 'rutEmisor' : 'rutReceptor';
-        let rut = this.empresaActual.iut;
-        return campoRut + ":" + rut + "|fechaCreacion:2020-05-01--2020-07-01|tipoDocumento:33,34,43,46,56,61,110,111,112|estadoSii:0,1,2,3,4,5,6,7,8,9|incompleto:N";
       }
     },
     methods: {
@@ -179,30 +176,42 @@
         listarDocumentos: "listarDocumentos",
         setDocumentoActual: "setDocumentoActual",
       }),
+      manipularFiltros(filtros){
+        this.filtrosDelComponente=filtros;
+        this.filtros=`fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;
+        if(filtros!=""){
+          this.filtros+=`|${filtros}`;
+        }
+        this.listar(1);
+      },
       seleccionarPeriodo(periodo){
-        switch(this.periodoSeleccionado.valor){
+        switch(periodo.valor){
           case 'ultimas4semanas':
+            console.log("4");
             this.periodoDesde=Vue.moment().subtract(28, 'days').format('YYYY-MM-DD');
             this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
           case 'esteMes':
+            console.log("este");
             this.periodoDesde=Vue.moment().startOf('month').format('YYYY-MM-DD');
             this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
           case 'esteMesConAnterior':
+            console.log("este y el anteior");
             this.periodoDesde=Vue.moment().subtract(1, 'month').startOf('month').format('YYYY-MM-DD');
             this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
           case 'ultimos3meses':
+            console.log("3");
             this.periodoDesde=Vue.moment().subtract(2, 'month').startOf('month').format('YYYY-MM-DD');
             this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
           case 'ultimos6meses':
+            console.log("6");
             this.periodoDesde=Vue.moment().subtract(5, 'month').startOf('month').format('YYYY-MM-DD');
             this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
             break;
         }
-        console.log(this.periodoDesde,this.periodoHasta);
         this.periodoSeleccionado=periodo;
       },
       random() {
@@ -215,13 +224,13 @@
         return this.componentes[nombreCampo];
       },
       listar(pagina) {
-        console.log("listando documentos");
-
+        //console.log("listando documentos");
+        console.log(this.periodoDesde,this.periodoHasta,this.periodoSeleccionado);
           this.listarDocumentos({
             categoria: this.configuracion.categoria,
             inicio: pagina,
             cantidad: this.registrosPorPagina,
-            consulta: '*',//this.camposApi,
+            consulta: 'trackId,tipoDocumento,folio,rutEmisor,razonSocialEmisor,rutReceptor,razonSocialReceptor,rutCesionario,razonSocialCesionario,indicadorDeTraslado,fechaCesion,codigoSii,fechaEmision,fechaRecepcion,fechaRecepcionSii,plazo,estadoComercial,estadoSii,fechaReciboMercaderia,formaDePago,montoTotal,iva,contacto,correoReceptor,fechaCesion,tipo,monto,lugar,comentario,fecha,fechaVencimiento,medio,tpoTraVenta,tpoTranCompra,tpoTranCompraCodIva,externalId,indicadorDeMontoBruto,tieneAptobacionActiva,tieneNc,tieneNd,diasParaPago,estadoPagado,tieneAptobacionActivaNombre',//this.camposApi,
             filtros: this.filtros,//"rutEmisor:76179952-5|fechaCreacion:2020-05-01--2020-07-01|tipoDocumento:33,34,43,46,56,61,110,111,112|estadoSii:0,1,2,3,4,5,6,7,8,9|incompleto:N",
             orden: "-fechaCreacion",
             dominioPortal: window.location.hostname,
@@ -241,16 +250,13 @@
 
       }
     },
+    created(){
+      this.periodoDesde=Vue.moment().subtract(28, 'days').format('YYYY-MM-DD');
+      this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
+    },
     mounted() {
       this.extraerCampos();
       this.listar(1);
-      this.periodoDesde=Vue.moment().subtract(28, 'days').format('YYYY-MM-DD');
-      this.periodoHasta=Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
-      console.log("CONFIGURACION: ", configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria][this.$route.params.vista]);
-      console.log("CONFIGURACION 1 : ", configVistas[process.env.VUE_APP_PORTAL][this.$route.params.categoria]);
-      console.log("Parametro de ruta: ", process.env.VUE_APP_PORTAL);
-      console.log("PARAMS: ", this.configuracion.categoria);
-      console.log("CONFIGURACION COMPONENTE: ",this.configuracion);
     }
 
   }

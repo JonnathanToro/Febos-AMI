@@ -1,6 +1,7 @@
 <template>
   <div>
-    {{ documento.fechaRecepcionSii | moment("DD-MM-YYYY hh:mm") }}
+    <span class="campo-fecha">{{ documento.fechaRecepcionSii | moment("DD-MM-YYYY") }} </span><br/>
+    <span class="hora"> a las <strong>{{ documento.fechaRecepcionSii | moment("hh:mm") }}</strong> hrs.</span>
   </div>
 </template>
 
@@ -20,5 +21,8 @@
   div {
     width:100%;
     text-align: right;
+  }
+  .hora{
+    font-size: 80%;
   }
 </style>
