@@ -376,8 +376,8 @@ export default {
     },
     ventanaModificarFiltro(filtro) {
       console.log("desplegando ventana de configuracion para el filtro",filtro);
-     // this.tag = '';
-     // this.tags = [];
+      this.tag = '';
+      this.tags = [];
       if (this.filtroRecientementeEliminado) {
         this.filtroRecientementeEliminado = false;
         return;
