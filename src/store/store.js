@@ -22,6 +22,16 @@ archivos.keys().forEach(archivo => {
   modulos[nombreModulo] = archivos(archivo).default;
 });
 
+/*
+import VuexPersistence from 'vuex-persist'
+import localForage from 'localforage'
+
+const vuexLocal = new VuexPersistence({
+  storage: localForage,
+  asyncStorage: true,
+  key:'prueba'//`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`,
+})
+*/
 export default new Vuex.Store({
     getters,
     mutations,
@@ -33,5 +43,6 @@ export default new Vuex.Store({
       overwrite: false,
       fetchBeforeUse: false
     })],
-    strict: process.env.NODE_ENV !== 'production'
+   // plugins: [vuexLocal.plugin],
+   // strict: process.env.NODE_ENV !== 'produccion'
 })

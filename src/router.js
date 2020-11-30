@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import rutasChile from "./router/chile/rutasChile";
 import autenticacion from "./febos/servicios/autenticacion";
-
+import store from "@/store/store";
 
 Vue.use(Router)
 
@@ -28,8 +28,8 @@ const router = new Router({
   ],
 })
 
-
-router.beforeEach((hacia, desde, siguiente) => {
+const waitForStorageToBeReady = async (hacia, desde, siguiente) => {
+  await store.restored;
   let key = `${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.redirect`
   if (hacia.meta.requiereLogin) {
     if (autenticacion.estaLogueado()) {
@@ -45,7 +45,9 @@ router.beforeEach((hacia, desde, siguiente) => {
   } else {
     siguiente();
   }
-})
+}
+
+router.beforeEach(waitForStorageToBeReady);
 
 router.afterEach(() => {
   // Remove initial loading

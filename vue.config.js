@@ -12,7 +12,8 @@ module.exports = {
   publicPath: `/${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}/`,
   transpileDependencies: [
     'vue-echarts',
-    'resize-detector'
+    'resize-detector',
+    'vuex-persist'
   ],
   devServer: {
     disableHostCheck: true,
