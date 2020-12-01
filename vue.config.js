@@ -6,7 +6,12 @@
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
-
+let host='';
+switch(process.env.VUE_APP_PRODUCTO){
+  case 'ed': host='vue.portal.escritoriodigital.cl';break;
+  case 'narvi': host='vue.portal.narvi.cl';break;
+  case 'febos': host='vue.portal.febos.cl';break;
+}
 
 module.exports = {
   publicPath: `/${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}/`,
@@ -17,7 +22,7 @@ module.exports = {
   ],
   devServer: {
     disableHostCheck: true,
-    host: 'www.narvi.cl'
+    host: host
   },
   configureWebpack: {
     devtool: 'cheap-module-source-map'
