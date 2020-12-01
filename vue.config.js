@@ -20,9 +20,7 @@ module.exports = {
     host: 'www.narvi.cl'
   },
   configureWebpack: {
-    devtool: 'cheap-module-source-map'
-  },
-  configureWebpack: {
+    devtool: 'cheap-module-source-map',
     optimization: {
       splitChunks: {
         chunks: 'all'
