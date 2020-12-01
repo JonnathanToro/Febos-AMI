@@ -25,9 +25,7 @@ module.exports = {
     host: host
   },
   configureWebpack: {
-    devtool: 'cheap-module-source-map'
-  },
-  configureWebpack: {
+    devtool: 'cheap-module-source-map',
     optimization: {
       splitChunks: {
         chunks: 'all'
