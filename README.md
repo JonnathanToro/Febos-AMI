@@ -2,8 +2,8 @@
 Aplicación web de Febos mas moderna, y con VUE
 
 ## Contenido
-- [Ejecucion](#ejecucin)
-- [Configuración](#configuracin)
+- [Ejecución](#ejecución)
+- [Configuración](#configuración)
 - [Deploy](#deploy)
 
 ## Ejecución
