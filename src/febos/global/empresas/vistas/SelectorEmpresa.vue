@@ -85,7 +85,9 @@
         return this.empresas.filter(function (empresa) {
           if (that.buscadorDeEmpresa == '') return true;
           var query = that.buscadorDeEmpresa.toLocaleLowerCase();
-          return empresa.iut.toLocaleLowerCase().includes(query) || empresa.fantasia.toLocaleLowerCase().includes(query) || empresa.razonSocial.toLocaleLowerCase().includes(query);
+          return empresa.iut && empresa.iut.toLocaleLowerCase().includes(query)
+            || empresa.fantasia && empresa.fantasia.toLocaleLowerCase().includes(query)
+            || empresa.razonSocial && empresa.razonSocial.toLocaleLowerCase().includes(query);
         });
       },
       empresasQueNoSeVen() {

@@ -26,7 +26,7 @@ export default {
   },
   "general": {
     "favicon": "https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/favicon-narvi.png",
-    "titulo": "Cargando...",
+    "titulo": "Narvi",
     "footer":"Este es un servicio de <B>Febos AMI SpA</B>"
   }
 }
