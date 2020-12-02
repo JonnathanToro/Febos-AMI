@@ -16,9 +16,7 @@ export default {
       let ambiente=`${process.env.VUE_APP_AMBIENTE}`;
       let url=`https://s3.amazonaws.com/archivos.febos.io/${pais}/${ambiente}/portales/${this._dominioActual}.json`;
       var self=this;
-      console.log("Cargando personalización de portal...",url);
       clienteAPI.get(url).then(function(response){
-        console.log("Personalización de portal cargada.");
         self._cargarPersonalizacionEnState(response.data);
         self.$emit('updateNavbarColor', response.data.colores.navbar);
         self.$vs.theme({ primary: response.data.colores.primario });
