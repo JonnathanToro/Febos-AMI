@@ -19,6 +19,7 @@ export default {
       return error;
     }
   },
+  // TODO: change name to update
   selectCompany({ commit }, payload) {
     commit('SET_EMPRESA', payload);
   }

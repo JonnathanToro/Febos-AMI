@@ -1,3 +1,9 @@
+<!--
+   En caso de ser necesario modificar algo en este componente refactorizarlo o crearlo desde cero.
+   Si funciona es un milagro.
+
+   - Abraham Gonzalez. (@Abê slack)
+-->
 <template>
   <form-wizard
     color="rgba(var(--vs-primary), 1)"
@@ -39,8 +45,11 @@
               <span slot="on">Nominativa</span>
               <span slot="off">Portador</span>
             </vs-switch>
-            <vs-switch color="primary" v-model="encabezado.detalle" style="margin-top: 2px; width: 100px;"
-                       v-if="encabezado.tipoDocumento == 39 || encabezado.tipoDocumento == 41">
+            <vs-switch
+              color="primary"
+              v-model="encabezado.detalle" style="margin-top: 2px; width: 100px;"
+              v-if="encabezado.tipoDocumento == 39 || encabezado.tipoDocumento == 41"
+            >
               <span slot="on">Detalle</span>
               <span slot="off">Sin detalle</span>
             </vs-switch>
@@ -449,7 +458,6 @@
 
             <div
               style="width: 100%"
-              v-if="referencias.length > 0"
               v-for="(ref, ind) in referencias"
               :key="ind"
             >
@@ -522,6 +530,7 @@
   </form-wizard>
 </template>
 <script>
+/* eslint-disable */
 import { FormWizard, TabContent } from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
 import VsModal from "vs-modal";
@@ -594,11 +603,8 @@ export default {
     },
     stored: {
       get() {
-        return JSON.parse(
-          localStorage.getItem(
-            `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
-          )
-        );
+        // TODO: git history and enjoy
+        return this.$store.state;
       }
     },
     defaultEmpresa:  {
@@ -693,6 +699,7 @@ export default {
       this.$vs.loading({ color: "#ff2961", text: "Emitiendo documento" });
       /* GIORGIO */
       const defaultEmpresa = this.defaultEmpresa;
+      console.log(defaultEmpresa);
       const f2String = this._generarF2(defaultEmpresa);
       const bodyParams = {
         entrada: "F2",
