@@ -1,8 +1,7 @@
-import axios from 'axios'
+import axios from 'axios';
 
-let config = {
+const config = {
   baseURL: ''
 };
-const clienteAPI = axios.create(config);
 
-export default clienteAPI;
+export default axios.create(config);

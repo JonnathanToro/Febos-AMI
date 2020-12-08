@@ -1,14 +1,10 @@
-export default {
-  empresa: state => {
-    return state.empresa;
-  },
-  iut: state => {
-    return state.empresa.iut;
-  },
-  empresaSeleccionada: state =>  {
-    return state.empresaSeleccionada;
-  },
-  empresas: state => {
-    return state.empresas;
-  }
-}
+export const company = (state) => state.empresa;
+
+// TODO: remove alias.
+export const empresa = company;
+// TODO: remove alias.
+export const empresaActual = company;
+
+export const iut = (state) => state.empresa.iut;
+
+export const companies = (state) => state.empresas;

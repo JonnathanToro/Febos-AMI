@@ -7,16 +7,15 @@
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
 
-
 <template>
   <div class="layout--full-page" >
     <router-view></router-view>
   </div>
 </template>
 <script>
-  import IdleMixin from "../../febos/global/_vue/mixins/IdleMixin";
+import IdleMixin from '../../febos/global/_vue/mixins/IdleMixin';
 
-  export default {
-    mixins:[IdleMixin]
-  }
+export default {
+  mixins: [IdleMixin]
+};
 </script>
