@@ -110,8 +110,8 @@ export default {
 
       try {
         await this.signIn({
-          correo: 'letty@febos.cl', // this.correo,
-          clave: 'Conejosdeletty12' // this.clave
+          correo: this.correo,
+          clave: this.clave
         });
         await this.$router.push({ name: 'iniciando' });
 
