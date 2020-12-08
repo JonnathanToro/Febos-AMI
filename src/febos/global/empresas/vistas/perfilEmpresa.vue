@@ -1,4 +1,11 @@
+<!--
+   En caso de ser necesario modificar algo en este componente refactorizarlo o crearlo desde cero.
+   Si funciona es un milagro.
+
+   - Abraham Gonzalez. (@Abê slack)
+-->
 <template>
+  <!-- eslint-disable -->
   <div>
     <vx-card title="Perfil de la empresa" title-color="primary">
 
@@ -23,6 +30,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
 import empresaPerfil from "@/febos/global/empresas/componentes/perfilEmpresa/editEmpresa";
 import empresaCasaMatriz from "@/febos/global/empresas/componentes/perfilEmpresa/editCasaMatriz";
@@ -46,11 +54,8 @@ export default {
   methods: {
     obtenerEmpresa()  {
       this.$vs.loading({ type: 'default' });
-      var data = JSON.parse(
-        localStorage.getItem(
-          `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
-        )
-      );
+      // TODO: git history and enjoy
+      var data = this.$store.state;
       clienteFebosAPI.get("/empresas/" + data.Empresas.empresa.iut).then((response) => {
         // this.$vs.loading.close();
         if (response.data.codigo == 10) {

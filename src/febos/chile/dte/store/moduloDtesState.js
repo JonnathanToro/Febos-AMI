@@ -1,5 +1,5 @@
 export default {
-  cargando:false,
+  cargando: false,
   documentos: [],
   documentosSeleccionados: [],
   documentoActual: {},
@@ -8,5 +8,6 @@ export default {
   registrosEncontrados: 0,
   registrosPorPagina: 15,
   filtros: {},
-  campos: []
-}
+  campos: [],
+  emision: null
+};

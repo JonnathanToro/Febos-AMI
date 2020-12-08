@@ -24,7 +24,9 @@ module.exports = {
     'import/order': ['error', {
       'newlines-between': 'always',
       'groups': ['builtin', 'external', 'parent', 'sibling', 'index']
-    }]
+    }],
+    'import/prefer-default-export': 'off',
+    'import/extensions': ['error', 'ignorePackages', { 'vue': 'never', 'js': 'never' }]
   },
 
   parserOptions: {
@@ -41,5 +43,20 @@ module.exports = {
         jest: true
       }
     }
-  ]
+  ],
+
+  globals: {
+    _: true
+  },
+
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ['@', './src'],
+        ],
+        extensions: ['.js', '.vue', '.json']
+      }
+    }
+  }
 }

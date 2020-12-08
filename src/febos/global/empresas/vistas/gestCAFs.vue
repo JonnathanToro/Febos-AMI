@@ -1,5 +1,11 @@
-<template>
+<!--
+   En caso de ser necesario modificar algo en este componente refactorizarlo o crearlo desde cero.
+   Si funciona es un milagro.
 
+   - Abraham Gonzalez. (@Abê slack)
+-->
+<template>
+<!-- eslint-disable -->
   <div>
     <vx-card title="Gestión de CAFs" title-color="primary">
 
@@ -56,6 +62,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
 import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
 import modalCargar from "@/febos/global/empresas/componentes/gestCAFs/modalCargar";
@@ -78,11 +85,8 @@ export default {
   computed: {
     stored: {
       get() {
-        return JSON.parse(
-          localStorage.getItem(
-            `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
-          )
-        );
+        // TODO: git history and enjoy
+        return this.$store.state;
       }
     }
   },

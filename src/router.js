@@ -1,60 +1,67 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import rutasChile from "./router/chile/rutasChile";
-import autenticacion from "./febos/servicios/autenticacion";
-import store from "@/store/store";
+import Vue from 'vue';
+import Router from 'vue-router';
+import localForage from 'localforage';
 
-Vue.use(Router)
+import routesChile from './router/chile/rutasChile';
+import * as authentication from './febos/servicios/authentication';
 
-var rutas = [];
+import store from '@/store/store';
 
-switch (`${process.env.VUE_APP_CODIGO_PAIS}`) {
-  case "cl":
-    rutas = rutasChile
-}
+Vue.use(Router);
+
+const getRoutes = () => {
+  switch (process.env.VUE_APP_CODIGO_PAIS) {
+    case 'cl':
+      return routesChile;
+
+    default:
+      return [];
+  }
+};
 
 const router = new Router({
- // mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   scrollBehavior() {
-    return {x: 0, y: 0}
+    return { x: 0, y: 0 };
   },
   routes: [
-    ...rutas,
+    ...getRoutes(),
     {
       path: '*',
       redirect: '/pages/error-404'
     }
-  ],
-})
+  ]
+});
 
-const waitForStorageToBeReady = async (hacia, desde, siguiente) => {
+const waitForStorageToBeReady = async (to, from, next) => {
   await store.restored;
-  let key = `${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.redirect`
-  if (hacia.meta.requiereLogin) {
-    if (autenticacion.estaLogueado()) {
-      if (autenticacion.tienePermiso(hacia)) {
-        siguiente();
-      } else {
-        localStorage.setItem(key, hacia.fullPath)
-        siguiente('/no-autorizado')
-      }
-    } else {
-      siguiente('/ingreso')
-    }
-  } else {
-    siguiente();
+  const key = `${process.env.VUE_APP_CODIGO_PAIS}.${process.env.VUE_APP_PORTAL}.${process.env.VUE_APP_AMBIENTE}.redirect`;
+
+  if (!to.meta.requiereLogin) {
+    return next();
   }
-}
+
+  if (!authentication.isLogged()) {
+    return next('/ingreso');
+  }
+
+  if (!authentication.hasPermission(to)) {
+    await localForage.setItem(key, to.fullPath);
+    return next('/no-autorizado');
+  }
+
+  return next();
+};
 
 router.beforeEach(waitForStorageToBeReady);
 
 router.afterEach(() => {
   // Remove initial loading
-  const appLoading = document.getElementById('loading-bg')
+  const appLoading = document.getElementById('loading-bg');
   if (appLoading) {
-    appLoading.style.display = "none";
+    appLoading.style.display = 'none';
   }
-})
+});
 
-export default router
+export default router;

@@ -1,7 +1,7 @@
-import state from './moduloPersonalizacionState.js'
-import mutations from './moduloPersonalizacionMutations.js'
-import actions from './moduloPersonalizacionActions.js'
-import getters from './moduloPersonalizacionGetters.js'
+import state from './moduloPersonalizacionState';
+import mutations from './moduloPersonalizacionMutations';
+import actions from './moduloPersonalizacionActions';
+import * as getters from './moduloPersonalizacionGetters';
 
 export default {
   namespaced: true,
@@ -9,4 +9,4 @@ export default {
   mutations,
   actions,
   getters
-}
+};
