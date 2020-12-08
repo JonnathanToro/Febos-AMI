@@ -1,7 +1,7 @@
-import state from './moduloEmpresasState.js'
-import mutations from './moduloEmpresasMutations.js'
-import actions from './moduloEmpresasActions.js'
-import getters from './moduloEmpresasGetters.js'
+import state from './moduloEmpresasState';
+import mutations from './moduloEmpresasMutations';
+import actions from './moduloEmpresasActions';
+import * as getters from './moduloEmpresasGetters';
 
 export default {
   namespaced: true,
@@ -9,4 +9,4 @@ export default {
   mutations,
   actions,
   getters
-}
+};

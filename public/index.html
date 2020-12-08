@@ -6,7 +6,11 @@
     <!-- ios -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link id="custom-appleicon" rel="apple-touch-icon" href="<%= BASE_URL %>/iphone_febos_home_icon.png">
+    <link
+      id="custom-appleicon"
+      rel="apple-touch-icon"
+      href="<%= BASE_URL %>/iphone_febos_home_icon.png"
+    >
     <link rel="icon" id="favicon" href="<%= BASE_URL %>favicon.png">
     <!--<meta name="apple-mobile-web-app-title" content="AppTitle">-->
     <!-- <link rel="apple-touch-startup-image" href="/launch.png">-->
@@ -18,32 +22,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable = no">
 
-
-
     <link rel="stylesheet" type="text/css" href="<%= BASE_URL %>loader.css">
 
     <title>Narvi</title>
   </head>
   <body>
     <noscript>
-      <strong>Este sitio solo funciona si Javascript esta habilitado. Contáctese con su equipo de soporte corporativo.</strong>
+      <strong>
+        Este sitio solo funciona si Javascript esta habilitado.
+        Contáctese con su equipo de soporte corporativo.
+      </strong>
     </noscript>
     <div id="loading-bg">
       <div class="loading-logo">
         <img width="80" src="<%= BASE_URL %>FEBOS_LOADER.svg" alt="Logo">
-        <div style="text-align: center;margin-top:15px;font-family: sans-serif;color:#666666">Cargando ...</div>
+        <div style="text-align: center; margin-top:15px; font-family: sans-serif; color:#666666;">
+          Cargando ...
+        </div>
       </div>
     </div>
     <div id="app">
 
     </div>
     <!-- built files will be auto injected -->
+    <!-- eslint-disable-next-line max-len -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
     <script>
-      var app=document.getElementById("app")
-      try{ app.requestFullscreen();}catch(e){}
-      try{app.mozRequestFullScreen();}catch(e){}
-      try{app.webkitRequestFullScreen();}catch(e){}
-      try{app.msRequestFullscreen();}catch(e){}
+      const app = document.getElementById("app")
+      try{ app.requestFullscreen(); }catch(e) {}
+      try{ app.mozRequestFullScreen(); }catch(e) {}
+      try{ app.webkitRequestFullScreen(); }catch(e) {}
+      try{ app.msRequestFullscreen(); }catch(e) {}
     </script>
   </body>
 </html>

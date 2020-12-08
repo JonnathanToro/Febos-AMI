@@ -1,7 +1,7 @@
-import state from './moduloDtesState.js'
-import mutations from './moduloDtesMutations.js'
-import actions from './moduloDtesActions.js'
-import getters from './moduloDtesGetters.js'
+import state from './moduloDtesState';
+import mutations from './moduloDtesMutations';
+import actions from './moduloDtesActions';
+import * as getters from './moduloDtesGetters';
 
 export default {
   namespaced: true,
@@ -9,4 +9,4 @@ export default {
   mutations,
   actions,
   getters
-}
+};

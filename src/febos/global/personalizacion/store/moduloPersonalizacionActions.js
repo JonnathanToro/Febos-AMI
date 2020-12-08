@@ -1,6 +1,5 @@
-
 export default {
-  async cargarPersonalizacion({commit},payload){
-     commit('SET_PERSONALIZACION',payload);
+  async loadSettings({ commit }, payload) {
+    commit('SET_PERSONALIZACION', payload);
   }
-}
+};

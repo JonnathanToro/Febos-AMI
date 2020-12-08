@@ -1,9 +1,12 @@
-import clienteFebosAPI from "../clienteFebosAPI";
+import apiClient from '../clienteFebosAPI';
 
-const RECURSO = '/empresas';
+const RESOURCE = '/empresas';
 
-const io_empresas_listar = (pagina,filas,busquedaSimple,ambito,dominioPortal) => clienteFebosAPI.get(RECURSO , {'operacionId': 'io.empresas.listar','_headers':{'dominioPortal':dominioPortal}});
-
-export {
-  io_empresas_listar,
-}
+export const ioCompanyList = (pages, rows, simpleSearch, scope, domain) => (
+  apiClient.get(RESOURCE, {
+    operacionId: 'io.empresas.listar',
+    _headers: {
+      dominioPortal: domain
+    }
+  })
+);

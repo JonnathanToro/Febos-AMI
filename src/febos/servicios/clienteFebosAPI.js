@@ -1,105 +1,104 @@
-import axios from 'axios'
-import store from "../../store/store";
+import axios from 'axios';
+import localForage from 'localforage';
 
-let config = {
+import store from '../../store/store';
+
+const defaultConfig = {
   baseURL: `https://api.febos.${process.env.VUE_APP_CODIGO_PAIS}/${process.env.VUE_APP_AMBIENTE}`
 };
 
-const clienteFebosAPI = axios.create(config);
-const noLoguearEstosLambdas = ["io.usuario.latido"];
+const apiClient = axios.create(defaultConfig);
+const withoutLog = ['io.usuario.latido'];
 
-const authInterceptor = config => {
-  let storage = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`));
-  config.headers.token = storage.Usuario.token;
+const authInterceptor = async (config) => {
+  const storage = await localForage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`);
+  Object.assign(config.headers, { token: storage.Usuario.token });
+
   try {
-    config.headers.empresa = storage.Empresas.empresa.iut;
+    Object.assign(config.headers, { empresa: storage.Empresas.empresa.iut });
   } catch (e) {
-    console.log("llamada sin rut de empresa");
+    console.log('llamada sin rut de empresa');
   }
-  //config.headers.Accept='application/json';
-  config.headers['Content-Type'] = 'application/json';
+
+  Object.assign(config.headers, { 'Content-Type': 'application/json' });
   return config;
 };
 
 const revalidarSesion = () => {
-  store.dispatch('Usuario/revalidarSesion');
-}
+  store.dispatch('Usuario/validateSession');
+};
 
-const ocultarClaves = (parametros) => {
-  const parametrosTipoClave = ['clave', 'password'];
-  for (let parametro in parametros) {
-    if (parametros.hasOwnProperty(parametro)) {
-      if (parametrosTipoClave.includes(parametro)) {
-        parametros[parametro] = '*******';
-      }
-    }
-  }
-  return parametros;
-}
+const hidePasswords = (params) => {
+  const passwordKeys = ['clave', 'password'];
 
-const loggerInterceptor = config => {
-  const llamadaAPI={
-    'operacionId':`${config.operacionId}`,
-    'url':`${config.baseURL+config.url}`,
-    'verbo':config.method,
-    'cabeceras':config.headers,
-    'parametros':config.data?JSON.parse(JSON.stringify(config.data)):{}
-  }
-  // limpieza de variables residuales
-  delete llamadaAPI.parametros.operacionId;
-  let verbos = ['post', 'get', 'delete', 'put', 'patch', 'head', 'common'];
-  verbos.forEach(function (verbo) {
-    delete llamadaAPI.cabeceras[verbo];
-  })
+  return Object.entries(params)
+    .map(([key, value]) => ([
+      key,
+      passwordKeys.includes(key) ? '*******' : value
+    ]))
+    .reduce((index, [key, value]) => ({
+      ...index,
+      [key]: value
+    }), {});
+};
 
-  llamadaAPI.parametros = ocultarClaves(llamadaAPI.parametros);
-  if (!noLoguearEstosLambdas.includes(llamadaAPI.operacionId)) {
-    console.log(`>> Llamada API (request): ${llamadaAPI.operacionId}`, llamadaAPI);
+const loggerInterceptor = (config) => {
+  const data = _.omit(config.data, ['operacionId']);
+  const headers = _.omit(config.headers, ['post', 'get', 'delete', 'put', 'patch', 'head', 'common']);
+
+  const dataToLog = {
+    operacionId: `${config.operacionId}`,
+    url: `${config.baseURL}${config.url}`,
+    verbo: config.method,
+    cabeceras: headers,
+    parametros: hidePasswords(data)
+  };
+
+  if (!withoutLog.includes(dataToLog.operacionId)) {
+    console.log(`>> Llamada API (request): ${dataToLog.operacionId}`, dataToLog);
   }
   return config;
-}
+};
 
+const portalInterceptor = (config) => ({
+  ...config,
+  params: {
+    dominioPortal: process.env.VUE_APP_DOMINIO_DEFAULT,
+    ...(config.params || {})
+  }
+});
 
+apiClient.interceptors.request.use(portalInterceptor);
+apiClient.interceptors.request.use(authInterceptor);
+apiClient.interceptors.request.use(loggerInterceptor);
 
-const portalInterceptor = config => {
-  config.params = config.params?{...{dominioPortal:`${process.env.VUE_APP_DOMINIO_DEFAULT}`},...config.params}:{dominioPortal:`${process.env.VUE_APP_DOMINIO_DEFAULT}`}
-  //condigparams.push(`dominioPortal=${process.env.VUE_APP_DOMINIO_DEFAULT}`);
-  //console.log("config",config);
-  return config;
-}
-
-
-clienteFebosAPI.interceptors.request.use(portalInterceptor);
-clienteFebosAPI.interceptors.request.use(authInterceptor);
-clienteFebosAPI.interceptors.request.use(loggerInterceptor);
-
-clienteFebosAPI.interceptors.response.use(
-  response => {
-    let opracionId = response.config.operacionId
-    let respuestaAPI = {
+apiClient.interceptors.response.use(
+  (response) => {
+    const { operacionId } = response.config;
+    const dataToLog = {
       headers: response.headers,
       httpCode: response.status,
       data: response.data
-    }
+    };
+
     if (response.data.codigo >= 10) revalidarSesion();
-    if (!noLoguearEstosLambdas.includes(response.config.operacionId)) {
-      console.log(">> Respuesta de API (response): " + opracionId, respuestaAPI);
+    if (!withoutLog.includes(operacionId)) {
+      console.log(`>> Respuesta de API (response): ${operacionId}`, dataToLog);
     }
     return response;
   },
-  error => {
-    console.log("la api dio un error, hacer algo!");
+  (error) => {
+    console.log('la api dio un error, hacer algo!');
     return Promise.reject(error);
   }
 );
 
-clienteFebosAPI.queryParams = function (json) {
-  let params = [];
-  for (let llave in json) {
-    if (json.hasOwnProperty(llave)) {
-      params.push(`${llave}=${json[llave]}`);
-    }
-  }
-  return encodeURI(params.join('&'));
-}
-export default clienteFebosAPI;
+apiClient.queryParams = (json) => {
+  const params = Object.entries(json)
+    .map(([key, value]) => (`${key}=${value}`))
+    .join('&');
+
+  return encodeURI(params);
+};
+
+export default apiClient;
