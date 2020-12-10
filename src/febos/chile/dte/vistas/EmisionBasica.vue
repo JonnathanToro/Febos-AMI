@@ -615,6 +615,7 @@ export default {
   },
   mounted() {
     this.cargarDefault();
+    console.log('THIS', this)
   },
   methods: {
     cargarDefault() {
