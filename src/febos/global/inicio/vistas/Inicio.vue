@@ -95,8 +95,8 @@ export default {
           visible: true
         },
         {
-          nombre: 'facturaElectronica',
-          descripcion: 'Factura Electrónica',
+          nombre: 'documentosEd',
+          descripcion: 'Documentos Escritorio',
           tooltip: '',
           icono: 'description',
           habilitado: true,

@@ -1,5 +1,6 @@
 import rutasFacturaElectronica from './rutasFacturaElectronica';
 import rutasHerramientas from './rutasHerramientas';
+import rutasDnts from './rutasDnts';
 
 const layoutPrivado = [
   {
@@ -43,7 +44,8 @@ const layoutPrivado = [
         component: () => import('@/views/Page2.vue')
       },
       ...rutasFacturaElectronica,
-      ...rutasHerramientas
+      ...rutasHerramientas,
+      ...rutasDnts
     ],
   }
 ];
