@@ -46,23 +46,33 @@ export default {
     commit('SET_CATEGORY', {});
   },
 
-  async toggleEnableOption({ commit }, payload) {
-    const option = {
-      ...payload.option,
-      deshabilitado: payload.selected ? 1 : 0
-    };
-
-    console.log(option);
-
-    commit(`UPDATE_OPTION_${payload.type.toUpperCase()}`, { option });
-  },
-
   async saveOptions({ commit }, payload) {
     try {
       commit('SET_LOADING', true);
       const response = await saveOption(payload);
       if (!successResponse(response)) throw response.data;
       commit('SET_LOADING', false);
+      commit('SET_SUCCESS_MESSAGE', true);
+      return response.data;
+    } catch (error) {
+      commit('SET_LOADING', false);
+      commit('SET_ERROR_MESSAGE', error.mensaje);
+      return error;
+    }
+  },
+
+  async toggleEnableOption({ commit }, payload) {
+    const option = {
+      ...payload.option,
+      deshabilitado: payload.selected ? 1 : 0
+    };
+
+    try {
+      commit('SET_LOADING', true);
+      const response = await saveOption(option);
+      if (!successResponse(response)) throw response.data;
+      commit('SET_LOADING', false);
+      commit(`UPDATE_OPTION_${payload.type.toUpperCase()}`, { option });
       commit('SET_SUCCESS_MESSAGE', true);
       return response.data;
     } catch (error) {
