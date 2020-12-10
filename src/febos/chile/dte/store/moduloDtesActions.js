@@ -10,6 +10,7 @@ export default {
       if (response.data.codigo !== 10) throw response.data;
       return response.data;
     } catch (error) {
+      commit('SET_LISTADO_DTE', []);
       console.log('ERROR', error);
       return error;
     }
