@@ -1,6 +1,6 @@
 import apiClient from '../clienteFebosAPI';
 
-const RESOURCE = '/dnt';
+const RESOURCE = '/notributarios';
 
 export const clDntsList = (payload) => {
   const params = apiClient.queryParams(payload);
