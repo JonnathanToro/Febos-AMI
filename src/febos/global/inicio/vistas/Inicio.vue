@@ -87,6 +87,14 @@ export default {
     return {
       modules: [
         {
+          nombre: 'herramientas',
+          descripcion: 'Herramientas',
+          tooltip: '',
+          icono: 'settings',
+          habilitado: true,
+          visible: true
+        },
+        {
           nombre: 'facturaElectronica',
           descripcion: 'Factura Electrónica',
           tooltip: '',
