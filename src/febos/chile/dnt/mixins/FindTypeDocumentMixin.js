@@ -1,0 +1,78 @@
+export default {
+  data() {
+    return {
+      types: {
+        0: 'Otros',
+        30: 'Factura',
+        32: 'Factura Exenta',
+        33: 'Factura Afecta Electrónica',
+        34: 'Factura Exenta Electrónica',
+        35: 'Boleta',
+        38: 'Boleta Exenta',
+        39: 'Boleta Afecta Electrónica',
+        41: 'Boleta Exenta Electrónica',
+        45: 'Factura de Compra',
+        46: 'Factura Electrónica de Compra',
+        43: 'Liquidación de Factura',
+        50: 'Guía de Despacho',
+        60: 'Nota de Crédito',
+        55: 'Nota de Débito',
+        52: 'Guía de Despacho Electrónica',
+        56: 'Nota de Débito Electrónica',
+        61: 'Nota de Crédito Electrónica',
+        99: 'Anticipos y otras Transacciones',
+        110: 'Factura de Exportación Electrónica',
+        111: 'Nota de Débito de Exportación Electrónica',
+        112: 'Nota de Crédito de Exportación Electrónica',
+        801: 'Orden de Compra',
+        802: 'Nota de Pedido',
+        803: 'Contrato',
+        804: 'Resolución',
+        805: 'Proceso Chile Compra',
+        806: 'Ficha Chile Compra',
+        807: 'DUS',
+        808: 'B/L Conocimiento de Embarque',
+        809: 'AWB',
+        810: 'MIC/DATA',
+        811: 'Carta de Porte',
+        812: 'Res. SNA Servicio Exportación',
+        813: 'Pasaporte',
+        814: 'Cert. Depósito BP',
+        815: 'Vale Prenda BP',
+        RD1: 'Rendicion de Financiamiento',
+        RD2: 'Rendicion de Gastos',
+        HES: 'HES - Hoja Entrada Servicio',
+        HEM: 'HEM - Hoja Entrada Mercaderia',
+        SCO: 'SCO - Solicitud de Compra',
+        MP: 'Orden de Compra MP',
+        NV: 'Nota de Venta',
+        FIN: 'Factura Interna',
+        LIC: 'Licitación',
+        BGT: 'Boleta',
+        BG: 'Boleta de Garantía',
+        BTG: 'Boleta de Garantía',
+        PZ: 'Póliza',
+        SWF: 'Swift',
+        PGR: 'Pagare',
+        VLV: 'Vale Vista',
+        CHI: 'Cheque Internacional',
+        CHN: 'Cheque Nacional',
+        EPG: 'Estado de Pago',
+        PRY: 'Proyecto',
+        CFZ: 'Certificado de Fianza',
+        ARCHIVO: 'Archivo',
+        NPP: 'Nómina Pronto Pago',
+        APR: 'Acta de Aprobación',
+        ACRE: 'Expediente',
+        MEMO: 'Memorandum',
+        DTE: 'Documento Tributario'
+      }
+    };
+  },
+  methods: {
+    findTypeDocument(typeDocument) {
+      const typeDoc = this.types[typeDocument];
+      return typeof typeDoc === 'undefined' ? `(${ typeDocument }) Desconocido` : typeDoc;
+    }
+  }
+};

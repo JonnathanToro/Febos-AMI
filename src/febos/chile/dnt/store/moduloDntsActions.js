@@ -2,7 +2,7 @@ import { clDntsList } from '@/febos/servicios/api/dnt.api';
 
 export default {
   async listDocuments({ commit }, payload) {
-    commit('SET_CARGANDO', true);
+    commit('SET_LOADING', true);
     try {
       const response = await clDntsList(payload);
       commit('SET_LISTADO_DNT', response.data);

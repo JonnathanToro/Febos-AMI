@@ -16,6 +16,13 @@ export default [{
           icon: 'files',
           i18n: 'expedientes'
         },
+        {
+          url: '/expedientes/finalizados',
+          name: 'Finalizados',
+          slug: '/expedientes/finalizados',
+          icon: 'files',
+          i18n: 'expedientes'
+        }
       ]
     },
   ]

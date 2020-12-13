@@ -7,6 +7,7 @@ import { ioUserPermissions } from '@/febos/servicios/api/permisos.api';
 
 export default {
   async signIn({ commit }, payload) {
+    console.log('payload', payload);
     try {
       const response = await ioUserLogin(payload.correo, payload.clave);
       if (response.data.codigo !== 10) throw response.data;
@@ -15,7 +16,7 @@ export default {
 
       return response.data;
     } catch (error) {
-      console.log('ERROR', error);
+      console.log('ERROR', error, payload);
       return error;
     }
   },

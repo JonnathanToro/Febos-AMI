@@ -1,6 +1,6 @@
 export default {
   SET_LISTADO_DNT(state, payload) {
-    state.dnts = [];
+    state.dnts = {};
     state.dnts = (payload.documentos || [])
       .reduce((index, option) => ({
         ...index,

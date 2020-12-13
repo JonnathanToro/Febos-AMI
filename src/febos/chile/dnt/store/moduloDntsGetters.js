@@ -1,7 +1,6 @@
 export default {
-  dntFiles: (state) => {
-    const files = state.dnts || {};
-    return Object.values(files);
-  },
-  loading: (state) => state.cargando,
+  dntByFiles: (state) => (
+    Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'APR')
+  ),
+  loading: (state) => state.loading
 };
