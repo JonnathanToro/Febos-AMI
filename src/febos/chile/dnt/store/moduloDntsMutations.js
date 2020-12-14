@@ -6,11 +6,14 @@ export default {
         ...index,
         [option.febosId]: option
       }), {});
-    state.paginaActual = payload.pagina;
-    state.paginasTotales = payload.paginas;
-    state.registrosEncontrados = payload.encontrados;
+    state.paginaActual = Number.parseInt(payload.paginaActual, 10);
+    state.paginasTotales = payload.totalPaginas;
+    state.registrosEncontrados = payload.totalElementos;
   },
   SET_LOADING(state, payload) {
     state.loading = payload;
-  }
+  },
+  ACT_PAGINA_BANDEJA(state, payload) {
+    state.paginaActual = payload;
+  },
 };

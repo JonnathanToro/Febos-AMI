@@ -13,5 +13,9 @@ export default {
       console.log('ERROR', error);
       return error;
     }
-  }
+  },
+  actualizarPagina({ commit }, payload) {
+    console.log('aCA', payload);
+    commit('ACT_PAGINA_BANDEJA', payload);
+  },
 };

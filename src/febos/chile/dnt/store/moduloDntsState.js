@@ -2,8 +2,8 @@ export default {
   loading: false,
   successAccion: false,
   error: '',
-  paginaActual: '',
-  paginasTotales: '',
-  registrosEncontrados: '',
+  paginaActual: 1,
+  paginasTotales: 0,
+  registrosEncontrados: 0,
   dnts: {}
 };

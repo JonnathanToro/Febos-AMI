@@ -107,31 +107,71 @@
           <span class="pill-info" v-if="file.plazo" title="tiempo Transcurrido">
           {{translateTime(file.plazo, true)}}
         </span>
-          <vs-icon
-            class="actions"
-            icon="bubble_chart"
-            size="medium"
-            bg="#E4E4E4"
-            round
-            color="gray"
-          />
+          <span  class="actions">
+            <vs-dropdown vs-custom-content vs-trigger-click >
+            <a class="a-icon" href.prevent>
+              <vs-icon
+                class="" icon="bubble_chart"
+                size="medium"
+                bg="#E4E4E4"
+                round
+                color="gray"></vs-icon>
+            </a>
+            <vs-dropdown-menu style="width: 12%">
+              <vs-dropdown-item>
+                <vs-icon icon="chat"/> Ver comentarios
+              </vs-dropdown-item>
+              <vs-dropdown-item>
+                <vs-icon icon="save_alt"/> Descargar acta
+              </vs-dropdown-item>
+                 <vs-dropdown-item>
+                <vs-icon icon="insert_photo"/> Ver adjuntos
+              </vs-dropdown-item>
+            </vs-dropdown-menu>
+          </vs-dropdown>
+          </span>
         </vs-col>
       </vs-row>
     </div>
+    <vs-row v-if="!loading && dntByFiles.length">
+      <vs-col vs-w="9">
+        <fb-paginacion
+          :total="paginacion.paginasTotales"
+          :max="10"
+          v-model="pagina"
+          class="mt-7"
+        />
+      </vs-col>
+    </vs-row>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+import FbPaginacion from '../../_vue/componentes/FbPaginacion';
+
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  data() {
-    return {};
-  },
+  components: { FbPaginacion },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   watch: {
+    pagina() {
+      const view = this.$route.params.vista;
+      const filters = this.getFilterView(view);
+
+      console.log('aca si o no?', this.pagina);
+      this.listDocuments({
+        tipo: 'aprobaciones',
+        campos: '*',
+        pagina: this.pagina,
+        orden: '-fechaCreacion',
+        itemsPorPagina: 10,
+        // TODO agregar bien los filtros
+        filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+      });
+    },
     loading(value) {
       if (!value) {
         this.$vs.loading.close('#list-dnt > .con-vs-loading');
@@ -147,14 +187,25 @@ export default {
   computed: {
     ...mapGetters('Dnts', [
       'loading',
-      'dntByFiles'
-    ])
+      'dntByFiles',
+      'paginacion',
+      'paginaActual'
+    ]),
+    pagina: {
+      get() {
+        return this.paginaActual;
+      },
+      set(value) {
+        this.actualizarPagina(value);
+      }
+    }
   },
   methods: {
     ...mapActions('Dnts', [
-      'listDocuments'
+      'listDocuments',
+      'actualizarPagina'
     ]),
-    translateTime: (time, abr) => {
+    translateTime: (time, abr) => { // ASCO
       const seconds = time * 60;
       const numdays = Math.floor(seconds / 86400);
       const numhours = Math.floor((seconds % 86400) / 3600);
@@ -188,7 +239,7 @@ export default {
         return `${numminutes } minutos`;
       }
       return numminutes;
-    }
+    } // END ASCO, o no?
   },
   mounted() {
     const view = this.$route.params.vista;
@@ -198,11 +249,11 @@ export default {
       campos: '*',
       pagina: 1,
       orden: '-fechaCreacion',
-      itemsPorPagina: 200,
+      itemsPorPagina: 10,
       // TODO agregar bien los filtros
       filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
     });
-    console.log('VIEW', view);
+    console.log('hits', this);
   }
 };
 </script>
@@ -242,7 +293,6 @@ export default {
 }
 
 .actions {
-  float:right;
   position: absolute;
   right: 10px;
   bottom: 10px;
