@@ -1,21 +1,23 @@
-//configuracion por defecto
+// configuracion por defecto
 // el JSON debe ser subido a s3://archivos.febos.io/cl/desarrollo/portales/portal.febos.cl.json
 // donde portal.febos.cl se puede reemplazar por el dominio correspondiente
 
 export default {
-  moduloActual:'',
-  inicio:[{
-    url: "/",
-    name: "Inicio",
-    slug: "inicio",
-    icon: "HomeIcon",
+  moduloActual: '',
+  inicio: [{
+    url: '/',
+    name: 'Inicio',
+    slug: 'inicio',
+    icon: 'HomeIcon',
+    permiso: '*'
   }],
-  menus:[
+  menus: [
     {
-      url: "/",
-      name: "Inicio",
-      slug: "inicio",
-      icon: "HomeIcon",
+      url: '/',
+      name: 'Inicio',
+      slug: 'inicio',
+      icon: 'HomeIcon',
+      permiso: '*'
     }
   ]
-}
+};

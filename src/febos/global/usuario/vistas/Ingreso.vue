@@ -31,7 +31,7 @@
                     :label-placeholder="nombreCampoUsuario"
                     v-model="correo"
                     class="w-full"
-                    @keyup.enter.native="ingresar()"/>
+                    @keyup.enter.native="signIn()"/>
 
                   <vs-input
                     type="password"
@@ -42,7 +42,7 @@
                     :label-placeholder="nombreCampoClave"
                     v-model="clave"
                     class="w-full mt-8"
-                    @keyup.enter.native="ingresar()"/>
+                    @keyup.enter.native="signIn()"/>
 
                   <div class="flex flex-wrap justify-between my-5">
                     <vs-checkbox v-model="recordar" class="mb-3">Recordar mi usuario</vs-checkbox>
