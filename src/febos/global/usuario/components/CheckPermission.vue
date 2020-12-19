@@ -24,8 +24,7 @@ export default {
     ...mapGetters('Usuario', ['hasPermission'])
   },
   mounted() {
-    this.canIUse = this.permission === '*'
-      || this.hasPermission(this.permission);
+    this.canIUse = this.hasPermission(this.permission);
   }
 };
 </script>

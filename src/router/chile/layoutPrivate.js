@@ -1,7 +1,7 @@
 import rutasFacturaElectronica from './rutasFacturaElectronica';
 import rutasHerramientas from './rutasHerramientas';
 
-const layoutPrivado = [
+export default [
   {
     path: '',
     component: () => import('@/layouts/main/Main.vue'),
@@ -47,5 +47,3 @@ const layoutPrivado = [
     ],
   }
 ];
-
-export default layoutPrivado;

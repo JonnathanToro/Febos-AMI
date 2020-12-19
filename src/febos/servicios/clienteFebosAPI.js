@@ -81,7 +81,17 @@ apiClient.interceptors.response.use(
       data: response.data
     };
 
-    if (response.data.codigo >= 10) revalidarSesion();
+    if (response.data.codigo < 10) {
+      throw new Error(
+        `${response.data.mensaje}
+        ${process.env.VUE_APP_AMBIENTE === 'desarrollo'
+          ? ' ⚠️⚠️⚠️ si estas viendo este error en la consola borra el try catch de tu acción ⚠️⚠️⚠️'
+          : ''
+        }`
+      );
+    }
+
+    revalidarSesion();
     if (!withoutLog.includes(operacionId)) {
       console.log(`>> Respuesta de API (response): ${operacionId}`, dataToLog);
     }

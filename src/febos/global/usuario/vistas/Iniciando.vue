@@ -96,9 +96,7 @@ export default {
       }
     },
     attemptLoadPermissions() {
-      this.loadPermissions({
-        iut: this.currentUser.iut
-      })
+      this.loadPermissions()
         .then(() => {
           this.updateLoading('P01');
         });

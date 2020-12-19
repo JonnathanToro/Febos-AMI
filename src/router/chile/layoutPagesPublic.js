@@ -1,4 +1,4 @@
-const layoutPaginasPublicas = [
+export default [
   {
     path: '',
     component: () => import('@/layouts/full-page/FullPage.vue'),
@@ -13,12 +13,12 @@ const layoutPaginasPublicas = [
         name: 'page-error-404',
         component: () => import('@/views/pages/Error404.vue')
       },
+      {
+        path: '/no-autorizado',
+        name: 'page-error-401',
+        component: () => import('@/views/pages/Error401.vue')
+      }
     ]
   }
 
-]
-
-export default layoutPaginasPublicas
-
-
-
+];
