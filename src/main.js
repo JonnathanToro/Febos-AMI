@@ -36,7 +36,8 @@ import { Datetime } from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 
 // Styles: SCSS
-import './assets/scss/main.scss';
+import './assets/scss/vuexy/main.scss';
+import './assets/scss/bootstrap/main.scss';
 
 // Tailwind
 import '@/assets/css/main.css';
