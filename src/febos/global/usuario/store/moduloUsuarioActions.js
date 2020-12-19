@@ -7,40 +7,23 @@ import { ioUserPermissions } from '@/febos/servicios/api/permisos.api';
 
 export default {
   async signIn({ commit }, payload) {
-    try {
-      const response = await ioUserLogin(payload.correo, payload.clave);
-      if (response.data.codigo !== 10) throw response.data;
-      commit('SET_USUARIO', response.data);
-      commit('SET_TOKEN', response.data);
+    const response = await ioUserLogin(payload.correo, payload.clave);
+    commit('SET_USUARIO', response.data);
+    commit('SET_TOKEN', response.data);
 
-      return response.data;
-    } catch (error) {
-      console.log('ERROR', error);
-      return error;
-    }
+    return response.data;
   },
   async heartbeat(payload) {
     await ioUserHeartbeat(payload.id);
   },
   async signOut({ commit }) {
-    try {
-      commit('LIMPIAR_SESION', {});
-      return true;
-    } catch (error) {
-      console.log('ERROR', error);
-      return false;
-    }
+    commit('LIMPIAR_SESION', {});
+    return true;
   },
-  async loadPermissions({ commit }, payload) {
-    try {
-      const response = await ioUserPermissions(payload.iut);
-      if (response.data.codigo !== 10) throw response.data;
-      commit('SET_PERMISOS', response.data);
-      return response.data;
-    } catch (error) {
-      console.log('ERROR', error);
-      return error;
-    }
+  async loadPermissions({ commit, getters: { currentUser: { iut } } }) {
+    const response = await ioUserPermissions(iut);
+    commit('SET_PERMISOS', response.data);
+    return response.data;
   },
   validateSession({ commit }) {
     const segundo = 1000;
@@ -56,7 +39,6 @@ export default {
       payload.alias,
       payload.correo
     );
-    if (response.data.codigo !== 10) throw response.data;
     commit('SET_USUARIO', payload);
     return response.data;
   }

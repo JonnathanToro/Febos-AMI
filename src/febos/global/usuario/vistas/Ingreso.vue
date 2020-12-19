@@ -31,7 +31,7 @@
                     :label-placeholder="nombreCampoUsuario"
                     v-model="correo"
                     class="w-full"
-                    @keyup.enter.native="ingresar()"/>
+                    @keyup.enter.native="attemptSignIn()"/>
 
                   <vs-input
                     type="password"
@@ -42,7 +42,7 @@
                     :label-placeholder="nombreCampoClave"
                     v-model="clave"
                     class="w-full mt-8"
-                    @keyup.enter.native="ingresar()"/>
+                    @keyup.enter.native="attemptSignIn()"/>
 
                   <div class="flex flex-wrap justify-between my-5">
                     <vs-checkbox v-model="recordar" class="mb-3">Recordar mi usuario</vs-checkbox>
@@ -113,9 +113,8 @@ export default {
           correo: this.correo,
           clave: this.clave
         });
+        console.log('this continue');
         await this.$router.push({ name: 'iniciando' });
-
-        this.$vs.loading.close();
       } catch (error) {
         this.$vs.dialog({
           color: 'danger',
@@ -123,6 +122,8 @@ export default {
           text: `${error.message}`,
           acceptText: 'Ok'
         });
+      } finally {
+        this.$vs.loading.close();
       }
     }
   }

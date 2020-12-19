@@ -27,9 +27,14 @@ const files = require.context('../febos/', true, /modulo.*(Store\.js)$/);
 const modules = files.keys().reduce((index, file) => {
   const fileName = file.split('/').pop().replace('Store.js', '').replace('modulo', '');
 
+  const moduleBase = files(file);
+  const moduleSettings = {
+    ...(moduleBase.default || moduleBase)
+  };
+
   return {
     ...index,
-    [fileName]: files(file).default
+    [fileName]: moduleSettings
   };
 }, {});
 
