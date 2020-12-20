@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <vs-row vs-w="12" class="list-wrapper title-columns">
+    <vs-row vs-w="12" class="list-wrapper title-columns" >
       <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
         <b>Número</b>
       </vs-col>
@@ -268,7 +268,7 @@ export default {
   margin-bottom: 10px;
   background: white;
   position: fixed;
-  width: 81% !important;
+  width: 90% !important;
   z-index: 10;
   box-shadow: -1px 6px 12px 0 #80808075;
 }
