@@ -1,5 +1,5 @@
 export default {
-  id:'',
+  id: '',
   nombre: '',
   iut: '',
   correo: '',
@@ -12,4 +12,4 @@ export default {
   roles: [],
   permisos: [],
   empresas: []
-}
+};

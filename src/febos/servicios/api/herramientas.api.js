@@ -1,11 +1,8 @@
-import clienteFebosAPI from "../clienteFebosAPI";
+import apiClient from '../clienteFebosAPI';
 
-const RECURSO = '/herramientas/validacion/qr';
+const RESOURCE = '/herramientas/validacion/qr';
 
-const ioValidacionQr = (payload) => {
-  let params = clienteFebosAPI.queryParams(payload);
-  return clienteFebosAPI.get(RECURSO +'?'+params , {'operacionId': 'cl.verificar.qr'});
-}
-export {
-  ioValidacionQr,
-}
+export const ioValidacionQr = (payload) => {
+  const params = apiClient.queryParams(payload);
+  return apiClient.get(`${RESOURCE}?${params}`, { operacionId: 'cl.verificar.qr' });
+};
