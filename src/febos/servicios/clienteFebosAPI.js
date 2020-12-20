@@ -24,7 +24,7 @@ const authInterceptor = async (config) => {
   return config;
 };
 
-const revalidarSesion = () => {
+const validateSession = () => {
   store.dispatch('Usuario/validateSession');
 };
 
@@ -91,7 +91,7 @@ apiClient.interceptors.response.use(
       );
     }
 
-    revalidarSesion();
+    validateSession();
     if (!withoutLog.includes(operacionId)) {
       console.log(`>> Respuesta de API (response): ${operacionId}`, dataToLog);
     }

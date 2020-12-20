@@ -25,7 +25,7 @@ import 'vuesax/dist/vuesax.css';
 // import febosConfig from './febos/servicios/febosConfig.js'
 
 // axios
-import clienteFebosAPI from './febos/servicios/clienteFebosAPI';
+import clientApi from './febos/servicios/clienteFebosAPI';
 
 // Theme Configurations
 import '../themeConfig';
@@ -125,7 +125,7 @@ Vue.moment.locale('es', {
   }
 });
 
-Vue.prototype.$http = clienteFebosAPI;
+Vue.prototype.$http = clientApi;
 
 Vue.component('datetime', Datetime);
 
@@ -134,7 +134,7 @@ Vue.use(VueHammer);
 const eventsHub = new Vue();
 Vue.use(IdleVue, {
   eventEmitter: eventsHub,
-  idleTime: 1000 * 60 * 15 // idle al no hacer nada por 15 minutos
+  idleTime: 1000 * 60 * 15 // 15 minutos
 });
 
 // Feather font icon
