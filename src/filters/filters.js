@@ -1,56 +1,44 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
-Vue.filter('capitalize', function (value) {
-	if (!value) return ''
-	value = value.toString()
-	let arr = value.split(" ")
-	let capitalized_array = []
-	arr.forEach((word) => {
-		let capitalized = word.charAt(0).toUpperCase() + word.slice(1)
-		capitalized_array.push(capitalized)
-	})
-	return capitalized_array.join(" ");
-})
+Vue.filter('capitalize', (value) => {
+  const word = value;
+  if (!word) return '';
+  const lower = word.toLowerCase();
+  return word.charAt(0).toUpperCase() + lower.slice(1);
+});
 
-Vue.filter('truncate', function(value, limit) {
-	return value.substring(0, limit)
-})
+Vue.filter('truncate', (value, limit) => value.substring(0, limit));
 
-Vue.filter('tailing', function(value, tail) {
-	return value + tail;
-})
+Vue.filter('tailing', (value, tail) => value + tail);
 
-Vue.filter('time', function(value, is24HrFormat = false) {
-	if(value) {
-		const date = new Date(Date.parse(value));
-		let hours = date.getHours();
-		const min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
-		if(!is24HrFormat) {
-			const time = hours > 12 ? 'AM' : 'PM';
-			hours = hours % 12 || 12;
-			return hours + ':' + min + ' ' + time
-		}
-		return hours + ':' + min
-	}
-})
+Vue.filter('time', (value, is24HrFormat = false) => {
+  let timeReturn = '';
+  if (value) {
+    let time = '';
+    const date = new Date(Date.parse(value));
+    let hours = date.getHours();
+    const min = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    if (!is24HrFormat) {
+      time = hours > 12 ? 'AM' : 'PM';
+      hours = hours % 12 || 12;
+      return `${hours }:${ min } ${ time}`;
+    }
+    timeReturn = `${hours}:${min} ${time}`;
+  }
+  return timeReturn;
+});
 
-Vue.filter('date', function(value, fullDate = false) {
-	const date = value.slice(8,10).trim();
-	const month = value.slice(4,7).trim();
-	const year = value.slice(11,15);
-	
-	if(!fullDate) return date + ' ' + month;
-	else return date + ' ' + month + ' ' + year;
-})
+Vue.filter('date', (value, fullDate = false) => {
+  const date = value.slice(8, 10).trim();
+  const month = value.slice(4, 7).trim();
+  const year = value.slice(11, 15);
 
-Vue.filter('csv', function(value) {
-	return value.join(', ')
-})
+  if (!fullDate) return `${date } ${ month}`;
+  return `${date } ${ month } ${ year}`;
+});
 
-Vue.filter('filter_tags', function(value) {
-	return value.replace(/<\/?[^>]+(>|$)/g, "")
-})
+Vue.filter('csv', (value) => value.join(', '));
 
-Vue.filter('k_formatter', function(num) {
-	return num > 999 ? (num/1000).toFixed(1) + 'k' : num
-})
+Vue.filter('filter_tags', (value) => value.replace(/<\/?[^>]+(>|$)/g, ''));
+
+Vue.filter('k_formatter', (num) => (num > 999 ? `${(num / 1000).toFixed(1) }k` : num));

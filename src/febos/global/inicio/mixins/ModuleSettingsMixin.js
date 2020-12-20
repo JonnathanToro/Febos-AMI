@@ -77,6 +77,14 @@ const moduleSettings = {
       icono: 'settings',
       habilitado: true,
       visible: true
+    },
+    {
+      nombre: 'documentosEd',
+      descripcion: 'Documentos Escritorio',
+      tooltip: '',
+      icono: 'description',
+      habilitado: true,
+      visible: true
     }
   ]
 };
