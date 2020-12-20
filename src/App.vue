@@ -1,94 +1,121 @@
-<!-- =========================================================================================
-	File Name: App.vue
-	Description: Main vue file - APP
-	----------------------------------------------------------------------------------------
-	Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-	Author: Pixinvent
-	Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
+<!--
+=========================================================================================
+  File Name: App.vue
+  Description: Main vue file - APP
+  ----------------------------------------------------------------------------------------
+  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
+  Author: Pixinvent
+  Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================
+-->
 
 <template>
-	<div id="app" :class="vueAppClasses">
-		<router-view @setAppClasses="setAppClasses" :key="$route.fullPath"/>
-	</div>
+  <div id="app" :class="vueAppClasses">
+    <router-view @setAppClasses="setAppClasses" :key="$route.fullPath"/>
+    <idle-tracking v-if="isLogged"/>
+  </div>
 </template>
 
 <script>
-import themeConfig from '@/../themeConfig.js'
+import { mapGetters } from 'vuex';
+
+import themeConfig from '../themeConfig';
+
+import IdleTracking from '@/febos/global/_vue/componentes/IdleTracking';
 
 export default {
+  components: {
+    IdleTracking
+  },
   data() {
     return {
-      vueAppClasses: [],
-    }
+      vueAppClasses: []
+    };
   },
   watch: {
-    '$store.state.theme'(val) {
-      this.toggleClassInBody(val)
+    '$store.state.theme': function (val) {
+      this.toggleClassInBody(val);
     },
-    '$vs.rtl'(val) {
-      document.documentElement.setAttribute("dir", val ? "rtl" : "ltr")
+    '$vs.rtl': function (val) {
+      document.documentElement.setAttribute('dir', val ? 'rtl' : 'ltr');
     }
+  },
+  computed: {
+    ...mapGetters('Usuario', [
+      'isLogged'
+    ])
   },
   methods: {
     toggleClassInBody(className) {
-      if (className == 'dark') {
-        if (document.body.className.match('theme-semi-dark')) document.body.classList.remove('theme-semi-dark')
-        document.body.classList.add('theme-dark')
-      }
-      else if (className == 'semi-dark') {
-        if (document.body.className.match('theme-dark')) document.body.classList.remove('theme-dark')
-        document.body.classList.add('theme-semi-dark')
-      }
-      else {
-        if (document.body.className.match('theme-dark'))      document.body.classList.remove('theme-dark')
-        if (document.body.className.match('theme-semi-dark')) document.body.classList.remove('theme-semi-dark')
+      switch (className) {
+        case 'dark': {
+          if (document.body.className.match('theme-semi-dark')) {
+            document.body.classList.remove('theme-semi-dark');
+          }
+          document.body.classList.add('theme-dark');
+          break;
+        }
+
+        case 'semi-dark': {
+          if (document.body.className.match('theme-dark')) {
+            document.body.classList.remove('theme-dark');
+          }
+          document.body.classList.add('theme-semi-dark');
+          break;
+        }
+
+        default: {
+          if (document.body.className.match('theme-dark')) {
+            document.body.classList.remove('theme-dark');
+          }
+          if (document.body.className.match('theme-semi-dark')) {
+            document.body.classList.remove('theme-semi-dark');
+          }
+          break;
+        }
       }
     },
     setAppClasses(classesStr) {
-      this.vueAppClasses.push(classesStr)
+      this.vueAppClasses.push(classesStr);
     },
     handleWindowResize() {
-      this.$store.commit('UPDATE_WINDOW_WIDTH', window.innerWidth)
+      this.$store.commit('UPDATE_WINDOW_WIDTH', window.innerWidth);
 
       // Set --vh property
       document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
     },
     handleScroll() {
-      this.$store.commit('UPDATE_WINDOW_SCROLL_Y', window.scrollY)
+      this.$store.commit('UPDATE_WINDOW_SCROLL_Y', window.scrollY);
     }
   },
   mounted() {
-    this.toggleClassInBody(themeConfig.theme)
-    this.$store.commit('UPDATE_WINDOW_WIDTH', window.innerWidth)
+    this.toggleClassInBody(themeConfig.theme);
+    this.$store.commit('UPDATE_WINDOW_WIDTH', window.innerWidth);
 
-    let vh = window.innerHeight * 0.01;
+    const vh = window.innerHeight * 0.01;
     // Then we set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
-    let favicon=document.getElementById("favicon");
-    switch(process.env.VUE_APP_PRODUCTO){
-      case "narvi":
-        favicon.href=favicon.href.replace("favicon.png","narvi_favicon.png");break;
+    const favicon = document.getElementById('favicon');
+    switch (process.env.VUE_APP_PRODUCTO) {
+      case 'narvi':
+        favicon.href = favicon.href.replace('favicon.png', 'narvi_favicon.png');
+        break;
       default:
-        favicon.href=favicon.href.replace("favicon.png","favicon.png");break;
+        favicon.href = favicon.href.replace('favicon.png', 'favicon.png');
+        break;
     }
-
-
   },
   async created() {
+    const dir = this.$vs.rtl ? 'rtl' : 'ltr';
+    document.documentElement.setAttribute('dir', dir);
 
-    let dir = this.$vs.rtl ? "rtl" : "ltr"
-    document.documentElement.setAttribute("dir", dir)
-
-    window.addEventListener('resize', this.handleWindowResize)
-    window.addEventListener('scroll', this.handleScroll)
-
+    window.addEventListener('resize', this.handleWindowResize);
+    window.addEventListener('scroll', this.handleScroll);
   },
   destroyed() {
-    window.removeEventListener('resize', this.handleWindowResize)
-    window.removeEventListener('scroll', this.handleScroll)
-  },
-}
+    window.removeEventListener('resize', this.handleWindowResize);
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+};
 
 </script>

@@ -113,7 +113,6 @@ export default {
           correo: this.correo,
           clave: this.clave
         });
-        console.log('this continue');
         await this.$router.push({ name: 'iniciando' });
       } catch (error) {
         this.$vs.dialog({

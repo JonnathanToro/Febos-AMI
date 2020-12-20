@@ -72,12 +72,11 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import RutMixin from '../../../chile/_vue/mixins/RutMixin';
-import IdleMixin from '../../_vue/mixins/IdleMixin';
 
 import PersonalizacionMixin from '@/febos/global/empresas/mixins/PersonalizacionMixin';
 
 export default {
-  mixins: [RutMixin, PersonalizacionMixin, IdleMixin],
+  mixins: [RutMixin, PersonalizacionMixin],
   data() {
     return {
       query: '',

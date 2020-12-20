@@ -45,12 +45,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import IdleMixin from '../../_vue/mixins/IdleMixin';
-
 import PersonalizacionMixin from '@/febos/global/empresas/mixins/PersonalizacionMixin';
 
 export default {
-  mixins: [PersonalizacionMixin, IdleMixin],
+  mixins: [PersonalizacionMixin],
   data() {
     return {
       recordar: false,

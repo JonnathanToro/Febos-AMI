@@ -13,12 +13,12 @@ export default {
 
     return response.data;
   },
-  async heartbeat(payload) {
-    await ioUserHeartbeat(payload.id);
+  async heartbeat({ getters: { currentUserId }, dispatch }) {
+    await ioUserHeartbeat(currentUserId);
+    dispatch('validateSession');
   },
-  async signOut({ commit }) {
+  signOut({ commit }) {
     commit('LIMPIAR_SESION', {});
-    return true;
   },
   async loadPermissions({ commit, getters: { currentUser: { iut } } }) {
     const response = await ioUserPermissions(iut);
