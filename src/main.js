@@ -11,6 +11,8 @@
 */
 
 import Vue from 'vue';
+import 'jquery';
+import 'bootstrap';
 import App from './App';
 
 import './filters/filters';
