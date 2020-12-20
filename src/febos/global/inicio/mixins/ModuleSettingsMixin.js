@@ -79,6 +79,14 @@ const moduleSettings = {
       visible: true
     },
     {
+      nombre: 'documentosEd',
+      descripcion: 'Documentos Escritorio',
+      tooltip: '',
+      icono: 'description',
+      habilitado: true,
+      visible: true
+    },
+    {
       nombre: 'templates',
       descripcion: 'Plantillas',
       tooltip: '',

@@ -1,6 +1,7 @@
 import facturaElectronica from '../../../../menu/cl/facturaElectronica';
 import aprobaciones from '../../../../menu/cl/aprobaciones';
 import herramientas from '../../../../menu/cl/herramientas';
+import documentosEd from '../../../../menu/cl/dnts';
 import compras from '../../../../menu/cl/compras';
 import configuracion from '../../../../menu/cl/configuracion';
 import contratos from '../../../../menu/cl/contratos';
@@ -17,6 +18,7 @@ export default {
       case 'facturaElectronica': commit('SET_MENU', facturaElectronica); break;
       case 'aprobaciones': commit('SET_MENU', aprobaciones); break;
       case 'herramientas': commit('SET_MENU', herramientas); break;
+      case 'documentosEd': commit('SET_MENU', documentosEd); break;
       case 'compras': commit('SET_MENU', compras); break;
       case 'gastos': commit('SET_MENU', gastos); break;
       case 'configuracion': commit('SET_MENU', configuracion); break;
