@@ -113,9 +113,8 @@ export default {
           correo: this.correo,
           clave: this.clave
         });
+        console.log('this continue');
         await this.$router.push({ name: 'iniciando' });
-
-        this.$vs.loading.close();
       } catch (error) {
         this.$vs.dialog({
           color: 'danger',
@@ -123,6 +122,8 @@ export default {
           text: `${error.message}`,
           acceptText: 'Ok'
         });
+      } finally {
+        this.$vs.loading.close();
       }
     }
   }

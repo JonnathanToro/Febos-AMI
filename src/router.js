@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import localForage from 'localforage';
 
-import routesChile from './router/chile/rutasChile';
+import routesCL from './router/chile';
 import * as authentication from './febos/servicios/authentication';
 
 import store from '@/store/store';
@@ -12,7 +12,7 @@ Vue.use(Router);
 const getRoutes = () => {
   switch (process.env.VUE_APP_CODIGO_PAIS) {
     case 'cl':
-      return routesChile;
+      return routesCL;
 
     default:
       return [];

@@ -98,10 +98,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Menus', { seleccionarModulo: 'seleccionarModulo' })
+    ...mapActions('Menus', { seleccionarModulo: 'seleccionarModulo' }),
+    ...mapActions('Usuario', ['loadPermissions'])
   },
   created() {
-
+    this.loadPermissions();
   }
 };
 </script>
