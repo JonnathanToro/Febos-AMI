@@ -25,7 +25,7 @@ export default {
     state.herramientas.mantenedores.documentos[option.opcionId] = option;
   },
   SET_LOADING(state, payload) {
-    state.cargando = payload;
+    state.loading = payload;
   },
   SET_SUCCESS_MESSAGE(state, payload) {
     state.successAccion = payload;

@@ -1,5 +1,6 @@
 import rutasFacturaElectronica from './rutasFacturaElectronica';
 import rutasHerramientas from './rutasHerramientas';
+import templateRoutes from './templateRoutes';
 
 export default [
   {
@@ -43,7 +44,8 @@ export default [
         component: () => import('@/views/Page2.vue')
       },
       ...rutasFacturaElectronica,
-      ...rutasHerramientas
+      ...rutasHerramientas,
+      ...templateRoutes
     ],
   }
 ];

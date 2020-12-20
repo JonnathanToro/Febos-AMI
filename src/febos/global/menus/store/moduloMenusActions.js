@@ -7,6 +7,7 @@ import contratos from '../../../../menu/cl/contratos';
 import escritorioDigital from '../../../../menu/cl/escritorioDigital';
 import gastos from '../../../../menu/cl/gastos';
 import partners from '../../../../menu/cl/partners';
+import templates from '../../../../menu/cl/templates';
 
 export default {
   async seleccionarModulo({ commit }, modulo) {
@@ -22,6 +23,7 @@ export default {
       case 'contratos': commit('SET_MENU', contratos); break;
       case 'partners': commit('SET_MENU', partners); break;
       case 'escritorioDigital': commit('SET_MENU', escritorioDigital); break;
+      case 'templates': commit('SET_MENU', templates); break;
     }
   }
 };

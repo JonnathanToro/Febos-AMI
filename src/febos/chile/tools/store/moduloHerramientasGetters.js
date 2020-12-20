@@ -7,6 +7,6 @@ export default {
     const documents = state.herramientas.mantenedores.documentos || {};
     return Object.values(documents);
   },
-  loading: (state) => state.cargando,
+  loading: (state) => state.loading,
   selectedCategory: (state) => state.category
 };

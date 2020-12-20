@@ -1,7 +1,7 @@
-@import "src/assets/scss/bootstrap/abstracts/functions";
-@import "src/assets/scss/bootstrap/abstracts/mixins";
-@import "src/assets/scss/bootstrap/abstracts/variables";
+@import "abstracts/functions";
+@import "abstracts/mixins";
+@import "abstracts/variables";
 
-@import "src/assets/scss/bootstrap/layouts/default";
+@import "layouts/default";
 
-@import "src/assets/scss/bootstrap/vendor/bootstrap";
+@import "vendor/bootstrap";
