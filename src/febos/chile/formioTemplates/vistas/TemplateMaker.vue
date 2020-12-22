@@ -1,17 +1,30 @@
 <template>
   <vs-row>
     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
-      <vs-input class="input-width" label="Nombre" placeholder="Nombre" v-model="template.name"/>
+      <vs-input
+        class="input-width"
+        label="Nombre"
+        placeholder="Nombre"
+        :value="template.name"
+        @input="changeTemplateProperty('name', $event)"
+      />
     </vs-col>
     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
-      <vs-input class="input-width" label="Tipo" placeholder="Tipo" v-model="template.type"/>
+      <vs-input
+        class="input-width"
+        label="Tipo"
+        placeholder="Tipo"
+        :value="template.type"
+        @input="changeTemplateProperty('type', $event)"
+      />
     </vs-col>
     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
       <vs-input
         class="input-width"
         label="Descripción"
         placeholder="Descripción"
-        v-model="template.description"
+        :value="template.description"
+        @input="changeTemplateProperty('description', $event)"
       />
     </vs-col>
     <vs-col vs-type="flex" vs-justify="flex-end" vs-align="center" vs-w="3">
@@ -27,11 +40,11 @@
     <vs-col>
       <div id="formio" ref="formio" class="m-top-20">
         <FormBuilder
-          :form="myForm"
+          :form="schema"
           v-bind:options="{
              noDefaultSubmitButton: true
           }"
-          v-on:change="(schema) => changeBuilder(schema)"
+          v-on:change="(schema) => changeSchema(schema)"
         >
         </FormBuilder>
       </div>
@@ -60,15 +73,7 @@ export default {
   data() {
     return {
       validation: false,
-      textValidation: '',
-      myForm: {
-        display: 'form'
-      },
-      template: {
-        name: '',
-        type: '',
-        description: ''
-      }
+      textValidation: ''
     };
   },
   watch: {},
@@ -76,19 +81,31 @@ export default {
     ...mapGetters('Usuario', [
       'usuarioActual'
     ]),
+    ...mapGetters('Templates', [
+      'template',
+      'schema',
+      'schemaChanges'
+    ]),
     ...mapGetters('Empresas', [
       'empresa'
     ])
   },
   methods: {
     ...mapActions('Templates', [
-      'saveTemplateFormio'
+      'changeTemplate',
+      'changeSchema',
+      'clearTemplate',
+      'saveTemplateFormio',
+      'getTemplateById'
     ]),
-    changeBuilder(schema) {
-      this.myForm.components = schema;
+    changeTemplateProperty(key, value) {
+      this.changeTemplate({
+        ...this.template,
+        [key]: value
+      });
     },
     validateTemplate(template) {
-      const json = template.extra.jsonPlantilla || '';
+      const json = JSON.stringify(template.extra.schema);
       const validations = [];
 
       if (!template.valor) {
@@ -152,24 +169,34 @@ export default {
           adjuntos: [],
           usuarioCreadorNombre: this.usuarioActual.nombre,
           fechaCreacion: Vue.moment().format('YYYY-MM-DD'),
-          jsonPlantilla: JSON.stringify(this.myForm),
-          schema: this.myForm,
+          schema: this.schemaChanges,
           descripcion: this.template.description
         }
       };
       if (!this.validateTemplate(templateRequest)) {
         return;
       }
+      if (this.$route.params.opcionId) {
+        templateRequest.opcionId = this.$route.params.opcionId;
+        templateRequest.parametroId = this.template.parametroId;
+      }
 
+      console.log('TEMPLATE REQUEST', templateRequest);
       templateRequest.extra = JSON.stringify(templateRequest.extra);
 
-      console.log('template request', templateRequest);
       this.saveTemplateFormio(templateRequest);
     }
   },
   mounted() {
     this.validation = false;
-    console.log('AACA', this);
+    if (this.$route.params.opcionId) {
+      console.log('estoy aca');
+      this.getTemplateById(this.$route.params.opcionId);
+    } else {
+      console.log('CLEAR');
+      this.clearTemplate();
+    }
+    console.log('aca', this);
   }
 };
 </script>
