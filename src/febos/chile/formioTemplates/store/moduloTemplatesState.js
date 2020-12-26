@@ -2,5 +2,10 @@ export default {
   loading: false,
   successAccion: false,
   error: '',
-  templates: {}
+  templates: {},
+  template: {},
+  schema: {
+    display: 'form'
+  },
+  schemaChanges: {}
 };

@@ -73,7 +73,6 @@ export default {
   },
   mounted() {
     this.listTemplates();
-    console.log('AACA', this);
   }
 };
 </script>

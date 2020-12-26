@@ -37,7 +37,7 @@
         </a>
 
         <vs-dropdown-menu>
-          <div>
+          <div v-on:click="editTemplate(item)">
             <vs-icon
               class=""
               icon="edit"
@@ -74,7 +74,16 @@ export default {
   methods: {
     ...mapActions('Templates', [
       'toggleEnableTemplate'
-    ])
+    ]),
+    editTemplate(template) {
+      console.log('EDITAR', template);
+      this.$router.push({
+        name: 'templates',
+        params: {
+          opcionId: template.opcionId
+        }
+      });
+    }
   },
   mounted() {
     console.log('item template', this.item);
