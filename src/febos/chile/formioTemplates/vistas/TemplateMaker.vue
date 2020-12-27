@@ -173,9 +173,11 @@ export default {
           descripcion: this.template.description
         }
       };
+      /*
       if (!this.validateTemplate(templateRequest)) {
         return;
       }
+       */
       if (this.$route.params.opcionId) {
         templateRequest.opcionId = this.$route.params.opcionId;
         templateRequest.parametroId = this.template.parametroId;
