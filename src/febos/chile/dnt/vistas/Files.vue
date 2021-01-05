@@ -23,7 +23,7 @@
         <b>Creación</b>
       </vs-col>
     </vs-row>
-    <div id="list-dnt" style="padding-top: 56px;">
+    <div id="list-dnt">
       <vs-row
         vs-w="12"
         :key="file.febosId"
@@ -267,8 +267,6 @@ export default {
   padding: 16px 10px;
   margin-bottom: 10px;
   background: white;
-  position: fixed;
-  width: 90% !important;
   z-index: 10;
   box-shadow: -1px 6px 12px 0 #80808075;
 }

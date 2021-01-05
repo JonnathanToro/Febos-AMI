@@ -23,7 +23,7 @@
         <b>Actualización</b>
       </vs-col>
     </vs-row>
-    <div id="list-dnt" style="padding-top: 56px;">
+    <div id="list-dnt">
       <vs-row
         vs-w="12"
         :key="file.febosId"
@@ -85,9 +85,55 @@
       </vs-row>
     </div>
     <vs-popup title="Detalles del codumento" :active.sync="popupDetails">
-      <p>
-       {{detailsDnt}}
-      </p>
+      <div class="">
+        <vs-tabs>
+          <vs-tab label="Documento">
+            <vs-list>
+              <vs-list-item title="Nombre" :subtitle="detailsDnt.document.materia"/>
+              <vs-list-item title="Folio" :subtitle="detailsDnt.document.folio"/>
+              <vs-list-item title="Descripción" :subtitle="detailsDnt.document.descripcion"/>
+              <vs-list-item title="Tipo Documento" :subtitle="detailsDnt.document.tipo"/>
+              <vs-list-item
+                title="Institución que despacha"
+                :subtitle="detailsDnt.document.entidad_nombre"
+              />
+              <vs-list-item
+                title="Documento Reservado"
+                :subtitle="detailsDnt.document.reservado ? 'si' : 'no'"
+              />
+            </vs-list>
+          </vs-tab>
+          <vs-tab label="Creador">
+            <div class="con-tab-ejemplo">
+              <vs-list>
+                <vs-list-item title="Nombre" :subtitle="detailsDnt.creator.nombre"/>
+                <vs-list-item title="Run" :subtitle="detailsDnt.creator.run"/>
+                <vs-list-item title="Email" :subtitle="detailsDnt.creator.usuario_email"/>
+                <vs-list-item title="Tipo Documento" :subtitle="detailsDnt.document.tipo"/>
+                <vs-list-item title="Institución" :subtitle="detailsDnt.document.entidad_nombre"/>
+                <vs-list-item
+                  title="Estado de proceso"
+                  :subtitle="detailsDnt.document.estado_proceso"
+                />
+              </vs-list>
+            </div>
+          </vs-tab>
+          <vs-tab label="Firmantes">
+            <vs-list>
+              <div  v-for="signUser in detailsDnt.signs" :key="signUser.usuario_run">
+                <vs-list-item :title="signUser.usuario_nombre" :subtitle="signUser.usuario_email"/>
+                <vs-list-item
+                  :title="`Run: ${signUser.usuario_run}`"
+                  :subtitle="`Entidad: ${signUser.entidad_nombre}`"
+                />
+              </div>
+            </vs-list>
+          </vs-tab>
+          <vs-tab label="Representación">
+            <pdf :src="detailsDnt.pdf"/>
+          </vs-tab>
+        </vs-tabs>
+      </div>
     </vs-popup>
     <vs-row v-if="!loading && dntByDocDigital.length">
       <vs-col vs-w="9">
@@ -103,6 +149,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import pdf from 'vue-pdf';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
@@ -110,7 +157,7 @@ import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  components: { FbPaginacion },
+  components: { FbPaginacion, pdf },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
     return {
@@ -209,8 +256,6 @@ export default {
   padding: 16px 10px;
   margin-bottom: 10px;
   background: white;
-  position: fixed;
-  width: 81% !important;
   z-index: 10;
   box-shadow: -1px 6px 12px 0 #80808075;
 }

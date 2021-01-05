@@ -13,5 +13,17 @@ export default {
     registrosEncontrados: 10
   }),
   paginaActual: (state) => state.paginaActual,
-  detailsDnt: (state) => state.details
+  detailsDnt: (state) => {
+    const jsonBody = JSON.parse(atob(decodeURIComponent(escape(state.details.cuerpo))));
+    const details = {
+      document: jsonBody.documento_principal,
+      attachedDocuments: jsonBody.documentos_anexos,
+      creator: jsonBody.info_creador,
+      signs: jsonBody.info_firmas.firmantes[0],
+      destinatarios: jsonBody.destinatarios,
+      institutions: jsonBody.info_visaciones,
+      pdf: state.details.imagenLink
+    };
+    return details;
+  }
 };
