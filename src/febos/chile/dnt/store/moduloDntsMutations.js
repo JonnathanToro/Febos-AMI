@@ -13,6 +13,9 @@ export default {
   SET_LOADING(state, payload) {
     state.loading = payload;
   },
+  SET_DETAIL_DNT(state, payload) {
+    state.details = payload;
+  },
   ACT_PAGINA_BANDEJA(state, payload) {
     state.paginaActual = payload;
   },

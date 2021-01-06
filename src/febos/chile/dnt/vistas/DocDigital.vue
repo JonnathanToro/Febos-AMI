@@ -8,26 +8,26 @@
         <b>Estado</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Enviado por</b>
+        <b>Tema</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Razón social receptor</b>
+        <b>Descripción</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Último aprobador</b>
+        <b>Tipo</b>
+      </vs-col>
+      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
+        <b>Creador</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
         <b>Actualización</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Creación</b>
       </vs-col>
     </vs-row>
     <div id="list-dnt">
       <vs-row
         vs-w="12"
         :key="file.febosId"
-        v-for="file in dntByFiles"
+        v-for="file in dntByDocDigital"
         class="content-rows list-wrapper"
       >
         <vs-col vs-type="block" class="numero-file" vs-lg="1" vs-sm="4" vs-xs="12">
@@ -39,53 +39,22 @@
           </div>
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
-          <vs-icon
-            title="En curso"
-            v-if="file.estado === 3"
-            icon="schedule"
-            size="medium"
-            bg="#43C3B9"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Aprobado"
-            v-if="file.estado === 4"
-            icon="thumb_up"
-            size="medium"
-            bg="#14AA59"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Rechazado"
-            v-if="file.estado === 5"
-            icon="thumb_down"
-            size="medium"
-            bg="#CE4B4B"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Anulado"
-            v-if="file.estado === 6"
-            icon="close"
-            size="medium"
-            bg="#A04E4E"
-            class="state-icon"
-            color="white"/>
+          {{file.estado}}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{file.solicitanteNombre| capitalize }}
+          tema
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.receptorSucursalNombre | capitalize }}
+          {{ file.nombreDescriptivo | capitalize }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.receptorContactoNombre | capitalize }}
+          {{ file.categoria }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaActualizacion }}
+          {{ file.solicitanteNombre }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaEntrega }}
+          {{ file.fechaCreacion | dateFormat }}
         </vs-col>
         <vs-col
           vs-type="block"
@@ -95,18 +64,6 @@
           vs-sm="12"
           vs-xs="12"
         >
-        <span class="pill-info" v-if="file.emisorInfoAdicional" title="División a la que pertenece">
-          {{file.emisorInfoAdicional}}
-        </span>
-          <span class="pill-info" v-if="file.privado === 'Y'" title="Es un archivo privado">
-          <vs-icon icon="lock"></vs-icon>
-        </span>
-          <span class="pill-info" v-if="file.numeroInt" title="Tipo de documento">
-          {{findTypeDocument(file.numeroInt)}}
-        </span>
-          <span class="pill-info" v-if="file.plazo" title="tiempo Transcurrido">
-          {{translateTime(file.plazo, true)}}
-        </span>
           <span  class="actions">
             <vs-dropdown vs-custom-content vs-trigger-click >
             <a class="a-icon" href.prevent>
@@ -118,14 +75,8 @@
                 color="gray"></vs-icon>
             </a>
             <vs-dropdown-menu style="width: 12%">
-              <vs-dropdown-item>
-                <vs-icon icon="chat"/> Ver comentarios
-              </vs-dropdown-item>
-              <vs-dropdown-item>
-                <vs-icon icon="save_alt"/> Descargar acta
-              </vs-dropdown-item>
-                 <vs-dropdown-item>
-                <vs-icon icon="insert_photo"/> Ver adjuntos
+              <vs-dropdown-item v-on:click="getDetails(file)">
+                <vs-icon icon="search"/> Ver Detalles
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
@@ -133,7 +84,58 @@
         </vs-col>
       </vs-row>
     </div>
-    <vs-row v-if="!loading && dntByFiles.length">
+    <vs-popup title="Detalles del codumento" :active.sync="popupDetails">
+      <div class="">
+        <vs-tabs>
+          <vs-tab label="Documento">
+            <vs-list>
+              <vs-list-item title="Nombre" :subtitle="detailsDnt.document.materia"/>
+              <vs-list-item title="Folio" :subtitle="detailsDnt.document.folio"/>
+              <vs-list-item title="Descripción" :subtitle="detailsDnt.document.descripcion"/>
+              <vs-list-item title="Tipo Documento" :subtitle="detailsDnt.document.tipo"/>
+              <vs-list-item
+                title="Institución que despacha"
+                :subtitle="detailsDnt.document.entidad_nombre"
+              />
+              <vs-list-item
+                title="Documento Reservado"
+                :subtitle="detailsDnt.document.reservado ? 'si' : 'no'"
+              />
+            </vs-list>
+          </vs-tab>
+          <vs-tab label="Creador">
+            <div class="con-tab-ejemplo">
+              <vs-list>
+                <vs-list-item title="Nombre" :subtitle="detailsDnt.creator.nombre"/>
+                <vs-list-item title="Run" :subtitle="detailsDnt.creator.run"/>
+                <vs-list-item title="Email" :subtitle="detailsDnt.creator.usuario_email"/>
+                <vs-list-item title="Tipo Documento" :subtitle="detailsDnt.document.tipo"/>
+                <vs-list-item title="Institución" :subtitle="detailsDnt.document.entidad_nombre"/>
+                <vs-list-item
+                  title="Estado de proceso"
+                  :subtitle="detailsDnt.document.estado_proceso"
+                />
+              </vs-list>
+            </div>
+          </vs-tab>
+          <vs-tab label="Firmantes">
+            <vs-list>
+              <div  v-for="signUser in detailsDnt.signs" :key="signUser.usuario_run">
+                <vs-list-item :title="signUser.usuario_nombre" :subtitle="signUser.usuario_email"/>
+                <vs-list-item
+                  :title="`Run: ${signUser.usuario_run}`"
+                  :subtitle="`Entidad: ${signUser.entidad_nombre}`"
+                />
+              </div>
+            </vs-list>
+          </vs-tab>
+          <vs-tab label="Representación">
+            <pdf :src="detailsDnt.pdf"/>
+          </vs-tab>
+        </vs-tabs>
+      </div>
+    </vs-popup>
+    <vs-row v-if="!loading && dntByDocDigital.length">
       <vs-col vs-w="9">
         <fb-paginacion
           :total="paginacion.paginasTotales"
@@ -147,6 +149,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import pdf from 'vue-pdf';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
@@ -154,8 +157,13 @@ import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  components: { FbPaginacion },
+  components: { FbPaginacion, pdf },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
+  data() {
+    return {
+      popupDetails: false,
+    };
+  },
   watch: {
     pagina() {
       const view = this.$route.params.vista;
@@ -165,11 +173,12 @@ export default {
       this.listDocuments({
         tipo: 'aprobaciones',
         campos: '*',
-        pagina: this.pagina,
+        pagina: this.pagina || 1,
         orden: '-fechaCreacion',
         itemsPorPagina: 10,
         // TODO agregar bien los filtros
-        filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+        // filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+        filtros: filters
       });
     },
     loading(value) {
@@ -187,8 +196,9 @@ export default {
   computed: {
     ...mapGetters('Dnts', [
       'loading',
-      'dntByFiles',
+      'dntByDocDigital',
       'paginacion',
+      'detailsDnt',
       'paginaActual'
     ]),
     pagina: {
@@ -203,55 +213,34 @@ export default {
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
-      'actualizarPagina'
+      'actualizarPagina',
+      'detailDnt'
     ]),
-    translateTime: (time, abr) => { // ASCO
-      const seconds = time * 60;
-      const numdays = Math.floor(seconds / 86400);
-      const numhours = Math.floor((seconds % 86400) / 3600);
-      const numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-
-      if (numdays !== 0) {
-        if (abr) {
-          return `${numdays } d ${ numhours } hrs ${ numminutes } min `;
-        }
-        return `${numdays } dias ${ numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours !== 0) {
-        if (abr) {
-          return `${numhours } hrs ${ numminutes } min `;
-        }
-        return `${numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours === 0 && numminutes !== 0) {
-        if (abr) {
-          return `${numminutes } min `;
-        }
-        return `${numminutes } minutos `;
-      }
-
-      if (numminutes === 0) {
-        if (abr) {
-          return `${numminutes } min`;
-        }
-        return `${numminutes } minutos`;
-      }
-      return numminutes;
-    } // END ASCO, o no?
+    getDetails(file) {
+      this.detailDnt({
+        febosId: file.febosId,
+        imagen: 'si',
+        regenerar: 'si',
+        incrustar: 'no',
+        tipoImagen: 0,
+        cuerpo: 'si'
+      });
+      this.popupDetails = true;
+    }
   },
   mounted() {
     const view = this.$route.params.vista;
     const filters = this.getFilterView(view);
+    console.log('VISTA', filters);
     this.listDocuments({
-      tipo: 'aprobaciones',
+      tipo: 'DDD',
       campos: '*',
       pagina: 1,
       orden: '-fechaCreacion',
       itemsPorPagina: 10,
       // TODO agregar bien los filtros
-      filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+      // filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+      filtros: filters
     });
     console.log('hits', this);
   }

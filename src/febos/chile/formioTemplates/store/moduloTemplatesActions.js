@@ -41,8 +41,6 @@ export default {
       template.description = description;
       template.schema = schema;
     }
-
-    console.log('schemaaa', template);
     commit('SET_SCHEMA', template.schema);
     commit('SET_TEMPLATE', template);
     commit('SET_LOADING', false);
