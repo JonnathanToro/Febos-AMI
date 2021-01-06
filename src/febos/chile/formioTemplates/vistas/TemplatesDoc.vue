@@ -72,7 +72,7 @@ export default {
     ]),
   },
   mounted() {
-    this.listTemplates('ed.personalizados.plantillas');
+    this.listTemplates('ed.personalizados.plantillas.doc');
   }
 };
 </script>

@@ -2,10 +2,10 @@ import { listOptions, saveOption, getOption } from '@/febos/servicios/api/opcion
 
 export default {
 
-  async listTemplates({ commit }) {
+  async listTemplates({ commit }, group) {
     commit('SET_LOADING', true);
     const response = await listOptions({
-      grupoOpcion: 'ed.personalizados.plantillas',
+      grupoOpcion: group,
       deshabilitado: 'si'
     });
     commit('SET_TEMPLATES', response.data);
@@ -23,6 +23,7 @@ export default {
       valor: type,
       extra,
       parametroId,
+      grupoId,
       // eslint-disable-next-line no-unused-vars
       ...ignored
     } = response.data.opcion;
@@ -30,7 +31,8 @@ export default {
     const template = {
       name,
       type,
-      parametroId
+      parametroId,
+      grupoId
     };
 
     if (extra) {

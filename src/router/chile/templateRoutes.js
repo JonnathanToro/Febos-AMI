@@ -7,6 +7,18 @@ export default [
     props: (templateItem) => ({ opcionId: templateItem.opcionId })
   },
   {
+    path: '/templates-formio-docs',
+    name: 'templates',
+    meta: { permiso: 'WB001', requiereLogin: true },
+    component: () => import('@/febos/chile/formioTemplates/vistas/TemplateMakerDoc.vue')
+  },
+  {
+    path: '/templates-docs',
+    name: 'templates',
+    meta: { permiso: 'WB001', requiereLogin: true },
+    component: () => import('@/febos/chile/formioTemplates/vistas/TemplatesDoc.vue')
+  },
+  {
     path: '/templates-formio/',
     name: 'templates',
     meta: { permiso: 'WB001', requiereLogin: true },

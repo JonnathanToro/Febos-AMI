@@ -1,7 +1,7 @@
 <template>
   <vs-row>
     <vs-col>
-      <h4>Configurador de plantillas para formularios</h4>
+      <h4>Configurador de plantillas para formularios de Documentos</h4>
     </vs-col>
     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
       <vs-input
@@ -166,7 +166,7 @@ export default {
         parametroId: uuid.v1(),
         orden: '',
         nivel: 0,
-        grupoId: 'ed.personalizados.plantillas',
+        grupoId: 'ed.personalizados.plantillas.doc',
         deshabilitado: 0,
         extra: {
           adjuntos: [],
@@ -177,17 +177,19 @@ export default {
         }
       };
 
+      if (!this.validateTemplate(templateRequest)) {
+        return;
+      }
+
       if (this.$route.params.opcionId) {
-        console.log('ACA', this.template);
         templateRequest.opcionId = this.$route.params.opcionId;
         templateRequest.parametroId = this.template.parametroId;
-        templateRequest.grupoId = this.template.grupoId;
       }
 
       console.log('TEMPLATE REQUEST', templateRequest);
       templateRequest.extra = JSON.stringify(templateRequest.extra);
 
-      // this.saveTemplateFormio(templateRequest);
+      this.saveTemplateFormio(templateRequest);
     }
   },
   mounted() {
