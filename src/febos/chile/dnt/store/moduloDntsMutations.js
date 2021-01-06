@@ -13,7 +13,10 @@ export default {
   SET_LOADING(state, payload) {
     state.loading = payload;
   },
-  ACT_PAGINA_BANDEJA(state, payload) {
+  SET_DETAIL_FILE(state, payload) {
+    state.details = payload.detalle;
+  },
+  ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
   },
 };

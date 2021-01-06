@@ -9,5 +9,8 @@ export default {
     registrosPorPagina: state.registrosPorPagina,
     registrosEncontrados: 10
   }),
-  paginaActual: (state) => state.paginaActual
+  paginaActual: (state) => state.paginaActual,
+  fileCommentDetails: (state) => (
+    state.details
+  ),
 };

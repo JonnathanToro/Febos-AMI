@@ -1,4 +1,5 @@
 import { clDntsList } from '@/febos/servicios/api/dnt.api';
+import { fileDetails } from '@/febos/servicios/api/aprobaciones.api';
 
 export default {
   async listDocuments({ commit }, payload) {
@@ -15,7 +16,19 @@ export default {
     }
   },
   actualizarPagina({ commit }, payload) {
-    console.log('aCA', payload);
-    commit('ACT_PAGINA_BANDEJA', payload);
+    commit('ACT_PAGINA', payload);
   },
+  async getFileDetails({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await fileDetails(payload);
+    commit('SET_DETAIL_FILE', response.data);
+    commit('SET_LOADING', false);
+  },
+  async downloadFilePDF({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await fileDetails(payload);
+    window.open(response.data.pdfUrl, '_blank');
+    commit('SET_LOADING', false);
+    return response.data;
+  }
 };

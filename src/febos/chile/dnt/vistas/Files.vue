@@ -23,7 +23,7 @@
         <b>Creación</b>
       </vs-col>
     </vs-row>
-    <div id="list-dnt" style="padding-top: 56px;">
+    <div id="list-dnt">
       <vs-row
         vs-w="12"
         :key="file.febosId"
@@ -118,14 +118,17 @@
                 color="gray"></vs-icon>
             </a>
             <vs-dropdown-menu style="width: 12%">
-              <vs-dropdown-item>
+              <vs-dropdown-item v-on:click="getCommentsFile(file)">
                 <vs-icon icon="chat"/> Ver comentarios
               </vs-dropdown-item>
-              <vs-dropdown-item>
+              <vs-dropdown-item v-on:click="downloadFile(file)">
                 <vs-icon icon="save_alt"/> Descargar acta
               </vs-dropdown-item>
-                 <vs-dropdown-item>
+              <vs-dropdown-item>
                 <vs-icon icon="insert_photo"/> Ver adjuntos
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="cancelFile(file)">
+                <vs-icon icon="clear"/> Anular Expediente
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
@@ -133,6 +136,37 @@
         </vs-col>
       </vs-row>
     </div>
+    <vs-popup title="Detalles del Expediente" :active.sync="detailsFile">
+      <div class="">
+        <vs-tabs>
+          <vs-tab label="Detalles">
+            hola dos
+          </vs-tab>
+          <vs-tab label="Comentarios y Adjuntos">
+            <vs-list v-if="Object.keys(fileCommentDetails).length && fileCommentDetails.ejecucion">
+              <div
+                v-for="(comment, index) in fileCommentDetails.ejecucion.comentarios"
+                :key="index"
+              >
+                <vs-list-item
+                  style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+                  :title="comment.comentario" :subtitle="`Usuario: ${comment.nombre}`">
+                  <small>{{comment.fecha}}</small>
+                  <div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
+                    {{doc.nombre}}
+                  </div>
+                </vs-list-item>
+              </div>
+            </vs-list>
+          </vs-tab>
+        </vs-tabs>
+      </div>
+    </vs-popup>
+    <vs-popup title="Anular Expediente" :active.sync="cancelModal">
+      <div class="">
+        Para anular el expediente debes realizarlo bajo la seguridad del 2FA o Cód. de verificación
+      </div>
+    </vs-popup>
     <vs-row v-if="!loading && dntByFiles.length">
       <vs-col vs-w="9">
         <fb-paginacion
@@ -156,6 +190,12 @@ import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixi
 export default {
   components: { FbPaginacion },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
+  data() {
+    return {
+      cancelModal: false,
+      detailsFile: false
+    };
+  },
   watch: {
     pagina() {
       const view = this.$route.params.vista;
@@ -189,7 +229,8 @@ export default {
       'loading',
       'dntByFiles',
       'paginacion',
-      'paginaActual'
+      'paginaActual',
+      'fileCommentDetails'
     ]),
     pagina: {
       get() {
@@ -203,8 +244,28 @@ export default {
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
-      'actualizarPagina'
+      'actualizarPagina',
+      'getFileDetails',
+      'downloadFilePDF'
     ]),
+    getCommentsFile(file) {
+      this.getFileDetails({
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId
+      });
+      this.detailsFile = true;
+    },
+    downloadFile(file) {
+      this.downloadFilePDF({
+        retornarPdf: 'si',
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId
+      });
+    },
+    cancelFile(file) {
+      this.cancelModal = true;
+      console.log('file', file);
+    },
     translateTime: (time, abr) => { // ASCO
       const seconds = time * 60;
       const numdays = Math.floor(seconds / 86400);
@@ -267,9 +328,6 @@ export default {
   padding: 16px 10px;
   margin-bottom: 10px;
   background: white;
-  position: fixed;
-  width: 90% !important;
-  z-index: 10;
   box-shadow: -1px 6px 12px 0 #80808075;
 }
 
