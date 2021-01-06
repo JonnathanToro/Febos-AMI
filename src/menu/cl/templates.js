@@ -11,15 +11,29 @@ export default [{
       permiso: '*', // TODO: setup permission
       submenu: [
         {
+          url: '/templates-formio-docs',
+          name: 'Builder Plantillas Docts',
+          slug: 'settings',
+          icon: 'playlist_add',
+          permiso: '*'
+        },
+        {
+          url: '/templates-docs',
+          name: 'Plantillas Docts.',
+          slug: 'settings',
+          icon: 'playlist_add',
+          permiso: '*'
+        },
+        {
           url: '/templates-formio',
-          name: 'Template Maker',
+          name: 'Builder Plantillas',
           slug: 'settings',
           icon: 'playlist_add',
           permiso: '*'
         },
         {
           url: '/templates',
-          name: 'Templates',
+          name: 'Plantillas',
           slug: 'settings',
           icon: 'playlist_add',
           permiso: '*'
