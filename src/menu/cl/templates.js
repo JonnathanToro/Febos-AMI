@@ -19,7 +19,7 @@ export default [{
         },
         {
           url: '/templates-docs',
-          name: 'Plantillas Docts.',
+          name: 'Plantillas Docts',
           slug: 'settings',
           icon: 'playlist_add',
           permiso: '*'
