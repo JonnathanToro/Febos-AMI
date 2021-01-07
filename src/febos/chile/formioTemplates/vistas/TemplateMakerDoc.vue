@@ -16,7 +16,10 @@
       <vs-input
         class="input-width"
         label="Tipo"
+        oninput="javascript: if (this.value.length > this.maxLength)
+          this.value = this.value.slice(0, this.maxLength);"
         placeholder="Tipo"
+        maxlength = "4"
         :value="template.type"
         @input="changeTemplateProperty('type', $event)"
       />
