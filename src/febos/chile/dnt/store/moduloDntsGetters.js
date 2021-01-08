@@ -11,6 +11,6 @@ export default {
   }),
   paginaActual: (state) => state.paginaActual,
   fileCommentDetails: (state) => (
-    state.details
+    (state.details || {}).ejecucion.comentarios
   ),
 };

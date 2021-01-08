@@ -117,9 +117,9 @@
                 round
                 color="gray"></vs-icon>
             </a>
-            <vs-dropdown-menu style="width: 12%">
+            <vs-dropdown-menu style="width: fit-content">
               <vs-dropdown-item v-on:click="getCommentsFile(file)">
-                <vs-icon icon="chat"/> Ver comentarios
+                <vs-icon icon="chat"/> Ver Detalles
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="downloadFile(file)">
                 <vs-icon icon="save_alt"/> Descargar acta
@@ -143,21 +143,37 @@
             hola dos
           </vs-tab>
           <vs-tab label="Comentarios y Adjuntos">
-            <vs-list v-if="Object.keys(fileCommentDetails).length && fileCommentDetails.ejecucion">
+            <vs-list v-if="Object.keys(fileCommentDetails).length">
               <div
-                v-for="(comment, index) in fileCommentDetails.ejecucion.comentarios"
+                v-for="(comment, index) in fileCommentDetails"
                 :key="index"
               >
                 <vs-list-item
+                  v-if="comment.accion === 'comentario'"
+                  icon="chat"
                   style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
-                  :title="comment.comentario" :subtitle="`Usuario: ${comment.nombre}`">
+                  :title="comment.comentario" :subtitle="comment.nombre">
                   <small>{{comment.fecha}}</small>
                   <div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
-                    {{doc.nombre}}
+                    <DownloadFile :path="doc.adjuntoUrl" :name="doc.nombre"/>
+                  </div>
+                </vs-list-item>
+                <vs-list-item
+                  v-if="comment.accion === 'devolver'"
+                  icon="compare_arrows"
+                  style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+                  :title="comment.comentario" :subtitle="comment.nombre">
+                  <small>{{comment.fecha}}</small>
+                  <div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
+                    <DownloadFile :path="doc.adjuntoUrl" :name="doc.nombre"/>
                   </div>
                 </vs-list-item>
               </div>
             </vs-list>
+
+            <!--<Timeline
+              :timeline-items="fileCommentDetails.ejecucion.comentarios"
+              message-when-no-items="No hay comentarios"/>-->
           </vs-tab>
         </vs-tabs>
       </div>
@@ -184,16 +200,73 @@ import { mapActions, mapGetters } from 'vuex';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
+import DownloadFile from '@/febos/chile/dnt/components/DownloadFile';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  components: { FbPaginacion },
+  components: { FbPaginacion, DownloadFile },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
     return {
       cancelModal: false,
-      detailsFile: false
+      detailsFile: false,
+      timelines: [
+        {
+          id: 5,
+          icon_class: 'glyphicon glyphicon-comment',
+          icon_status: '',
+          title: 'Admin added a comment.',
+          controls: [
+            {
+              method: 'edit',
+              icon_class: 'glyphicon glyphicon-pencil'
+            },
+            {
+              method: 'delete',
+              icon_class: 'glyphicon glyphicon-trash'
+            }
+          ],
+          created: '24. Sep 17:03',
+          body: '<p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam, maxime alias nam dignissimos natus voluptate iure deleniti. Doloremque, perspiciatis voluptas dignissimos ex, ullam et, reprehenderit similique possimus iste commodi minima fugiat non culpa, veniam temporibus laborum. Distinctio ipsam cupiditate debitis aliquid deleniti consectetur voluptates corporis officiis tempora minus veniam, accusamus cum optio nesciunt illo nulla odio? Quidem nesciunt, omnis at quo aliquam porro amet fugit mollitia minus explicabo, possimus deserunt rem ut commodi laboriosam quia. Numquam, est facilis rem iste voluptatum. Cupiditate porro fuga saepe quis nulla mollitia, magni dicta soluta distinctio tempore voluptate quo perferendis. Maiores eveniet deleniti, nemo.</i></p>'
+        },
+        {
+          id: 4,
+          icon_class: 'glyphicon glyphicon-edit',
+          icon_status: 'success',
+          title: 'Started editing',
+          controls: [],
+          created: '24. Sep 14:48',
+          body: '<p>Someone has started editing.</p>'
+        },
+        {
+          id: 3,
+          icon_class: 'glyphicon glyphicon-hand-right',
+          icon_status: 'warning',
+          title: 'Message delegated',
+          controls: [],
+          created: '23. Sep 11:12',
+          body: '<p>This message has been delegated.</p>'
+        },
+        {
+          id: 2,
+          icon_class: 'glyphicon glyphicon-map-marker',
+          icon_status: 'danger',
+          title: 'Message approved and forwarded',
+          controls: [],
+          created: '20. Sep 15:56',
+          body: '<p>Message has been approved and forwarded to responsible.</p>'
+        },
+        {
+          id: 1,
+          icon_class: 'glyphicon glyphicon-map-marker',
+          icon_status: '',
+          title: 'Message forwarded for approval',
+          controls: [],
+          created: '19. Sep 19:49',
+          body: '<p>Message has been forwarded for approval.</p>'
+        },
+      ]
     };
   },
   watch: {
