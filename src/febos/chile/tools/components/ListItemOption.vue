@@ -117,6 +117,7 @@ export default {
     }
   },
   mounted() {
+    console.log('ACA', this);
   }
 };
 </script>
@@ -138,12 +139,13 @@ export default {
   .input-option {
     color: inherit;
     margin-top: 4px;
-    width: 100%;
+    width: 80%;
     background: transparent;
   }
 
   .input-blocked {
     color: inherit;
+    pointer-events: none;
     border: none !important;
     padding: 4px 4px 6px 4px;
     border-radius: 5px;
