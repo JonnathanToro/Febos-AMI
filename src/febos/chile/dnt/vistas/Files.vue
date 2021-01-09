@@ -234,7 +234,7 @@
       </div>
     </vs-popup>
     <vs-row v-if="!loading && dntByFiles.length">
-      <vs-col vs-w="9">
+      <vs-col vs-w="12" class="m-top-20">
         <fb-paginacion
           :total="paginacion.paginasTotales"
           :max="10"
@@ -442,6 +442,10 @@ export default {
 };
 </script>
 <style>
+
+.m-top-20 {
+  margin-top: 20px;
+}
 
 .list-wrapper {
   background: white;
