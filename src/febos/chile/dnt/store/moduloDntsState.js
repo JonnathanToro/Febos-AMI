@@ -6,5 +6,9 @@ export default {
   paginasTotales: 0,
   registrosEncontrados: 0,
   dnts: {},
-  details: {}
+  details: {
+    ejecucion: {
+      comentarios: []
+    }
+  }
 };

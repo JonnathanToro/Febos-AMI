@@ -127,7 +127,7 @@
               <vs-dropdown-item>
                 <vs-icon icon="insert_photo"/> Ver adjuntos
               </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="cancelFile(file)">
+              <vs-dropdown-item v-on:click="cancelFileModal(file)">
                 <vs-icon icon="clear"/> Anular Expediente
               </vs-dropdown-item>
             </vs-dropdown-menu>
@@ -182,6 +182,56 @@
       <div class="">
         Para anular el expediente debes realizarlo bajo la seguridad del 2FA o Cód. de verificación
       </div>
+      <div class="wrap-option">
+        <vs-radio v-model="cancel.typeCancel" vs-value="twoFa">2FA (OTP)</vs-radio>
+        <vs-radio
+          v-model="cancel.typeCancel"
+          vs-value="internCode"
+        >
+          Código de Verificación
+        </vs-radio>
+      </div>
+      <div v-if="cancel.typeCancel === 'internCode'" class="wrap-form">
+        <vs-row>
+          <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+            <vs-button
+              size="small"
+              color="primary"
+              type="border"
+              v-on:click="getCode()"
+            >
+              Solicitar código
+            </vs-button>
+          </vs-col>
+          <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+            <vs-input
+              oninput="javascript: if (this.value.length > this.maxLength)
+              this.value = this.value.slice(0, this.maxLength);"
+              maxlength = "8"
+              label="Código de Verificación"
+              v-model="cancel.code"
+            />
+          </vs-col>
+        </vs-row>
+      </div>
+      <div v-if="cancel.typeCancel === 'twoFa'" class="wrap-form">
+        <vs-input
+          oninput="javascript: if (this.value.length > this.maxLength)
+          this.value = this.value.slice(0, this.maxLength);"
+          maxlength = "8"
+          label="Código de Verificación"
+          v-model="cancel.code"
+        />
+      </div>
+      <div style="margin-top: 20px;text-align: center">
+        <vs-button
+          color="primary"
+          type="border"
+          v-on:click="cancelFile()"
+        >
+          Anular Expediente
+        </vs-button>
+      </div>
     </vs-popup>
     <vs-row v-if="!loading && dntByFiles.length">
       <vs-col vs-w="9">
@@ -211,62 +261,10 @@ export default {
     return {
       cancelModal: false,
       detailsFile: false,
-      timelines: [
-        {
-          id: 5,
-          icon_class: 'glyphicon glyphicon-comment',
-          icon_status: '',
-          title: 'Admin added a comment.',
-          controls: [
-            {
-              method: 'edit',
-              icon_class: 'glyphicon glyphicon-pencil'
-            },
-            {
-              method: 'delete',
-              icon_class: 'glyphicon glyphicon-trash'
-            }
-          ],
-          created: '24. Sep 17:03',
-          body: '<p><i>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam, maxime alias nam dignissimos natus voluptate iure deleniti. Doloremque, perspiciatis voluptas dignissimos ex, ullam et, reprehenderit similique possimus iste commodi minima fugiat non culpa, veniam temporibus laborum. Distinctio ipsam cupiditate debitis aliquid deleniti consectetur voluptates corporis officiis tempora minus veniam, accusamus cum optio nesciunt illo nulla odio? Quidem nesciunt, omnis at quo aliquam porro amet fugit mollitia minus explicabo, possimus deserunt rem ut commodi laboriosam quia. Numquam, est facilis rem iste voluptatum. Cupiditate porro fuga saepe quis nulla mollitia, magni dicta soluta distinctio tempore voluptate quo perferendis. Maiores eveniet deleniti, nemo.</i></p>'
-        },
-        {
-          id: 4,
-          icon_class: 'glyphicon glyphicon-edit',
-          icon_status: 'success',
-          title: 'Started editing',
-          controls: [],
-          created: '24. Sep 14:48',
-          body: '<p>Someone has started editing.</p>'
-        },
-        {
-          id: 3,
-          icon_class: 'glyphicon glyphicon-hand-right',
-          icon_status: 'warning',
-          title: 'Message delegated',
-          controls: [],
-          created: '23. Sep 11:12',
-          body: '<p>This message has been delegated.</p>'
-        },
-        {
-          id: 2,
-          icon_class: 'glyphicon glyphicon-map-marker',
-          icon_status: 'danger',
-          title: 'Message approved and forwarded',
-          controls: [],
-          created: '20. Sep 15:56',
-          body: '<p>Message has been approved and forwarded to responsible.</p>'
-        },
-        {
-          id: 1,
-          icon_class: 'glyphicon glyphicon-map-marker',
-          icon_status: '',
-          title: 'Message forwarded for approval',
-          controls: [],
-          created: '19. Sep 19:49',
-          body: '<p>Message has been forwarded for approval.</p>'
-        },
-      ]
+      cancel: {
+        typeCancel: 'internCode'
+      },
+      canceledFile: {}
     };
   },
   watch: {
@@ -295,15 +293,42 @@ export default {
         container: '#list-dnt',
         scale: 0.6
       });
+    },
+    successAccion() {
+      this.$vs.notify({
+        title: 'Genial!',
+        text: 'Acción realizada exitosamente',
+        color: 'success',
+        time: 3000,
+        position: 'top-center'
+      });
+    },
+    error(error) {
+      if (error !== '') {
+        this.$vs.notify({
+          title: 'Oops!',
+          text: error,
+          color: 'danger',
+          time: 10000,
+          position: 'top-center'
+        });
+        this.limpiarMensajeDeError();
+      }
     }
   },
   computed: {
     ...mapGetters('Dnts', [
       'loading',
+      'error',
+      'successAccion',
       'dntByFiles',
       'paginacion',
       'paginaActual',
       'fileCommentDetails'
+    ]),
+    ...mapGetters('Usuario', [
+      'verificationCode',
+      'loading'
     ]),
     pagina: {
       get() {
@@ -319,7 +344,12 @@ export default {
       'listDocuments',
       'actualizarPagina',
       'getFileDetails',
-      'downloadFilePDF'
+      'downloadFilePDF',
+      'attemptCancelFile',
+      'limpiarMensajeDeError'
+    ]),
+    ...mapActions('Usuario', [
+      'getVerificationCode'
     ]),
     getCommentsFile(file) {
       this.getFileDetails({
@@ -335,9 +365,29 @@ export default {
         ejecucionId: file.febosId
       });
     },
-    cancelFile(file) {
+    cancelFileModal(file) {
       this.cancelModal = true;
-      console.log('file', file);
+      this.canceledFile = file;
+    },
+    cancelFile() {
+      const cancel = {
+        aprobacionId: this.canceledFile.solicitanteDocumentoId,
+        ejecucionId: this.canceledFile.febosId
+      };
+
+      if (this.cancel.typeCancel === 'internCode') {
+        cancel.codigo = this.cancel.code;
+        cancel.idExterno = this.verificationCode;
+      } else {
+        cancel.otp = this.cancel.code;
+      }
+      this.attemptCancelFile(cancel);
+      this.cancelModal = false;
+    },
+    getCode() {
+      this.getVerificationCode(
+        { motivo: `Verificación para anular expediente Nº: ${this.canceledFile.numero}` }
+      );
     },
     translateTime: (time, abr) => { // ASCO
       const seconds = time * 60;
@@ -442,5 +492,17 @@ export default {
 }
 .tooltip-inline {
   display: inline !important;
+}
+
+.wrap-option {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.wrap-form {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
 </style>

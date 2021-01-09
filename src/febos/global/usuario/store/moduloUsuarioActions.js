@@ -1,7 +1,8 @@
 import {
   ioUserLogin,
   ioUserHeartbeat,
-  isUserUpdate
+  isUserUpdate,
+  ioGetAuthCode
 } from '@/febos/servicios/api/usuarios.api';
 import { ioUserPermissions } from '@/febos/servicios/api/permisos.api';
 
@@ -41,5 +42,11 @@ export default {
     );
     commit('SET_USUARIO', payload);
     return response.data;
+  },
+  async getVerificationCode({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await ioGetAuthCode(payload);
+    commit('SET_VERIFICATION_CODE', response.data.febosId);
+    commit('SET_LOADING', false);
   }
 };

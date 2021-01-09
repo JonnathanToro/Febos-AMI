@@ -35,5 +35,11 @@ export default {
       permisos.push(item.codigo);
     });
     state.permisos = permisos;
+  },
+  SET_VERIFICATION_CODE(state, payload) {
+    state.verificationCode = payload;
+  },
+  SET_LOADING(state, payload) {
+    state.loading = payload;
   }
 };

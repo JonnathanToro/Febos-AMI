@@ -19,4 +19,10 @@ export default {
   ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
   },
+  SET_SUCCESS_MENSAJE(state, payload) {
+    state.successAccion = payload;
+  },
+  SET_ERROR_MENSAJE(state, payload) {
+    state.error = payload;
+  },
 };

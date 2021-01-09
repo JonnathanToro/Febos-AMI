@@ -9,3 +9,10 @@ export const fileDetails = (payload) => {
     operacionId: 'io.files.details'
   });
 };
+
+export const cancelFile = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.put(`${RESOURCE}/${payload.aprobacionId}/ejecucion/${payload.ejecucionId}/anular?${params}`,
+    {}, { operacionId: 'io.file.cancel' });
+};

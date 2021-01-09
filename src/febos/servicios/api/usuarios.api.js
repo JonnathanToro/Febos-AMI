@@ -33,3 +33,11 @@ export const isUserUpdate = (id, iut, name, alias, email) => (
     { operacionId: 'io.usuario.actualizar' }
   )
 );
+
+export const ioGetAuthCode = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/autenticadoble?${ params}`, {
+    operacionId: 'io.user.authCode'
+  });
+};

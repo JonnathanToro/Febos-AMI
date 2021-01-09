@@ -11,5 +11,7 @@ export default {
   vencimiento: 0,
   roles: [],
   permisos: [],
-  empresas: []
+  empresas: [],
+  verificationCode: '',
+  loading: false
 };
