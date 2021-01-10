@@ -18,5 +18,6 @@ export default {
   fileCommentDetails: (state) => (
     (state.details || {}).comentarios || []
   ),
-  showModal: (state) => state.showModal
+  showModal: (state) => state.showModal,
+  participants: (state) => state.details
 };

@@ -121,8 +121,14 @@
                 color="gray"></vs-icon>
             </a>
             <vs-dropdown-menu style="width: fit-content">
-               <vs-dropdown-item v-on:click="processFileModal(file)" v-if="file.tipo === 'ACRE'">
+               <vs-dropdown-item v-on:click="processFileModal(file)">
                 <vs-icon icon="move_to_inbox"/> Finalizar documento
+              </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="getParticipants(file)">
+                <vs-icon icon="groups"/> Participantes
+              </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="getParticipants(file)">
+                <vs-icon icon="chat"/> Comentarios
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
@@ -130,6 +136,30 @@
         </vs-col>
       </vs-row>
     </div>
+    <vs-popup
+      :title="`Participantes del Expediente ${file.numero}`"
+      :active.sync="participantsModal"
+    >
+      <vs-list>
+        <div v-for="(participant, index) in participants" :key="index">
+
+          <vs-list-item
+            v-if="participant.estado === 0"
+            icon="inbox"
+            :title="participant.nombre"
+            :subtitle="participant.email">
+            <vs-chip color="success">Bandeja de entrada</vs-chip>
+          </vs-list-item>
+          <vs-list-item
+            v-if="participant.estado === 1"
+            icon="move_to_inbox"
+            :title="participant.nombre"
+            :subtitle="participant.email">
+            <vs-chip color="warning">Bandeja de finalizados</vs-chip>
+          </vs-list-item>
+        </div>
+      </vs-list>
+    </vs-popup>
     <vs-popup title="Finalizar Expediente" :active.sync="showModalProcess">
       <div>
         Al dar por finalizado este documento, no podras actuar sobre el, estas de cuaerdo?
@@ -172,6 +202,7 @@ export default {
   data() {
     return {
       processModal: false,
+      participantsModal: false,
       detailsFile: false,
       processed: {},
       file: {}
@@ -235,7 +266,8 @@ export default {
       'paginacion',
       'paginaActual',
       'fileCommentDetails',
-      'showModal'
+      'showModal',
+      'participants'
     ]),
     ...mapGetters('Usuario', [
       'verificationCode',
@@ -266,29 +298,22 @@ export default {
       'downloadFilePDF',
       'limpiarMensajeDeError',
       'processDntFileED',
-      'closeModal'
+      'closeModal',
+      'getFileDnt'
     ]),
-    getCommentsFile(file) {
-      this.getFileDetails({
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId
-      });
-      this.detailsFile = true;
-    },
-    downloadFile(file) {
-      this.downloadFilePDF({
-        retornarPdf: 'si',
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId
+    getParticipants(file) {
+      this.participantsModal = true;
+      this.file = file;
+      const view = this.$route.params.vista;
+      this.getFileDnt({
+        febosId: file.febosId,
+        aprobaciones: 'si',
+        esLeido: view.includes('entrada') ? 'Y' : 'N'
       });
     },
     processFileModal(file) {
       this.showModalProcess = true;
       this.processedFile = file;
-    },
-    cancelProcess() {
-      this.closeModal(false);
-      this.processedFile = {};
     },
     processFile() {
       const view = this.$route.params.vista;

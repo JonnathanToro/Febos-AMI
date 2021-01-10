@@ -1,4 +1,4 @@
-import { clDntsList, clDntActFileED } from '@/febos/servicios/api/dnt.api';
+import { clDntsList, clDntActFileED, getFile } from '@/febos/servicios/api/dnt.api';
 import { fileDetails, cancelFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
@@ -63,5 +63,12 @@ export default {
   },
   closeModal({ commit }, payload) {
     commit('CLOSE_MODAL', payload);
-  }
+  },
+  async getFileDnt({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await getFile(payload);
+    commit('SET_DETAIL_FILE', response.data.aprobaciones);
+    commit('SET_LOADING', false);
+    return response.data;
+  },
 };

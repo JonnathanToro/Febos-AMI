@@ -17,3 +17,11 @@ export const clDntActFileED = (payload) => {
     operacionId: 'io.dnts.ed.actualizar'
   });
 };
+
+export const getFile = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.febosId}?${params}`, {
+    operacionId: 'io.fet.dnt'
+  });
+};
