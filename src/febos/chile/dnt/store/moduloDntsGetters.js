@@ -2,6 +2,9 @@ export default {
   dntByFiles: (state) => (
     Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'APR')
   ),
+  dntByED: (state) => (
+    Object.values(state.dnts || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
+  ),
   loading: (state) => state.loading,
   error: (state) => state.error,
   successAccion: (state) => state.successAccion,
@@ -13,6 +16,7 @@ export default {
   }),
   paginaActual: (state) => state.paginaActual,
   fileCommentDetails: (state) => (
-    (state.details || {}).ejecucion.comentarios
+    (state.details || {}).comentarios || []
   ),
+  showModal: (state) => state.showModal
 };

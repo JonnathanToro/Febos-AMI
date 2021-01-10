@@ -1,4 +1,4 @@
-import { clDntsList } from '@/febos/servicios/api/dnt.api';
+import { clDntsList, clDntActFileED } from '@/febos/servicios/api/dnt.api';
 import { fileDetails, cancelFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
@@ -12,6 +12,7 @@ export default {
       if (response.data.codigo !== 10) throw response.data;
       return response.data;
     } catch (error) {
+      commit('SET_ERROR_MENSAJE', error);
       console.log('ERROR', error);
       return error;
     }
@@ -22,7 +23,7 @@ export default {
   async getFileDetails({ commit }, payload) {
     commit('SET_LOADING', true);
     const response = await fileDetails(payload);
-    commit('SET_DETAIL_FILE', response.data);
+    commit('SET_DETAIL_FILE', response.data.detalle.ejecucion);
     commit('SET_LOADING', false);
   },
   async downloadFilePDF({ commit }, payload) {
@@ -42,7 +43,6 @@ export default {
     commit('SET_LOADING', true);
     const response = await cancelFile(payload);
     if (response.data.codigo !== 10) {
-      console.log('ACA', response);
       commit('SET_ERROR_MENSAJE', response.data);
     }
     commit('SET_LOADING', false);
@@ -51,4 +51,17 @@ export default {
   limpiarMensajeDeError({ commit }) {
     commit('SET_ERROR_MENSAJE', '');
   },
+  async processDntFileED({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await clDntActFileED(payload);
+    if (response.data.codigo !== 10) {
+      commit('SET_ERROR_MENSAJE', response.data);
+    }
+    commit('CLOSE_MODAL', false);
+    commit('SET_LOADING', false);
+    return response.data;
+  },
+  closeModal({ commit }, payload) {
+    commit('CLOSE_MODAL', payload);
+  }
 };

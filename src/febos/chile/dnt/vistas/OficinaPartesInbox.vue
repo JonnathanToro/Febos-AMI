@@ -27,7 +27,7 @@
       <vs-row
         vs-w="12"
         :key="file.febosId"
-        v-for="file in dntByFiles"
+        v-for="file in dntByED"
         class="content-rows list-wrapper"
       >
         <vs-col vs-type="block" class="numero-file" vs-lg="1" vs-sm="4" vs-xs="12">
@@ -36,6 +36,9 @@
           </div>
           <div>
             {{ file.numero }}
+            <div>
+              {{file.tipo}}
+            </div>
           </div>
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
@@ -118,17 +121,8 @@
                 color="gray"></vs-icon>
             </a>
             <vs-dropdown-menu style="width: fit-content">
-              <vs-dropdown-item v-on:click="getCommentsFile(file)">
-                <vs-icon icon="search"/> Ver detalles
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="downloadFile(file)">
-                <vs-icon icon="save_alt"/> Descargar acta
-              </vs-dropdown-item>
-              <vs-dropdown-item>
-                <vs-icon icon="save_alt"/> Descargar adjuntos
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="cancelFileModal(file)">
-                <vs-icon icon="clear"/> Anular expediente
+               <vs-dropdown-item v-on:click="processFileModal(file)" v-if="file.tipo === 'ACRE'">
+                <vs-icon icon="move_to_inbox"/> Finalizar documento
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
@@ -136,13 +130,23 @@
         </vs-col>
       </vs-row>
     </div>
-    <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
-      <PopUpDetailFile :fileCommentDetails="fileCommentDetails"/>
+    <vs-popup title="Finalizar Expediente" :active.sync="showModalProcess">
+      <div>
+        Al dar por finalizado este documento, no podras actuar sobre el, estas de cuaerdo?
+      </div>
+      <div class="m-top-20" style="display: flex;justify-content: flex-end;">
+        <vs-button color="dark" v-on:click="cancelProcess()" type="border">Cancelar</vs-button>
+        <vs-button
+          v-on:click="processFile()"
+          color="primary"
+          style="margin-left: 12px;"
+          type="border"
+        >
+          Si, finalizar
+        </vs-button>
+      </div>
     </vs-popup>
-    <vs-popup title="Anular Expediente" :active.sync="cancelModal">
-      <PopUpCancelFile :canceledFile="canceledFile" />
-    </vs-popup>
-    <vs-row v-if="!loading && dntByFiles.length">
+    <vs-row v-if="!loading && dntByED.length">
       <vs-col vs-w="12" class="m-top-20">
         <fb-paginacion
           :total="paginacion.paginasTotales"
@@ -159,19 +163,17 @@ import { mapActions, mapGetters } from 'vuex';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
-import PopUpCancelFile from '@/febos/chile/dnt/vistas/PopUpCancelFile';
-import PopUpDetailFile from '@/febos/chile/dnt/vistas/PopUpDetailFile';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  components: { FbPaginacion, PopUpDetailFile, PopUpCancelFile },
+  components: { FbPaginacion },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
     return {
-      cancelModal: false,
+      processModal: false,
       detailsFile: false,
-      canceledFile: {},
+      processed: {},
       file: {}
     };
   },
@@ -182,9 +184,9 @@ export default {
 
       console.log('aca si o no?', this.pagina);
       this.listDocuments({
-        tipo: 'aprobaciones',
+        tipo: 'escritoriodigital',
         campos: '*',
-        pagina: this.pagina,
+        pagina: this.pagina || 1,
         orden: '-fechaCreacion',
         itemsPorPagina: 10,
         // TODO agregar bien los filtros
@@ -229,10 +231,11 @@ export default {
       'loading',
       'error',
       'successAccion',
-      'dntByFiles',
+      'dntByED',
       'paginacion',
       'paginaActual',
-      'fileCommentDetails'
+      'fileCommentDetails',
+      'showModal'
     ]),
     ...mapGetters('Usuario', [
       'verificationCode',
@@ -245,6 +248,14 @@ export default {
       set(value) {
         this.actualizarPagina(value);
       }
+    },
+    showModalProcess: {
+      get() {
+        return this.showModal;
+      },
+      set(value) {
+        this.closeModal(value);
+      }
     }
   },
   methods: {
@@ -253,8 +264,9 @@ export default {
       'actualizarPagina',
       'getFileDetails',
       'downloadFilePDF',
-      'attemptCancelFile',
-      'limpiarMensajeDeError'
+      'limpiarMensajeDeError',
+      'processDntFileED',
+      'closeModal'
     ]),
     getCommentsFile(file) {
       this.getFileDetails({
@@ -270,51 +282,30 @@ export default {
         ejecucionId: file.febosId
       });
     },
-    cancelFileModal(file) {
-      this.cancelModal = true;
-      this.canceledFile = file;
+    processFileModal(file) {
+      this.showModalProcess = true;
+      this.processedFile = file;
     },
-    translateTime: (time, abr) => { // ASCO
-      const seconds = time * 60;
-      const numdays = Math.floor(seconds / 86400);
-      const numhours = Math.floor((seconds % 86400) / 3600);
-      const numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-
-      if (numdays !== 0) {
-        if (abr) {
-          return `${numdays } d ${ numhours } hrs ${ numminutes } min `;
-        }
-        return `${numdays } dias ${ numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours !== 0) {
-        if (abr) {
-          return `${numhours } hrs ${ numminutes } min `;
-        }
-        return `${numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours === 0 && numminutes !== 0) {
-        if (abr) {
-          return `${numminutes } min `;
-        }
-        return `${numminutes } minutos `;
-      }
-
-      if (numminutes === 0) {
-        if (abr) {
-          return `${numminutes } min`;
-        }
-        return `${numminutes } minutos`;
-      }
-      return numminutes;
-    } // END ASCO, o no?
+    cancelProcess() {
+      this.closeModal(false);
+      this.processedFile = {};
+    },
+    processFile() {
+      const view = this.$route.params.vista;
+      const toProcess = {
+        febosId: this.processedFile.febosId,
+        tipo: 'escritotiodigitalfin',
+        esLeido: view.includes('entrada') ? 'Y' : 'N'
+      };
+      this.processDntFileED(toProcess);
+      console.log('toProcess', toProcess);
+    }
   },
   mounted() {
     const view = this.$route.params.vista;
     const filters = this.getFilterView(view);
     this.listDocuments({
-      tipo: 'aprobaciones',
+      tipo: 'escritoriodigital',
       campos: '*',
       pagina: 1,
       orden: '-fechaCreacion',

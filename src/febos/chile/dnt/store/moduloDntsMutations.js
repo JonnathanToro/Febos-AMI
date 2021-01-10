@@ -14,7 +14,7 @@ export default {
     state.loading = payload;
   },
   SET_DETAIL_FILE(state, payload) {
-    state.details = payload.detalle;
+    state.details = payload;
   },
   ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
@@ -25,4 +25,7 @@ export default {
   SET_ERROR_MENSAJE(state, payload) {
     state.error = payload;
   },
+  CLOSE_MODAL(state, payload) {
+    state.showModal = payload;
+  }
 };

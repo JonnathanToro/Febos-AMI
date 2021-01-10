@@ -1,7 +1,12 @@
 <template>
- <div v-on:click="getFile()">
-   {{name}}
- </div>
+  <div>
+    <div v-on:click="getFile()" v-if="this.mood === 'normal'">
+      {{name}}
+    </div>
+    <div v-on:click="getFile()" v-if="this.mood === 'compact'" style="cursor:pointer">
+      <vs-icon icon="description" size="small" :title="name"/>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -21,6 +26,11 @@ export default {
       type: [String],
       required: true,
       default: () => ''
+    },
+    mood: {
+      type: String,
+      required: false,
+      default: 'normal'
     }
   },
   watch: {},

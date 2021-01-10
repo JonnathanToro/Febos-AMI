@@ -9,3 +9,11 @@ export const clDntsList = (payload) => {
     operacionId: 'io.dnts.listar'
   });
 };
+
+export const clDntActFileED = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.put(`${RESOURCE}/${payload.febosId}/aprobadores?${ params}`, {}, {
+    operacionId: 'io.dnts.ed.actualizar'
+  });
+};
