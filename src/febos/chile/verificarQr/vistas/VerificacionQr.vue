@@ -14,9 +14,8 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import pdf from 'vue-pdf';
-
 
 export default {
   components: { pdf },
@@ -24,17 +23,17 @@ export default {
   watch: {},
   computed: {
     ...mapState('VerificarQr', {
-      dnt: state => state.infoQr.dnt,
-      url: state => state.infoQr.url,
-      privado: state => state.infoQr.privado
+      dnt: (state) => state.infoQr.dnt,
+      url: (state) => state.infoQr.url,
+      privado: (state) => state.infoQr.privado
     }),
     ...mapState('Personalizacion', {
-      logoFull: state => state.menu.logo
+      logoFull: (state) => state.menu.logo
     })
   },
   methods: {
-    ...mapActions("VerificarQr", {
-      verificarQr: "verificarQr"
+    ...mapActions('VerificarQr', {
+      verificarQr: 'verificarQr'
     })
   },
   mounted() {
@@ -42,7 +41,7 @@ export default {
       febosId: this.$route.params.febosId
     });
   }
-}
+};
 </script>
 
 <style lang="css" scoped>
@@ -50,7 +49,6 @@ export default {
     width: 60%;
     background: white;
     margin: 0 auto 40px auto;
-    background: red ;
   }
 
   .caja-pdf {
