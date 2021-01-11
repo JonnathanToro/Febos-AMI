@@ -18,7 +18,7 @@ export default [
       {
         path: '/verificar-qr/:febosId',
         name: 'verificar-qr',
-        meta: { permiso: '*', requiereLogin: true },
+        meta: { permiso: '*', requiereLogin: false },
         component: () => import('@/febos/chile/verificarQr/vistas/VerificacionQr.vue')
       },
     ]
