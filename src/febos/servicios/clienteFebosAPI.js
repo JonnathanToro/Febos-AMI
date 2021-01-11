@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 import localForage from 'localforage';
 
 import store from '../../store/store';
