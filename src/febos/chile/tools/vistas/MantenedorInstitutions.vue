@@ -77,7 +77,7 @@
               <vs-button color="primary" class="margin-right" size="small" disabled
                          type="border" icon="search" />
             </span>
-              para ver los documentos de la categoría
+              para ver las instituciones de la categoría
           </h4>
         </vs-col>
       </vs-row>
