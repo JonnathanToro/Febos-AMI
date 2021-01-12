@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 import localForage from 'localforage';
 
 import store from '../../store/store';
@@ -12,6 +13,11 @@ const withoutLog = ['io.usuario.latido'];
 
 const authInterceptor = async (config) => {
   const storage = await localForage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`);
+
+  if (!storage) {
+    return config;
+  }
+
   Object.assign(config.headers, { token: storage.Usuario.token });
 
   try {
@@ -24,7 +30,7 @@ const authInterceptor = async (config) => {
   return config;
 };
 
-const revalidarSesion = () => {
+const validateSession = () => {
   store.dispatch('Usuario/validateSession');
 };
 
@@ -81,7 +87,17 @@ apiClient.interceptors.response.use(
       data: response.data
     };
 
-    if (response.data.codigo >= 10) revalidarSesion();
+    if (response.data.codigo < 10) {
+      throw new Error(
+        `${response.data.mensaje}
+        ${process.env.VUE_APP_AMBIENTE === 'desarrollo'
+          ? ' ⚠️⚠️⚠️ si estas viendo este error en la consola borra el try catch de tu acción ⚠️⚠️⚠️'
+          : ''
+        }`
+      );
+    }
+
+    validateSession();
     if (!withoutLog.includes(operacionId)) {
       console.log(`>> Respuesta de API (response): ${operacionId}`, dataToLog);
     }

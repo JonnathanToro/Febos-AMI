@@ -1,7 +1,9 @@
 import rutasFacturaElectronica from './rutasFacturaElectronica';
 import rutasHerramientas from './rutasHerramientas';
+import rutasDnts from './rutasDnts';
+import templateRoutes from './templateRoutes';
 
-const layoutPrivado = [
+export default [
   {
     path: '',
     component: () => import('@/layouts/main/Main.vue'),
@@ -43,9 +45,9 @@ const layoutPrivado = [
         component: () => import('@/views/Page2.vue')
       },
       ...rutasFacturaElectronica,
-      ...rutasHerramientas
+      ...rutasHerramientas,
+      ...rutasDnts,
+      ...templateRoutes
     ],
   }
 ];
-
-export default layoutPrivado;

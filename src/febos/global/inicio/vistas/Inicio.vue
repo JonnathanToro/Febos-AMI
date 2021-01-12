@@ -82,87 +82,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+import ModuleSettingsMixin from '@/febos/global/inicio/mixins/ModuleSettingsMixin';
+
 export default {
-  data() {
-    return {
-      modules: [
-        {
-          nombre: 'herramientas',
-          descripcion: 'Herramientas',
-          tooltip: '',
-          icono: 'settings',
-          habilitado: true,
-          visible: true
-        },
-        {
-          nombre: 'facturaElectronica',
-          descripcion: 'Factura Electrónica',
-          tooltip: '',
-          icono: 'description',
-          habilitado: true,
-          visible: true
-        }
-        /*
-        {
-          nombre: 'aprobaciones',
-          descripcion: 'Aprobaciones',
-          tooltip: '',
-          icono: 'done_all',
-          habilitado: true,
-          visible: true
-        },
-        {
-          nombre: 'escritorioDigital',
-          descripcion: 'Escritorio Digital',
-          tooltip: '',
-          icono: 'all_inbox',
-          habilitado: false,
-          visible: true
-        },
-        {
-          nombre: 'compras',
-          descripcion: 'Gestión de Compras',
-          tooltip: '',
-          icono: 'shopping_cart',
-          habilitado: false,
-          visible: true
-        },
-        {
-          nombre: 'contratos',
-          descripcion: 'Gestión de Contratos',
-          tooltip: '',
-          icono: 'supervisor_account',
-          habilitado: false,
-          visible: true
-        },
-        {
-          nombre: 'gastos',
-          descripcion: 'Rendición de Gastos',
-          tooltip: '',
-          icono: 'receipt',
-          habilitado: false,
-          visible: true
-        },
-        {
-          nombre: 'partners',
-          descripcion: 'Partners',
-          tooltip: '',
-          icono: 'widgets',
-          habilitado: false,
-          visible: true
-        },
-        {
-          nombre: 'configuracion',
-          descripcion: 'Configuración',
-          tooltip: '',
-          icono: 'settings',
-          habilitado: false,
-          visible: true
-        }
-        */
-      ]
-    };
-  },
+  mixins: [ModuleSettingsMixin],
   computed: {
     ...mapGetters('Usuario', { usuario: 'currentUser' }),
     ...mapGetters({ moduloActual: 'currentModule' }),
@@ -175,10 +98,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Menus', { seleccionarModulo: 'seleccionarModulo' })
+    ...mapActions('Menus', { seleccionarModulo: 'seleccionarModulo' }),
+    ...mapActions('Usuario', ['loadPermissions'])
   },
   created() {
-
+    this.loadPermissions();
   }
 };
 </script>

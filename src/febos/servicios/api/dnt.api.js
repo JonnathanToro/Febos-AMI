@@ -1,14 +1,19 @@
-import clienteFebosAPI from "../clienteFebosAPI";
+import apiClient from '../clienteFebosAPI';
 
-const RECURSO = '/empresas';
+const RESOURCE = '/notributarios';
 
-const io_empresas_listar = () => clienteFebosAPI.get(END_POINT);
+export const clDntsList = (payload) => {
+  const params = apiClient.queryParams(payload);
 
-const ejemploConParametros = (user_id) => httpClient.get(END_POINT, { user_id });
-const ejemploComoPost = (username, password) => httpClient.post(END_POINT, { username, password });
+  return apiClient.get(`${RESOURCE}?${params}`, {
+    operacionId: 'io.dnts.list'
+  });
+};
 
-export {
-  io_empresas_listar,
-  ejemploComoPost,
-  ejemploConParametros
-}
+export const clDntDetails = (payload) => {
+  const params = apiClient.queryParams(payload);
+  console.log('PAYO', params);
+  return apiClient.get(`${RESOURCE}/${payload.febosId}?${params}`, {
+    operacionId: 'io.dnt.details'
+  });
+};

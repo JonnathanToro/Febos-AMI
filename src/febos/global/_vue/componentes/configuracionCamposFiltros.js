@@ -1,30 +1,34 @@
 export default {
-  "fechaEmision": {
-    nombre: "Fecha de Emisión",
-    tipo: "fecha"
+  fechaEmision: {
+    nombre: 'Fecha de Emisión',
+    tipo: 'fecha'
   },
-  "estadoSii": {
-    nombre: "Estado SII",
-    tipo: "multi"
+  fechaCreacion: {
+    nombre: 'Fecha de Creación',
+    tipo: 'fecha'
   },
-  "folio": {
-    nombre: "Folio",
-    tipo: "numero"
+  estadoSii: {
+    nombre: 'Estado SII',
+    tipo: 'multi'
   },
-  "tipoDocumento":{
-    nombre:"Tipo Documento",
-    tipo:"multi"
+  folio: {
+    nombre: 'Folio',
+    tipo: 'numero'
   },
-  "rutEmisor": {
-    nombre: "RUT Emisor",
-    tipo: "rut"
+  tipoDocumento: {
+    nombre: 'Tipo Documento',
+    tipo: 'multi'
   },
-  "rutReceptor": {
-    nombre: "RUT Receptor",
-    tipo: "rut"
+  rutEmisor: {
+    nombre: 'RUT Emisor',
+    tipo: 'rut'
   },
-  "estadoComercial":{
-    nombre: "Estado Comercial",
-    tipo: "multi"
+  rutReceptor: {
+    nombre: 'RUT Receptor',
+    tipo: 'rut'
+  },
+  estadoComercial: {
+    nombre: 'Estado Comercial',
+    tipo: 'multi'
   }
-}
+};

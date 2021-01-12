@@ -97,7 +97,8 @@ export default {
   methods: {
     ...mapActions('Usuario', ['signOut']),
     logout() {
-      this.signOut().then(() => this.$router.push('/ingreso'));
+      this.signOut();
+      this.$router.push('/ingreso');
     },
     selectCompany() {
       this.$router.push({ name: 'selectorEmpresa' });

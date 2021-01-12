@@ -1,15 +1,15 @@
-import clienteFebosAPI from '../clienteFebosAPI';
+import apiClient from '../clienteFebosAPI';
 
-const RECURSO = '/herramientas/opciones';
+const RESOURCE = '/herramientas/opciones';
 
-const listOptions = (payload) => {
-  const params = clienteFebosAPI.queryParams(payload);
-  return clienteFebosAPI.get(`${RECURSO }?${params}`, { operacionId: 'cl.listar.opciones' });
+export const listOptions = (payload) => {
+  const params = apiClient.queryParams(payload);
+  return apiClient.get(`${RESOURCE }?${params}`, { operacionId: 'cl.list.options' });
 };
 
-const saveOption = (payload) => clienteFebosAPI.post(RECURSO, { opcion: payload }, { operacionId: 'cl.listar.opciones' });
-
-export {
-  listOptions,
-  saveOption
+export const getOption = (payload) => {
+  const params = apiClient.queryParams(payload);
+  return apiClient.get(`${RESOURCE }?${params}`, { operacionId: 'cl.get.option' });
 };
+
+export const saveOption = (payload) => apiClient.post(RESOURCE, { opcion: payload }, { operacionId: 'cl.save.option' });

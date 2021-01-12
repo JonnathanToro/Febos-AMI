@@ -46,3 +46,8 @@ aws s3 cp vue.febos.config.portal.json s3://archivos.febos.io/cl/produccion/port
 ```
 aws s3 cp vue.ed.config.portal.json s3://archivos.febos.io/cl/produccion/portales/vue.portal.febos.cl.json
 ```
+para deployar la web de escritorio digital:
+(hay que tener instalado AWS-CLI con los permisos para subir archivos a S3 y borrar cache de cloudfront)
+```
+./deployED.sh desarrollo cloud
+```

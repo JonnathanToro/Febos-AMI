@@ -16,8 +16,10 @@ export const isSessionAlive = (state) => {
   return now < state.vencimiento;
 };
 
-export const hasPermission = (state) => (code) => (
-  !!state.permisos.find((permission) => permission.codigo === code)
-);
+export const isLogged = (state) => !!state.id;
+
+export const hasPermission = (state) => (code) => code === '*' || state.permisos.includes(code);
+
+export const userPermissions = (state) => state.permisos;
 
 export const userToken = (state) => state.token;
