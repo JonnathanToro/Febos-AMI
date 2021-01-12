@@ -14,8 +14,17 @@ export default [{
           name: 'Documentos',
           slug: '/herramientas/mantenedor-documentos',
           icon: 'library_books',
+          permiso: 'WB000',
           i18n: 'Documents'
         },
+        {
+          url: '/mantenedores/instituciones',
+          name: 'Instituciones',
+          slug: '/herramientas/mantenedor-instituciones',
+          icon: 'library_books',
+          permiso: 'WB000',
+          i18n: 'Instituciones'
+        }
       ]
     },
   ]

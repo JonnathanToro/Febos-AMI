@@ -15,8 +15,26 @@ export default {
         [option.opcionId]: option
       }), {});
   },
+  SET_OPCIONES_CATEGORIES_INSTITUTIONS(state, payload) {
+    state.herramientas.mantenedores.categoryInstitutions = (payload.opciones || [])
+      .reduce((index, option) => ({
+        ...index,
+        [option.opcionId]: option
+      }), {});
+  },
+  // TODO: use normalizr
+  SET_OPCIONES_INSTITUTIONS(state, payload) {
+    state.herramientas.mantenedores.institutions = (payload.opciones || [])
+      .reduce((index, option) => ({
+        ...index,
+        [option.opcionId]: option
+      }), {});
+  },
   SET_CATEGORY(state, payload) {
     state.category = payload;
+  },
+  SET_INSTITUTION(state, payload) {
+    state.institution = payload;
   },
   UPDATE_OPTION_CATEGORY(state, { option }) {
     state.herramientas.mantenedores.categorias[option.opcionId] = option;
