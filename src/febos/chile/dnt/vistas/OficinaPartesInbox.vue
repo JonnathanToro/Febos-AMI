@@ -130,6 +130,9 @@
                <vs-dropdown-item v-on:click="getParticipants(file)">
                 <vs-icon icon="chat"/> Comentarios
               </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="sendFile(file)">
+                <vs-icon icon="chat"/> Enviar documento
+              </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
           </span>
@@ -176,6 +179,89 @@
         </vs-button>
       </div>
     </vs-popup>
+    <vs-popup title="Enviar Expediente" :active.sync="sendFileModal">
+      <h5>
+        Para:
+      </h5>
+      <div class="wrap-option">
+        <vs-radio v-model="send.typeSend" vs-value="moodUser">Usuario</vs-radio>
+        <vs-radio v-model="send.typeSend" vs-value="moodUnidad">Unidad</vs-radio>
+      </div>
+      <div
+        v-if="send.typeSend === 'moodUser' && usersCompany && usersCompany.length"
+        class="wrap-form"
+      >
+        <vs-select
+          class="selectExample"
+          label="Usuarios"
+          v-model="send.user"
+        >
+          <vs-select-item
+            :key="user.id"
+            :value="user.correo"
+            :text="user.nombre"
+            v-for="user in usersCompany"
+          />
+        </vs-select>
+      </div>
+      <div
+        v-if="send.typeSend === 'moodUnidad' && groupsCompany && groupsCompany.length"
+        class="wrap-form"
+      >
+        <vs-select
+          class="selectExample"
+          label="Unidad"
+          v-model="send.unidad"
+        >
+          <vs-select-item
+            :key="group.id"
+            :value="group.id"
+            :text="group.nombre"
+            v-for="group in groupsCompany"
+          />
+        </vs-select>
+      </div>
+      <h5>
+        Con copia:
+      </h5>
+      <div class="wrap-option">
+        <vs-radio v-model="send.typeCopy" vs-value="sendUser">Usuario</vs-radio>
+        <vs-radio v-model="send.typeCopy" vs-value="sendUnidad">Unidad</vs-radio>
+      </div>
+      <div
+        v-if="send.typeCopy === 'sendUsuario' && usersCompany && usersCompany.length"
+        class="wrap-form">
+        <vs-select
+          class="selectExample"
+          label="Usuarios"
+          v-model="send.user"
+        >
+          <vs-select-item
+            :key="user.id"
+            :value="user.correo"
+            :text="user.nombre"
+            v-for="user in usersCompany"
+          />
+        </vs-select>
+      </div>
+      <div
+        v-if="send.typeCopy === 'sendUnidad' && groupsCompany && groupsCompany.length"
+        class="wrap-form"
+      >
+        <vs-select
+          class="selectExample"
+          label="Unidad"
+          v-model="send.unidad"
+        >
+          <vs-select-item
+            :key="group.id"
+            :value="group.id"
+            :text="group.nombre"
+            v-for="group in groupsCompany"
+          />
+        </vs-select>
+      </div>
+    </vs-popup>
     <vs-row v-if="!loading && dntByED.length">
       <vs-col vs-w="12" class="m-top-20">
         <fb-paginacion
@@ -203,8 +289,15 @@ export default {
     return {
       processModal: false,
       participantsModal: false,
+      sendFileModal: false,
       detailsFile: false,
       processed: {},
+      send: {
+        typeSend: 'moodUser',
+        typeCopy: 'sendUnidad',
+        unidad: '',
+        usuario: ''
+      },
       file: {}
     };
   },
@@ -269,9 +362,13 @@ export default {
       'showModal',
       'participants'
     ]),
+    ...mapGetters('Empresas', [
+      'empresa',
+      'usersCompany',
+      'groupsCompany'
+    ]),
     ...mapGetters('Usuario', [
-      'verificationCode',
-      'loading'
+      'verificationCode'
     ]),
     pagina: {
       get() {
@@ -301,6 +398,24 @@ export default {
       'closeModal',
       'getFileDnt'
     ]),
+    ...mapActions('Empresas', [
+      'getUsersCompany',
+      'getGroupsCompany'
+    ]),
+    sendFile(file) {
+      this.getUsersCompany({
+        empresaId: this.empresa.id,
+        pagina: 1,
+        filas: 9999,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
+      });
+      this.getGroupsCompany({
+        empresaId: this.empresa.id
+      });
+      this.file = file;
+      this.sendFileModal = true;
+    },
     getParticipants(file) {
       this.participantsModal = true;
       this.file = file;
@@ -399,4 +514,14 @@ export default {
   display: inline !important;
 }
 
+.wrap-option {
+  display: flex;
+  justify-content: space-around;
+}
+
+.wrap-form {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
 </style>

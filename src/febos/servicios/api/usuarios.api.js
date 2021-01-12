@@ -34,6 +34,14 @@ export const isUserUpdate = (id, iut, name, alias, email) => (
   )
 );
 
+export const getUsers = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE }?${ params}`, {
+    operacionId: 'io.usuarios.listar'
+  });
+};
+
 export const ioGetAuthCode = (payload) => {
   const params = apiClient.queryParams(payload);
 
