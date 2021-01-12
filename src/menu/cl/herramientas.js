@@ -18,6 +18,14 @@ export default [{
           i18n: 'Documents',
           permiso: '*' // TODO: setup permission
         },
+        {
+          url: '/mantenedores/instituciones',
+          name: 'Instituciones',
+          slug: '/herramientas/mantenedor-instituciones',
+          icon: 'library_books',
+          permiso: 'WB000',
+          i18n: 'Instituciones'
+        }
       ]
     },
   ]

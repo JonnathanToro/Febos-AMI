@@ -19,6 +19,9 @@ export default {
   ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
   },
+  SET_DETAIL_DNT(state, payload) {
+    state.details = payload;
+  },
   SET_SUCCESS_MENSAJE(state, payload) {
     state.successAccion = payload;
   },

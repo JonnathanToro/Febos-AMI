@@ -36,5 +36,22 @@ export default [{
         },
       ]
     },
+    {
+      url: null,
+      name: 'DocDigital',
+      slug: 'doc-digital',
+      icon: 'FileIcon',
+      permiso: '*', // TODO: setup permission
+      submenu: [
+        {
+          url: '/doc-digital/entrada',
+          name: 'Entrada',
+          slug: '/doc-digital/entrada',
+          icon: 'files',
+          permiso: '*', // TODO: setup permission
+          i18n: 'doc-digital'
+        }
+      ]
+    }
   ]
 }];

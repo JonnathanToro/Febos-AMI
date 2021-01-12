@@ -39,6 +39,8 @@ Vue.filter('date', (value, fullDate = false) => {
 
 Vue.filter('csv', (value) => value.join(', '));
 
+Vue.filter('dateFormat', (value) => Vue.moment(value).format('DD-MM-YYYY'));
+
 Vue.filter('filter_tags', (value) => value.replace(/<\/?[^>]+(>|$)/g, ''));
 
 Vue.filter('k_formatter', (num) => (num > 999 ? `${(num / 1000).toFixed(1) }k` : num));

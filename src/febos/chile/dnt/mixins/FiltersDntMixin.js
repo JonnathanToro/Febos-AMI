@@ -25,6 +25,9 @@ const filterViews = {
     { field: 'emisorRut', value: '{empresa.iut}' },
     { field: 'solicitanteEmail', value: '{usuario.correo}' },
     { field: 'estado', value: '6,4,5' },
+  ],
+  entrada: [
+    { field: 'tipo', value: 'DDD' }
   ]
 };
 
@@ -38,6 +41,7 @@ export default {
   },
   methods: {
     getFilterView(view) {
+      console.log('VIEW', view, filterViews);
       return (filterViews[view] || [])
         .map((filter) => {
           // eslint-disable-next-line no-unused-vars

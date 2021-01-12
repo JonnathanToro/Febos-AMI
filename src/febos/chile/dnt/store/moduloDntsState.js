@@ -8,6 +8,7 @@ export default {
   registrosEncontrados: 0,
   dnts: {},
   details: {
-    comentarios: []
+    comentarios: [],
+    cuerpo: ''
   }
 };

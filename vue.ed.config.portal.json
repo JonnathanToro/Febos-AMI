@@ -4,25 +4,33 @@
     "navbar":"#03a9f4"
   },
   "menu":{
-    "logo":"https://archivos.febos.io/publico/portales/header_full.png",
-    "miniLogo":"https://archivos.febos.io/publico/portales/header_mini.png"
+    "logo":"https://archivos.febos.io/publico/portales/escritoriodigital/ed-blanco.png",
+    "miniLogo":"https://archivos.febos.io/publico/portales/escritoriodigital/ed-gris-mini.png"
   },
   "ingreso":{
     "imagenIngreso":"http://...",
     "colorFondoImagenIngreso": "#eff2f7",
-    "imagenFondo": "http://...",
+    "imagenFondo": "archivos.febos.io/publico/portales/escritoriodigital/bg_ed.png",
     "tituloIngreso": "Ingreso",
-    "textoHtml":"Hola! porfavor ingresa tus credenciales de acceso. Si tu empresa utiliza <b>Single Sign On</b> con <b>Febos</b>, no debes ingresar tu correo, si no que tu usuario de organización de siempre!",
+    "textoHtml":"Hola! porfavor ingresa tus credenciales de acceso. Si tu empresa utiliza <b>Single Sign On</b> con <b>Escritorio Digital</b>, no debes ingresar tu correo, si no que tu usuario de organización de siempre!",
     "nombreCampoUsuario":"Correo o nombre de usuario",
     "nombreCampoClave":"Contraseña",
     "nombreBotonIngreso":"Ingresar",
     "nombreBotonRegistroProveedores":"Registrarme como proveedor",
     "botonClaveUnica":true,
-    "botonRegistroProveedor": true
+    "botonRegistroProveedor": true,
+    "logo": {
+      "imagen": "https://archivos.febos.io/publico/portales/escritoriodigital/ed-blanco.png",
+      "alto": "95px",
+      "ancho": "200px",
+      "margen": "10px",
+      "ubicacionVertical": "superior",
+      "ubicacionHorizontal": "derecha"
+    }
   },
   "general": {
-    "favicon": "https://s3.amazonaws.com/archivos.febos.io/publico/portales/narvi/favicon-narvi.png",
-    "titulo": "Narvi",
+    "favicon": "https://archivos.febos.io/publico/portales/escritoriodigital/ed-gris-mini.png",
+    "titulo": "Escritorio Digital",
     "footer":"Este es un servicio de <b>Febos AMI SpA.</b>"
   }
 }

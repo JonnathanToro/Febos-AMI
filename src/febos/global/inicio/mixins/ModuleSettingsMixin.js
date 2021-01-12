@@ -85,6 +85,14 @@ const moduleSettings = {
       icono: 'description',
       habilitado: true,
       visible: true
+    },
+    {
+      nombre: 'templates',
+      descripcion: 'Plantillas',
+      tooltip: '',
+      icono: 'description',
+      habilitado: true,
+      visible: true
     }
   ]
 };

@@ -54,6 +54,9 @@ export default {
       () => this.keepAliveSession(),
       1000 * 60 * 10 // 10 minutos
     );
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
   }
 };
 </script>

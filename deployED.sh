@@ -27,11 +27,11 @@ if [ $(contains "${portales_disponibles[@]}" "$PORTAL") == "n" ]; then
   exit 0
 fi
 
-COMANDO="vue-cli-service build --mode narvi.$AMBIENTE.$PORTAL"
+COMANDO="vue-cli-service build --mode ed.$AMBIENTE.$PORTAL"
 $COMANDO
 echo "* Subiendo Portal"
-aws s3 cp dist/ s3://narvi.cl/$AMBIENTE/$PORTAL/ --only-show-errors --recursive
+aws s3 cp dist/ "s3://portal.escritoriodigital.cl/$AMBIENTE/$PORTAL/" --only-show-errors --recursive
 echo "* Borrando Cache"
-aws cloudfront create-invalidation --distribution-id EK96US4D2LAMT --paths "/desarrollo/*" > /dev/null 2>&1
+aws cloudfront create-invalidation --distribution-id EK96US4D2LAMT --paths "/$AMBIENTE/*" > /dev/null 2>&1
 echo "Listo!"
 

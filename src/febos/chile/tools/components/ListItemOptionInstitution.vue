@@ -29,7 +29,7 @@
           class="margin-right"
           size="small"
           type="border"
-          v-on:click="listDocuments(option)"
+          v-on:click="listInstitutions(option)"
           icon="search"
         />
       </vs-tooltip>
@@ -103,7 +103,7 @@ export default {
   computed: {},
   methods: {
     ...mapActions('Herramientas', [
-      'listDocuments',
+      'listInstitutions',
       'toggleEnableOption',
       'saveOptions'
     ]),

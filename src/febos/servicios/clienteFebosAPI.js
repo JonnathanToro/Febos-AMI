@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 import localForage from 'localforage';
 
 import store from '../../store/store';
@@ -12,6 +13,11 @@ const withoutLog = ['io.usuario.latido'];
 
 const authInterceptor = async (config) => {
   const storage = await localForage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`);
+
+  if (!storage) {
+    return config;
+  }
+
   Object.assign(config.headers, { token: storage.Usuario.token });
 
   try {

@@ -1,4 +1,9 @@
-import { clDntsList, clDntActFileED, getFile } from '@/febos/servicios/api/dnt.api';
+import {
+  clDntsList,
+  clDntActFileED,
+  getFile,
+  clDntDetails
+} from '@/febos/servicios/api/dnt.api';
 import { fileDetails, cancelFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
@@ -19,6 +24,13 @@ export default {
   },
   actualizarPagina({ commit }, payload) {
     commit('ACT_PAGINA', payload);
+  },
+  async detailDnt({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await clDntDetails(payload);
+    commit('SET_DETAIL_DNT', response.data);
+    commit('SET_LOADING', false);
+    return response.data;
   },
   async getFileDetails({ commit }, payload) {
     commit('SET_LOADING', true);
