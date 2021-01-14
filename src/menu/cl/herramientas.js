@@ -8,7 +8,6 @@ export default [{
       name: 'Mantenedores',
       slug: 'settings',
       icon: 'FileIcon',
-      permiso: '*', // TODO: setup permission
       submenu: [
         {
           url: '/mantenedores/documentos',
@@ -18,6 +17,14 @@ export default [{
           i18n: 'Documents',
           permiso: '*' // TODO: setup permission
         },
+        {
+          url: '/mantenedores/instituciones',
+          name: 'Instituciones',
+          slug: '/herramientas/mantenedor-instituciones',
+          icon: 'library_books',
+          permiso: 'WB000',
+          i18n: 'Instituciones'
+        }
       ]
     },
   ]

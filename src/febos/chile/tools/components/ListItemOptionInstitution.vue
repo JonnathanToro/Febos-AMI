@@ -1,0 +1,165 @@
+<template>
+  <vs-row vs-w="12" class="wrap-option" v-bind:class="{ 'selected': selectedCategory }">
+    <vs-col vs-lg="8" vs-sm="4" vs-xs="12">
+      <div>
+        <input
+          class="input-option" v-bind:class="{
+            'input-blocked': !editMood,
+            'input-edit': editMood
+          }"
+          size="small" v-model="option.valor"
+        />
+      </div>
+      <div>
+        <input
+          class="input-option" v-bind:class="{
+            'input-blocked': !editMood,
+            'input-edit': editMood
+          }"
+          size="small"
+          v-model="option.descripcion"
+        />
+      </div>
+    </vs-col>
+    <vs-col vs-type="flex" vs-justify="flex-end" vs-align="center" vs-lg="4" vs-sm="4" vs-xs="12">
+      <vs-tooltip text="Ver documentos">
+        <vs-button
+          v-if="type === 'category'"
+          color="primary"
+          class="margin-right"
+          size="small"
+          type="border"
+          v-on:click="listInstitutions(option)"
+          icon="search"
+        />
+      </vs-tooltip>
+      <vs-tooltip text="Editar Opción" v-if="!editMood">
+        <vs-button
+          color="primary"
+          class="margin-right"
+          size="small"
+          type="border"
+          v-on:click="editOption(option)"
+          icon="edit"
+        />
+      </vs-tooltip>
+      <vs-tooltip text="Guardar edición" v-if="editMood">
+        <vs-button
+          color="success"
+          class="margin-right"
+          size="small"
+          type="border"
+          v-on:click="saveOption(option)"
+          icon="save"
+        />
+      </vs-tooltip>
+      <vs-tooltip text="Cancelar edición" v-if="editMood">
+        <vs-button color="danger" class="margin-right" size="small"
+                   type="border" v-on:click="editOption(option)" icon="cancel" />
+      </vs-tooltip>
+      <vs-tooltip text="Deshabilitar opción">
+        <vs-switch
+          color="primary"
+          v-model="selected"
+          v-on:click="toggleEnableOption({ option, selected, type })"
+        />
+      </vs-tooltip>
+    </vs-col>
+  </vs-row>
+</template>
+
+<script>
+
+import { mapActions } from 'vuex';
+
+export default {
+  components: {},
+  mixins: [],
+  data() {
+    return {
+      editMood: false,
+      createMood: false,
+      selected: this.option.deshabilitado !== 1
+    };
+  },
+  props: {
+    option: {
+      type: Object,
+      required: true,
+      default: () => {}
+    },
+    type: {
+      type: [String, Object],
+      required: true,
+      default: () => ''
+    },
+    selectedCategory: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  watch: {},
+  computed: {},
+  methods: {
+    ...mapActions('Herramientas', [
+      'listInstitutions',
+      'toggleEnableOption',
+      'saveOptions'
+    ]),
+    editOption() {
+      this.editMood = !this.editMood;
+      this.createMood = false;
+    },
+    saveOption(option) {
+      this.editMood = false;
+      this.saveOptions(option);
+    }
+  },
+  mounted() {
+    console.log('ACA', this);
+  }
+};
+</script>
+
+<style lang="css" scoped>
+
+  .margin-top {
+    margin-top: 20px;
+  }
+  .margin-right {
+    margin-right: 10px;
+  }
+
+  .wrap-option {
+    background:  #f8f8f8;
+    margin-bottom: 6px;
+  }
+
+  .input-option {
+    color: inherit;
+    margin-top: 4px;
+    width: 80%;
+    background: transparent;
+  }
+
+  .input-blocked {
+    color: inherit;
+    pointer-events: none;
+    border: none !important;
+    padding: 4px 4px 6px 4px;
+    border-radius: 5px;
+  }
+
+  .input-edit {
+    color: inherit;
+    border: 1px solid #66258324;
+    padding: 4px 4px 6px 4px;
+    border-radius: 5px;
+  }
+
+  .selected {
+    background: #cfe7f3;
+  }
+
+</style>
