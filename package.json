@@ -20,7 +20,7 @@
     "serve:narvi-cloud:desarrollo": "vue-cli-service serve --mode narvi.desarrollo.cloud",
     "serve:narvi-cloud:produccion": "vue-cli-service serve --mode narvi.produccion.cloud",
     "serve:narvi-cloud:pruebas": "vue-cli-service serve --mode narvi.pruebas.cloud",
-    "preinstall": "npm-force-resolutions"
+    "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^1.1.2",
