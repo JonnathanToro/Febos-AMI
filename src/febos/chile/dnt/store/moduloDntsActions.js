@@ -2,7 +2,9 @@ import {
   clDntsList,
   clDntActFileED,
   getFile,
-  clDntDetails
+  clDntDetails,
+  fileComments,
+  sendComment
 } from '@/febos/servicios/api/dnt.api';
 import { fileDetails, cancelFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
@@ -83,4 +85,18 @@ export default {
     commit('SET_LOADING', false);
     return response.data;
   },
+  async getFileComments({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await fileComments(payload);
+    commit('SET_COMMENTS', response.data.comentarios);
+    commit('SET_LOADING', false);
+    return response.data;
+  },
+  async sendComment({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await sendComment(payload);
+    commit('ADD_COMMENT', response.data.comentario);
+    commit('SET_LOADING', false);
+    return response.data;
+  }
 };

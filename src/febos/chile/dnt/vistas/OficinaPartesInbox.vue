@@ -127,7 +127,7 @@
                <vs-dropdown-item v-on:click="getParticipants(file)">
                 <vs-icon icon="groups"/> Participantes
               </vs-dropdown-item>
-               <vs-dropdown-item v-on:click="getParticipants(file)">
+               <vs-dropdown-item v-on:click="getComments(file)">
                 <vs-icon icon="chat"/> Comentarios
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="sendFile(file)">
@@ -262,6 +262,60 @@
         </vs-select>
       </div>
     </vs-popup>
+
+    <vs-popup title="Comentarios Expediente" :active.sync="commentsModal">
+      <div style="display: flex;flex-direction: column;">
+        <template style="background: pink;height:200px; overflow-y:scroll">
+          <div
+            v-for="comment in commentsEd"
+            :key="comment.comentarioId"
+          >
+            <div class="pill-comment-user" v-if="comment.usuarioId !== currentUserId">
+              <vs-list-item
+                :title="comment.comentario"
+                :subtitle="comment.usuarioNombre">
+                <template slot="avatar">
+                  <vs-avatar />
+                </template>
+                <vs-chip transparent color="#24c1a0">
+                  <small>{{comment.creado}}</small>
+                </vs-chip>
+              </vs-list-item>
+            </div>
+            <div class="pill-comment-me" v-if="comment.usuarioId === currentUserId">
+              <vs-list-item
+                :title="comment.comentario"
+                :subtitle="comment.usuarioNombre">
+                <template slot="avatar">
+                  <vs-avatar />
+                </template>
+                <vs-chip transparent color="#24c1a0">
+                  <small>{{comment.creado}}</small>
+                </vs-chip>
+              </vs-list-item>
+            </div>
+          </div>
+        </template>
+        <div class="m-top-20">
+          <vs-textarea
+            height="80px"
+            counter="500"
+            :counter-danger.sync="counterDanger"
+            v-model="newComment.comment"
+          />
+          <div style="float: right">
+            <vs-button
+              color="primary"
+              type="border"
+              v-on:click="sendNewComment()"
+            >
+              Enviar
+            </vs-button>
+          </div>
+        </div>
+      </div>
+    </vs-popup>
+
     <vs-row v-if="!loading && dntByED.length">
       <vs-col vs-w="12" class="m-top-20">
         <fb-paginacion
@@ -290,8 +344,13 @@ export default {
       processModal: false,
       participantsModal: false,
       sendFileModal: false,
+      commentsModal: false,
       detailsFile: false,
       processed: {},
+      newComment: {
+        comment: ''
+      },
+      counterDanger: false,
       send: {
         typeSend: 'moodUser',
         typeCopy: 'sendUnidad',
@@ -360,7 +419,8 @@ export default {
       'paginaActual',
       'fileCommentDetails',
       'showModal',
-      'participants'
+      'participants',
+      'commentsEd'
     ]),
     ...mapGetters('Empresas', [
       'empresa',
@@ -368,7 +428,8 @@ export default {
       'groupsCompany'
     ]),
     ...mapGetters('Usuario', [
-      'verificationCode'
+      'verificationCode',
+      'currentUserId'
     ]),
     pagina: {
       get() {
@@ -396,7 +457,9 @@ export default {
       'limpiarMensajeDeError',
       'processDntFileED',
       'closeModal',
-      'getFileDnt'
+      'getFileDnt',
+      'getFileComments',
+      'sendComment'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
@@ -439,6 +502,29 @@ export default {
       };
       this.processDntFileED(toProcess);
       console.log('toProcess', toProcess);
+    },
+    getComments(file) {
+      this.commentsModal = true;
+      this.file = file;
+      this.getFileComments({
+        esLeido: 'Y',
+        febosId: file.febosId
+      });
+    },
+    async sendNewComment() {
+      const view = this.$route.params.vista;
+      this.sendComment({
+        febosId: this.file.febosId,
+        esLeido: view.includes('entrada') ? 'Y' : 'N',
+        comentario: this.newComment.comment
+      });
+      await this.getFileComments({
+        esLeido: 'Y',
+        febosId: this.file.febosId
+      });
+      this.newComment = {
+        comment: ''
+      };
     }
   },
   mounted() {
@@ -523,5 +609,21 @@ export default {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
+}
+
+.pill-comment-user {
+  width: 90%;
+  border: 1px solid #c2f785;
+  border-radius: 25px;
+  margin-bottom: 10px;
+  float: left;
+}
+
+.pill-comment-me {
+  width: 90%;
+  border: 1px solid #3a9eef6b;
+  border-radius: 25px;
+  margin-bottom: 10px;
+  float: right;
 }
 </style>

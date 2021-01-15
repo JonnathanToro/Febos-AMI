@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export default {
   dntByFiles: (state) => (
     Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'APR')
@@ -35,5 +37,10 @@ export default {
       pdf: state.details.imagenLink
     };
     return details;
-  }
+  },
+  commentsEd: (state) => state.comments.map((comment) => {
+    // eslint-disable-next-line no-param-reassign
+    comment.creado = Vue.moment(comment.creado).format('YYYY-MM-DD HH:ss');
+    return comment;
+  }).reverse()
 };

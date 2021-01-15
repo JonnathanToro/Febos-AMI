@@ -10,5 +10,6 @@ export default {
   details: {
     comentarios: [],
     cuerpo: ''
-  }
+  },
+  comments: []
 };

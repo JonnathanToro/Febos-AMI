@@ -30,5 +30,12 @@ export default {
   },
   CLOSE_MODAL(state, payload) {
     state.showModal = payload;
+  },
+  SET_COMMENTS(state, payload) {
+    state.comments = payload;
+  },
+  ADD_COMMENT(state, payload) {
+    // add comment to array in state
+    state.comments = state.comments.concat(payload);
   }
 };
