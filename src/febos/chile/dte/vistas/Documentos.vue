@@ -62,16 +62,14 @@
         <th>&nbsp;</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody v-if="!cargandoDocumentos && documentos.length == 0">
       <tr>
-        <td
-          :colspan="campos.length + 2"
-          v-if="!cargandoDocumentos && documentos.length == 0"
-          class="mensaje-tabla"
-        >
+        <td :colspan="campos.length + 2" class="mensaje-tabla">
           No se encontraron documentos
         </td>
       </tr>
+      </tbody>
+      <tbody v-else>
       <template v-for="doc in documentos">
         <tr :key="doc.febosId + random()" class="fila" v-on:dblclick="mostrarInfoExtendida(doc)">
           <td class="selector">

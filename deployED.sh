@@ -32,6 +32,6 @@ $COMANDO
 echo "* Subiendo Portal"
 aws s3 cp dist/ "s3://portal.escritoriodigital.cl/$AMBIENTE/$PORTAL/" --only-show-errors --recursive
 echo "* Borrando Cache"
-aws cloudfront create-invalidation --distribution-id EK96US4D2LAMT --paths "/$AMBIENTE/*" > /dev/null 2>&1
+aws cloudfront create-invalidation --distribution-id E1NB4DXZ5KSJL6 --paths "/$AMBIENTE/*" > /dev/null 2>&1
 echo "Listo!"
 
