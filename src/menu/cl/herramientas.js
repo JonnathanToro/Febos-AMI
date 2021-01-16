@@ -8,7 +8,7 @@ export default [{
       name: 'Mantenedores',
       slug: 'settings',
       icon: 'FileIcon',
-      permiso: '*', // TODO: setup permission
+      permiso: '*',
       submenu: [
         {
           url: '/mantenedores/documentos',
