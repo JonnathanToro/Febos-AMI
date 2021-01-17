@@ -418,7 +418,7 @@ export default {
       'paginacion',
       'paginaActual',
       'fileCommentDetails',
-      'showModal',
+      'showModalFile',
       'participants',
       'commentsEd'
     ]),
@@ -441,7 +441,7 @@ export default {
     },
     showModalProcess: {
       get() {
-        return this.showModal;
+        return this.showModalFile;
       },
       set(value) {
         this.closeModal(value);
