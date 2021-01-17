@@ -1,6 +1,6 @@
 export default {
-  empresas:[],
-  empresa:{
+  empresas: [],
+  empresa: {
     id: '',
     razonSocial: '',
     fantasia: '',
@@ -14,7 +14,7 @@ export default {
     reglasNegocio: false,
     estadoEmpresa: false
   },
-  empresaSeleccionada:{
+  empresaSeleccionada: {
     id: '',
     razonSocial: '',
     fantasia: '',
@@ -27,5 +27,7 @@ export default {
     esRcof: false,
     reglasNegocio: false,
     estadoEmpresa: false
-  }
-}
+  },
+  usersCompany: [],
+  groupsCompany: []
+};

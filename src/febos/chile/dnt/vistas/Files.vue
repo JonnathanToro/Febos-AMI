@@ -117,15 +117,24 @@
                 round
                 color="gray"></vs-icon>
             </a>
-            <vs-dropdown-menu style="width: 12%">
-              <vs-dropdown-item>
-                <vs-icon icon="chat"/> Ver comentarios
+            <vs-dropdown-menu style="width: fit-content">
+              <vs-dropdown-item v-on:click="getCommentsFile(file)">
+                <vs-icon icon="search"/> Ver detalles
               </vs-dropdown-item>
-              <vs-dropdown-item>
+              <vs-dropdown-item v-on:click="downloadFile(file)">
                 <vs-icon icon="save_alt"/> Descargar acta
               </vs-dropdown-item>
-                 <vs-dropdown-item>
-                <vs-icon icon="insert_photo"/> Ver adjuntos
+              <vs-dropdown-item v-on:click="downloadAttatchments(file)">
+                <vs-icon icon="save_alt"/> Descargar adjuntos
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="cancelFileModal(file)">
+                <vs-icon icon="clear"/> Anular expediente
+              </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="binnacleFileModal(file)">
+                <vs-icon icon="list"/> Bitácora
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="ticketModalFile(file)">
+                <vs-icon icon="help"/> Ticket de ayuda
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
@@ -133,8 +142,38 @@
         </vs-col>
       </vs-row>
     </div>
+    <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
+      <PopUpDetailFile :fileCommentDetails="fileCommentDetails"/>
+    </vs-popup>
+    <vs-popup title="Bitácora del Expediente" :active.sync="binnacleModal" v-if="binnacleFile">
+      <div style="height: 400px; overflow-y: scroll">
+        <Timeline
+          :timeline-items="binnacleFile"
+          message-when-no-items="No hay acciones realizadas aun"
+          :unique-year="false"
+          :show-day-and-month="true" />
+      </div>
+    </vs-popup>
+    <vs-popup title="Generar ticket de ayuda" :active.sync="showModal" v-if="binnacleFile">
+      <div>
+        <label for="message">Cuéntanos en que podemos ayudarte</label>
+        <vs-textarea id="message" v-model="messageTicket"  counter="1000" />
+      </div>
+      <vs-button
+        color="primary"
+        class="m-top-20"
+        style="float: right;"
+        type="filled"
+        v-on:click="sendTicketFile()"
+      >
+        Enviar ticket
+      </vs-button>
+    </vs-popup>
+    <vs-popup title="Anular Expediente" :active.sync="cancelModal">
+      <PopUpCancelFile :canceledFile="canceledFile" />
+    </vs-popup>
     <vs-row v-if="!loading && dntByFiles.length">
-      <vs-col vs-w="9">
+      <vs-col vs-w="12" class="m-top-20">
         <fb-paginacion
           :total="paginacion.paginasTotales"
           :max="10"
@@ -147,15 +186,31 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import Timeline from 'timeline-vuejs';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
+import PopUpCancelFile from '@/febos/chile/dnt/vistas/PopUpCancelFile';
+import PopUpDetailFile from '@/febos/chile/dnt/vistas/PopUpDetailFile';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  components: { FbPaginacion },
+  components: {
+    FbPaginacion, PopUpDetailFile, PopUpCancelFile, Timeline
+  },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
+  data() {
+    return {
+      cancelModal: false,
+      detailsFile: false,
+      binnacleModal: false,
+      ticketModal: false,
+      messageTicket: '',
+      canceledFile: {},
+      file: {}
+    };
+  },
   watch: {
     pagina() {
       const view = this.$route.params.vista;
@@ -182,14 +237,44 @@ export default {
         container: '#list-dnt',
         scale: 0.6
       });
+    },
+    successAccion() {
+      this.$vs.notify({
+        title: 'Genial!',
+        text: 'Acción realizada exitosamente',
+        color: 'success',
+        time: 3000,
+        position: 'top-center'
+      });
+    },
+    error(error) {
+      if (error !== '') {
+        this.$vs.notify({
+          title: 'Oops!',
+          text: error,
+          color: 'danger',
+          time: 10000,
+          position: 'top-center'
+        });
+        this.limpiarMensajeDeError();
+      }
     }
   },
   computed: {
     ...mapGetters('Dnts', [
       'loading',
+      'error',
+      'successAccion',
       'dntByFiles',
       'paginacion',
-      'paginaActual'
+      'paginaActual',
+      'fileCommentDetails',
+      'binnacleFile',
+      'showModalFile'
+    ]),
+    ...mapGetters('Usuario', [
+      'verificationCode',
+      'currentUser'
     ]),
     pagina: {
       get() {
@@ -198,13 +283,76 @@ export default {
       set(value) {
         this.actualizarPagina(value);
       }
+    },
+    showModal: {
+      get() {
+        return this.showModalFile;
+      },
+      set(value) {
+        this.closeModal(value);
+      }
     }
   },
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
-      'actualizarPagina'
+      'actualizarPagina',
+      'getFileDetails',
+      'downloadFilePDF',
+      'attemptCancelFile',
+      'limpiarMensajeDeError',
+      'getFileBinnacle',
+      'sendTicketHelp',
+      'closeModal',
+      'downloadAttatchmentsFile'
     ]),
+    getCommentsFile(file) {
+      this.getFileDetails({
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId
+      });
+      this.detailsFile = true;
+    },
+    downloadAttatchments(file) {
+      this.downloadAttatchmentsFile({
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId,
+        retornarComoZip: 'Y'
+      });
+    },
+    downloadFile(file) {
+      this.downloadFilePDF({
+        retornarPdf: 'si',
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId
+      });
+    },
+    cancelFileModal(file) {
+      this.cancelModal = true;
+      this.canceledFile = file;
+    },
+    binnacleFileModal(file) {
+      this.binnacleModal = true;
+      this.getFileBinnacle({
+        febosId: file.febosId,
+        filas: 200,
+        pagina: 1
+      });
+    },
+    ticketModalFile(file) {
+      this.file = file;
+      this.showModal = true;
+    },
+    sendTicketFile() {
+      const ticket = {
+        febosId: this.file.febosId,
+        correo: this.currentUser.correo,
+        url: window.location.href,
+        mensaje: this.messageTicket
+      };
+      console.log('ticket', ticket);
+      this.sendTicketHelp(ticket);
+    },
     translateTime: (time, abr) => { // ASCO
       const seconds = time * 60;
       const numdays = Math.floor(seconds / 86400);
@@ -259,6 +407,10 @@ export default {
 </script>
 <style>
 
+.m-top-20 {
+  margin-top: 20px;
+}
+
 .list-wrapper {
   background: white;
 }
@@ -267,7 +419,6 @@ export default {
   padding: 16px 10px;
   margin-bottom: 10px;
   background: white;
-  z-index: 10;
   box-shadow: -1px 6px 12px 0 #80808075;
 }
 
@@ -310,4 +461,5 @@ export default {
 .tooltip-inline {
   display: inline !important;
 }
+
 </style>

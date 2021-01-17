@@ -1,4 +1,8 @@
-import { ioCompanyList } from '@/febos/servicios/api/empresas.api';
+import {
+  ioCompanyList,
+  ioCompanyGroups
+} from '@/febos/servicios/api/empresas.api';
+import { getUsers } from '@/febos/servicios/api/usuarios.api';
 
 export default {
   async loadCompanies({ commit }, payload) {
@@ -22,5 +26,13 @@ export default {
   // TODO: change name to update
   selectCompany({ commit }, payload) {
     commit('SET_EMPRESA', payload);
+  },
+  async getUsersCompany({ commit }, payload) {
+    const response = await getUsers(payload);
+    commit('SET_USERS_COMPANY', response.data.usuarios);
+  },
+  async getGroupsCompany({ commit }, payload) {
+    const response = await ioCompanyGroups(payload);
+    commit('SET_GROUPS_COMPANY', response.data.grupos);
   }
 };
