@@ -65,8 +65,6 @@ import 'prismjs/themes/prism-tomorrow.css';
 
 import VeeValidate from 'vee-validate';
 
-import Fragment from 'vue-fragment';
-
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
 
@@ -132,7 +130,6 @@ Vue.prototype.$http = clientApi;
 Vue.component('datetime', Datetime);
 
 Vue.use(VueHammer);
-Vue.use(Fragment.Plugin);
 
 const eventsHub = new Vue();
 Vue.use(IdleVue, {

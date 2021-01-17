@@ -6,14 +6,17 @@ export default [{
     {
       url: null,
       name: 'Cargar documento',
+      slug: 'uploads',
       icon: 'FolderPlusIcon',
       permiso: '*', // TODO: setup permission
       submenu: [
         {
           url: '/documentos/externo',
           name: 'Externos',
+          slug: 'uploads',
           icon: 'files',
           permiso: '*', // TODO: setup permission
+          i18n: 'uploads'
         }
       ]
     },

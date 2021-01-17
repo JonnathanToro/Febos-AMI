@@ -1,8 +1,8 @@
 <!-- eslint-disable-next-line -->
 <template>
-  <fragment v-if="canIUse">
+  <div v-if="canIUse">
     <slot />
-  </fragment>
+  </div>
 </template>
 
 <script>

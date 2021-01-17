@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <vs-row vs-justify="center">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <step-progress
@@ -43,7 +43,7 @@
         </vs-card>
       </vs-col>
     </vs-row>
-  </fragment>
+  </div>
 </template>
 <script>
 import StepProgress from 'vue-step-progress';
