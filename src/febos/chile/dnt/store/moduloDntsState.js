@@ -11,5 +11,6 @@ export default {
     comentarios: [],
     cuerpo: ''
   },
-  comments: []
+  comments: [],
+  binnacle: []
 };

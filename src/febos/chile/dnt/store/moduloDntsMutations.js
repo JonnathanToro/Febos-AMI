@@ -37,5 +37,8 @@ export default {
   ADD_COMMENT(state, payload) {
     // add comment to array in state
     state.comments = state.comments.concat(payload);
+  },
+  SET_BINNACLE(state, payload) {
+    state.binnacle = payload;
   }
 };

@@ -130,6 +130,12 @@
               <vs-dropdown-item v-on:click="cancelFileModal(file)">
                 <vs-icon icon="clear"/> Anular expediente
               </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="binnacleFileModal(file)">
+                <vs-icon icon="list"/> Bitácora
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="ticketModalFile(file)">
+                <vs-icon icon="help"/> Ticket de ayuda
+              </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
           </span>
@@ -138,6 +144,30 @@
     </div>
     <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
       <PopUpDetailFile :fileCommentDetails="fileCommentDetails"/>
+    </vs-popup>
+    <vs-popup title="Bitácora del Expediente" :active.sync="binnacleModal" v-if="binnacleFile">
+      <div style="height: 400px; overflow-y: scroll">
+        <Timeline
+          :timeline-items="binnacleFile"
+          message-when-no-items="No hay acciones realizadas aun"
+          :unique-year="false"
+          :show-day-and-month="true" />
+      </div>
+    </vs-popup>
+    <vs-popup title="Generar ticket de ayuda" :active.sync="ticketModal" v-if="binnacleFile">
+      <div>
+        <label for="message">Cuéntanos en que podemos ayudarte</label>
+        <vs-textarea id="message" v-model="messageTicket"  counter="1000" />
+      </div>
+      <vs-button
+        color="primary"
+        class="m-top-20"
+        style="float: right;"
+        type="filled"
+        v-on:click="sendTicketFile()"
+      >
+        Enviar ticket
+      </vs-button>
     </vs-popup>
     <vs-popup title="Anular Expediente" :active.sync="cancelModal">
       <PopUpCancelFile :canceledFile="canceledFile" />
@@ -156,6 +186,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import Timeline from 'timeline-vuejs';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
@@ -165,12 +196,17 @@ import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  components: { FbPaginacion, PopUpDetailFile, PopUpCancelFile },
+  components: {
+    FbPaginacion, PopUpDetailFile, PopUpCancelFile, Timeline
+  },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
     return {
       cancelModal: false,
       detailsFile: false,
+      binnacleModal: false,
+      ticketModal: false,
+      messageTicket: '',
       canceledFile: {},
       file: {}
     };
@@ -232,11 +268,12 @@ export default {
       'dntByFiles',
       'paginacion',
       'paginaActual',
-      'fileCommentDetails'
+      'fileCommentDetails',
+      'binnacleFile'
     ]),
     ...mapGetters('Usuario', [
       'verificationCode',
-      'loading'
+      'currentUser'
     ]),
     pagina: {
       get() {
@@ -254,7 +291,9 @@ export default {
       'getFileDetails',
       'downloadFilePDF',
       'attemptCancelFile',
-      'limpiarMensajeDeError'
+      'limpiarMensajeDeError',
+      'getFileBinnacle',
+      'sendTicketHelp'
     ]),
     getCommentsFile(file) {
       this.getFileDetails({
@@ -273,6 +312,28 @@ export default {
     cancelFileModal(file) {
       this.cancelModal = true;
       this.canceledFile = file;
+    },
+    binnacleFileModal(file) {
+      this.binnacleModal = true;
+      this.getFileBinnacle({
+        febosId: file.febosId,
+        filas: 200,
+        pagina: 1
+      });
+    },
+    ticketModalFile(file) {
+      this.file = file;
+      this.ticketModal = true;
+    },
+    sendTicketFile() {
+      const ticket = {
+        febosId: this.file.febosId,
+        correo: this.currentUser.correo,
+        url: window.location.href,
+        mensaje: this.messageTicket
+      };
+      console.log('ticket', ticket);
+      this.sendTicketHelp(ticket);
     },
     translateTime: (time, abr) => { // ASCO
       const seconds = time * 60;

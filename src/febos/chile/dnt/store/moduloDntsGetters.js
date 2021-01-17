@@ -42,5 +42,17 @@ export default {
     // eslint-disable-next-line no-param-reassign
     comment.creado = Vue.moment(comment.creado).format('YYYY-MM-DD HH:ss');
     return comment;
-  }).reverse()
+  }).reverse(),
+  binnacleFile: (state) => {
+    const binnacle = state.binnacle.map((info) => {
+      const infoBinnacle = {
+        from: new Date(Vue.moment(info.fecha).format('YYYY, MM, DD')),
+        showDayAndMonth: true,
+        description: info.mensaje,
+        title: info.usuarioNombre
+      };
+      return infoBinnacle;
+    });
+    return binnacle;
+  }
 };

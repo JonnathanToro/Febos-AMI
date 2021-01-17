@@ -42,6 +42,14 @@ export const fileComments = (payload) => {
   });
 };
 
+export const fileBinnacle = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.febosId}/bitacora?${params}`, {
+    operacionId: 'io.dnt.binnacle'
+  });
+};
+
 export const sendComment = (payload) => {
   const params = apiClient.queryParams(payload);
 

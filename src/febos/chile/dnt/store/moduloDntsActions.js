@@ -4,8 +4,10 @@ import {
   getFile,
   clDntDetails,
   fileComments,
-  sendComment
+  sendComment,
+  fileBinnacle
 } from '@/febos/servicios/api/dnt.api';
+import { sendTicket } from '@/febos/servicios/api/tickets.api';
 import { fileDetails, cancelFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
@@ -92,10 +94,24 @@ export default {
     commit('SET_LOADING', false);
     return response.data;
   },
+  async getFileBinnacle({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await fileBinnacle(payload);
+    commit('SET_BINNACLE', response.data.bitacora);
+    commit('SET_LOADING', false);
+    return response.data;
+  },
   async sendComment({ commit }, payload) {
     commit('SET_LOADING', true);
     const response = await sendComment(payload);
     commit('ADD_COMMENT', response.data.comentario);
+    commit('SET_LOADING', false);
+    return response.data;
+  },
+  async sendTicketHelp({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await sendTicket(payload);
+    commit('SET_SUCCESS_MENSAJE', 'Ticket de ayuda enviado, te contactaremos!');
     commit('SET_LOADING', false);
     return response.data;
   }
