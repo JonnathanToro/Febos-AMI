@@ -5,9 +5,23 @@ export default [{
   items: [
     {
       url: null,
+      name: 'Cargar documento',
+      icon: 'FolderPlusIcon',
+      permiso: '*', // TODO: setup permission
+      submenu: [
+        {
+          url: '/documentos/externo',
+          name: 'Externos',
+          icon: 'files',
+          permiso: '*', // TODO: setup permission
+        }
+      ]
+    },
+    {
+      url: null,
       name: 'Expedientes',
       slug: 'files',
-      icon: 'FileIcon',
+      icon: 'FolderIcon',
       permiso: '*', // TODO: setup permission
       submenu: [
         {

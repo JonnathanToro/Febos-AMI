@@ -1,7 +1,7 @@
 import state from './moduloDntsState';
 import mutations from './moduloDntsMutations';
-import actions from './moduloDntsActions';
-import getters from './moduloDntsGetters';
+import * as actions from './moduloDntsActions';
+import * as getters from './moduloDntsGetters';
 
 export default {
   namespaced: true,
