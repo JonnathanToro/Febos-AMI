@@ -23,7 +23,7 @@ export default {
   fileCommentDetails: (state) => (
     (state.details || {}).comentarios || []
   ),
-  showModal: (state) => state.showModal,
+  showModalFile: (state) => state.showModal,
   participants: (state) => state.details,
   detailsDnt: (state) => {
     const jsonBody = JSON.parse(atob((state.details || {}).cuerpo));

@@ -17,8 +17,8 @@
     "nombreCampoClave":"Contraseña",
     "nombreBotonIngreso":"Ingresar",
     "nombreBotonRegistroProveedores":"Registrarme como proveedor",
-    "botonClaveUnica":true,
-    "botonRegistroProveedor": true,
+    "botonClaveUnica":false,
+    "botonRegistroProveedor": false,
     "logo": {
       "imagen": "https://archivos.febos.io/publico/portales/escritoriodigital/ed-blanco.png",
       "alto": "76px",

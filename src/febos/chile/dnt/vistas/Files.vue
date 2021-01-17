@@ -124,7 +124,7 @@
               <vs-dropdown-item v-on:click="downloadFile(file)">
                 <vs-icon icon="save_alt"/> Descargar acta
               </vs-dropdown-item>
-              <vs-dropdown-item>
+              <vs-dropdown-item v-on:click="downloadAttatchments(file)">
                 <vs-icon icon="save_alt"/> Descargar adjuntos
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="cancelFileModal(file)">
@@ -154,7 +154,7 @@
           :show-day-and-month="true" />
       </div>
     </vs-popup>
-    <vs-popup title="Generar ticket de ayuda" :active.sync="ticketModal" v-if="binnacleFile">
+    <vs-popup title="Generar ticket de ayuda" :active.sync="showModal" v-if="binnacleFile">
       <div>
         <label for="message">Cuéntanos en que podemos ayudarte</label>
         <vs-textarea id="message" v-model="messageTicket"  counter="1000" />
@@ -269,7 +269,8 @@ export default {
       'paginacion',
       'paginaActual',
       'fileCommentDetails',
-      'binnacleFile'
+      'binnacleFile',
+      'showModalFile'
     ]),
     ...mapGetters('Usuario', [
       'verificationCode',
@@ -282,6 +283,14 @@ export default {
       set(value) {
         this.actualizarPagina(value);
       }
+    },
+    showModal: {
+      get() {
+        return this.showModalFile;
+      },
+      set(value) {
+        this.closeModal(value);
+      }
     }
   },
   methods: {
@@ -293,7 +302,9 @@ export default {
       'attemptCancelFile',
       'limpiarMensajeDeError',
       'getFileBinnacle',
-      'sendTicketHelp'
+      'sendTicketHelp',
+      'closeModal',
+      'downloadAttatchmentsFile'
     ]),
     getCommentsFile(file) {
       this.getFileDetails({
@@ -301,6 +312,13 @@ export default {
         ejecucionId: file.febosId
       });
       this.detailsFile = true;
+    },
+    downloadAttatchments(file) {
+      this.downloadAttatchmentsFile({
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId,
+        retornarComoZip: 'Y'
+      });
     },
     downloadFile(file) {
       this.downloadFilePDF({
@@ -323,7 +341,7 @@ export default {
     },
     ticketModalFile(file) {
       this.file = file;
-      this.ticketModal = true;
+      this.showModal = true;
     },
     sendTicketFile() {
       const ticket = {

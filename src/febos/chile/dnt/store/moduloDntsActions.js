@@ -8,7 +8,7 @@ import {
   fileBinnacle
 } from '@/febos/servicios/api/dnt.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
-import { fileDetails, cancelFile } from '@/febos/servicios/api/aprobaciones.api';
+import { fileDetails, cancelFile, downloadAttachments } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
 export default {
@@ -53,6 +53,12 @@ export default {
     commit('SET_LOADING', true);
     const response = await ioDownloadPrivateFile(payload);
     window.open(response.data.url, '_blank');
+    commit('SET_LOADING', false);
+  },
+  async downloadAttatchmentsFile({ commit }, payload) {
+    commit('SET_LOADING', true);
+    const response = await downloadAttachments(payload);
+    window.open(response.data.rutaArchivosComprimidos, '_blank');
     commit('SET_LOADING', false);
   },
   async attemptCancelFile({ commit }, payload) {
@@ -112,6 +118,7 @@ export default {
     commit('SET_LOADING', true);
     const response = await sendTicket(payload);
     commit('SET_SUCCESS_MENSAJE', 'Ticket de ayuda enviado, te contactaremos!');
+    commit('CLOSE_MODAL', false);
     commit('SET_LOADING', false);
     return response.data;
   }

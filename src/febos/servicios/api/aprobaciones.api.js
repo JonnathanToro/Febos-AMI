@@ -16,3 +16,10 @@ export const cancelFile = (payload) => {
   return apiClient.put(`${RESOURCE}/${payload.aprobacionId}/ejecucion/${payload.ejecucionId}/anular?${params}`,
     {}, { operacionId: 'io.file.cancel' });
 };
+
+export const downloadAttachments = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.aprobacionId}/ejecucion/${payload.ejecucionId}/previsualizacion?${params}`,
+    { operacionId: 'io.download.attachments' });
+};
