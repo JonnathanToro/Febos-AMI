@@ -25,35 +25,41 @@ export default {
     currentDomain() {
       if (window.location.hostname.toLocaleLowerCase() === 'localhost') {
         return `portal.febos.${process.env.VUE_APP_CODIGO_PAIS}`;
-      } return window.location.hostname.toLocaleLowerCase();
+      }
+      return window.location.hostname.toLocaleLowerCase();
     },
     logoStyle() {
-      // console.log("DENTRO DEL MIXIN",this._datosPersonalizacion);
-      const style = {
-        position: 'fixed',
-        margin: this.ingresoLogo.margen,
-        width: this.ingresoLogo.ancho,
-        height: this.ingresoLogo.alto
-      };
-      // eslint-disable-next-line default-case
-      switch (this.ingresoLogo.ubicacionVertical) {
-        case 'superior':
-          style.top = 0;
-          break;
-        case 'inferior':
-          style.bottom = 0;
-          break;
+      try {
+        // console.log("DENTRO DEL MIXIN",this._datosPersonalizacion);
+        // console.log("ingresoLogo",this.ingresoLogo);
+        const style = {
+          position: 'fixed',
+          margin: this.ingresoLogo.margen,
+          width: this.ingresoLogo.ancho,
+          height: this.ingresoLogo.alto
+        };
+        // eslint-disable-next-line default-case
+        switch (this.ingresoLogo.ubicacionVertical) {
+          case 'superior':
+            style.top = 0;
+            break;
+          case 'inferior':
+            style.bottom = 0;
+            break;
+        }
+        // eslint-disable-next-line default-case
+        switch (this.ingresoLogo.ubicacionHorizontal) {
+          case 'izquierda':
+            style.left = 0;
+            break;
+          case 'derecha':
+            style.right = 0;
+            break;
+        }
+        return style;
+      } catch (e) {
+        return '';
       }
-      // eslint-disable-next-line default-case
-      switch (this.ingresoLogo.ubicacionHorizontal) {
-        case 'izquierda':
-          style.left = 0;
-          break;
-        case 'derecha':
-          style.right = 0;
-          break;
-      }
-      return style;
     }
   },
   methods: {

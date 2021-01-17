@@ -1,26 +1,26 @@
 export default [
   {
     path: '/templates-formio/:opcionId',
-    name: 'templates',
+    name: 'templates-formio-id',
     meta: { permiso: 'WB001', requiereLogin: true },
     component: () => import('@/febos/chile/formioTemplates/vistas/TemplateMaker.vue'),
     props: (templateItem) => ({ opcionId: templateItem.opcionId })
   },
   {
     path: '/templates-formio-docs',
-    name: 'templates',
+    name: 'templates-formio-docs',
     meta: { permiso: 'WB001', requiereLogin: true },
     component: () => import('@/febos/chile/formioTemplates/vistas/TemplateMakerDoc.vue')
   },
   {
     path: '/templates-docs',
-    name: 'templates',
+    name: 'templates-docs',
     meta: { permiso: 'WB001', requiereLogin: true },
     component: () => import('@/febos/chile/formioTemplates/vistas/TemplatesDoc.vue')
   },
   {
     path: '/templates-formio/',
-    name: 'templates',
+    name: 'templates-formio',
     meta: { permiso: 'WB001', requiereLogin: true },
     component: () => import('@/febos/chile/formioTemplates/vistas/TemplateMaker.vue')
   },
