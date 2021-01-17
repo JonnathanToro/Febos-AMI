@@ -18,4 +18,5 @@ vuexy-shell-scripts
 *.iml
 coverage
 coverage/*
-*.DS_Store
+.DS_Store
+certs/
