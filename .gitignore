@@ -19,3 +19,4 @@ vuexy-shell-scripts
 coverage
 coverage/*
 .DS_Store
+certs/

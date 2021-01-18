@@ -265,6 +265,7 @@ export default {
   data: () => ({
     Vue,
     filtroRecientementeEliminado: false,
+    periodosDisponibles: [],
     filtrosAplicados: [
       // {"campo": "fechaEmision", "nombre": "Fecha de Emisión",
       // "valor":"","valorFormateado":"Del 13/04/20 al 13/05/20"},
@@ -492,7 +493,7 @@ export default {
             filtro.valorFormateado = `${desde[2]}-${desde[1]}-${desde[0].substring(2)}
              al ${hasta[2]}-${hasta[1]}-${hasta[0].substring(2)}`;
           } else {
-            filtro.valorFormateado = (this.periodos
+            filtro.valorFormateado = (this.periodosDisponibles
               .find((o) => o.valor === filtro.valor) || {})
               .nombre;
           }
@@ -507,7 +508,8 @@ export default {
           filtro.valor.forEach(
             (valor) => {
               valoresUsadosEnHumano.push(
-                filtroHabilitado.opciones.find((opcion) => opcion.valor === valor).nombre
+                filtroHabilitado.opciones
+                  .find((opcion) => opcion.valor.toString() === valor.toString()).nombre
               );
               // eslint-disable-next-line no-plusplus
               for (let i = 0; i < valoresNoUsadosEnHumano.length; i++) {
@@ -553,13 +555,25 @@ export default {
       return filtro;
     },
     agregarFiltro(filter, desplegarVentanaDeModificacion = false) {
+      console.log('agregando filtro', filter);
       const filtro = this.formatearValor(filter);
       this.filtrosAplicados.push(filtro);
       if (desplegarVentanaDeModificacion) this.ventanaModificarFiltro(filtro);
     }
   },
   mounted() {
-    this.periodos = this.periodos.filter((periodo) => periodo.valor !== 'personalizado');
+    this.periodosDisponibles = this.periodos.filter((periodo) => periodo.valor !== 'personalizado');
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < this.configuracionVista.filtrosPorDefecto.length; i++) {
+      const { campo } = this.configuracionVista.filtrosPorDefecto[i];
+      if (!this.filtroYaEstaAplicado(campo)) {
+        const filtro = configuracionCamposFiltros[campo];
+        filtro.valor = this.configuracionVista.filtrosPorDefecto[i].valor;
+        filtro.campo = this.configuracionVista.filtrosPorDefecto[i].campo;
+        this.agregarFiltro(filtro);
+      }
+    }
+    console.log('filtros aplicados', this.filtrosAplicados);
   }
 };
 </script>

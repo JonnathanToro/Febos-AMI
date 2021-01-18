@@ -19,6 +19,7 @@ function getHost() {
       return 'vue.portal.febos.cl';
   }
 }
+const fs = require('fs');
 
 module.exports = {
   lintOnSave: false,
@@ -26,7 +27,13 @@ module.exports = {
   transpileDependencies: ['vue-echarts', 'resize-detector', 'vuex-persist'],
   devServer: {
     disableHostCheck: true,
-    host: getHost()
+    host: '127.0.0.1',
+    port: 8081,
+    public: `${getHost()}:8081/${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}/`,
+    https: {
+      key: fs.readFileSync('./certs/cert.dev.key.pem'),
+      cert: fs.readFileSync('./certs/cert.dev.pem'),
+    },
   },
   configureWebpack: {
     devtool: 'cheap-module-source-map',

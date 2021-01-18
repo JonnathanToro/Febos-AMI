@@ -10,7 +10,13 @@ export default {
       if (response.data.codigo !== 10) throw response.data;
       return response.data;
     } catch (error) {
-      commit('SET_LISTADO_DTE', []);
+      commit('SET_LISTADO_DTE', {
+        codigo: 10,
+        documentos: [],
+        pagina: 1,
+        paginas: 1,
+        encontrados: 0
+      });
       console.log('ERROR', error);
       return error;
     }

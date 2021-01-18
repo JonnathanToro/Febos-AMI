@@ -51,3 +51,25 @@ para deployar la web de escritorio digital:
 ```
 ./deployED.sh desarrollo cloud
 ```
+
+
+# SSL LOCAL
+en MAC instalar mkcert
+```
+brew install mkcert
+```
+
+instalar el CA
+```
+mkcert -install
+```
+
+crear un certificado valido para todos los dominios:
+```
+mkcert "vue.portal.febos.cl" "vue.portal.febos.co" "vue.www.narvi.cl" "vue.portal.narvi.cl" "vue.portal.escritoriodigital.cl" localhost 127.0.0.1 ::1
+```
+Luego de generar los certificados, debes buscarlos al home de tu usuario, cargarlo en la
+carpeta certs y renombrarlos a:
+```
+ key: fs.readFileSync('./certs/cert.dev.key.pem')
+ cert: fs.readFileSync('./certs/cert.dev.pem')

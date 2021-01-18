@@ -23,3 +23,4 @@ export const hasPermission = (state) => (code) => code === '*' || state.permisos
 export const userPermissions = (state) => state.permisos;
 
 export const userToken = (state) => state.token;
+export const verificationCode = (state) => state.verificationCode;

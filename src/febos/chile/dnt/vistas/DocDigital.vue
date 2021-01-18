@@ -84,7 +84,7 @@
         </vs-col>
       </vs-row>
     </div>
-    <vs-popup title="Detalles del codumento" :active.sync="popupDetails">
+    <vs-popup title="Detalles del codumento" :active.sync="popupDetails" v-if="detailsDnt">
       <div class="">
         <vs-tabs>
           <vs-tab label="Documento">
