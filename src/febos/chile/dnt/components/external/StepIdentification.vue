@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form data-vv-scope="step-1">
     <div class="row mb-3">
       <div class="col-md-4">
         <vs-select
@@ -16,8 +16,10 @@
           class="w-100"
           label="Nº Documento"
           name="numero_documento"
-          :danger="true"
-          danger-text="Error"
+          :danger="errors.has('step-1.numero_documento')"
+          :danger-text="errors.first('step-1.numero_documento')"
+          v-validate="'required|email'"
+          v-model="step.numero_documento"
         />
       </div>
       <div class="col-md-4">
@@ -72,13 +74,29 @@
 
 import Datepicker from 'vuejs-datepicker';
 
+import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
+
 export default {
+  mixins: [WizardStep],
   components: {
     Datepicker
   },
+  data() {
+    return {
+      step: {
+        numero_documento: ''
+      }
+    };
+  },
   methods: {
-    isValid() {
-      return true;
+    async isValid() {
+      try {
+        await this.validateForm('step-1');
+        // TODO: send to store.
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
   }
 };

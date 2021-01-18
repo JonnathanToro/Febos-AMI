@@ -66,6 +66,7 @@ import 'prismjs/themes/prism-tomorrow.css';
 import '../node_modules/timeline-vuejs/dist/timeline-vuejs.css';
 
 import VeeValidate from 'vee-validate';
+import spanish from 'vee-validate/dist/locale/es';
 
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
@@ -142,7 +143,12 @@ Vue.use(IdleVue, {
 // Feather font icon
 require('./assets/css/iconfont.css');
 
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+  locale: 'es',
+  dictionary: {
+    es: spanish
+  }
+});
 // Vue select css
 // Note: In latest version you have to add it separately
 // import 'vue-select/dist/vue-select.css';

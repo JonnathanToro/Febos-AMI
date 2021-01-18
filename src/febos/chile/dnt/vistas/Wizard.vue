@@ -89,9 +89,8 @@ export default {
 
       this.wizard.currentStep -= 1;
     },
-    onNext() {
-      if (!this.$refs.step.isValid()) {
-        console.log('toast');
+    async onNext() {
+      if (!await this.$refs.step.isValid()) {
         return;
       }
 
