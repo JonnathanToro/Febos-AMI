@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form data-vv-scope="step-2">
     <div class="row mb-3">
       <div class="col-12">
         <h4>Origen / Datos Remitente</h4>
@@ -11,7 +11,11 @@
           class="w-100"
           autocomplete
           label="Tipo Institución"
-          name="codigo_tipo_institucion"
+          name="tipoInstitucion"
+          v-validate="'required'"
+          :danger="errors.has('step-2.tipoInstitucion')"
+          :danger-text="errors.first('step-2.tipoInstitucion')"
+          v-model="step.tipoInstitucion"
         >
 
         </vs-select>
@@ -21,7 +25,8 @@
           class="w-100"
           autocomplete
           label="Institución"
-          name="descripcion_tipo_institucion"
+          name="institucion"
+          v-model="step.institucion"
         >
 
         </vs-select>
@@ -32,7 +37,8 @@
         <vs-input
           class="w-100"
           label="Nombre Persona"
-          name="nombre_persona"
+          name="nombrePersona"
+          v-model="step.nombrePersona"
         />
       </div>
     </div>
@@ -41,7 +47,8 @@
         <vs-input
           class="w-100"
           label="Cargo Persona"
-          name="nombre_cargo_persona"
+          name="cargoPersona"
+          v-model="step.cargoPersona"
         />
       </div>
     </div>
@@ -61,7 +68,11 @@
           class="w-100"
           autocomplete
           label="Destinos"
-          name="codigo_tipo_destino"
+          name="tipoDestino"
+          v-model="step.tipoDestino"
+          v-validate="'required'"
+          :danger="errors.has('step-2.tipoDestino')"
+          :danger-text="errors.first('step-2.tipoDestino')"
         >
 
         </vs-select>
@@ -71,7 +82,11 @@
           class="w-100"
           autocomplete
           label="Lista de Destino"
-          name="descripcion_tipo_destino"
+          name="listaDestino"
+          v-model="step.listaDestino"
+          v-validate="'required'"
+          :danger="errors.has('step-2.listaDestino')"
+          :danger-text="errors.first('step-2.listaDestino')"
         >
 
         </vs-select>
@@ -82,7 +97,8 @@
         <vs-input
           class="w-100"
           label="Lista de Instituciones DocDigital"
-          name="descripcion_tipo_doc_digital_destino"
+          name="listaDestinoDocDigital"
+          v-model="step.listaDestinoDocDigital"
         />
       </div>
     </div>
@@ -91,7 +107,8 @@
         <vs-input
           class="w-100"
           label="Correo Electrónico Persona Destinatario"
-          name="correo_persona_destinatario"
+          name="correoDestinatario"
+          v-model="step.correoDestinatario"
         />
       </div>
     </div>
@@ -118,13 +135,13 @@
           <template slot-scope="{data}">
             <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
               <vs-td :data="data[indextr].destino">
-                {{data[indextr].codigo_tipo_destino}}
+                {{data[indextr].tipoDestino}}
               </vs-td>
               <vs-td :data="data[indextr].lista_destino">
-                {{data[indextr].descripcion_tipo_destino}}
+                {{data[indextr].listaDestino}}
               </vs-td>
               <vs-td :data="data[indextr].institucion">
-                {{data[indextr].descripcion_tipo_doc_digital_destino}}
+                {{data[indextr].listaDestinoDocDigital}}
               </vs-td>
             </vs-tr>
           </template>
@@ -147,7 +164,8 @@
           class="w-100"
           autocomplete
           label="Distribución"
-          name="codigo_tipo_distribucion"
+          name="tipoDistribucion"
+          v-model="step.tipoDistribucion"
         >
 
         </vs-select>
@@ -157,7 +175,8 @@
           class="w-100"
           autocomplete
           label="Lista de Distribución"
-          name="descripcion_tipo_distribucion"
+          name="listaDistribucion"
+          v-model="step.listaDistribucion"
         >
 
         </vs-select>
@@ -168,7 +187,8 @@
         <vs-input
           class="w-100"
           label="Lista de Instituciones DocDigital"
-          name="descripcion_tipo_doc_digital_distribucion"
+          name="listaDistribucionDocDigital"
+          v-model="step.listaDistribucionDocDigital"
         />
       </div>
     </div>
@@ -177,7 +197,8 @@
         <vs-input
           class="w-100"
           label="Correo Electrónico Persona Destinatario"
-          name="correo_persona_distribucion"
+          name="correoDistribucion"
+          v-model="step.correoDistribucion"
         />
       </div>
     </div>
@@ -204,13 +225,13 @@
           <template slot-scope="{data}">
             <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
               <vs-td :data="data[indextr].destino">
-                {{data[indextr].codigo_tipo_distribucion}}
+                {{data[indextr].tipoDistribucion}}
               </vs-td>
               <vs-td :data="data[indextr].lista_destino">
-                {{data[indextr].descripcion_tipo_distribucion}}
+                {{data[indextr].listaDistribucion}}
               </vs-td>
               <vs-td :data="data[indextr].institucion">
-                {{data[indextr].descripcion_tipo_doc_digital_distribucion}}
+                {{data[indextr].listaDistribucionDocDigital}}
               </vs-td>
             </vs-tr>
           </template>
@@ -227,17 +248,29 @@
         <vs-select
           class="w-100"
           autocomplete
-          label="Acomapá Físico"
-          name="con_fisico"
+          label="Acompaña Físico"
+          name="esFisico"
+          v-model="step.esFisico"
         >
-
+          <vs-select-item
+            value="no"
+            text="No"
+          />
+          <vs-select-item
+            value="si"
+            text="Si"
+          />
         </vs-select>
       </div>
       <div class="col-md-6">
         <vs-input
           class="w-100"
           label="Detalle"
-          name="texto_detalle"
+          name="detalleDocumento"
+          v-model="step.detalleDocumento"
+          v-validate="{ required: this.step.esFisico === 'si' }"
+          :danger="errors.has('step-2.detalleDocumento')"
+          :danger-text="errors.first('step-2.detalleDocumento')"
         />
       </div>
     </div>
@@ -245,7 +278,8 @@
       <div class="col-12">
         <vs-textarea
           label="Observacion (5000 caracteres)"
-          name="texto_observacion"
+          name="observacion"
+          v-model="step.observacion"
           width="100%"
           height="100px"
         />
@@ -256,16 +290,42 @@
 
 <script>
 
+import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
+
 export default {
+  mixins: [WizardStep],
   data() {
     return {
       subjects: [],
-      subjectsSelected: []
+      subjectsSelected: [],
+      step: {
+        tipoInstitucion: '',
+        institucion: '',
+        nombrePersona: '',
+        cargoPersona: '',
+        tipoDestino: '',
+        listaDestino: '',
+        listaDestinoDocDigital: '',
+        correoDestinatario: '',
+        tipoDistribucion: '',
+        listaDistribucion: '',
+        listaDistribucionDocDigital: '',
+        correoDistribucion: '',
+        esFisico: 'no',
+        detalleDocumento: '',
+        observacion: ''
+      }
     };
   },
   methods: {
-    isValid() {
-      return true;
+    async isValid() {
+      try {
+        await this.validateForm('step-2');
+        // TODO: send to store.
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
   }
 };

@@ -1,43 +1,67 @@
 <template>
   <form data-vv-scope="step-1">
     <div class="row mb-3">
-      <div class="col-md-4">
-        <vs-select
+      <div class="col-md-6">
+        <list-document-types
           class="w-100"
           autocomplete
           label="Tipo Documento"
-          name="codigo_tipo_documento"
-        >
-
-        </vs-select>
+          name="tipoDocumentoCategoria"
+          v-model="step.tipoDocumentoCategoria"
+          :danger="errors.has('step-1.tipoDocumentoCategoria')"
+          :danger-text="errors.first('step-1.tipoDocumentoCategoria')"
+          v-validate="'required'"
+        />
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
+        <list-documents
+          class="w-100"
+          autocomplete
+          label="Documento"
+          name="tipoDocumento"
+          v-model="step.tipoDocumento"
+          :parent-value="step.tipoDocumentoCategoria"
+        />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
         <vs-input
           class="w-100"
           label="Nº Documento"
-          name="numero_documento"
-          :danger="errors.has('step-1.numero_documento')"
-          :danger-text="errors.first('step-1.numero_documento')"
-          v-validate="'required|email'"
-          v-model="step.numero_documento"
+          name="numeroDocumento"
+          v-model="step.numeroDocumento"
         />
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <label>Fecha Documento</label>
         <datepicker
           class="w-100"
-          name="fecha_documento"
+          name="fechaDocumento"
+          v-model="step.fechaDocumento"
         />
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-12">
         <vs-textarea
+          type="text"
           label="Materia (Mínimo 2 palabras, máximo 5000 caracteres)"
-          name="texto_materia"
+          name="materia"
           width="100%"
+          v-validate="'required|min:3'"
           height="100px"
+          class="no-margin-b"
+          v-model="step.materia"
         />
+        <div v-if="errors.first('step-1.materia')"
+          class="con-text-validation span-text-validation-danger
+           vs-input--text-validation-span v-enter-to"
+          style="height: 32px;">
+          <span class="span-text-validation">
+            {{errors.first('step-1.materia')}}
+          </span>
+        </div>
       </div>
     </div>
     <div class="row mb-3">
@@ -45,7 +69,8 @@
         <vs-select
           class="w-100"
           label="Etiquetas / Referencias del Documento"
-          name="texto_etiquetas"
+          name="etiquetas"
+          v-model="step.etiquetas"
           autocomplete
           multiple
         >
@@ -59,10 +84,22 @@
             <label>Documento Privado</label>
           </div>
           <div class="col-md-1">
-            <vs-radio vs-name="es_privado" vs-value="si">Si</vs-radio>
+            <vs-radio
+              vs-name="esPrivado"
+              vs-value="si"
+              v-model="step.esPrivado"
+            >
+              Si
+            </vs-radio>
           </div>
           <div class="col-md-1">
-            <vs-radio vs-name="es_privado" vs-value="no">No</vs-radio>
+            <vs-radio
+              vs-name="esPrivado"
+              vs-value="no"
+              v-model="step.esPrivado"
+            >
+              No
+            </vs-radio>
           </div>
         </div>
       </div>
@@ -75,16 +112,27 @@
 import Datepicker from 'vuejs-datepicker';
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
+import ListDocumentTypes from '@/febos/chile/lists/components/ListDocumentTypes';
+import ListDocuments from '@/febos/chile/lists/components/ListDocuments';
 
 export default {
   mixins: [WizardStep],
   components: {
-    Datepicker
+    Datepicker,
+    ListDocumentTypes,
+    ListDocuments
   },
   data() {
     return {
       step: {
-        numero_documento: ''
+        tipoDocumentoCategoria: '',
+        tipoDocumento: '',
+        numeroDocumento: '',
+        fechaDocumento: '',
+        materia: '', // este campo va en un array que se llama observacion,
+        // posicion 0
+        etiquetas: '',
+        esPrivado: 'no'
       }
     };
   },
@@ -102,3 +150,8 @@ export default {
 };
 
 </script>
+<style>
+.no-margin-b {
+  margin-bottom: 0 !important;
+}
+</style>

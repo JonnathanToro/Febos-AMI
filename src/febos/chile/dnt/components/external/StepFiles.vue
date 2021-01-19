@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form data-vv-scope="step-3">
     <div class="row mb-3">
       <div class="col-12">
         <h4>Adjuntar Documento</h4>
@@ -10,7 +10,10 @@
         <vs-input
           class="w-100"
           label="Documento Principal (Si piensa firmar electrónicamente no debe ser escaneado)"
-          name="nombre_documento_principal"
+          name="documentoPrincipal"
+          v-validate="'required'"
+          :danger="errors.has('step-3.documentoPrincipal')"
+          :danger-text="errors.first('step-3.documentoPrincipal')"
         />
       </div>
       <div class="col-md-3 d-flex align-items-end">
@@ -96,7 +99,8 @@ export default {
   data() {
     return {
       relatedDocuments: [],
-      selectedRelatedDocuments: []
+      selectedRelatedDocuments: [],
+      documentoPrincipal: ''
     };
   },
   methods: {

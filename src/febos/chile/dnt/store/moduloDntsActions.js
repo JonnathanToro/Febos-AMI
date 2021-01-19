@@ -20,7 +20,7 @@ export const listDocuments = async ({ commit }, payload) => {
 };
 
 export const actualizarPagina = ({ commit }, payload) => {
-  commit('ACT_PAGINA_BANDEJA', payload);
+  commit('ACT_PAGINA', payload);
 };
 
 export const detailDnt = async ({ commit }, payload) => {
