@@ -17,12 +17,12 @@
 </template>
 
 <script>
-  import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-  //import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-  import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+// import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionAnularGuia",
+  name: 'AccionAnularGuia',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -31,36 +31,36 @@ export default {
   },
   data() {
     return {
-      icono: "cancel_presentation",
-      nombre: "Anular Documento",
-      permiso: "DTE41"
+      icono: 'cancel_presentation',
+      nombre: 'Anular Documento',
+      permiso: 'DTE41'
     };
   },
   mounted() {
-    console.log("TIPO DOCUMENTO: ", this.documento.tipoDocumento);
+    // console.log("TIPO DOCUMENTO: ", this.documento.tipoDocumento);
   },
   methods: {
-    ejecutarAccion(){
-        console.log("EJECUTANDO ANULAR DOCUMENTO ",this.documento);
-        const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalAnularDocumento.vue`);
-          //clienteFebosAPI.put("/documentos/datos/" + this.documento.febosId + "/estado=10").then((response) => {
-          modalStore.commit("setTitulo", "Anular Documento");
-          modalStore.commit("mostrarBitacora", modalComponente);
-          modalStore.commit("setData", this.documento);
-          //console.log(response);
+    ejecutarAccion() {
+      console.log('EJECUTANDO ANULAR DOCUMENTO ', this.documento);
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalAnularDocumento.vue');
+      // clienteFebosAPI.put
+      // ("/documentos/datos/" + this.documento.febosId + "/estado=10").then((response) => {
+      modalStore.commit('setTitulo', 'Anular Documento');
+      modalStore.commit('mostrarBitacora', modalComponente);
+      modalStore.commit('setData', this.documento);
+      // console.log(response);
 
-        //}).catch(() => {
-        //})
-
-      },
-      desplegar(){
-        return this.esAccionAplicable() && this._tienePermiso(this.permiso);
-      },
-      esAccionAplicable(){
-        return true;
-      }
+      // }).catch(() => {
+      // })
+    },
+    desplegar() {
+      // eslint-disable-next-line no-underscore-dangle
+      return this.esAccionAplicable() && this._tienePermiso(this.permiso);
+    },
+    esAccionAplicable() {
+      return true;
+    }
   }
-
 
 };
 </script>

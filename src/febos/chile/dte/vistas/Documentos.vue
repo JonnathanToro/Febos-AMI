@@ -240,7 +240,7 @@ export default {
       setDocumentoActual: 'setDocumentoActual',
     }),
     manipularFiltros(filtros) {
-      console.log('manipulando', filtros);
+      // console.log('manipulando', filtros);
       this.filtrosDelComponente = filtros;
       this.filtros = `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;
       if (filtros !== '') {
@@ -336,7 +336,7 @@ export default {
     this.periodoHasta = Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
   },
   mounted() {
-    console.log('THIS DOCS', this);
+    // console.log('THIS DOCS', this);
     this.extraerCampos();
     this.listar(1);
   }
