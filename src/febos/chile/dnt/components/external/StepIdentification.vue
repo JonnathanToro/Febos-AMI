@@ -1,17 +1,31 @@
 <template>
   <form data-vv-scope="step-1">
     <div class="row mb-3">
-      <div class="col-md-4">
-        <vs-select
+      <div class="col-md-6">
+        <list-document-types
           class="w-100"
           autocomplete
           label="Tipo Documento"
           name="codigo_tipo_documento"
-        >
-
-        </vs-select>
+          v-model="step.codigo_tipo_documento"
+          :danger="errors.has('step-1.codigo_tipo_documento')"
+          :danger-text="errors.first('step-1.codigo_tipo_documento')"
+          v-validate="'required'"
+        />
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
+        <list-documents
+          class="w-100"
+          autocomplete
+          label="Documento"
+          name="codigo_documento"
+          v-model="step.codigo_documento"
+          :parent-value="step.codigo_tipo_documento"
+        />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
         <vs-input
           class="w-100"
           label="Nº Documento"
@@ -22,7 +36,7 @@
           v-model="step.numero_documento"
         />
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <label>Fecha Documento</label>
         <datepicker
           class="w-100"
@@ -75,15 +89,21 @@
 import Datepicker from 'vuejs-datepicker';
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
+import ListDocumentTypes from '@/febos/chile/lists/components/ListDocumentTypes';
+import ListDocuments from '@/febos/chile/lists/components/ListDocuments';
 
 export default {
   mixins: [WizardStep],
   components: {
-    Datepicker
+    Datepicker,
+    ListDocumentTypes,
+    ListDocuments
   },
   data() {
     return {
       step: {
+        codigo_tipo_documento: '',
+        codigo_documento: '',
         numero_documento: ''
       }
     };
