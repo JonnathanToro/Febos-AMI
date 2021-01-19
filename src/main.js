@@ -63,6 +63,8 @@ import IdleVue from 'idle-vue';
 import 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
 
+import '../node_modules/timeline-vuejs/dist/timeline-vuejs.css';
+
 import VeeValidate from 'vee-validate';
 
 Vue.use(Vuesax);

@@ -10,3 +10,6 @@ export const defaultEmpresa = company;
 export const iut = (state) => state.empresa.iut;
 
 export const companies = (state) => state.empresas;
+
+export const usersCompany = (state) => state.usersCompany;
+export const groupsCompany = (state) => state.groupsCompany;

@@ -8,6 +8,7 @@ export default [{
       name: 'Mantenedores',
       slug: 'settings',
       icon: 'FileIcon',
+      permiso: '*',
       submenu: [
         {
           url: '/mantenedores/documentos',

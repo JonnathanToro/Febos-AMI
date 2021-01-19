@@ -1,28 +1,28 @@
 {
   "colores":{
-    "primario":"#ff8000",
-    "navbar":"#03a9f4"
+    "primario":"#662483",
+    "navbar":"#323E48"
   },
   "menu":{
-    "logo":"https://archivos.febos.io/publico/portales/escritoriodigital/ed-blanco.png",
+    "logo":"https://archivos.febos.io/publico/portales/escritoriodigital/ed-gris.png",
     "miniLogo":"https://archivos.febos.io/publico/portales/escritoriodigital/ed-gris-mini.png"
   },
   "ingreso":{
     "imagenIngreso":"http://...",
     "colorFondoImagenIngreso": "#eff2f7",
-    "imagenFondo": "archivos.febos.io/publico/portales/escritoriodigital/bg_ed.png",
+    "imagenFondo": "https://archivos.febos.io/publico/portales/escritoriodigital/bg_ed.png",
     "tituloIngreso": "Ingreso",
     "textoHtml":"Hola! porfavor ingresa tus credenciales de acceso. Si tu empresa utiliza <b>Single Sign On</b> con <b>Escritorio Digital</b>, no debes ingresar tu correo, si no que tu usuario de organización de siempre!",
     "nombreCampoUsuario":"Correo o nombre de usuario",
     "nombreCampoClave":"Contraseña",
     "nombreBotonIngreso":"Ingresar",
     "nombreBotonRegistroProveedores":"Registrarme como proveedor",
-    "botonClaveUnica":true,
-    "botonRegistroProveedor": true,
+    "botonClaveUnica":false,
+    "botonRegistroProveedor": false,
     "logo": {
       "imagen": "https://archivos.febos.io/publico/portales/escritoriodigital/ed-blanco.png",
-      "alto": "95px",
-      "ancho": "200px",
+      "alto": "76px",
+      "ancho": "400px",
       "margen": "10px",
       "ubicacionVertical": "superior",
       "ubicacionHorizontal": "derecha"

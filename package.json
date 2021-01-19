@@ -19,7 +19,8 @@
     "serve:narvi-cloud:certificacion": "vue-cli-service serve --mode narvi.certificacion.cloud",
     "serve:narvi-cloud:desarrollo": "vue-cli-service serve --mode narvi.desarrollo.cloud",
     "serve:narvi-cloud:produccion": "vue-cli-service serve --mode narvi.produccion.cloud",
-    "serve:narvi-cloud:pruebas": "vue-cli-service serve --mode narvi.pruebas.cloud"
+    "serve:narvi-cloud:pruebas": "vue-cli-service serve --mode narvi.pruebas.cloud",
+    "preinstall": "npx npm-force-resolutions"
   },
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^1.1.2",
@@ -29,25 +30,27 @@
     "algoliasearch": "^3.33.0",
     "apexcharts": "^3.6.12",
     "auth0-js": "^9.10.4",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "chart.js": "^2.8.0",
     "core-js": "^3.6.5",
     "echarts": "^4.2.1",
     "file-saver": "2.0.1",
     "firebase": "^7.13.2",
-    "formiojs": "^4.12.3",
+    "formiojs": "^4.12.4",
     "idle-vue": "^2.0.5",
     "instantsearch.css": "^7.3.1",
     "jquery": "^3.5.1",
     "jsonwebtoken": "^8.5.1",
     "localforage": "^1.9.0",
+    "lodash": "^4.17.20",
     "luxon": "^1.24.1",
     "material-icons": "^0.3.1",
     "moment": "^2.27.0",
     "perfect-scrollbar": "^1.4.0",
     "postcss-rtl": "1.5.0",
     "prismjs": "^1.16.0",
+    "timeline-vuejs": "^1.1.7",
     "vee-validate": "^2.2.8",
     "vs-modal": "^1.2.67",
     "vue": "^2.6.12",
@@ -114,11 +117,18 @@
     "eslint-plugin-vue": "^6.2.2",
     "husky": "^4.3.0",
     "lint-staged": "^9.5.0",
+    "npm-force-resolutions": "0.0.3",
     "purgecss": "^1.3.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "script-loader": "0.7.2",
     "tailwindcss": "^1.0.1",
     "vue-template-compiler": "^2.6.12"
+  },
+  "resolutions": {
+    "dompurify": "^2.0.17",
+    "minimist": "^1.2.3",
+    "lodash": "^4.17.20",
+    "yargs-parser": "^18.1.2"
   }
 }
