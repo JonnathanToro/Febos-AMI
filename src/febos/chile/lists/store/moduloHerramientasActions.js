@@ -14,7 +14,6 @@ export const fetchDocumentTypes = async ({ commit }) => {
 
 export const fetchDocuments = async ({ commit }, payload) => {
   commit('SET_DOCUMENTS_LOADING', true);
-  console.log('ACCion');
 
   const response = await listOptions({
     grupoOpcion: `tipos.documentos-ed.${payload}.item`,

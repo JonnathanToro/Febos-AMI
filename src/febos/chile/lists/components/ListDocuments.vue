@@ -63,7 +63,6 @@ export default {
     if (this.nested) {
       // TODO: this.clearDocuments();
       this.$watch('parentValue', (newValue, oldValue) => {
-        console.log('ACACACA');
         this.$emit('input', '');
         if (newValue !== oldValue) {
           this.fetchDocuments(newValue);
