@@ -10,3 +10,11 @@ export const ioCompanyList = (pages, rows, simpleSearch, scope, domain) => (
     }
   })
 );
+
+export const ioCompanyGroups = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.empresaId}/grupos?${params}`, {
+    operacionId: 'io.empresas.grupos'
+  });
+};

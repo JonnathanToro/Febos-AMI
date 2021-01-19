@@ -1,8 +1,9 @@
 export default {
   SET_LISTADO_EMPRESAS(state, payload) {
-    let empresas = [];
+    const empresas = [];
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < payload.empresas.length; i++) {
-      let empresa = payload.empresas[i];
+      const empresa = payload.empresas[i];
       if (empresa.esEmisor || empresa.esReceptor) {
         empresas.push(empresa);
       }
@@ -23,6 +24,11 @@ export default {
     state.empresa.esRcof = payload.esRcof;
     state.empresa.reglasNegocio = payload.reglasNegocio;
     state.empresa.estadoEmpresa = payload.estadoEmpresa;
-
+  },
+  SET_USERS_COMPANY(state, payload) {
+    state.usersCompany = payload;
+  },
+  SET_GROUPS_COMPANY(state, payload) {
+    state.groupsCompany = payload;
   }
-}
+};

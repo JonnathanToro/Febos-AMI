@@ -9,10 +9,16 @@ const filterViews = {
     { field: 'estado', value: '1,2,3,4,5' },
   ],
   'en-curso': [
-    { field: 'tipo', value: 'APR' },
+    { field: 'tipo', value: 'APR', },
     { field: 'emisorRut', value: '{empresa.iut}' },
     { field: 'solicitanteEmail', value: '{usuario.correo}' },
     { field: 'estado', value: '3' },
+  ],
+  'of-entrada': [
+    { field: 'tipo', value: 'ACRE,MEMO', },
+    { field: 'emisorRut', value: '{empresa.iut}' },
+    { field: 'filtrarBandeja', value: 'E' },
+    { field: 'estado', value: '1,3' },
   ],
   finalizados: [
     { field: 'tipo', value: 'APR' },
