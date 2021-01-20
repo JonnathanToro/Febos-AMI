@@ -25,6 +25,14 @@ export default [{
           icon: 'library_books',
           permiso: 'WB000',
           i18n: 'Instituciones'
+        },
+        {
+          url: '/mantenedores/destinos',
+          name: 'Destinos',
+          slug: '/herramientas/mantenedor-destinos',
+          icon: 'library_books',
+          permiso: 'WB000',
+          i18n: 'Destinos'
         }
       ]
     },

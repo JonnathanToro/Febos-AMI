@@ -7,6 +7,8 @@ export default {
     const response = await listOptions(payload);
     if (payload.grupoOpcion.includes('instituciones')) {
       commit('SET_OPCIONES_CATEGORIES_INSTITUTIONS', response.data);
+    } else if (payload.grupoOpcion.includes('destinos')) {
+      commit('SET_OPCIONES_CATEGORIES_SUBJECTS', response.data);
     } else {
       commit('SET_OPCIONES_CATEGORIES', response.data);
     }
@@ -23,6 +25,17 @@ export default {
       deshabilitado: 'si'
     });
     commit('SET_OPCIONES_DOCUMENTOS', response.data);
+    commit('SET_LOADING', false);
+    return response.data;
+  },
+  async listSubjects({ commit }, payload) {
+    commit('SET_SUBJECT', payload);
+    commit('SET_LOADING', true);
+    const response = await listOptions({
+      grupoOpcion: `tipos.destinos-ed.${ payload.valor }.item`,
+      deshabilitado: 'si'
+    });
+    commit('SET_OPCIONES_SUBJECTS', response.data);
     commit('SET_LOADING', false);
     return response.data;
   },
@@ -51,9 +64,14 @@ export default {
     commit('SET_CATEGORY', {});
   },
 
+  clearSubjects({ commit }) {
+    commit('SET_OPCIONES_SUBJECTS', []);
+    commit('SET_SUBJECT', {});
+  },
+
   clearInstitutions({ commit }) {
     commit('SET_OPCIONES_INSTITUTIONS', []);
-    commit('SET_CATEGORY', {});
+    commit('SET_INSTITUTION', {});
   },
 
   async saveOptions({ commit }, payload) {
@@ -76,6 +94,56 @@ export default {
       if (!successResponse(response)) throw response.data;
       commit('SET_LOADING', false);
       commit(`UPDATE_OPTION_${payload.type.toUpperCase()}`, { option });
+      commit('SET_SUCCESS_MESSAGE', true);
+      return response.data;
+    } catch (error) {
+      commit('SET_LOADING', false);
+      commit('SET_ERROR_MESSAGE', error.mensaje);
+      return error;
+    }
+  },
+
+  async toggleEnableOptionSubject({ commit }, payload) {
+    const option = {
+      ...payload.option,
+      deshabilitado: payload.selected ? 1 : 0
+    };
+
+    try {
+      commit('SET_LOADING', true);
+      const response = await saveOption(option);
+      if (!successResponse(response)) throw response.data;
+      commit('SET_LOADING', false);
+      if (payload.type === 'category') {
+        commit('UPDATE_OPTION_SUBJECT_CATEGORY', { option });
+      } else {
+        commit('UPDATE_OPTION_SUBJECT', { option });
+      }
+      commit('SET_SUCCESS_MESSAGE', true);
+      return response.data;
+    } catch (error) {
+      commit('SET_LOADING', false);
+      commit('SET_ERROR_MESSAGE', error.mensaje);
+      return error;
+    }
+  },
+
+  async toggleEnableOptionInstitution({ commit }, payload) {
+    const option = {
+      ...payload.option,
+      deshabilitado: payload.selected ? 1 : 0
+    };
+
+    try {
+      commit('SET_LOADING', true);
+      const response = await saveOption(option);
+      if (!successResponse(response)) throw response.data;
+      commit('SET_LOADING', false);
+      if (payload.type === 'category') {
+        commit('UPDATE_OPTION_INSTITUTION_CATEGORY', { option });
+      } else {
+        commit('UPDATE_OPTION_INSTITUTION', { option });
+      }
       commit('SET_SUCCESS_MESSAGE', true);
       return response.data;
     } catch (error) {

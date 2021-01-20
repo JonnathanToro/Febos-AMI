@@ -18,4 +18,13 @@ export default {
     const institutions = state.herramientas.mantenedores.institutions || {};
     return Object.values(institutions);
   },
+  selectedSubject: (state) => state.subject,
+  categorySubjects: (state) => {
+    const categories = state.herramientas.mantenedores.categorySubjects || {};
+    return Object.values(categories);
+  },
+  mantenedorSubjects: (state) => {
+    const subjects = state.herramientas.mantenedores.subjects || {};
+    return Object.values(subjects);
+  },
 };

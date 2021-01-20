@@ -1,6 +1,6 @@
 <template>
   <vs-row vs-w="12" class="wrap-option" v-bind:class="{ 'selected': selectedCategory }">
-    <vs-col vs-lg="8" vs-sm="4" vs-xs="12">
+    <vs-col vs-lg="8" vs-sm="8" vs-xs="12">
       <div>
         <input
           class="input-option" v-bind:class="{
@@ -22,14 +22,14 @@
       </div>
     </vs-col>
     <vs-col vs-type="flex" vs-justify="flex-end" vs-align="center" vs-lg="4" vs-sm="4" vs-xs="12">
-      <vs-tooltip text="Ver instituciones">
+      <vs-tooltip text="Ver Destinos">
         <vs-button
           v-if="type === 'category'"
           color="primary"
           class="margin-right"
           size="small"
           type="border"
-          v-on:click="listInstitutions(option)"
+          v-on:click="listSubjects(option)"
           icon="search"
         />
       </vs-tooltip>
@@ -61,7 +61,7 @@
         <vs-switch
           color="primary"
           v-model="selected"
-          v-on:click="toggleEnableOptionInstitution({ option, selected, type })"
+          v-on:click="toggleEnableOptionSubject({ option, selected, type })"
         />
       </vs-tooltip>
     </vs-col>
@@ -103,8 +103,8 @@ export default {
   computed: {},
   methods: {
     ...mapActions('Herramientas', [
-      'listInstitutions',
-      'toggleEnableOptionInstitution',
+      'listSubjects',
+      'toggleEnableOptionSubject',
       'saveOptions'
     ]),
     editOption() {
