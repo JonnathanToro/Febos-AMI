@@ -7,12 +7,22 @@
       <div class="margin-top">
         <br>Estas opciones activas aparecerán en los formularios de la aplicación.
       </div>
+      <div v-if="mantenedorInstitutions && !mantenedorInstitutions.length">
+        <h4 class="info-documents">
+          Pulsa el botón
+          <span style="padding: 0 4px;">
+              <vs-button color="primary" class="margin-right" size="small" disabled
+                         type="border" icon="search" />
+            </span>
+          para ver las instituciones de la categoría
+        </h4>
+      </div>
     </vs-col>
     <vs-col vs-lg="12" id="listado-opciones">
       <vs-row vs-type="flex" vs-align="space-around" vs-justify="space-around">
         <vs-col class="margin-top" vs-sm="12" vs-lg="5">
           <div class="add-new">
-            <h4>Categorías</h4>
+            <h4>Tipos de instituciones</h4>
             <vs-tooltip text="Agregar categoría">
               <vs-button color="primary" class="margin-right" v-on:click="createOption()"
                          type="border" icon="playlist_add" />
@@ -65,25 +75,10 @@
             </div>
           </vs-list>
         </vs-col>
-        <vs-col
-          class="margin-top"
-          vs-sm="12"
-          vs-lg="5"
-          v-if="mantenedorInstitutions && !mantenedorInstitutions.length"
-        >
-          <h4 class="info-documents">
-            Pulsa el botón
-            <span style="padding: 0 4px;">
-              <vs-button color="primary" class="margin-right" size="small" disabled
-                         type="border" icon="search" />
-            </span>
-              para ver las instituciones de la categoría
-          </h4>
-        </vs-col>
       </vs-row>
     </vs-col>
     <vs-popup
-      :title="createDocument ? 'Nuevo Documento' : 'Nueva Categoría'"
+      :title="createDocument ? 'Nueva Institución' : 'Nuevo tipo de institución'"
       :active.sync="createMood"
     >
       <div>
@@ -174,7 +169,7 @@ export default {
         this.createDocument = true;
         this.option = {
           ...this.option,
-          parametroId: `${category.grupoId }.${ category.valor }.item`,
+          parametroId: `${category.grupoId }.${ category.valor }.item.`,
           grupoId: `${category.grupoId }.${ category.valor }.item`,
           orden: this.mantenedorInstitutions.length + 1
         };
@@ -193,10 +188,9 @@ export default {
         grupoId: this.createDocument ? this.option.grupoId : 'tipos.instituciones-ed',
         extra: '{}'
       };
-      this.saveOptions(option);
+      await this.saveOptions(option);
 
-      if (this.selectedInstitution) {
-        console.log('LISTAR', this.selectedInstitution);
+      if (Object.keys(this.selectedInstitution).length) {
         await this.listInstitutions(this.selectedInstitution);
       } else {
         await this.listCategories({
@@ -207,7 +201,6 @@ export default {
 
       this.createDocument = false;
       this.createMood = false;
-      console.log('saving category', option);
     }
   },
   mounted() {

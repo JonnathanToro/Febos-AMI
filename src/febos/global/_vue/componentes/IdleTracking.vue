@@ -25,7 +25,7 @@ export default {
       this.$vs.dialog({
         color: 'danger',
         title: 'Ups!',
-        text: 'LLevas 15 minutos ausente, por tu seguridad, inicia sesión de nuevo.',
+        text: 'Después 15 minutos ausente, hemos cerrado tu sesión. Por tu seguridad.',
         acceptText: 'Ok'
       });
     },

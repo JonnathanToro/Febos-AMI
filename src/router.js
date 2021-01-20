@@ -62,6 +62,7 @@ router.afterEach(() => {
   if (appLoading) {
     appLoading.style.display = 'none';
   }
+  // document.getElementById('app').style.display = 'none';
 });
 
 export default router;

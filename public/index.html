@@ -33,10 +33,10 @@
         Contáctese con su equipo de soporte corporativo.
       </strong>
     </noscript>
-    <div id="loading-bg">
+    <div id="loading-bg" style="background-color:#<%= VUE_APP_LOADER_BG_COLOR %>">
       <div class="loading-logo">
-        <img width="80" src="<%= BASE_URL %>FEBOS_LOADER.svg" alt="Logo">
-        <div style="text-align: center; margin-top:15px; font-family: sans-serif; color:#666666;">
+        <img width="<%=VUE_APP_LOADER_LOGO_WIDTH%>" src="<%= BASE_URL %><%= VUE_APP_LOADER_LOGO%>" alt="Logo">
+        <div style="text-align: center; margin-top:15px; font-family: sans-serif; color:#<%= VUE_APP_LOADER_TEXT_COLOR %>;">
           Cargando ...
         </div>
       </div>

@@ -10,7 +10,7 @@
         <vs-avatar icon="search" color="primary" :badge="filtrosAplicados.length"/>
         <strong>Aplicar filtros</strong>
       </vs-chip>
-      <vs-chip color="gray" v-if="filtrosAplicados.length == 0" >
+      <vs-chip color="gray" v-if="filtrosAplicados.length === 0" >
         <vs-avatar icon="search" color="#ccc"/>
         <strong>No hay filtros aplicados</strong>
       </vs-chip>
@@ -42,7 +42,7 @@
       v-on:click.native="ventanaModificarFiltro(filtro)"
       style="cursor: context-menu"
     >
-      <vs-tooltip :text="`Eliminar filtro de ${filtro.nombre}`">
+
         <vs-avatar
           icon="clear"
           color="primary"
@@ -50,7 +50,6 @@
           v-if="esEliminable[filtro.campo]"
         />
         <span>&nbsp;</span>
-      </vs-tooltip>
       <vs-tooltip :text="`Modificar filtro ${filtro.nombre}`">
         <strong>{{ typeof filtro == 'undefined' ? '' : filtro.nombre }}: </strong>
         <span class="pl-1">
@@ -123,7 +122,7 @@
           />
         </div>
       </div>
-      <div v-if="filtroActual.tipo == 'rangoFecha'">
+      <div v-if="filtroActual.tipo === 'rangoFecha'">
         <div class="swtich-tipo-rango">
           <div class="rango-parte">Rango Simple</div>
           <div class="rango-parte rango-switch">
@@ -140,7 +139,7 @@
               v-for="(periodo, index) in periodos"
             >
               <vs-button
-                :disabled="periodo.valor == filtroActual.valor"
+                :disabled="periodo.valor === filtroActual.valor"
                 size="medium" color="primary" type="filled"
                 v-on:click="seleccionarRango(filtroActual,periodo.valor)"
                 class="w-full mb-1"
@@ -209,6 +208,7 @@ export default {
       colores: (state) => state.colores,
     }),
     esEliminable() {
+      console.log('computed.esEliminable');
       const tipoFiltros = {};
       this.configuracionVista.filtrosHabilitados.forEach((filtro) => {
         tipoFiltros[filtro.campo] = true;
@@ -266,12 +266,7 @@ export default {
     Vue,
     filtroRecientementeEliminado: false,
     periodosDisponibles: [],
-    filtrosAplicados: [
-      // {"campo": "fechaEmision", "nombre": "Fecha de Emisión",
-      // "valor":"","valorFormateado":"Del 13/04/20 al 13/05/20"},
-      // {"campo": "tipoDocumento", "nombre": "Tipo de Documento",
-      // "valor":"","valorFormateado":"Todos"},
-    ],
+    filtrosAplicados: [],
     valorActual: 10,
     mostrarVentanaConfiguracionFiltro: false,
     filtroActual: {},
@@ -286,13 +281,22 @@ export default {
     tags: [],
   }),
   watch: {
-    tags(valor) {
+    tags(valorNuevo, valorAntiguo) {
+      if (this.filtroActual.tipo !== 'numero' && this.filtroActual.tipo !== 'rut') return;
+      let valor = [];
+      if (valorNuevo === '') {
+        valor = valorAntiguo;
+      } else {
+        valor = valorNuevo;
+      }
+
       const valores = [];
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < valor.length; i++) {
         valores.push(valor[i].text);
       }
       this.filtroActual.valor = valores;// .join(",");
+
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === this.filtroActual.campo) {
@@ -301,10 +305,6 @@ export default {
           break;
         }
       }
-    },
-    valorActual() {
-      this.$emit('input', this.valorActual);
-      this.$emit('change', this.valorActual);
     },
     rangoAvanzado() {
       this.seleccionarRango(this.filtroActual, this.filtroActual.valor);
@@ -326,7 +326,7 @@ export default {
     verificarFiltrosAlCerrar() {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
-        if (this.filtrosAplicados[i].valor === '') {
+        if (this.filtrosAplicados[i].valor === '' || this.filtrosAplicados[i].valor.length === 0) {
           this.filtrosAplicados.splice(i, 1);
           return;
         }
@@ -355,20 +355,9 @@ export default {
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      console.log('APLICAR', this, query);
+      // console.log('APLICAR', this, query);
       this.$emit('filtros-aplicados', query.join('|'));
     },
-    /*
-    esNumero(evt) {
-      evt = (evt) || window.event;
-      const charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
-    },
-    */
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
       switch (formato) {
@@ -455,16 +444,21 @@ export default {
             } else {
               this.tipoRangoFechaAvanzado = false;
             }
-          }
-          if (this.filtroActual.tipo === 'numero') {
+          } else if (this.filtroActual.tipo === 'numero' || this.filtroActual.tipo === 'rut') {
+            // eslint-disable-next-line no-plusplus
+            for (i = 0; i < this.filtroActual.valor.length; i++) {
+              this.tags.push({ text: this.filtroActual.valor[i] });
+            }
             this.tipoRango = this.filtroActual.valor.includes('--');
           }
           this.$refs.configFiltro.open();
+          this.filtroActual.valor = this.formatearValor(filtro).valor;
           break;
         }
       }
     },
     modificarFiltro(filtro) {
+      console.log('methods.modificarFiltro');
       if (this.filtrosAplicados.length === 0) {
         this.seleccionarAlMenosUnaOpcionDeFiltro(filtro);
       }
@@ -477,6 +471,7 @@ export default {
       }
     },
     formatearValor(filter) {
+      console.log('methods.formatearValor');
       const filtro = filter;
       if (filtro.valor === '' || typeof filtro.valor === 'undefined') {
         filtro.valor = '';
@@ -485,7 +480,6 @@ export default {
       }
       const { filtrosHabilitados } = this.configuracionVista;
       const filtroHabilitado = filtrosHabilitados.find((o) => o.campo === filtro.campo);
-
       switch (filtro.tipo) {
         case 'rangoFecha': {
           if (filtro.valor.includes('--')) {
@@ -494,7 +488,7 @@ export default {
              al ${hasta[2]}-${hasta[1]}-${hasta[0].substring(2)}`;
           } else {
             filtro.valorFormateado = (this.periodosDisponibles
-              .find((o) => o.valor === filtro.valor) || {})
+              .find((o) => o.valor.toString() === filtro.valor.toString()) || {})
               .nombre;
           }
           break;
@@ -513,7 +507,7 @@ export default {
               );
               // eslint-disable-next-line no-plusplus
               for (let i = 0; i < valoresNoUsadosEnHumano.length; i++) {
-                if (valoresNoUsadosEnHumano[i].valor === valor) {
+                if (valoresNoUsadosEnHumano[i].valor.toString() === valor.toString()) {
                   valoresNoUsadosEnHumano.splice(i, 1);
                 }
               }
@@ -555,13 +549,16 @@ export default {
       return filtro;
     },
     agregarFiltro(filter, desplegarVentanaDeModificacion = false) {
-      console.log('agregando filtro', filter);
+      // console.log("AGREGANDO FILTRO",JSON.parse(JSON.stringify(filter)));
+      // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
       const filtro = this.formatearValor(filter);
       this.filtrosAplicados.push(filtro);
       if (desplegarVentanaDeModificacion) this.ventanaModificarFiltro(filtro);
+      // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
     }
   },
   mounted() {
+    console.log('mounted()');
     this.periodosDisponibles = this.periodos.filter((periodo) => periodo.valor !== 'personalizado');
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < this.configuracionVista.filtrosPorDefecto.length; i++) {
@@ -573,7 +570,7 @@ export default {
         this.agregarFiltro(filtro);
       }
     }
-    console.log('filtros aplicados', this.filtrosAplicados);
+    this.aplicarFiltros();
   }
 };
 </script>
@@ -629,19 +626,6 @@ export default {
 
 .texto-normal {
   font-size: 14px !important;
-}
-
-.ingreso-numero {
-  border-radius: 4px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  font-size: 14px;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border: solid 1px #ccc !important;
 }
 
 input[type=number]::-webkit-inner-spin-button {

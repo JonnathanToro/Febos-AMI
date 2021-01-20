@@ -85,7 +85,7 @@ export default {
     }
   },
   created() {
-    console.log('Cargando personalizacion');
+    // console.log('Cargando personalizacion');
     this.attemptLoadSettings();
   }
 };
