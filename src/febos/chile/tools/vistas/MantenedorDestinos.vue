@@ -2,7 +2,7 @@
   <vs-row>
     <vs-col vs-w="12">
       <h3>
-        Mantenedor de Documentos
+        Mantenedor de Destinos
       </h3>
       <div class="margin-top">
         <br>Estas opciones activas aparecerán en los formularios de la aplicación.
@@ -12,7 +12,7 @@
       <vs-row vs-type="flex" vs-align="space-around" vs-justify="space-around">
         <vs-col class="margin-top" vs-sm="12" vs-lg="5">
           <div class="add-new">
-            <h4>Categorías</h4>
+            <h4>Tipos de destino</h4>
             <vs-tooltip text="Agregar categoría">
               <vs-button color="primary" class="margin-right" v-on:click="createOption()"
                          type="border" icon="playlist_add" />
@@ -20,15 +20,15 @@
           </div>
           <vs-list class="bg-white margin-top box-options">
             <div
-              v-for="category in mantenedorCategorias"
+              v-for="category in categorySubjects"
               class="wrap-list-item"
               :key="category.opcionId"
             >
-              <ListItemOption
+              <ListItemOptionDestino
                 :option="category"
                 :type="'category'"
-                :selectedCategory="selectedCategory
-                && selectedCategory.opcionId === category.opcionId"/>
+                :selectedCategory="selectedSubject
+                && selectedSubject.opcionId === category.opcionId"/>
             </div>
           </vs-list>
         </vs-col>
@@ -38,13 +38,13 @@
           vs-lg="5"
         >
           <div class="add-new">
-            <h4>Documentos</h4>
-            <vs-tooltip text="Agregar documento a categoría">
+            <h4>Destinos</h4>
+            <vs-tooltip text="Agregar destino a categoría">
               <vs-button
                 color="primary"
                 class="margin-right"
-                v-if="selectedCategory.opcionId"
-                v-on:click="createOption(selectedCategory)"
+                v-if="selectedSubject.opcionId"
+                v-on:click="createOption(selectedSubject)"
                 type="border"
                 icon="playlist_add"
               />
@@ -52,14 +52,16 @@
           </div>
           <vs-list
             class="bg-white margin-top box-options"
-            v-if="mantenedorDocumentos && mantenedorDocumentos.length"
+            v-if="mantenedorSubjects && mantenedorSubjects.length"
           >
             <div
-              v-for="document in mantenedorDocumentos"
+              v-for="document in mantenedorSubjects"
               class="wrap-list-item"
               :key="document.opcionId"
             >
-              <ListItemOption :option="document" :type="'document'"></ListItemOption>
+              <ListItemOptionDestino
+                :option="document"
+                :type="'document'"/>
             </div>
           </vs-list>
         </vs-col>
@@ -67,21 +69,27 @@
           class="margin-top"
           vs-sm="12"
           vs-lg="5"
-          v-if="mantenedorDocumentos && !mantenedorDocumentos.length"
+          v-if="mantenedorSubjects && !mantenedorSubjects.length"
         >
           <h4 class="info-documents">
             Pulsa el botón
             <span style="padding: 0 4px;">
-              <vs-button color="primary" class="margin-right" size="small" disabled
-                         type="border" icon="search" />
+              <vs-button
+                color="primary"
+                class="margin-right"
+                size="small"
+                disabled
+                type="border"
+                icon="search"
+              />
             </span>
-              para ver los documentos de la categoría
+              para ver los destinos de la categoría
           </h4>
         </vs-col>
       </vs-row>
     </vs-col>
     <vs-popup
-      :title="createDocument ? 'Nuevo Documento' : 'Nueva Categoría'"
+      :title="createDocument ? 'Nuevo destino' : 'Nueva tipo destino'"
       :active.sync="createMood"
     >
       <div>
@@ -119,10 +127,10 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import ListItemOption from '../components/ListItemOption';
+import ListItemOptionDestino from '../components/ListItemOptionDestino';
 
 export default {
-  components: { ListItemOption },
+  components: { ListItemOptionDestino },
   mixins: [],
   data() {
     return {
@@ -147,9 +155,9 @@ export default {
   computed: {
     ...mapGetters('Herramientas', [
       'loading',
-      'mantenedorCategorias',
-      'mantenedorDocumentos',
-      'selectedCategory'
+      'categorySubjects',
+      'mantenedorSubjects',
+      'selectedSubject'
     ]),
     ...mapGetters('Usuario', [
       'usuarioActual'
@@ -161,8 +169,8 @@ export default {
   methods: {
     ...mapActions('Herramientas', [
       'listCategories',
-      'listDocuments',
-      'clearDocuments',
+      'listSubjects',
+      'clearSubjects',
       'saveOptions'
     ]),
     createOption(category) {
@@ -174,7 +182,7 @@ export default {
           ...this.option,
           parametroId: `${category.grupoId }.${ category.valor }.item`,
           grupoId: `${category.grupoId }.${ category.valor }.item`,
-          orden: this.mantenedorDocumentos.length + 1
+          orden: this.mantenedorSubjects.length + 1
         };
       }
     },
@@ -185,32 +193,33 @@ export default {
         configuradoPor: this.usuarioActual.id,
         referenciaId: this.empresa.id,
         parametroId: this.createDocument
-          ? this.option.parametroId + this.option.valor : `tipos.documentos-ed.${ this.option.valor}`,
-        orden: this.createDocument ? this.option.orden : this.mantenedorCategorias.length + 1,
+          ? this.option.parametroId + this.option.valor : `tipos.destinos-ed.${ this.option.valor}`,
+        orden: this.createDocument ? this.option.orden : this.categorySubjects.length + 1,
         nivel: 0,
-        grupoId: this.createDocument ? this.option.grupoId : 'tipos.documentos-ed',
+        grupoId: this.createDocument ? this.option.grupoId : 'tipos.destinos-ed',
         extra: '{}'
       };
       await this.saveOptions(option);
 
-      if (Object.keys(this.selectedCategory).length) {
-        await this.listDocuments(this.selectedCategory);
+      if (Object.keys(this.selectedSubject).length) {
+        await this.listSubjects(this.selectedSubject);
       } else {
         await this.listCategories({
-          grupoOpcion: 'tipos.documentos-ed',
+          grupoOpcion: 'tipos.destinos-ed',
           deshabilitado: 'si'
         });
       }
 
       this.createDocument = false;
       this.createMood = false;
-      console.log('saving category', option);
     }
   },
   mounted() {
-    this.clearDocuments();
+    if (this.mantenedorSubjects.length) {
+      this.clearSubjects();
+    }
     this.listCategories({
-      grupoOpcion: 'tipos.documentos-ed',
+      grupoOpcion: 'tipos.destinos-ed',
       deshabilitado: 'si'
     });
   }
