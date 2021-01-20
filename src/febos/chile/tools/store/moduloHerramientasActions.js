@@ -71,7 +71,7 @@ export default {
 
   clearInstitutions({ commit }) {
     commit('SET_OPCIONES_INSTITUTIONS', []);
-    commit('SET_CATEGORY', {});
+    commit('SET_INSTITUTION', {});
   },
 
   async saveOptions({ commit }, payload) {

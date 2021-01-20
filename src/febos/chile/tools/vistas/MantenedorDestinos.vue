@@ -7,6 +7,22 @@
       <div class="margin-top">
         <br>Estas opciones activas aparecerán en los formularios de la aplicación.
       </div>
+      <div v-if="mantenedorSubjects && !mantenedorSubjects.length">
+        <h4 class="info-documents">
+          Pulsa el botón
+          <span style="padding: 0 4px;">
+              <vs-button
+                color="primary"
+                class="margin-right"
+                size="small"
+                disabled
+                type="border"
+                icon="search"
+              />
+            </span>
+          para ver los destinos de la categoría
+        </h4>
+      </div>
     </vs-col>
     <vs-col vs-lg="12" id="listado-opciones">
       <vs-row vs-type="flex" vs-align="space-around" vs-justify="space-around">
@@ -64,27 +80,6 @@
                 :type="'document'"/>
             </div>
           </vs-list>
-        </vs-col>
-        <vs-col
-          class="margin-top"
-          vs-sm="12"
-          vs-lg="5"
-          v-if="mantenedorSubjects && !mantenedorSubjects.length"
-        >
-          <h4 class="info-documents">
-            Pulsa el botón
-            <span style="padding: 0 4px;">
-              <vs-button
-                color="primary"
-                class="margin-right"
-                size="small"
-                disabled
-                type="border"
-                icon="search"
-              />
-            </span>
-              para ver los destinos de la categoría
-          </h4>
         </vs-col>
       </vs-row>
     </vs-col>
@@ -180,7 +175,7 @@ export default {
         this.createDocument = true;
         this.option = {
           ...this.option,
-          parametroId: `${category.grupoId }.${ category.valor }.item`,
+          parametroId: `${category.grupoId }.${ category.valor }.item.`,
           grupoId: `${category.grupoId }.${ category.valor }.item`,
           orden: this.mantenedorSubjects.length + 1
         };
@@ -215,9 +210,7 @@ export default {
     }
   },
   mounted() {
-    if (this.mantenedorSubjects.length) {
-      this.clearSubjects();
-    }
+    this.clearSubjects();
     this.listCategories({
       grupoOpcion: 'tipos.destinos-ed',
       deshabilitado: 'si'
