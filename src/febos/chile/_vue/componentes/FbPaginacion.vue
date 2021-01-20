@@ -101,7 +101,7 @@ export default {
       default: 'primary'
     },
     total: {
-      type: String,
+      type: Number,
       required: true
     },
     value: {

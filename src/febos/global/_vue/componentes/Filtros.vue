@@ -10,7 +10,7 @@
         <vs-avatar icon="search" color="primary" :badge="filtrosAplicados.length"/>
         <strong>Aplicar filtros</strong>
       </vs-chip>
-      <vs-chip color="gray" v-if="filtrosAplicados.length == 0" >
+      <vs-chip color="gray" v-if="filtrosAplicados.length === 0" >
         <vs-avatar icon="search" color="#ccc"/>
         <strong>No hay filtros aplicados</strong>
       </vs-chip>
@@ -122,7 +122,7 @@
           />
         </div>
       </div>
-      <div v-if="filtroActual.tipo == 'rangoFecha'">
+      <div v-if="filtroActual.tipo === 'rangoFecha'">
         <div class="swtich-tipo-rango">
           <div class="rango-parte">Rango Simple</div>
           <div class="rango-parte rango-switch">
@@ -139,7 +139,7 @@
               v-for="(periodo, index) in periodos"
             >
               <vs-button
-                :disabled="periodo.valor == filtroActual.valor"
+                :disabled="periodo.valor === filtroActual.valor"
                 size="medium" color="primary" type="filled"
                 v-on:click="seleccionarRango(filtroActual,periodo.valor)"
                 class="w-full mb-1"
@@ -220,13 +220,11 @@ export default {
     },
     seleccionarTodos: {
       get() {
-        console.log('computed.seleccionarTodos.get');
         const opcionesTotales = this.filtroActual.opciones.length;
         const opcionesMarcadas = this.filtroActual.valor.length;
         return opcionesMarcadas === opcionesTotales;
       },
       set() {
-        console.log('computed.seleccionarTodos.set');
         const opcionesTotales = this.filtroActual.opciones.length;
         const opcionesMarcadas = this.filtroActual.valor.length;
         if (opcionesMarcadas === opcionesTotales) {
@@ -245,7 +243,6 @@ export default {
       }
     },
     filtrosDisponibles() {
-      console.log('computed.filtrosDisponibles');
       const filtros = [];
       try {
         // eslint-disable-next-line no-plusplus
@@ -269,12 +266,7 @@ export default {
     Vue,
     filtroRecientementeEliminado: false,
     periodosDisponibles: [],
-    filtrosAplicados: [
-      // {"campo": "fechaEmision", "nombre": "Fecha de Emisión",
-      // "valor":"","valorFormateado":"Del 13/04/20 al 13/05/20"},
-      // {"campo": "tipoDocumento", "nombre": "Tipo de Documento",
-      // "valor":"","valorFormateado":"Todos"},
-    ],
+    filtrosAplicados: [],
     valorActual: 10,
     mostrarVentanaConfiguracionFiltro: false,
     filtroActual: {},
@@ -290,7 +282,6 @@ export default {
   }),
   watch: {
     tags(valorNuevo, valorAntiguo) {
-      console.log('watch.tags');
       if (this.filtroActual.tipo !== 'numero' && this.filtroActual.tipo !== 'rut') return;
       let valor = [];
       if (valorNuevo === '') {
@@ -315,17 +306,10 @@ export default {
         }
       }
     },
-    /* valorActual() {
-      this.$emit('input', this.valorActual);
-      this.$emit('change', this.valorActual);
-      console.log("valor actual",this.valorActual);
-    }, */
     rangoAvanzado() {
-      console.log('watch.rangoAvanzado');
       this.seleccionarRango(this.filtroActual, this.filtroActual.valor);
     },
     tipoRangoFechaAvanzado() {
-      console.log('watch.tipoRangoFechaAvanzado');
       if (!this.filtroActual.valor.includes('--') && !this.filtroActual.valor.includes(' ')) {
         this.rangoAvanzado.desde = this.formatoTipoRango(this.filtroActual.valor);
         this.rangoAvanzado.hasta = Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
@@ -340,17 +324,15 @@ export default {
   },
   methods: {
     verificarFiltrosAlCerrar() {
-      console.log('methods.verificarFiltrosAlCerrar');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
-        if (this.filtrosAplicados[i].valor === '') {
+        if (this.filtrosAplicados[i].valor === '' || this.filtrosAplicados[i].valor.length === 0) {
           this.filtrosAplicados.splice(i, 1);
           return;
         }
       }
     },
     aplicarFiltros() {
-      console.log('methods.aplicarFiltros');
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filtro) => {
@@ -376,19 +358,7 @@ export default {
       // console.log('APLICAR', this, query);
       this.$emit('filtros-aplicados', query.join('|'));
     },
-    /*
-    esNumero(evt) {
-      evt = (evt) || window.event;
-      const charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        evt.preventDefault();
-      } else {
-        return true;
-      }
-    },
-    */
     formatoTipoRango(formato, humano = false) {
-      console.log('methods.formatoTipoRango');
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
       switch (formato) {
         case 'ultimas4semanas':
@@ -416,7 +386,6 @@ export default {
       }
     },
     seleccionarRango(filtro, valor, cerrar = true) {
-      console.log('methods.seleccionarRango');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === filtro.campo) {
@@ -428,11 +397,9 @@ export default {
       }
     },
     seleccionarAlMenosUnaOpcionDeFiltro(filtro) {
-      console.log('methods.seleccionarAlMenosUnaOpcionDeFiltro');
       filtro.valor.push(parseInt(filtro.opciones[0].valor, 10));
     },
     filtroYaEstaAplicado(campo) {
-      console.log('methods.filtroYaEstaAplicado');
       try {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < this.filtrosAplicados.length; i++) {
@@ -447,7 +414,6 @@ export default {
       return false;
     },
     eliminarFiltro(filtro) {
-      console.log('methods.eliminarFiltro');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === filtro.campo) {
@@ -458,7 +424,6 @@ export default {
       }
     },
     ventanaModificarFiltro(filtro) {
-      console.log('methods.ventanaModificarFiltro');
       this.tag = '';
       this.tags = [];
       if (this.filtroRecientementeEliminado) {
@@ -487,7 +452,7 @@ export default {
             this.tipoRango = this.filtroActual.valor.includes('--');
           }
           this.$refs.configFiltro.open();
-          this.filtroActual.valor = this.formatearValor(filtro);
+          this.filtroActual.valor = this.formatearValor(filtro).valor;
           break;
         }
       }
@@ -584,9 +549,12 @@ export default {
       return filtro;
     },
     agregarFiltro(filter, desplegarVentanaDeModificacion = false) {
+      // console.log("AGREGANDO FILTRO",JSON.parse(JSON.stringify(filter)));
+      // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
       const filtro = this.formatearValor(filter);
       this.filtrosAplicados.push(filtro);
       if (desplegarVentanaDeModificacion) this.ventanaModificarFiltro(filtro);
+      // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
     }
   },
   mounted() {
@@ -658,19 +626,6 @@ export default {
 
 .texto-normal {
   font-size: 14px !important;
-}
-
-.ingreso-numero {
-  border-radius: 4px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  font-size: 14px;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border: solid 1px #ccc !important;
 }
 
 input[type=number]::-webkit-inner-spin-button {

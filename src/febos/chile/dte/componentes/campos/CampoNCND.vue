@@ -26,7 +26,7 @@ export default {
   },
   mounted() {
     this.doc = this.documento;
-    console.log('DOCUMENTO NCND: ', this.doc);
+    // console.log('DOCUMENTO NCND: ', this.doc);
   },
   data() {
     return {
