@@ -11,23 +11,23 @@
 
 <script>
 
-  export default {
-    name: "CampoEstadoPago",
-    props: {
-      documento: {
-        type: Object,
-      },
+export default {
+  name: 'CampoEstadoPago',
+  props: {
+    documento: {
+      type: Object,
     },
-    mounted() {
-      this.doc = this.documento;
-      console.log("DOCUMENTO Plazo: ",this.doc);
-    },
-    data() {
-      return {
-        doc: {},
-      }
-    }
+  },
+  mounted() {
+    this.doc = this.documento;
+    // console.log("DOCUMENTO Plazo: ",this.doc);
+  },
+  data() {
+    return {
+      doc: {},
+    };
   }
+};
 </script>
 
 <style scoped>

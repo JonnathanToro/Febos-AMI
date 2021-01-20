@@ -28,7 +28,7 @@ export default {
       tipo: 'multi',
       opciones: [
         { nombre: 'Aceptado', valor: '4' },
-        { nombre: 'Aceptado 5', valor: '5' }
+        { nombre: 'Aceptado con reparos', valor: '5' }
       ]
     },
     {
