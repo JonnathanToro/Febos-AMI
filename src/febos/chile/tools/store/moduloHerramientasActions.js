@@ -151,5 +151,8 @@ export default {
       commit('SET_ERROR_MESSAGE', error.mensaje);
       return error;
     }
+  },
+  async clearSelected({ commit }, payload) {
+    commit(`SET_${payload.type}`, payload.option);
   }
 };

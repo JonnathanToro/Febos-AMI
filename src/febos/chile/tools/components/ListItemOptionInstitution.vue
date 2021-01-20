@@ -105,11 +105,15 @@ export default {
     ...mapActions('Herramientas', [
       'listInstitutions',
       'toggleEnableOptionInstitution',
-      'saveOptions'
+      'saveOptions',
+      'clearSelected'
     ]),
     editOption() {
       this.editMood = !this.editMood;
       this.createMood = false;
+      if (this.type === 'category') {
+        this.clearSelected({ type: 'INSTITUTION', option: this.option });
+      }
     },
     saveOption(option) {
       this.editMood = false;
