@@ -79,5 +79,5 @@ export default {
   },
   SET_ERROR_MESSAGE(state, payload) {
     state.error = payload;
-  },
+  }
 };
