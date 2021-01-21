@@ -105,11 +105,15 @@ export default {
     ...mapActions('Herramientas', [
       'listDocuments',
       'toggleEnableOption',
-      'saveOptions'
+      'saveOptions',
+      'clearSelected'
     ]),
     editOption() {
       this.editMood = !this.editMood;
       this.createMood = false;
+      if (this.type === 'category') {
+        this.clearSelected({ type: 'CATEGORY', option: this.option });
+      }
     },
     saveOption(option) {
       this.editMood = false;

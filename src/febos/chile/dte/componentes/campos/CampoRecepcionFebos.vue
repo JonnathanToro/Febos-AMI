@@ -10,26 +10,26 @@
 </template>
 
 <script>
-//import moment from 'moment';
+// import moment from 'moment';
 
-  export default {
-    name: "CampoRecepcionFebos",
-    props: {
-      documento: {
-        type: Object,
-      },
+export default {
+  name: 'CampoRecepcionFebos',
+  props: {
+    documento: {
+      type: Object,
     },
-    mounted() {
-      this.doc = this.documento;
-      //this.doc.fechaRecepcion = moment(this.doc.fechaRecepcion).format('DD-MM-YYYY');
-      console.log("DOCUMENTO Recepcion febos: ",this.doc);
-    },
-    data() {
-      return {
-        doc: {}
-      }
-    }
+  },
+  mounted() {
+    this.doc = this.documento;
+    // this.doc.fechaRecepcion = moment(this.doc.fechaRecepcion).format('DD-MM-YYYY');
+    // console.log("DOCUMENTO Recepcion febos: ",this.doc);
+  },
+  data() {
+    return {
+      doc: {}
+    };
   }
+};
 </script>
 
 <style scoped>

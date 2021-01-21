@@ -2,6 +2,7 @@ export default {
   loading: false,
   successAccion: false,
   category: {},
+  subject: {},
   institution: {},
   error: '',
   herramientas: {
@@ -9,7 +10,9 @@ export default {
       categorias: [],
       documentos: [],
       categoryInstitutions: [],
-      institutions: []
+      institutions: [],
+      categorySubjects: [],
+      subjects: []
     }
   }
 };

@@ -10,29 +10,29 @@
 </template>
 
 <script>
-//import moment from 'moment';
+// import moment from 'moment';
 
-  export default {
-    name: "CampoRecepcionSii",
-    props: {
-      documento: {
-        type: Object,
-      },
+export default {
+  name: 'CampoRecepcionSii',
+  props: {
+    documento: {
+      type: Object,
     },
-    beforeMount() {
-      this.doc = this.documento;
-    },
-    mounted() {
+  },
+  beforeMount() {
+    this.doc = this.documento;
+  },
+  mounted() {
 
-      //this.doc.fechaRecepcionSii = moment(this.doc.fechaRecepcionSii).format('DD-MM-YYYY');
-      console.log("DOCUMENTO Recepcion SII: ",this.documento);
-    },
-    data() {
-      return {
-        doc: {}
-      }
-    }
+    // this.doc.fechaRecepcionSii = moment(this.doc.fechaRecepcionSii).format('DD-MM-YYYY');
+    // console.log("DOCUMENTO Recepcion SII: ",this.documento);
+  },
+  data() {
+    return {
+      doc: {}
+    };
   }
+};
 </script>
 
 <style scoped>
