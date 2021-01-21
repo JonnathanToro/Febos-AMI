@@ -1,6 +1,6 @@
 <!-- eslint-disable-next-line -->
 <template>
-  <div v-if="canIUse">
+  <div :class="containerClass" v-if="canIUse">
     <slot />
   </div>
 </template>
@@ -18,6 +18,9 @@ export default {
     permission: {
       type: String,
       required: true
+    },
+    containerClass: {
+      type: String
     }
   },
   computed: {

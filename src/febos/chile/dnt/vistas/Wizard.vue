@@ -46,10 +46,11 @@
   </div>
 </template>
 <script>
+
 import StepProgress from 'vue-step-progress';
 import { mapGetters } from 'vuex';
 
-import config from '../config';
+import config from '../config/wizard';
 
 export default {
   components: {

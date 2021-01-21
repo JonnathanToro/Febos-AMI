@@ -51,7 +51,7 @@
           width="100%"
           v-validate="'required|min:3'"
           height="100px"
-          class="no-margin-b"
+          class="mb-0"
           v-model="step.materia"
         />
         <div v-if="errors.first('step-1.materia')"
@@ -150,8 +150,3 @@ export default {
 };
 
 </script>
-<style>
-.no-margin-b {
-  margin-bottom: 0 !important;
-}
-</style>

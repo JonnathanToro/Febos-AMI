@@ -14,12 +14,19 @@
           v-validate="'required'"
           :danger="errors.has('step-3.documentoPrincipal')"
           :danger-text="errors.first('step-3.documentoPrincipal')"
+          readonly
+          v-model="mainFile.name"
         />
       </div>
       <div class="col-md-3 d-flex align-items-end">
-        <vs-button class="btn-block" color="primary">
-          Seleccionar
-        </vs-button>
+        <UploadFile
+          permission="*"
+          text="Seleccionar"
+          v-model="mainFile"
+          upload-to="ed"
+          button-class="btn-block"
+          container-class="w-100"
+        />
       </div>
     </div>
     <div class="row mb-3">
@@ -28,6 +35,7 @@
           class="w-100"
           label="Archivo Adjunto"
           name="nombre_documento_adjunto"
+          readonly
         />
       </div>
       <div class="col-md-3 d-flex align-items-end">
@@ -95,9 +103,15 @@
 
 <script>
 
+import UploadFile from '@/febos/global/_vue/componentes/UploadFile';
+
 export default {
+  components: {
+    UploadFile
+  },
   data() {
     return {
+      mainFile: {},
       relatedDocuments: [],
       selectedRelatedDocuments: [],
       documentoPrincipal: ''
