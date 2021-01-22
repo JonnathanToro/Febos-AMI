@@ -7,29 +7,26 @@
     </div>
     <div class="row mb-3">
       <div class="col-md-6">
-        <vs-select
+        <list-institution-types
           class="w-100"
           autocomplete
           label="Tipo Institución"
           name="tipoInstitucion"
-          v-validate="'required'"
+          v-model="step.tipoInstitucion"
           :danger="errors.has('step-2.tipoInstitucion')"
           :danger-text="errors.first('step-2.tipoInstitucion')"
-          v-model="step.tipoInstitucion"
-        >
-
-        </vs-select>
+          v-validate="'required'"
+        />
       </div>
       <div class="col-md-6">
-        <vs-select
+        <list-institutions
           class="w-100"
           autocomplete
           label="Institución"
           name="institucion"
           v-model="step.institucion"
-        >
-
-        </vs-select>
+          :parent-value="step.tipoInstitucion"
+        />
       </div>
     </div>
     <div class="row mb-3">
@@ -64,7 +61,7 @@
     </div>
     <div class="row mb-3">
       <div class="col-md-6">
-        <vs-select
+        <list-subject-types
           class="w-100"
           autocomplete
           label="Destinos"
@@ -73,32 +70,36 @@
           v-validate="'required'"
           :danger="errors.has('step-2.tipoDestino')"
           :danger-text="errors.first('step-2.tipoDestino')"
-        >
-
-        </vs-select>
+        />
       </div>
       <div class="col-md-6">
-        <vs-select
+        <list-subjects
+          v-if="!isInput.includes(step.tipoDestino)"
           class="w-100"
           autocomplete
           label="Lista de Destino"
           name="listaDestino"
           v-model="step.listaDestino"
-          v-validate="'required'"
-          :danger="errors.has('step-2.listaDestino')"
-          :danger-text="errors.first('step-2.listaDestino')"
-        >
-
-        </vs-select>
+          :parent-value="step.tipoDestino"
+        />
+        <vs-input
+          v-if="isInput.includes(step.tipoDestino)"
+          class="w-100"
+          label="Ingrese un rut"
+          name="rutDestino"
+          v-model="step.rutDestino"
+        />
       </div>
     </div>
-    <div class="row mb-3">
+    <div class="row mb-3" v-if="step.tipoDestino === 'docDigital'">
       <div class="col-12">
-        <vs-input
+        <list-institutions-doc-digital
           class="w-100"
+          autocomplete
           label="Lista de Instituciones DocDigital"
           name="listaDestinoDocDigital"
           v-model="step.listaDestinoDocDigital"
+          :parent-value="step.listaDestino"
         />
       </div>
     </div>
@@ -160,35 +161,45 @@
     </div>
     <div class="row mb-3">
       <div class="col-md-6">
-        <vs-select
+        <list-subject-types
           class="w-100"
           autocomplete
           label="Distribución"
           name="tipoDistribucion"
           v-model="step.tipoDistribucion"
-        >
-
-        </vs-select>
+          v-validate="'required'"
+          :danger="errors.has('step-2.tipoDistribucion')"
+          :danger-text="errors.first('step-2.tipoDistribucion')"
+        />
       </div>
       <div class="col-md-6">
-        <vs-select
+        <list-subjects
+          v-if="!isInput.includes(step.tipoDistribucion)"
           class="w-100"
           autocomplete
           label="Lista de Distribución"
           name="listaDistribucion"
           v-model="step.listaDistribucion"
-        >
-
-        </vs-select>
+          :parent-value="step.tipoDistribucion"
+        />
+        <vs-input
+          v-if="isInput.includes(step.tipoDistribucion)"
+          class="w-100"
+          label="Ingrese un rut"
+          name="rutDestino"
+          v-model="step.rutDestino"
+        />
       </div>
     </div>
-    <div class="row mb-3">
+    <div class="row mb-3" v-if="step.tipoDistribucion === 'docDigital'">
       <div class="col-12">
-        <vs-input
+        <list-institutions-doc-digital
           class="w-100"
+          autocomplete
           label="Lista de Instituciones DocDigital"
           name="listaDistribucionDocDigital"
           v-model="step.listaDistribucionDocDigital"
+          :parent-value="step.listaDistribucion"
         />
       </div>
     </div>
@@ -291,11 +302,24 @@
 <script>
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
+import ListInstitutions from '@/febos/chile/lists/components/ListInstitutions';
+import ListInstitutionTypes from '@/febos/chile/lists/components/ListInstitutionTypes';
+import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
+import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
+import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
 
 export default {
   mixins: [WizardStep],
+  components: {
+    ListInstitutionTypes,
+    ListInstitutions,
+    ListSubjects,
+    ListSubjectTypes,
+    ListInstitutionsDocDigital
+  },
   data() {
     return {
+      isInput: ['personas', 'empresas'],
       subjects: [],
       subjectsSelected: [],
       step: {

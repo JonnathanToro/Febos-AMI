@@ -1,5 +1,5 @@
 export default {
-  currentStep: 0,
+  currentStep: 1,
   steps: [
     {
       title: 'Identification',
