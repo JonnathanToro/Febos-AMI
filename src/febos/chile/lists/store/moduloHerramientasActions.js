@@ -112,6 +112,14 @@ export const fetchSubjects = async ({ commit, rootState }, payload) => {
       commit('SET_SUBJECTS', { type: payload, list: response.data.opciones });
       break;
     }
+    case 'empresas': {
+      commit('SET_SUBJECTS', []);
+      break;
+    }
+    case 'personas': {
+      commit('SET_SUBJECTS', []);
+      break;
+    }
     default:
       console.log('Esta opcion no tiene request');
       break;
