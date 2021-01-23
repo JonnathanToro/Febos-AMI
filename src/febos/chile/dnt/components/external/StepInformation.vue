@@ -85,9 +85,12 @@
         <vs-input
           v-if="isInput.includes(step.tipoDestino)"
           class="w-100"
-          label="Ingrese un rut"
-          name="rutDestino"
-          v-model="step.rutDestino"
+          label="Ingrese un nombre"
+          name="listaDestino"
+          v-model="step.listaDestino"
+          v-validate="'required'"
+          :danger="errors.has('step-2.listaDestino')"
+          :danger-text="errors.first('step-2.listaDestino')"
         />
       </div>
     </div>
@@ -100,6 +103,9 @@
           name="listaDestinoDocDigital"
           v-model="step.listaDestinoDocDigital"
           :parent-value="step.listaDestino"
+          v-validate="{ required: step.tipoDestino === 'docDigital'}"
+          :danger="errors.has('step-2.listaDestinoDocDigital')"
+          :danger-text="errors.first('step-2.listaDestinoDocDigital')"
         />
       </div>
     </div>
@@ -110,12 +116,16 @@
           label="Correo Electrónico Persona Destinatario"
           name="correoDestinatario"
           v-model="step.correoDestinatario"
+          v-validate="{ required: isInput.includes(step.tipoDestino)
+           || step.tipoDestino === 'ministerios' }"
+          :danger="errors.has('step-2.correoDestinatario')"
+          :danger-text="errors.first('step-2.correoDestinatario')"
         />
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-12 d-flex align-items-end justify-content-end">
-        <vs-button color="primary" icon="add">
+        <vs-button color="primary" icon="add" v-on:click="addSubject()">
           Agregar Destinatario
         </vs-button>
       </div>
@@ -124,7 +134,7 @@
       <div class="col-12">
         <vs-table
           multiple
-          v-model="subjectsSelected"
+          v-model="subjects"
           no-data-text="No tienes destinatarios"
           :data="subjects"
         >
@@ -133,16 +143,16 @@
             <vs-th>Lista Destino</vs-th>
             <vs-th>Institución</vs-th>
           </template>
-          <template slot-scope="{data}">
-            <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
-              <vs-td :data="data[indextr].destino">
-                {{data[indextr].tipoDestino}}
+          <template>
+            <vs-tr v-for="(tr, indextr) in subjects" :key="indextr">
+              <vs-td>
+                {{tr.tipoDestino}}
               </vs-td>
-              <vs-td :data="data[indextr].lista_destino">
-                {{data[indextr].listaDestino}}
+              <vs-td>
+                {{tr.listaDestino}}
               </vs-td>
-              <vs-td :data="data[indextr].institucion">
-                {{data[indextr].listaDestinoDocDigital}}
+              <vs-td>
+                {{tr.listaDestinoDocDigital}}
               </vs-td>
             </vs-tr>
           </template>
@@ -167,9 +177,6 @@
           label="Distribución"
           name="tipoDistribucion"
           v-model="step.tipoDistribucion"
-          v-validate="'required'"
-          :danger="errors.has('step-2.tipoDistribucion')"
-          :danger-text="errors.first('step-2.tipoDistribucion')"
         />
       </div>
       <div class="col-md-6">
@@ -185,9 +192,12 @@
         <vs-input
           v-if="isInput.includes(step.tipoDistribucion)"
           class="w-100"
-          label="Ingrese un rut"
-          name="rutDestino"
-          v-model="step.rutDestino"
+          label="Ingrese un nombre"
+          name="listaDistribucion"
+          v-model="step.listaDistribucion"
+          v-validate="'required'"
+          :danger="errors.has('step-2.listaDistribucion')"
+          :danger-text="errors.first('step-2.listaDistribucion')"
         />
       </div>
     </div>
@@ -200,6 +210,9 @@
           name="listaDistribucionDocDigital"
           v-model="step.listaDistribucionDocDigital"
           :parent-value="step.listaDistribucion"
+          v-validate="{ required: step.tipoDistribucion === 'docDigital'}"
+          :danger="errors.has('step-2.listaDistribucionDocDigital')"
+          :danger-text="errors.first('step-2.listaDistribucionDocDigital')"
         />
       </div>
     </div>
@@ -210,12 +223,16 @@
           label="Correo Electrónico Persona Destinatario"
           name="correoDistribucion"
           v-model="step.correoDistribucion"
+          v-validate="{ required: isInput.includes(step.tipoDistribucion)
+          || step.tipoDistribucion === 'ministerios'}"
+          :danger="errors.has('step-2.correoDistribucion')"
+          :danger-text="errors.first('step-2.correoDistribucion')"
         />
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-12 d-flex align-items-end justify-content-end">
-        <vs-button color="primary" icon="add">
+        <vs-button color="primary" icon="add" v-on:click="addCopy()">
           Agregar copia a
         </vs-button>
       </div>
@@ -224,25 +241,25 @@
       <div class="col-12">
         <vs-table
           multiple
-          v-model="subjectsSelected"
+          v-model="copies"
           no-data-text="No tienes distribuciones con copia"
-          :data="subjects"
+          :data="copies"
         >
           <template slot="thead">
             <vs-th>Distribución</vs-th>
             <vs-th>Lista Distribución</vs-th>
             <vs-th>Institución</vs-th>
           </template>
-          <template slot-scope="{data}">
-            <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
-              <vs-td :data="data[indextr].destino">
-                {{data[indextr].tipoDistribucion}}
+          <template>
+            <vs-tr :key="indextr" v-for="(tr, indextr) in copies" >
+              <vs-td>
+                {{tr.tipoDistribucion}}
               </vs-td>
-              <vs-td :data="data[indextr].lista_destino">
-                {{data[indextr].listaDistribucion}}
+              <vs-td>
+                {{tr.listaDistribucion}}
               </vs-td>
-              <vs-td :data="data[indextr].institucion">
-                {{data[indextr].listaDistribucionDocDigital}}
+              <vs-td>
+                {{tr.listaDistribucionDocDigital}}
               </vs-td>
             </vs-tr>
           </template>
@@ -321,6 +338,7 @@ export default {
     return {
       isInput: ['personas', 'empresas'],
       subjects: [],
+      copies: [],
       subjectsSelected: [],
       step: {
         tipoInstitucion: '',
@@ -330,6 +348,8 @@ export default {
         tipoDestino: '',
         listaDestino: '',
         listaDestinoDocDigital: '',
+        nombreDestino: '',
+        nombreDistribucion: '',
         correoDestinatario: '',
         tipoDistribucion: '',
         listaDistribucion: '',
@@ -342,6 +362,22 @@ export default {
     };
   },
   methods: {
+    addSubject() {
+      const subject = {
+        tipoDestino: this.step.tipoDestino,
+        listaDestino: this.step.listaDestino,
+        listaDestinoDocDigital: this.step.listaDestinoDocDigital
+      };
+      this.subjects.push(subject);
+    },
+    addCopy() {
+      const copy = {
+        tipoDistribucion: this.step.tipoDistribucion,
+        listaDistribucion: this.step.listaDistribucion,
+        listaDistribucionDocDigital: this.step.listaDistribucionDocDigital
+      };
+      this.copies.push(copy);
+    },
     async isValid() {
       try {
         await this.validateForm('step-2');
