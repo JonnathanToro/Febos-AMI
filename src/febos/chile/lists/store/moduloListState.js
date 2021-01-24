@@ -18,39 +18,39 @@ export default {
   subjectTypes: {
     list: [
       {
-        opcionId: '0',
-        valor: 'usuarios',
-        descripcion: 'Funcionarios'
+        id: '0',
+        value: 'usuarios',
+        label: 'Funcionarios'
       },
       {
-        opcionId: '1',
-        valor: 'unidades',
-        descripcion: 'Unidades'
+        id: '1',
+        value: 'unidades',
+        label: 'Unidades'
       },
       {
-        opcionId: '2',
-        valor: 'oficinas',
-        descripcion: 'Oficina de Partes'
+        id: '2',
+        value: 'oficinas',
+        label: 'Oficina de Partes'
       },
       {
-        opcionId: '3',
-        valor: 'docDigital',
-        descripcion: 'DocDigital'
+        id: '3',
+        value: 'docDigital',
+        label: 'DocDigital'
       },
       {
-        opcionId: '4',
-        valor: 'ministerios',
-        descripcion: 'Ministerio u Organismos'
+        id: '4',
+        value: 'ministerios',
+        label: 'Ministerio u Organismos'
       },
       {
-        opcionId: '5',
-        valor: 'empresas',
-        descripcion: 'Proveedores o Empresas'
+        id: '5',
+        value: 'empresas',
+        label: 'Proveedores o Empresas'
       },
       {
-        opcionId: '6',
-        valor: 'personas',
-        descripcion: 'Personas'
+        id: '6',
+        value: 'personas',
+        label: 'Personas'
       }
     ],
     loading: false

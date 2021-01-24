@@ -61,7 +61,8 @@ export default {
       wizard: {
         currentStep: 0,
         steps: []
-      }
+      },
+      rawStepData: {}
     };
   },
   computed: {
@@ -95,6 +96,11 @@ export default {
         return;
       }
 
+      this.rawStepData = {
+        ...this.rawStepData,
+        ...this.$refs.step.getStepData()
+      };
+
       if (this.isLastStep) {
         this.onEnd();
         return;
@@ -103,7 +109,11 @@ export default {
       this.wizard.currentStep += 1;
     },
     onEnd() {
-      console.log('ended');
+      console.log('emit document with: ');
+      console.log('raw data', this.rawStepData);
+      console.log('mapped data', this.wizard.mapper(this.rawStepData));
+
+      console.log('send request');
     },
     onBackup() {
       console.log('backup');

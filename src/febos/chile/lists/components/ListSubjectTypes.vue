@@ -6,9 +6,9 @@
     @input="$emit('input', $event)"
   >
     <vs-select-item
-      :key="item.opcionId"
-      :value="item.valor"
-      :text="item.descripcion"
+      :key="item.id"
+      :value="item.value"
+      :text="item.label"
       v-for="item in subjectTypesState.list"
     />
   </vs-select>
@@ -44,6 +44,11 @@ export default {
     ]),
     disabled() {
       return !this.subjectTypesState.list.length || this.subjectTypesState.loading;
+    }
+  },
+  methods: {
+    getOption() {
+      return this.subjectTypesState.list.find((option) => option.value === this.value);
     }
   }
 };

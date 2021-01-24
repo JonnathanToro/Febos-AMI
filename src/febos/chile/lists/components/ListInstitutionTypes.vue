@@ -6,9 +6,9 @@
     @input="$emit('input', $event)"
   >
     <vs-select-item
-      :key="item.opcionId"
-      :value="item.valor"
-      :text="item.descripcion"
+      :key="item.id"
+      :value="item.value"
+      :text="item.label"
       v-for="item in institutionTypesState.list"
     />
   </vs-select>
@@ -49,7 +49,10 @@ export default {
   methods: {
     ...mapActions('List', [
       'fetchInstitutionTypes'
-    ])
+    ]),
+    getOption() {
+      return this.institutionTypesState.list.find((option) => option.value === this.value);
+    }
   },
   created() {
     this.fetchInstitutionTypes();

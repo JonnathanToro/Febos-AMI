@@ -1,319 +1,356 @@
 <template>
-  <form data-vv-scope="step-2">
-    <div class="row mb-3">
-      <div class="col-12">
-        <h4>Origen / Datos Remitente</h4>
+  <div>
+    <form data-vv-scope="step-2-part-1">
+      <div class="row mb-3">
+        <div class="col-12">
+          <h4>Origen / Datos Remitente</h4>
+        </div>
       </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <list-institution-types
-          class="w-100"
-          autocomplete
-          label="Tipo Institución"
-          name="tipoInstitucion"
-          v-model="step.tipoInstitucion"
-          :danger="errors.has('step-2.tipoInstitucion')"
-          :danger-text="errors.first('step-2.tipoInstitucion')"
-          v-validate="'required'"
-        />
-      </div>
-      <div class="col-md-6">
-        <list-institutions
-          class="w-100"
-          autocomplete
-          label="Institución"
-          name="institucion"
-          v-model="step.institucion"
-          :parent-value="step.tipoInstitucion"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-input
-          class="w-100"
-          label="Nombre Persona"
-          name="nombrePersona"
-          v-model="step.nombrePersona"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-input
-          class="w-100"
-          label="Cargo Persona"
-          name="cargoPersona"
-          v-model="step.cargoPersona"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-divider />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <h4>Destinatario</h4>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <list-subject-types
-          class="w-100"
-          autocomplete
-          label="Destinos"
-          name="tipoDestino"
-          v-model="step.tipoDestino"
-          v-validate="'required'"
-          :danger="errors.has('step-2.tipoDestino')"
-          :danger-text="errors.first('step-2.tipoDestino')"
-        />
-      </div>
-      <div class="col-md-6">
-        <list-subjects
-          v-if="!isInput.includes(step.tipoDestino)"
-          class="w-100"
-          autocomplete
-          label="Lista de Destino"
-          name="listaDestino"
-          v-model="step.listaDestino"
-          :parent-value="step.tipoDestino"
-        />
-        <vs-input
-          v-if="isInput.includes(step.tipoDestino)"
-          class="w-100"
-          label="Ingrese un nombre"
-          name="listaDestino"
-          v-model="step.listaDestino"
-          v-validate="'required'"
-          :danger="errors.has('step-2.listaDestino')"
-          :danger-text="errors.first('step-2.listaDestino')"
-        />
-      </div>
-    </div>
-    <div class="row mb-3" v-if="step.tipoDestino === 'docDigital'">
-      <div class="col-12">
-        <list-institutions-doc-digital
-          class="w-100"
-          autocomplete
-          label="Lista de Instituciones DocDigital"
-          name="listaDestinoDocDigital"
-          v-model="step.listaDestinoDocDigital"
-          :parent-value="step.listaDestino"
-          v-validate="{ required: step.tipoDestino === 'docDigital'}"
-          :danger="errors.has('step-2.listaDestinoDocDigital')"
-          :danger-text="errors.first('step-2.listaDestinoDocDigital')"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-input
-          class="w-100"
-          label="Correo Electrónico Persona Destinatario"
-          name="correoDestinatario"
-          v-model="step.correoDestinatario"
-          v-validate="{ required: isInput.includes(step.tipoDestino)
-           || step.tipoDestino === 'ministerios' }"
-          :danger="errors.has('step-2.correoDestinatario')"
-          :danger-text="errors.first('step-2.correoDestinatario')"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12 d-flex align-items-end justify-content-end">
-        <vs-button color="primary" icon="add" v-on:click="addSubject()">
-          Agregar Destinatario
-        </vs-button>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-table
-          multiple
-          v-model="subjects"
-          no-data-text="No tienes destinatarios"
-          :data="subjects"
-        >
-          <template slot="thead">
-            <vs-th>Destino</vs-th>
-            <vs-th>Lista Destino</vs-th>
-            <vs-th>Institución</vs-th>
-          </template>
-          <template>
-            <vs-tr v-for="(tr, indextr) in subjects" :key="indextr">
-              <vs-td>
-                {{tr.tipoDestino}}
-              </vs-td>
-              <vs-td>
-                {{tr.listaDestino}}
-              </vs-td>
-              <vs-td>
-                {{tr.listaDestinoDocDigital}}
-              </vs-td>
-            </vs-tr>
-          </template>
-        </vs-table>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-divider />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <h4>Con copia a</h4>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <list-subject-types
-          class="w-100"
-          autocomplete
-          label="Distribución"
-          name="tipoDistribucion"
-          v-model="step.tipoDistribucion"
-        />
-      </div>
-      <div class="col-md-6">
-        <list-subjects
-          v-if="!isInput.includes(step.tipoDistribucion)"
-          class="w-100"
-          autocomplete
-          label="Lista de Distribución"
-          name="listaDistribucion"
-          v-model="step.listaDistribucion"
-          :parent-value="step.tipoDistribucion"
-        />
-        <vs-input
-          v-if="isInput.includes(step.tipoDistribucion)"
-          class="w-100"
-          label="Ingrese un nombre"
-          name="listaDistribucion"
-          v-model="step.listaDistribucion"
-          v-validate="'required'"
-          :danger="errors.has('step-2.listaDistribucion')"
-          :danger-text="errors.first('step-2.listaDistribucion')"
-        />
-      </div>
-    </div>
-    <div class="row mb-3" v-if="step.tipoDistribucion === 'docDigital'">
-      <div class="col-12">
-        <list-institutions-doc-digital
-          class="w-100"
-          autocomplete
-          label="Lista de Instituciones DocDigital"
-          name="listaDistribucionDocDigital"
-          v-model="step.listaDistribucionDocDigital"
-          :parent-value="step.listaDistribucion"
-          v-validate="{ required: step.tipoDistribucion === 'docDigital'}"
-          :danger="errors.has('step-2.listaDistribucionDocDigital')"
-          :danger-text="errors.first('step-2.listaDistribucionDocDigital')"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-input
-          class="w-100"
-          label="Correo Electrónico Persona Destinatario"
-          name="correoDistribucion"
-          v-model="step.correoDistribucion"
-          v-validate="{ required: isInput.includes(step.tipoDistribucion)
-          || step.tipoDistribucion === 'ministerios'}"
-          :danger="errors.has('step-2.correoDistribucion')"
-          :danger-text="errors.first('step-2.correoDistribucion')"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12 d-flex align-items-end justify-content-end">
-        <vs-button color="primary" icon="add" v-on:click="addCopy()">
-          Agregar copia a
-        </vs-button>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-table
-          multiple
-          v-model="copies"
-          no-data-text="No tienes distribuciones con copia"
-          :data="copies"
-        >
-          <template slot="thead">
-            <vs-th>Distribución</vs-th>
-            <vs-th>Lista Distribución</vs-th>
-            <vs-th>Institución</vs-th>
-          </template>
-          <template>
-            <vs-tr :key="indextr" v-for="(tr, indextr) in copies" >
-              <vs-td>
-                {{tr.tipoDistribucion}}
-              </vs-td>
-              <vs-td>
-                {{tr.listaDistribucion}}
-              </vs-td>
-              <vs-td>
-                {{tr.listaDistribucionDocDigital}}
-              </vs-td>
-            </vs-tr>
-          </template>
-        </vs-table>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-12">
-        <vs-divider />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <vs-select
-          class="w-100"
-          autocomplete
-          label="Acompaña Físico"
-          name="esFisico"
-          v-model="step.esFisico"
-        >
-          <vs-select-item
-            value="no"
-            text="No"
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <list-institution-types
+            class="w-100"
+            autocomplete
+            label="Tipo Institución"
+            name="institutionType"
+            v-model="step.institutionType"
+            :danger="errors.has('step-2-part-1.institutionType')"
+            :danger-text="errors.first('step-2-part-1.institutionType')"
+            v-validate="'required'"
+            ref="institutionType"
           />
-          <vs-select-item
-            value="si"
-            text="Si"
+        </div>
+        <div class="col-md-6">
+          <list-institutions
+            class="w-100"
+            autocomplete
+            label="Institución"
+            name="institution"
+            v-model="step.institution"
+            :parent-value="step.institutionType"
+            ref="institution"
           />
-        </vs-select>
+        </div>
       </div>
-      <div class="col-md-6">
-        <vs-input
-          class="w-100"
-          label="Detalle"
-          name="detalleDocumento"
-          v-model="step.detalleDocumento"
-          v-validate="{ required: this.step.esFisico === 'si' }"
-          :danger="errors.has('step-2.detalleDocumento')"
-          :danger-text="errors.first('step-2.detalleDocumento')"
-        />
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-input
+            class="w-100"
+            label="Nombre Persona"
+            name="personName"
+            v-model="step.personName"
+          />
+        </div>
       </div>
-    </div>
-    <div class="row">
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-input
+            class="w-100"
+            label="Cargo Persona"
+            name="personPosition"
+            v-model="step.personPosition"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-divider />
+        </div>
+      </div>
+    </form>
+    <form data-vv-scope="step-2-part-2">
+      <div class="row mb-3">
+        <div class="col-12">
+          <h4>Destinatario</h4>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <list-subject-types
+            class="w-100"
+            autocomplete
+            label="Destinos"
+            name="subjectType"
+            v-model="subjectForm.subjectType"
+            v-validate="'required'"
+            :danger="errors.has('step-2-part-2.subjectType')"
+            :danger-text="errors.first('step-2-part-2.subjectType')"
+            ref="subjectType"
+          />
+        </div>
+        <div class="col-md-6">
+          <list-subjects
+            v-if="!isInput.includes(subjectForm.subjectType)"
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="subject"
+            v-model="subjectForm.subject"
+            :parent-value="subjectForm.subjectType"
+            v-validate="{ required: !isInput.includes(subjectForm.subjectType) }"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
+            ref="subject"
+            key="subject-select"
+          />
+          <vs-input
+            v-if="isInput.includes(subjectForm.subjectType)"
+            class="w-100"
+            label="Ingrese un nombre"
+            name="subject"
+            v-model="subjectForm.subject"
+            v-validate="{ required: isInput.includes(subjectForm.subjectType) }"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
+            key="subject-input"
+          />
+        </div>
+      </div>
+      <div class="row mb-3" v-if="subjectForm.subjectType === 'docDigital'">
+        <div class="col-12">
+          <list-institutions-doc-digital
+            class="w-100"
+            autocomplete
+            label="Lista de Instituciones DocDigital"
+            name="subjectTypeDigitalDoc"
+            v-model="subjectForm.subjectTypeDigitalDoc"
+            :parent-value="subjectForm.subject"
+            v-validate="{ required: subjectForm.subjectType === 'docDigital'}"
+            :danger="errors.has('step-2-part-2.subjectTypeDigitalDoc')"
+            :danger-text="errors.first('step-2-part-2.subjectTypeDigitalDoc')"
+            ref="subjectTypeDigitalDoc"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-input
+            class="w-100"
+            label="Correo Electrónico Persona Destinatario"
+            name="subjectEmail"
+            v-model="subjectForm.subjectEmail"
+            v-validate="{
+              required: isInput.includes(subjectForm.subjectType)
+                || subjectForm.subjectType === 'ministerios'
+              ,
+              email: true
+            }"
+            :danger="errors.has('step-2-part-2.subjectEmail')"
+            :danger-text="errors.first('step-2-part-2.subjectEmail')"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12 d-flex align-items-end justify-content-end">
+          <vs-button color="primary" icon="add" v-on:click="addSubject()">
+            Agregar Destinatario
+          </vs-button>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-table
+            multiple
+            v-model="subjectsSelected"
+            no-data-text="No tienes destinatarios"
+            :data="subjects"
+          >
+            <template slot="thead">
+              <vs-th>Destino</vs-th>
+              <vs-th>Lista Destino</vs-th>
+              <vs-th>Institución</vs-th>
+            </template>
+            <template slot-scope="{data}">
+              <vs-tr :data="tr" v-for="(tr, indextr) in data" :key="indextr">
+                <vs-td :data="data[indextr].subjectType.label">
+                  {{tr.subjectType.label}}
+                </vs-td>
+                <vs-td :data="data[indextr].subject.label">
+                  {{tr.subject.label}}
+                </vs-td>
+                <vs-td :data="data[indextr].subjectTypeDigitalDoc.label">
+                  {{tr.subjectTypeDigitalDoc.label}}
+                </vs-td>
+              </vs-tr>
+            </template>
+          </vs-table>
+        </div>
+      </div>
+    </form>
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-divider />
+        </div>
+      </div>
+    <form data-vv-scope="step-2-part-3">
+      <div class="row mb-3">
+        <div class="col-12">
+          <h4>Con copia a</h4>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <list-subject-types
+            class="w-100"
+            autocomplete
+            label="Distribución"
+            name="copySubjectType"
+            v-model="copySubjectForm.copySubjectType"
+            v-validate="'required'"
+            :danger="errors.has('step-2-part-3.copySubjectType')"
+            :danger-text="errors.first('step-2-part-3.copySubjectType')"
+            ref="copySubjectType"
+          />
+        </div>
+        <div class="col-md-6">
+          <list-subjects
+            v-if="!isInput.includes(copySubjectForm.copySubjectType)"
+            class="w-100"
+            autocomplete
+            label="Lista de Distribución"
+            name="copySubject"
+            v-model="copySubjectForm.copySubject"
+            :parent-value="copySubjectForm.copySubjectType"
+            v-validate="{ required: !isInput.includes(copySubjectForm.copySubject) }"
+            :danger="errors.has('step-2-part-3.copySubject')"
+            :danger-text="errors.first('step-2-part-3.copySubject')"
+            ref="copySubject"
+            key="copy-subject-select"
+          />
+          <vs-input
+            v-if="isInput.includes(copySubjectForm.copySubjectType)"
+            class="w-100"
+            label="Ingrese un nombre"
+            name="copySubject"
+            v-model="copySubjectForm.copySubject"
+            v-validate="{ required: isInput.includes(copySubjectForm.copySubjectType) }"
+            :danger="errors.has('step-2-part-3.copySubject')"
+            :danger-text="errors.first('step-2-part-3.copySubject')"
+            key="copy-subject-input"
+          />
+        </div>
+      </div>
+      <div class="row mb-3" v-if="copySubjectForm.copySubjectType === 'docDigital'">
+        <div class="col-12">
+          <list-institutions-doc-digital
+            class="w-100"
+            autocomplete
+            label="Lista de Instituciones DocDigital"
+            name="copySubjectTypeDigitalDoc"
+            v-model="copySubjectForm.copySubjectTypeDigitalDoc"
+            :parent-value="copySubjectForm.copySubject"
+            v-validate="{ required: copySubjectForm.copySubject === 'docDigital'}"
+            :danger="errors.has('step-2-part-3.copySubjectTypeDigitalDoc')"
+            :danger-text="errors.first('step-2-part-3.copySubjectTypeDigitalDoc')"
+            ref="copySubjectTypeDigitalDoc"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-input
+            class="w-100"
+            label="Correo Electrónico Persona Destinatario"
+            name="copySubjectEmail"
+            v-model="copySubjectForm.copySubjectEmail"
+            v-validate="{
+              required: isInput.includes(copySubjectForm.copySubjectType)
+                || copySubjectForm.copySubjectType === 'ministerios'
+              ,
+              email: true
+            }"
+            :danger="errors.has('step-2-part-3.copySubjectEmail')"
+            :danger-text="errors.first('step-2-part-3.copySubjectEmail')"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12 d-flex align-items-end justify-content-end">
+          <vs-button color="primary" icon="add" v-on:click="addCopy()">
+            Agregar copia a
+          </vs-button>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-table
+            multiple
+            v-model="copiesSelected"
+            no-data-text="No tienes distribuciones con copia"
+            :data="copies"
+          >
+            <template slot="thead">
+              <vs-th>Distribución</vs-th>
+              <vs-th>Lista Distribución</vs-th>
+              <vs-th>Institución</vs-th>
+            </template>
+            <template slot-scope="{data}">
+              <vs-tr :data="tr" v-for="(tr, indextr) in data" :key="indextr">
+                <vs-td :data="data[indextr].copySubjectType.label">
+                  {{tr.copySubjectType.label}}
+                </vs-td>
+                <vs-td :data="data[indextr].copySubject.label">
+                  {{tr.copySubject.label}}
+                </vs-td>
+                <vs-td :data="data[indextr].copySubjectTypeDigitalDoc.label">
+                  {{tr.copySubjectTypeDigitalDoc.label}}
+                </vs-td>
+              </vs-tr>
+            </template>
+          </vs-table>
+        </div>
+      </div>
+    </form>
+    <div class="row mb-3">
       <div class="col-12">
-        <vs-textarea
-          label="Observacion (5000 caracteres)"
-          name="observacion"
-          v-model="step.observacion"
-          width="100%"
-          height="100px"
-        />
+        <vs-divider />
       </div>
     </div>
-  </form>
+    <form data-vv-scope="step-2-part-4">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <vs-select
+            class="w-100"
+            autocomplete
+            label="Acompaña Físico"
+            name="esFisico"
+            v-model="step.withAttachment"
+          >
+            <vs-select-item
+              :value="0"
+              text="No"
+            />
+            <vs-select-item
+              :value="1"
+              text="Si"
+            />
+          </vs-select>
+        </div>
+        <div class="col-md-6">
+          <vs-input
+            class="w-100"
+            label="Detalle"
+            name="documentDetail"
+            v-model="step.documentDetail"
+            v-validate="{ required: step.withAttachment === 1 }"
+            :danger="errors.has('step-2-part-4.documentDetail')"
+            :danger-text="errors.first('step-2-part-4.documentDetail')"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <vs-textarea
+            label="Observacion (5000 caracteres)"
+            name="observacion"
+            v-model="step.observation"
+            width="100%"
+            height="100px"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -340,52 +377,127 @@ export default {
       subjects: [],
       copies: [],
       subjectsSelected: [],
+      copiesSelected: [],
+      subjectForm: {
+        subjectType: '',
+        subject: '',
+        subjectTypeDigitalDoc: '',
+        subjectEmail: '',
+      },
+      copySubjectForm: {
+        copySubjectType: '',
+        copySubject: '',
+        copySubjectTypeDigitalDoc: '',
+        copySubjectEmail: '',
+      },
       step: {
-        tipoInstitucion: '',
-        institucion: '',
-        nombrePersona: '',
-        cargoPersona: '',
-        tipoDestino: '',
-        listaDestino: '',
-        listaDestinoDocDigital: '',
-        nombreDestino: '',
-        nombreDistribucion: '',
-        correoDestinatario: '',
-        tipoDistribucion: '',
-        listaDistribucion: '',
-        listaDistribucionDocDigital: '',
-        correoDistribucion: '',
-        esFisico: 'no',
-        detalleDocumento: '',
-        observacion: ''
+        institutionType: '',
+        institution: '',
+        personName: '',
+        personPosition: '',
+        withAttachment: 0,
+        documentDetail: '',
+        observation: ''
       }
     };
   },
   methods: {
-    addSubject() {
-      const subject = {
-        tipoDestino: this.step.tipoDestino,
-        listaDestino: this.step.listaDestino,
-        listaDestinoDocDigital: this.step.listaDestinoDocDigital
+    async addSubject() {
+      const isValid = await this.validateForm('step-2-part-2');
+
+      if (!isValid) {
+        return;
+      }
+
+      const subjectType = this.$refs.subjectType.getOption();
+      const subject = this.isInput.includes(this.subjectForm.subjectType)
+        ? {
+          label: this.subjectForm.subject,
+          value: this.subjectForm.subject,
+          id: this.subjectForm.subject
+        }
+        : this.$refs.subject.getOption();
+
+      const subjectTypeDigitalDoc = this.$refs.subjectTypeDigitalDoc
+        ? this.$refs.subjectTypeDigitalDoc.getOption()
+        : {};
+
+      const row = {
+        subjectType,
+        subject,
+        subjectTypeDigitalDoc,
+        subjectEmail: this.subjectForm.subjectEmail
       };
-      this.subjects.push(subject);
+
+      this.subjects.push(row);
+      this.subjectsSelected.push(row);
+
+      this.subjectForm.subjectType = '';
+      this.subjectForm.subject = '';
+      this.subjectForm.subjectTypeDigitalDoc = '';
+      this.subjectForm.subjectEmail = '';
     },
-    addCopy() {
-      const copy = {
-        tipoDistribucion: this.step.tipoDistribucion,
-        listaDistribucion: this.step.listaDistribucion,
-        listaDistribucionDocDigital: this.step.listaDistribucionDocDigital
+    async addCopy() {
+      const isValid = await this.validateForm('step-2-part-3');
+
+      if (!isValid) {
+        return;
+      }
+
+      const copySubjectType = this.$refs.copySubjectType.getOption();
+      const copySubject = this.isInput.includes(this.copySubjectForm.copySubjectType)
+        ? {
+          label: this.copySubjectForm.copySubject,
+          value: this.copySubjectForm.copySubject,
+          id: this.copySubjectForm.copySubject
+        }
+        : this.$refs.copySubject.getOption();
+
+      const copySubjectTypeDigitalDoc = this.$refs.copySubjectTypeDigitalDoc
+        ? this.$refs.copySubjectTypeDigitalDoc.getOption()
+        : {};
+
+      const row = {
+        copySubjectType,
+        copySubject,
+        copySubjectTypeDigitalDoc,
+        copySubjectEmail: this.copySubjectForm.copySubjectEmail
       };
-      this.copies.push(copy);
+
+      this.copies.push(row);
+      this.copiesSelected.push(row);
+
+      this.copySubjectForm.copySubjectType = '';
+      this.copySubjectForm.copySubject = '';
+      this.copySubjectForm.copySubjectTypeDigitalDoc = '';
+      this.copySubjectForm.copySubjectEmail = '';
     },
     async isValid() {
-      try {
-        await this.validateForm('step-2');
-        // TODO: send to store.
-        return true;
-      } catch (e) {
+      const stepValidations = await Promise.all([
+        this.validateForm('step-2-part-1'),
+        this.validateForm('step-2-part-4'),
+      ]);
+
+      if (stepValidations.some((step) => !step)) {
         return false;
       }
+
+      if (!this.subjectsSelected.length) {
+        // TODO: one subject required
+        console.log('one subject required');
+        return false;
+      }
+
+      return true;
+    },
+    getStepData() {
+      return {
+        ...this.step,
+        institutionTypeName: this.$refs.institutionType.getOption().label,
+        institutionName: this.$refs.institution.getOption().label,
+        subjectsSelected: this.subjectsSelected,
+        copiesSelected: this.copiesSelected
+      };
     }
   }
 };

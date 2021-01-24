@@ -13,6 +13,7 @@
       :color="color"
       :class="buttonClass"
       @click="$refs.file.click()"
+      :disabled="progress.enabled"
     >
       {{ text }}
     </vs-button>
@@ -56,9 +57,10 @@ export default {
         return false;
       }
 
+      const fileId = uuid.v1();
       const baseUrl = paths[this.uploadTo];
       const identifier = this.identifier ? `-${this.identifier}` : '';
-      const url = `${baseUrl}${Date.now()}${identifier}.${file.name.split('.').pop()}`;
+      const url = `${baseUrl}${Date.now()}${fileId}${identifier}.${file.name.split('.').pop()}`;
 
       try {
         this.progress.enabled = true;
@@ -76,9 +78,9 @@ export default {
         );
 
         this.$emit('input', {
-          id: uuid.v1(),
+          id: fileId,
           name: file.name,
-          mime: file.mime,
+          mime: file.type,
           date: this.$moment().format('YYYY-MM-DD HH:MM:SS'),
           path: url,
           failed: false
@@ -129,10 +131,10 @@ export default {
       default: 'primary'
     },
     buttonClass: {
-      type: String
+      type: [String, Object]
     },
     containerClass: {
-      type: String
+      type: [String, Object]
     }
   },
   components: {

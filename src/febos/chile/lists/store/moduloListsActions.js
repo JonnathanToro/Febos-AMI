@@ -64,10 +64,10 @@ export const fetchInstitutionsDocDigital = async ({ commit }, payload) => {
 
 export const fetchSubjects = async ({ commit, rootState }, payload) => {
   commit('SET_SUBJECTS_LOADING', true);
+  commit('SET_SUBJECTS', []);
 
   switch (payload) {
     case 'usuarios': {
-      commit('SET_SUBJECTS', []);
       const response = await getUsers({
         empresaId: rootState.Empresas.empresa.id,
         pagina: 1,
@@ -78,7 +78,6 @@ export const fetchSubjects = async ({ commit, rootState }, payload) => {
       break;
     }
     case 'unidades': {
-      commit('SET_SUBJECTS', []);
       const response = await ioCompanyGroups(
         { empresaId: rootState.Empresas.empresa.id }
       );
@@ -86,7 +85,6 @@ export const fetchSubjects = async ({ commit, rootState }, payload) => {
       break;
     }
     case 'oficinas': {
-      commit('SET_SUBJECTS', []);
       const response = await ioCompanyGroups(
         { empresaId: rootState.Empresas.empresa.id, esOficina: 'Y' }
       );
@@ -94,7 +92,6 @@ export const fetchSubjects = async ({ commit, rootState }, payload) => {
       break;
     }
     case 'docDigital': {
-      commit('SET_SUBJECTS', []);
       const response = await listOptions({
         grupoOpcion: 'io.doc.digital.organismo',
         deshabilitado: 'no'
@@ -104,20 +101,11 @@ export const fetchSubjects = async ({ commit, rootState }, payload) => {
       break;
     }
     case 'ministerios': {
-      commit('SET_SUBJECTS', []);
       const response = await listOptions({
         grupoOpcion: 'tipos.destinos-ed.OIP.item',
         deshabilitado: 'no'
       });
       commit('SET_SUBJECTS', { type: payload, list: response.data.opciones });
-      break;
-    }
-    case 'empresas': {
-      commit('SET_SUBJECTS', []);
-      break;
-    }
-    case 'personas': {
-      commit('SET_SUBJECTS', []);
       break;
     }
     default:

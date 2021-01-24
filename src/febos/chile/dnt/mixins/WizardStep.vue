@@ -1,15 +1,23 @@
 <script>
 
 export default {
+  props: {
+    mapper: {
+      type: Function
+    }
+  },
+  data() {
+    return {
+      step: {}
+    };
+  },
   methods: {
     async validateForm(scope) {
       const result = await this.$validator.validateAll(scope);
-
-      if (!result) {
-        throw new Error('Formulario invalido');
-      }
-
-      return result;
+      return !!result;
+    },
+    getStepData() {
+      return this.step;
     }
   }
 };

@@ -6,9 +6,9 @@
     @input="$emit('input', $event)"
   >
     <vs-select-item
-      :key="item.opcionId"
-      :value="item.valor"
-      :text="item.descripcion"
+      :key="item.id"
+      :value="item.value"
+      :text="item.label"
       v-for="item in institutionsDocDigitalState.list"
     />
   </vs-select>
@@ -58,7 +58,10 @@ export default {
   methods: {
     ...mapActions('List', [
       'fetchInstitutionsDocDigital'
-    ])
+    ]),
+    getOption() {
+      return this.institutionsDocDigitalState.list.find((option) => option.value === this.value);
+    }
   },
   created() {
     console.log('this webo', this);

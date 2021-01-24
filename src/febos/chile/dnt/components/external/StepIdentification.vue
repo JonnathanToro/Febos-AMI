@@ -6,11 +6,12 @@
           class="w-100"
           autocomplete
           label="Tipo Documento"
-          name="tipoDocumentoCategoria"
-          v-model="step.tipoDocumentoCategoria"
-          :danger="errors.has('step-1.tipoDocumentoCategoria')"
-          :danger-text="errors.first('step-1.tipoDocumentoCategoria')"
+          name="documentType"
+          v-model="step.documentType"
+          :danger="errors.has('step-1.documentType')"
+          :danger-text="errors.first('step-1.documentType')"
           v-validate="'required'"
+          ref="documentTypes"
         />
       </div>
       <div class="col-md-6">
@@ -18,9 +19,10 @@
           class="w-100"
           autocomplete
           label="Documento"
-          name="tipoDocumento"
-          v-model="step.tipoDocumento"
-          :parent-value="step.tipoDocumentoCategoria"
+          name="document"
+          v-model="step.document"
+          :parent-value="step.documentType"
+          ref="documents"
         />
       </div>
     </div>
@@ -29,16 +31,16 @@
         <vs-input
           class="w-100"
           label="Nº Documento"
-          name="numeroDocumento"
-          v-model="step.numeroDocumento"
+          name="documentNumber"
+          v-model="step.documentNumber"
         />
       </div>
       <div class="col-md-6">
         <label>Fecha Documento</label>
         <datepicker
           class="w-100"
-          name="fechaDocumento"
-          v-model="step.fechaDocumento"
+          name="issueDate"
+          v-model="step.issueDate"
         />
       </div>
     </div>
@@ -47,19 +49,19 @@
         <vs-textarea
           type="text"
           label="Materia (Mínimo 2 palabras, máximo 5000 caracteres)"
-          name="materia"
+          name="matter"
           width="100%"
           v-validate="'required|min:3'"
           height="100px"
           class="mb-0"
-          v-model="step.materia"
+          v-model="step.matter"
         />
-        <div v-if="errors.first('step-1.materia')"
+        <div v-if="errors.first('step-1.matter')"
           class="con-text-validation span-text-validation-danger
            vs-input--text-validation-span v-enter-to"
           style="height: 32px;">
           <span class="span-text-validation">
-            {{errors.first('step-1.materia')}}
+            {{errors.first('step-1.matter')}}
           </span>
         </div>
       </div>
@@ -69,8 +71,8 @@
         <vs-select
           class="w-100"
           label="Etiquetas / Referencias del Documento"
-          name="etiquetas"
-          v-model="step.etiquetas"
+          name="tags"
+          v-model="step.tags"
           autocomplete
           multiple
         >
@@ -85,18 +87,18 @@
           </div>
           <div class="col-md-1">
             <vs-radio
-              vs-name="esPrivado"
-              vs-value="si"
-              v-model="step.esPrivado"
+              vs-name="isPrivate"
+              :vs-value="1"
+              v-model="step.isPrivate"
             >
               Si
             </vs-radio>
           </div>
           <div class="col-md-1">
             <vs-radio
-              vs-name="esPrivado"
-              vs-value="no"
-              v-model="step.esPrivado"
+              vs-name="isPrivate"
+              :vs-value="0"
+              v-model="step.isPrivate"
             >
               No
             </vs-radio>
@@ -125,26 +127,31 @@ export default {
   data() {
     return {
       step: {
-        tipoDocumentoCategoria: '',
-        tipoDocumento: '',
-        numeroDocumento: '',
-        fechaDocumento: '',
-        materia: '', // este campo va en un array que se llama observacion,
-        // posicion 0
-        etiquetas: '',
-        esPrivado: 'no'
+        documentType: '',
+        document: '',
+        documentNumber: '',
+        issueDate: '',
+        matter: '',
+        tags: '',
+        isPrivate: 0
       }
     };
   },
   methods: {
     async isValid() {
-      try {
-        await this.validateForm('step-1');
-        // TODO: send to store.
-        return true;
-      } catch (e) {
-        return false;
-      }
+      return this.validateForm('step-1');
+    },
+    getStepData() {
+      const documentName = this.step.document
+        ? this.$refs.documents.getOption().label
+        : {};
+
+      return {
+        ...this.step,
+        documentTypeName: this.$refs.documentTypes.getOption().label,
+        issueDate: this.$moment(this.issueDate).format('YYYY-MM-DD'),
+        ...documentName
+      };
     }
   }
 };
