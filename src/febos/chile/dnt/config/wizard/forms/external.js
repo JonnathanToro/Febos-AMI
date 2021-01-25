@@ -14,9 +14,15 @@ export default {
       component: require('../../../components/external/StepFiles').default
     }
   ],
-  mapper(input) {
+  mapper(input, iutCompany, nameCompany) {
     return {
       dnt: {
+        tipo: 'EXP',
+        emisorRut: iutCompany,
+        receptorRut: iutCompany,
+        emisorRazonSocial: nameCompany,
+        receptorRazonSocial: nameCompany,
+        claseMercadoPublico: 'ext',
         emisorCentroCostoNumero: input.documentType,
         emisorCentroCostoNombre: input.documentTypeName,
         emisorSucursalCodigo: input.document,
@@ -92,7 +98,7 @@ export default {
           url: file.path
         }))
       ],
-      dntReferencias: input.relatedDocumentsSelected.map((relatedDocument) => ({
+      dntReferencia: input.relatedDocumentsSelected.map((relatedDocument) => ({
         linea: relatedDocument.id,
         tipoDocumento: relatedDocument.type,
         folio: relatedDocument.number

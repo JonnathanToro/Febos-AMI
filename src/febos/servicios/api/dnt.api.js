@@ -10,14 +10,6 @@ export const clDntsList = (payload) => {
   });
 };
 
-export const clDntDetails = (payload) => {
-  const params = apiClient.queryParams(payload);
-  console.log('PAYO', params);
-  return apiClient.get(`${RESOURCE}/${payload.febosId}?${params}`, {
-    operacionId: 'io.dnt.details'
-  });
-};
-
 export const clDntActFileED = (payload) => {
   const params = apiClient.queryParams(payload);
 
@@ -56,4 +48,18 @@ export const sendComment = (payload) => {
   return apiClient.post(`${RESOURCE}/${payload.febosId}/comentarios?${params}`,
     { comentario: payload.comentario },
     { operacionId: 'io.dnt.send.comment' });
+};
+
+export const createDnt = (payload) => {
+  const params = apiClient.queryParams({
+    entrada: 'json',
+    tipoDocumento: 'EXP',
+    retornarPdf: 'no',
+    simular: 'no',
+    foliar: 'si'
+  });
+  console.log('PAYLOAD', btoa(payload));
+  return apiClient.post(`${RESOURCE}/crear?${params}`,
+    payload,
+    { operacionId: 'io.dnt.creat.dnt' });
 };

@@ -1,5 +1,5 @@
 export default [{
-  header: 'Documentos',
+  header: 'Oficina de Partes',
   icon: 'PackageIcon',
   i18n: 'Documentos',
   items: [
@@ -29,7 +29,7 @@ export default [{
       submenu: [
         {
           url: '/expedientes/en-curso',
-          name: 'En curso',
+          name: 'Pendientes',
           slug: '/expedientes/en-curso',
           icon: 'files',
           permiso: '*', // TODO: setup permission
@@ -37,12 +37,13 @@ export default [{
         },
         {
           url: '/expedientes/finalizados',
-          name: 'Finalizados',
+          name: 'Tramitados',
           slug: '/expedientes/finalizados',
           icon: 'files',
           permiso: '*', // TODO: setup permission
           i18n: 'expedientes'
-        },
+        }
+        /*
         {
           url: '/oficinas/of-entrada',
           name: 'Entrada',
@@ -51,8 +52,10 @@ export default [{
           permiso: '*', // TODO: setup permission
           i18n: 'expedientes'
         },
+        */
       ]
     },
+    /*
     {
       url: null,
       name: 'DocDigital',
@@ -70,5 +73,6 @@ export default [{
         }
       ]
     }
+    */
   ]
 }];

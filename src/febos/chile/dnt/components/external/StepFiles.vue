@@ -13,8 +13,8 @@
             label="Documento Principal (Si piensa firmar electrónicamente no debe ser escaneado)"
             name="mainFileName"
             v-validate="'required'"
-            :danger="errors.has('step-3.mainFileName')"
-            :danger-text="errors.first('step-3.mainFileName')"
+            :danger="errors.has('step-3-part-1.mainFileName')"
+            :danger-text="errors.first('step-3-part-1.mainFileName')"
             readonly
             v-model="step.mainFile.name"
           />
@@ -28,6 +28,15 @@
             :button-class="{ 'btn-block': true, 'mb-5': errors.has('step-3.mainFileName') }"
             container-class="w-100"
           />
+        </div>
+        <div class="col-md-12">
+          <div v-if="error.message !== ''" class="con-text-validation span-text-validation-danger
+           vs-input--text-validation-span v-enter-to"
+               style="height: 32px;">
+          <span class="span-text-validation">
+            {{ error.message }}
+          </span>
+          </div>
         </div>
       </div>
       <div class="row mb-3">
@@ -164,6 +173,9 @@ export default {
   },
   data() {
     return {
+      error: {
+        message: ''
+      },
       step: {
         mainFile: {},
         additionalFiles: []
@@ -185,7 +197,7 @@ export default {
 
       if (this.additionalFile.failed) {
         // TODO: display error message.
-        console.log('upload failed');
+        this.error.message = 'La carga del archivo falló, inténtalo de nuevo';
         return;
       }
 
@@ -212,6 +224,7 @@ export default {
 
       this.relatedDocument.type = '';
       this.relatedDocument.number = '';
+      this.$validator.reset();
     },
     isValid() {
       return this.validateForm('step-3-part-1');

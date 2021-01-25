@@ -1,11 +1,13 @@
+import router from '@/router';
+import store from '@/store/store';
 import {
   clDntsList,
   clDntActFileED,
   getFile,
-  clDntDetails,
   fileComments,
   sendComment,
-  fileBinnacle
+  fileBinnacle,
+  createDnt
 } from '@/febos/servicios/api/dnt.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
 import { fileDetails, cancelFile, downloadAttachments } from '@/febos/servicios/api/aprobaciones.api';
@@ -25,7 +27,7 @@ export const actualizarPagina = ({ commit }, payload) => {
 
 export const detailDnt = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
-  const response = await clDntDetails(payload);
+  const response = await getFile(payload);
   commit('SET_DETAIL_DNT', response.data);
   commit('SET_LOADING', false);
   return response.data;
@@ -80,7 +82,7 @@ export const processDntFileED = async ({ commit }, payload) => {
   if (response.data.codigo !== 10) {
     commit('SET_ERROR_MENSAJE', response.data);
   }
-  commit('CLOSE_MODAL', false);
+  store.commit('Modals/CLOSE_MODAL');
   commit('SET_LOADING', false);
   return response.data;
 };
@@ -125,7 +127,18 @@ export const sendTicketHelp = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await sendTicket(payload);
   commit('SET_SUCCESS_MENSAJE', 'Ticket de ayuda enviado, te contactaremos!');
-  commit('CLOSE_MODAL', false);
+  store.commit('Modals/CLOSE_MODAL');
+  commit('SET_LOADING', false);
+  return response.data;
+};
+
+export const emitDnt = async ({ commit }, payload) => {
+  await router.push({
+    path: '/expedientes/en-curso'
+  });
+  commit('SET_LOADING', true);
+  const response = await createDnt(payload);
+  commit('SET_SUCCESS_MENSAJE', response.data);
   commit('SET_LOADING', false);
   return response.data;
 };

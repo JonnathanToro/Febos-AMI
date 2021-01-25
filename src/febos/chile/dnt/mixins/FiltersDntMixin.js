@@ -3,25 +3,21 @@ import { mapGetters } from 'vuex';
 const filterViews = {
   files: [{}],
   myFiles: [
-    { field: 'tipo', value: 'APR' },
-    { field: 'emisorRut', value: '{empresa.iut}' },
-    { field: 'solicitanteEmail', value: '{usuario.correo}' },
-    { field: 'estado', value: '1,2,3,4,5' },
+    { field: 'tipo', value: 'EXP' },
+    { field: 'emisorRut', value: '{empresa.iut}' }
   ],
   'en-curso': [
-    { field: 'tipo', value: 'APR', },
-    { field: 'emisorRut', value: '{empresa.iut}' },
-    { field: 'solicitanteEmail', value: '{usuario.correo}' },
-    { field: 'estado', value: '3' },
+    { field: 'tipo', value: 'EXP', },
+    { field: 'emisorRut', value: '{empresa.iut}' }
   ],
   'of-entrada': [
-    { field: 'tipo', value: 'ACRE,MEMO', },
+    { field: 'tipo', value: 'EXP', },
     { field: 'emisorRut', value: '{empresa.iut}' },
     { field: 'filtrarBandeja', value: 'E' },
     { field: 'estado', value: '1,3' },
   ],
   finalizados: [
-    { field: 'tipo', value: 'APR' },
+    { field: 'tipo', value: 'EXP' },
     { field: 'emisorRut', value: '{empresa.iut}' },
     { field: 'solicitanteEmail', value: '{usuario.correo}' },
     { field: 'estado', value: '6,4,5' },

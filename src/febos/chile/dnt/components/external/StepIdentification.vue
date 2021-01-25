@@ -143,7 +143,9 @@ export default {
     },
     getStepData() {
       const documentName = this.step.document
-        ? this.$refs.documents.getOption().label
+        ? {
+          documentName: this.$refs.documents.getOption().label
+        }
         : {};
 
       return {

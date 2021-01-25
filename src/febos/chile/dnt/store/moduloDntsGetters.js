@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 export default {
   dntByFiles: (state) => (
-    Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'APR')
+    Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'EXP' || dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO')
   ),
   dntByED: (state) => (
     Object.values(state.dnts || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
@@ -38,7 +38,7 @@ export default {
     };
     return details;
   },
-  commentsEd: (state) => state.comments.map((comment) => {
+  commentsEd: (state) => (state.comments || []).map((comment) => {
     // eslint-disable-next-line no-param-reassign
     comment.creado = Vue.moment(comment.creado).format('YYYY-MM-DD HH:ss');
     return comment;

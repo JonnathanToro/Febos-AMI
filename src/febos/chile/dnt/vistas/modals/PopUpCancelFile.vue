@@ -72,7 +72,6 @@ export default {
   data() {
     return {
       cancelModal: false,
-      detailsFile: false,
       cancel: {
         typeCancel: 'internCode'
       }

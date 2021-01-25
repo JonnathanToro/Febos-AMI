@@ -102,9 +102,6 @@ export default {
     ...mapActions('Dnts', [
       'downloadFilePDF'
     ])
-  },
-  mounted() {
-    console.log('this.!!!!!!', this);
   }
 };
 </script>

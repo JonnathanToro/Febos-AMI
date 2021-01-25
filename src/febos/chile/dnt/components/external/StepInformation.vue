@@ -349,6 +349,13 @@
           />
         </div>
       </div>
+      <div v-if="error.message !== ''" class="con-text-validation span-text-validation-danger
+           vs-input--text-validation-span v-enter-to text-right"
+           style="height: 32px;">
+          <span class="span-text-validation">
+            {{error.message}}
+          </span>
+      </div>
     </form>
   </div>
 </template>
@@ -373,6 +380,9 @@ export default {
   },
   data() {
     return {
+      error: {
+        message: ''
+      },
       isInput: ['personas', 'empresas'],
       subjects: [],
       copies: [],
@@ -436,6 +446,7 @@ export default {
       this.subjectForm.subject = '';
       this.subjectForm.subjectTypeDigitalDoc = '';
       this.subjectForm.subjectEmail = '';
+      this.$validator.reset();
     },
     async addCopy() {
       const isValid = await this.validateForm('step-2-part-3');
@@ -471,6 +482,7 @@ export default {
       this.copySubjectForm.copySubject = '';
       this.copySubjectForm.copySubjectTypeDigitalDoc = '';
       this.copySubjectForm.copySubjectEmail = '';
+      this.$validator.reset();
     },
     async isValid() {
       const stepValidations = await Promise.all([
@@ -483,8 +495,7 @@ export default {
       }
 
       if (!this.subjectsSelected.length) {
-        // TODO: one subject required
-        console.log('one subject required');
+        this.error.message = 'Debes agregar al menos un destino';
         return false;
       }
 

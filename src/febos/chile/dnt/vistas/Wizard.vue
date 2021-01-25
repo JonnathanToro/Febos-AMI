@@ -48,7 +48,7 @@
 <script>
 
 import StepProgress from 'vue-step-progress';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import config from '../config/wizard';
 
@@ -69,6 +69,9 @@ export default {
     ...mapGetters('Personalizacion', [
       'colors'
     ]),
+    ...mapGetters('Empresas', [
+      'empresa'
+    ]),
     isFirstStep() {
       return this.wizard.currentStep === 0;
     },
@@ -84,6 +87,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('Dnts', [
+      'emitDnt'
+    ]),
     onBack() {
       if (this.isFirstStep) {
         return;
@@ -109,11 +115,11 @@ export default {
       this.wizard.currentStep += 1;
     },
     onEnd() {
-      console.log('emit document with: ');
-      console.log('raw data', this.rawStepData);
       console.log('mapped data', this.wizard.mapper(this.rawStepData));
 
-      console.log('send request');
+      this.emitDnt(
+        this.wizard.mapper(this.rawStepData, this.empresa.iut, this.empresa.razonSocial)
+      );
     },
     onBackup() {
       console.log('backup');

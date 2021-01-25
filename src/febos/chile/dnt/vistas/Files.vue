@@ -11,10 +11,7 @@
         <b>Enviado por</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Razón social receptor</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Último aprobador</b>
+        <b>Remitente</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
         <b>Actualización</b>
@@ -39,6 +36,14 @@
           </div>
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
+          <vs-icon
+            title="Creado"
+            v-if="file.estado === 1"
+            icon="mail_outline"
+            size="medium"
+            bg="#43C3B9"
+            class="state-icon"
+            color="white"/>
           <vs-icon
             title="En curso"
             v-if="file.estado === 3"
@@ -73,19 +78,16 @@
             color="white"/>
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{file.solicitanteNombre| capitalize }}
+          {{file.compradorArea | capitalize }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.receptorSucursalNombre | capitalize }}
+          {{ file.emisorContactoArea | capitalize }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.receptorContactoNombre | capitalize }}
+          {{ file.fechaActualizacion | dateFormat }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaActualizacion }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaEntrega }}
+          {{ file.fechaEntrega | dateFormat }}
         </vs-col>
         <vs-col
           vs-type="block"
@@ -95,18 +97,31 @@
           vs-sm="12"
           vs-xs="12"
         >
-        <span class="pill-info" v-if="file.emisorInfoAdicional" title="División a la que pertenece">
-          {{file.emisorInfoAdicional}}
-        </span>
-          <span class="pill-info" v-if="file.privado === 'Y'" title="Es un archivo privado">
-          <vs-icon icon="lock"></vs-icon>
-        </span>
-          <span class="pill-info" v-if="file.numeroInt" title="Tipo de documento">
-          {{findTypeDocument(file.numeroInt)}}
-        </span>
+          <span
+            class="pill-info"
+            v-if="file.claseMercadoPublico === 'ext'"
+            title="Es un archivo externo"
+          >
+            externo
+          </span>
+          <span
+            class="pill-info"
+            v-if="file.claseMercadoPublico === 'int'"
+            title="Es un archivo interno"
+          >
+            interno
+          </span>
+          <span
+            class="pill-info"
+            v-if="file.transporteViaTransporteCodigoTransporte === 1"
+            title="Acompaña físico"
+          >
+           <vs-icon icon="description" ></vs-icon>
+            acompaña físico
+          </span>
           <span class="pill-info" v-if="file.plazo" title="tiempo Transcurrido">
-          {{translateTime(file.plazo, true)}}
-        </span>
+            {{translateTime(file.plazo, true)}}
+          </span>
           <span  class="actions">
             <vs-dropdown vs-custom-content vs-trigger-click >
             <a class="a-icon" href.prevent>
@@ -118,7 +133,10 @@
                 color="gray"></vs-icon>
             </a>
             <vs-dropdown-menu style="width: fit-content">
-              <vs-dropdown-item v-on:click="getCommentsFile(file)">
+               <vs-dropdown-item v-on:click="binnacleFileModal(file)">
+                <vs-icon icon="list"/> Bitácora
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="getDetailsFile(file)">
                 <vs-icon icon="search"/> Ver detalles
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="downloadFile(file)">
@@ -130,8 +148,17 @@
               <vs-dropdown-item v-on:click="cancelFileModal(file)">
                 <vs-icon icon="clear"/> Anular expediente
               </vs-dropdown-item>
-               <vs-dropdown-item v-on:click="binnacleFileModal(file)">
-                <vs-icon icon="list"/> Bitácora
+               <vs-dropdown-item v-on:click="processFileModal(file)">
+                <vs-icon icon="move_to_inbox"/> Finalizar documento
+              </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="getParticipants(file)">
+                <vs-icon icon="groups"/> Participantes
+              </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="getComments(file)">
+                <vs-icon icon="chat"/> Comentarios
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="sendFile(file)">
+                <vs-icon icon="chat"/> Enviar documento
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="ticketModalFile(file)">
                 <vs-icon icon="help"/> Ticket de ayuda
@@ -142,9 +169,6 @@
         </vs-col>
       </vs-row>
     </div>
-    <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
-      <PopUpDetailFile :fileCommentDetails="fileCommentDetails"/>
-    </vs-popup>
     <vs-popup title="Bitácora del Expediente" :active.sync="binnacleModal" v-if="binnacleFile">
       <div style="height: 400px; overflow-y: scroll">
         <Timeline
@@ -154,24 +178,17 @@
           :show-day-and-month="true" />
       </div>
     </vs-popup>
-    <vs-popup title="Generar ticket de ayuda" :active.sync="showModal" v-if="binnacleFile">
-      <div>
-        <label for="message">Cuéntanos en que podemos ayudarte</label>
-        <vs-textarea id="message" v-model="messageTicket"  counter="1000" />
-      </div>
-      <vs-button
-        color="primary"
-        class="m-top-20"
-        style="float: right;"
-        type="filled"
-        v-on:click="sendTicketFile()"
-      >
-        Enviar ticket
-      </vs-button>
+    <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
+      <PopUpDetailFile :fileCommentDetails="fileCommentDetails"/>
     </vs-popup>
     <vs-popup title="Anular Expediente" :active.sync="cancelModal">
       <PopUpCancelFile :canceledFile="canceledFile" />
     </vs-popup>
+    <PopUpProcessFile :processedFile="file" />
+    <PopUpParticipantsFile :file="file" />
+    <PopUpCommentsFile :file="file" />
+    <PopUpTicketFile :file="file" />
+    <PopUpSendFile :file="file" />
     <vs-row v-if="!loading && dntByFiles.length">
       <vs-col vs-w="12" class="m-top-20">
         <fb-paginacion
@@ -190,14 +207,27 @@ import Timeline from 'timeline-vuejs';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
-import PopUpCancelFile from '@/febos/chile/dnt/vistas/PopUpCancelFile';
-import PopUpDetailFile from '@/febos/chile/dnt/vistas/PopUpDetailFile';
+import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
+import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
+import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
+import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
+import PopUpSendFile from '@/febos/chile/dnt/vistas/modals/PopUpSendFile';
+import PopUpParticipantsFile from '@/febos/chile/dnt/vistas/modals/PopUpParticipantsFile';
+import PopUpCommentsFile from '@/febos/chile/dnt/vistas/modals/PopUpCommentsFile';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
   components: {
-    FbPaginacion, PopUpDetailFile, PopUpCancelFile, Timeline
+    FbPaginacion,
+    PopUpDetailFile,
+    PopUpCancelFile,
+    Timeline,
+    PopUpProcessFile,
+    PopUpParticipantsFile,
+    PopUpCommentsFile,
+    PopUpTicketFile,
+    PopUpSendFile
   },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
@@ -205,8 +235,6 @@ export default {
       cancelModal: false,
       detailsFile: false,
       binnacleModal: false,
-      ticketModal: false,
-      messageTicket: '',
       canceledFile: {},
       file: {}
     };
@@ -216,15 +244,14 @@ export default {
       const view = this.$route.params.vista;
       const filters = this.getFilterView(view);
 
-      console.log('aca si o no?', this.pagina);
       this.listDocuments({
-        tipo: 'aprobaciones',
+        tipo: 'EXP',
         campos: '*',
         pagina: this.pagina,
         orden: '-fechaCreacion',
         itemsPorPagina: 10,
         // TODO agregar bien los filtros
-        filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+        filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
       });
     },
     loading(value) {
@@ -270,10 +297,15 @@ export default {
       'paginaActual',
       'fileCommentDetails',
       'binnacleFile',
-      'showModalFile'
+      'showModalFile',
+      'fileCommentDetails',
+    ]),
+    ...mapGetters('Empresas', [
+      'empresa',
+      'usersCompany',
+      'groupsCompany'
     ]),
     ...mapGetters('Usuario', [
-      'verificationCode',
       'currentUser'
     ]),
     pagina: {
@@ -291,46 +323,41 @@ export default {
       set(value) {
         this.closeModal(value);
       }
+    },
+    showModalProcess: {
+      get() {
+        return this.showModalFile;
+      },
+      set(value) {
+        this.closeModal(value);
+      }
     }
   },
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
       'actualizarPagina',
-      'getFileDetails',
+      'getFileDnt',
       'downloadFilePDF',
       'attemptCancelFile',
       'limpiarMensajeDeError',
       'getFileBinnacle',
       'sendTicketHelp',
       'closeModal',
-      'downloadAttatchmentsFile'
+      'downloadAttatchmentsFile',
+      'getFileDetails',
+      'downloadFilePDF',
+      'limpiarMensajeDeError',
+      'closeModal',
+      'getFileComments'
     ]),
-    getCommentsFile(file) {
-      this.getFileDetails({
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId
-      });
-      this.detailsFile = true;
-    },
-    downloadAttatchments(file) {
-      this.downloadAttatchmentsFile({
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId,
-        retornarComoZip: 'Y'
-      });
-    },
-    downloadFile(file) {
-      this.downloadFilePDF({
-        retornarPdf: 'si',
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId
-      });
-    },
-    cancelFileModal(file) {
-      this.cancelModal = true;
-      this.canceledFile = file;
-    },
+    ...mapActions('Empresas', [
+      'getUsersCompany',
+      'getGroupsCompany'
+    ]),
+    ...mapActions('Modals', [
+      'showModals'
+    ]),
     binnacleFileModal(file) {
       this.binnacleModal = true;
       this.getFileBinnacle({
@@ -339,19 +366,73 @@ export default {
         pagina: 1
       });
     },
+    getDetailsFile(file) {
+      this.file = file;
+      const view = this.$route.params.vista;
+      this.getFileDnt({
+        febosId: file.febosId,
+        destinos: 'si',
+        esLeido: view.includes('entrada') ? 'Y' : 'N'
+      });
+      this.detailsFile = true;
+    },
+    downloadFile(file) {
+      this.downloadFilePDF({
+        retornarPdf: 'si',
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId
+      });
+    },
+    downloadAttatchments(file) {
+      this.downloadAttatchmentsFile({
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId,
+        retornarComoZip: 'Y'
+      });
+    },
+    cancelFileModal(file) {
+      this.cancelModal = true;
+      this.canceledFile = file;
+    },
+    processFileModal(file) {
+      this.showModals('processFile');
+      this.file = file;
+    },
+    getParticipants(file) {
+      this.showModals('participantsFile');
+      this.file = file;
+      const view = this.$route.params.vista;
+      this.getFileDnt({
+        febosId: file.febosId,
+        aprobaciones: 'si',
+        esLeido: view.includes('entrada') ? 'Y' : 'N'
+      });
+    },
+    getComments(file) {
+      this.showModals('commentsFile');
+      this.file = file;
+      this.getFileComments({
+        esLeido: 'Y',
+        febosId: file.febosId
+      });
+    },
     ticketModalFile(file) {
       this.file = file;
-      this.showModal = true;
+      this.showModals('ticketFile');
     },
-    sendTicketFile() {
-      const ticket = {
-        febosId: this.file.febosId,
-        correo: this.currentUser.correo,
-        url: window.location.href,
-        mensaje: this.messageTicket
-      };
-      console.log('ticket', ticket);
-      this.sendTicketHelp(ticket);
+    sendFile(file) {
+      this.getUsersCompany({
+        empresaId: this.empresa.id,
+        pagina: 1,
+        filas: 9999,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
+      });
+      this.getGroupsCompany({
+        empresaId: this.empresa.id
+      });
+      this.file = file;
+      this.showModals('sendFile');
     },
     translateTime: (time, abr) => { // ASCO
       const seconds = time * 60;
@@ -393,13 +474,13 @@ export default {
     const view = this.$route.params.vista;
     const filters = this.getFilterView(view);
     this.listDocuments({
-      tipo: 'aprobaciones',
+      tipo: 'EXP',
       campos: '*',
       pagina: 1,
       orden: '-fechaCreacion',
       itemsPorPagina: 10,
       // TODO agregar bien los filtros
-      filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+      filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
     });
     console.log('hits', this);
   }
@@ -434,7 +515,7 @@ export default {
 
 .pill-info {
   border: 1px solid #3ca2d6;
-  padding: 1px 5px;
+  padding: 4px 6px;
   border-radius: 10px;
   font-size: 12px;
   margin-right: 20px;
