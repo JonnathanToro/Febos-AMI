@@ -22,6 +22,9 @@ export default {
   SET_DETAIL_DNT(state, payload) {
     state.details = payload;
   },
+  SET_ATTACHMENTS_DNT(state, payload) {
+    state.attachments = payload;
+  },
   SET_SUCCESS_MENSAJE(state, payload) {
     state.successAccion = payload;
   },

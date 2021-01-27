@@ -70,8 +70,16 @@
             color="white"/>
           <vs-icon
             title="Anulado"
-            v-if="file.estado === 6"
+            v-if="file.estado === 8"
             icon="close"
+            size="medium"
+            bg="#A04E4E"
+            class="state-icon"
+            color="white"/>
+          <vs-icon
+            title="Finalizado"
+            v-if="file.estado === 9"
+            icon="move_to_inbox"
             size="medium"
             bg="#A04E4E"
             class="state-icon"
@@ -81,7 +89,7 @@
           {{file.compradorArea | capitalize }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.emisorContactoArea | capitalize }}
+          {{ file.emisorContactoNombre | capitalize }}
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
           {{ file.fechaActualizacion | dateFormat }}
@@ -118,6 +126,13 @@
           >
            <vs-icon icon="description" ></vs-icon>
             acompaña físico
+          </span>
+          <span
+            class="pill-info"
+            v-if="file.transportePuertoTipo === 1"
+            title="Es un archivo privado"
+          >
+            <vs-icon icon="lock"></vs-icon>
           </span>
           <span class="pill-info" v-if="file.plazo" title="tiempo Transcurrido">
             {{translateTime(file.plazo, true)}}
@@ -179,11 +194,9 @@
       </div>
     </vs-popup>
     <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
-      <PopUpDetailFile :fileCommentDetails="fileCommentDetails"/>
+      <PopUpDetailFile :file="file" :fileCommentDetails="fileCommentDetails"/>
     </vs-popup>
-    <vs-popup title="Anular Expediente" :active.sync="cancelModal">
-      <PopUpCancelFile :canceledFile="canceledFile" />
-    </vs-popup>
+    <PopUpCancelFile :canceledFile="canceledFile" />
     <PopUpProcessFile :processedFile="file" />
     <PopUpParticipantsFile :file="file" />
     <PopUpCommentsFile :file="file" />
@@ -349,7 +362,8 @@ export default {
       'downloadFilePDF',
       'limpiarMensajeDeError',
       'closeModal',
-      'getFileComments'
+      'getFileComments',
+      'getAttachmentsDnt'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
@@ -368,11 +382,13 @@ export default {
     },
     getDetailsFile(file) {
       this.file = file;
-      const view = this.$route.params.vista;
       this.getFileDnt({
         febosId: file.febosId,
-        destinos: 'si',
-        esLeido: view.includes('entrada') ? 'Y' : 'N'
+        destinatarios: 'si',
+        referencias: 'si'
+      });
+      this.getAttachmentsDnt({
+        febosId: file.febosId
       });
       this.detailsFile = true;
     },
@@ -385,13 +401,12 @@ export default {
     },
     downloadAttatchments(file) {
       this.downloadAttatchmentsFile({
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId,
-        retornarComoZip: 'Y'
+        febosId: file.febosId,
+        comprimir: 'si'
       });
     },
     cancelFileModal(file) {
-      this.cancelModal = true;
+      this.showModals('cancelFile');
       this.canceledFile = file;
     },
     processFileModal(file) {
@@ -401,18 +416,15 @@ export default {
     getParticipants(file) {
       this.showModals('participantsFile');
       this.file = file;
-      const view = this.$route.params.vista;
       this.getFileDnt({
         febosId: file.febosId,
-        aprobaciones: 'si',
-        esLeido: view.includes('entrada') ? 'Y' : 'N'
+        destinatarios: 'si'
       });
     },
     getComments(file) {
       this.showModals('commentsFile');
       this.file = file;
       this.getFileComments({
-        esLeido: 'Y',
         febosId: file.febosId
       });
     },

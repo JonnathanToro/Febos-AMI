@@ -1,67 +1,92 @@
 <template>
   <div>
     <vs-tabs>
-      <vs-tab label="Adjuntos">
-        <vs-table stripe :data="fileCommentDetails" v-if="Object.keys(fileCommentDetails).length">
-          <template slot="header">
-          </template>
-          <template slot="thead">
-            <vs-th>
-              Usuario
-            </vs-th>
-            <vs-th>
-              Documento
-            </vs-th>
-            <vs-th>
-              Ver
-            </vs-th>
-          </template>
-
-          <template>
-            <tbody  v-for="(comment, index) in fileCommentDetails"
-                    :key="index">
-            <vs-tr :key="indextr" v-for="(doc, indextr) in comment.documentos" >
-              <vs-td>
-                {{comment.nombre}}
-              </vs-td>
-
-              <vs-td>
-                {{doc.nombre}}
-              </vs-td>
-
-              <vs-td>
-                <DownloadFile :path="doc.adjuntoUrl" :name="doc.nombre" :mood="'compact'"/>
-              </vs-td>
-            </vs-tr>
-            </tbody>
-          </template>
-        </vs-table>
+      <vs-tab label="Remitente">
+        <vs-list>
+          <vs-list-item
+            icon="description"
+            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+            :title="file.emisorCentroCostoNombre" subtitle="Tipo de documento"
+          />
+          <vs-list-item
+            v-if="file.emisorSucursalDireccion"
+            icon="description"
+            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+            :title="file.emisorSucursalDireccion" subtitle="Documento"
+          />
+          <vs-list-item
+            icon="account_balance"
+            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+            :title="file.compradorArea" subtitle="Tipo institución"
+          />
+          <vs-list-item
+            v-if="file.emisorContactoArea"
+            icon="account_balance"
+            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+            :title="file.emisorContactoArea" subtitle="Institución "
+          />
+          <vs-list-item
+            v-if="file.emisorContactoNombre"
+            icon="account_circle"
+            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+            :title="file.emisorContactoNombre" subtitle="Persona"
+          />
+          <vs-list-item
+            icon="assignment_ind"
+            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+            :title="file.emisorContactoCargo" subtitle="Cargo persona"
+          />
+        </vs-list>
       </vs-tab>
-      <vs-tab label="Comentarios">
-        <vs-list v-if="Object.keys(fileCommentDetails).length">
+      <vs-tab label="Adjuntos">
+        <vs-list v-if="attachmentsFile && attachmentsFile.length">
           <div
-            v-for="(comment, index) in fileCommentDetails"
+            v-for="attachment in attachmentsFile"
+            :key="attachment.adjuntoId"
+          >
+            <vs-list-item
+              icon="attach_file"
+              style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+              :title="attachment.adjuntoNombre" :subtitle="attachment.tipo">
+              <DownloadFile
+                v-if="attachment && attachment.adjuntoNombre && attachment.adjuntoUrl"
+                :path="attachment.adjuntoUrl"
+                :name="attachment.adjuntoNombre"
+                class="pill-info-attach"
+              />
+            </vs-list-item>
+          </div>
+        </vs-list>
+      </vs-tab>
+      <vs-tab label="Destinatarios">
+        <vs-list>
+          <div
+            v-for="(subject, index) in detailsFile.destinatarios"
             :key="index"
           >
             <vs-list-item
-              v-if="comment.accion === 'comentario'"
-              icon="chat"
+              v-if="subject.tipoDestino === '1'"
+              icon="contact_mail"
               style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
-              :title="comment.comentario" :subtitle="comment.nombre">
-              <small>{{comment.fecha}}</small>
-              <div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
+              :title="subject.destinoListaNombre" :subtitle="subject.destinoNombre">
+              <!--<div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
                 <DownloadFile :path="doc.adjuntoUrl" :name="doc.nombre"/>
-              </div>
+              </div>-->
+              <vs-chip color="primary" v-if="subject.tipoDestino === '1'">
+                Destinatario
+              </vs-chip>
             </vs-list-item>
             <vs-list-item
-              v-if="comment.accion === 'devolver'"
-              icon="compare_arrows"
+              v-if="subject.tipoDestino === '2'"
+              icon="supervised_user_circle"
               style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
-              :title="comment.comentario" :subtitle="comment.nombre">
-              <small>{{comment.fecha}}</small>
-              <div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
+              :title="subject.destinoListaNombre" :subtitle="subject.destinoNombre">
+              <!--<div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
                 <DownloadFile :path="doc.adjuntoUrl" :name="doc.nombre"/>
-              </div>
+              </div>-->
+              <vs-chip color="primary" v-if="subject.tipoDestino === '2'">
+                En copia
+              </vs-chip>
             </vs-list-item>
           </div>
         </vs-list>
@@ -69,6 +94,33 @@
         <!--<Timeline
           :timeline-items="fileCommentDetails.ejecucion.comentarios"
           message-when-no-items="No hay comentarios"/>-->
+      </vs-tab>
+      <vs-tab label="Referencias">
+        <vs-table stripe :data="detailsFile.referencias">
+          <template slot="header">
+          </template>
+          <template slot="thead">
+            <vs-th>
+              Tipo Documento
+            </vs-th>
+            <vs-th>
+              Número
+            </vs-th>
+          </template>
+
+          <template>
+            <tbody>
+            <vs-tr v-for="reference in detailsFile.referencias" :key="reference.dntReferenciaId">
+              <vs-td>
+                {{reference.tipoDocumento}}
+              </vs-td>
+              <vs-td>
+                {{reference.folio}}
+              </vs-td>
+            </vs-tr>
+            </tbody>
+          </template>
+        </vs-table>
       </vs-tab>
     </vs-tabs>
   </div>
@@ -86,6 +138,11 @@ export default {
       type: Array,
       required: true,
       default: () => []
+    },
+    file: {
+      type: Object,
+      required: true,
+      default: () => {}
     }
   },
   data() {
@@ -95,24 +152,29 @@ export default {
     ...mapGetters('Dnts', [
       'loading',
       'error',
-      'successAccion'
+      'successAccion',
+      'detailsFile',
+      'attachmentsFile'
     ])
   },
   methods: {
     ...mapActions('Dnts', [
       'downloadFilePDF'
     ])
+  },
+  mounted() {
+    console.log('ACA', this);
   }
 };
 </script>
 <style scoped>
 
-.pill-info {
+.pill-info-attach {
   border: 1px solid #3ca2d6;
   padding: 1px 5px;
   border-radius: 10px;
   font-size: 12px;
-  margin-right: 20px;
+  margin-right: 5px;
   cursor:pointer;
 }
 </style>

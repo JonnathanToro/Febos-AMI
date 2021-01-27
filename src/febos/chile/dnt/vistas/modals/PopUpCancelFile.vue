@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <vs-popup title="Anular Expediente" :active.sync="showModal">
     <div class="">
       Para anular el expediente debes realizarlo
        bajo la seguridad del 2FA o Cód. de verificación
@@ -54,13 +54,16 @@
         Anular Expediente
       </vs-button>
     </div>
-  </div>
+  </vs-popup>
 </template>
 <script>
 
 import { mapActions, mapGetters } from 'vuex';
 
+import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
+
 export default {
+  mixins: [FiltersDntMixin],
   name: 'PopUpCancelFile',
   props: {
     canceledFile: {
@@ -71,7 +74,6 @@ export default {
   },
   data() {
     return {
-      cancelModal: false,
       cancel: {
         typeCancel: 'internCode'
       }
@@ -81,19 +83,33 @@ export default {
     ...mapGetters('Usuario', [
       'verificationCode',
       'loading'
-    ])
+    ]),
+    ...mapGetters('Modals', [
+      'modalName'
+    ]),
+    showModal: {
+      get() {
+        return this.modalName === 'cancelFile';
+      },
+      set() {
+        this.closeModal();
+      }
+    }
   },
   methods: {
     ...mapActions('Dnts', [
-      'attemptCancelFile'
+      'attemptCancelFile',
+      'listDocuments'
     ]),
     ...mapActions('Usuario', [
       'getVerificationCode'
     ]),
-    cancelFile() {
+    ...mapActions('Modals', [
+      'closeModal'
+    ]),
+    async cancelFile() {
       const cancel = {
-        aprobacionId: this.canceledFile.solicitanteDocumentoId,
-        ejecucionId: this.canceledFile.febosId
+        febosId: this.canceledFile.febosId
       };
 
       if (this.cancel.typeCancel === 'internCode') {
@@ -102,8 +118,19 @@ export default {
       } else {
         cancel.otp = this.cancel.code;
       }
-      this.attemptCancelFile(cancel);
-      this.cancelModal = false;
+      await this.attemptCancelFile(cancel);
+
+      const view = this.$route.params.vista;
+      const filters = this.getFilterView(view);
+      await this.listDocuments({
+        tipo: 'EXP',
+        campos: '*',
+        pagina: 1,
+        orden: '-fechaCreacion',
+        itemsPorPagina: 10,
+        // TODO agregar bien los filtros
+        filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
+      });
     },
     getCode() {
       this.getVerificationCode(

@@ -13,8 +13,23 @@ export const clDntsList = (payload) => {
 export const clDntActFileED = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.put(`${RESOURCE}/${payload.febosId}/aprobadores?${ params}`, {}, {
-    operacionId: 'io.dnts.ed.actualizar'
+  return apiClient.put(`${RESOURCE}/${payload.febosId}/estado?${ params }`, { estadoId: payload.estadoId }, {
+    operacionId: 'io.dnts.ed.act.estado'
+  });
+};
+
+export const downloadAttachments = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.febosId}/adjuntos?${params}`,
+    { operacionId: 'io.download.attachments.dnt' });
+};
+
+export const cancelFile = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.delete(`${RESOURCE}/${payload.febosId}?${params}`, {
+    operacionId: 'io.get.dnt'
   });
 };
 
@@ -29,8 +44,16 @@ export const getFile = (payload) => {
 export const fileComments = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.get(`${RESOURCE}/${payload.febosId}/comentarios?${params}`, {
+  return apiClient.get(`${RESOURCE}/${payload.febosId}/expedientes/comentarios?${params}`, {
     operacionId: 'io.dnt.comments'
+  });
+};
+
+export const attachmentsFiles = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.febosId}/adjuntos?${params}`, {
+    operacionId: 'io.dnt.attachments'
   });
 };
 
@@ -45,7 +68,7 @@ export const fileBinnacle = (payload) => {
 export const sendComment = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.post(`${RESOURCE}/${payload.febosId}/comentarios?${params}`,
+  return apiClient.post(`${RESOURCE}/${payload.febosId}/expedientes/comentarios?${params}`,
     { comentario: payload.comentario },
     { operacionId: 'io.dnt.send.comment' });
 };

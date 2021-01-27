@@ -502,12 +502,18 @@ export default {
       return true;
     },
     getStepData() {
+      const institutionName = this.step.institution
+        ? {
+          institutionName: this.$refs.institution.getOption().label
+        }
+        : {};
+
       return {
         ...this.step,
         institutionTypeName: this.$refs.institutionType.getOption().label,
-        institutionName: this.$refs.institution.getOption().label,
         subjectsSelected: this.subjectsSelected,
-        copiesSelected: this.copiesSelected
+        copiesSelected: this.copiesSelected,
+        ...institutionName
       };
     }
   }

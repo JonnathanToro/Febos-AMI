@@ -7,10 +7,13 @@ import {
   fileComments,
   sendComment,
   fileBinnacle,
-  createDnt
+  createDnt,
+  cancelFile,
+  downloadAttachments,
+  attachmentsFiles
 } from '@/febos/servicios/api/dnt.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
-import { fileDetails, cancelFile, downloadAttachments } from '@/febos/servicios/api/aprobaciones.api';
+import { fileDetails } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
 export const listDocuments = async ({ commit }, payload) => {
@@ -29,6 +32,14 @@ export const detailDnt = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await getFile(payload);
   commit('SET_DETAIL_DNT', response.data);
+  commit('SET_LOADING', false);
+  return response.data;
+};
+
+export const getAttachmentsDnt = async ({ commit }, payload) => {
+  commit('SET_LOADING', true);
+  const response = await attachmentsFiles(payload);
+  commit('SET_ATTACHMENTS_DNT', response.data.adjuntos);
   commit('SET_LOADING', false);
   return response.data;
 };
@@ -68,6 +79,7 @@ export const attemptCancelFile = async ({ commit }, payload) => {
   if (response.data.codigo !== 10) {
     commit('SET_ERROR_MENSAJE', response.data);
   }
+  store.commit('Modals/CLOSE_MODAL');
   commit('SET_LOADING', false);
   return response.data;
 };
@@ -94,7 +106,7 @@ export const closeModal = ({ commit }, payload) => {
 export const getFileDnt = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await getFile(payload);
-  commit('SET_DETAIL_FILE', response.data.aprobaciones);
+  commit('SET_DETAIL_FILE', response.data);
   commit('SET_LOADING', false);
   return response.data;
 };

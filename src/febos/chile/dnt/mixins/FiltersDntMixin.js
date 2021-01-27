@@ -19,8 +19,7 @@ const filterViews = {
   finalizados: [
     { field: 'tipo', value: 'EXP' },
     { field: 'emisorRut', value: '{empresa.iut}' },
-    { field: 'solicitanteEmail', value: '{usuario.correo}' },
-    { field: 'estado', value: '6,4,5' },
+    { field: 'estado', value: '8,9' },
   ],
   entrada: [
     { field: 'tipo', value: 'DDD' }

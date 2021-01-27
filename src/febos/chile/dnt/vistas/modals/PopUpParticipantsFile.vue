@@ -7,17 +7,16 @@
       <div v-for="(participant, index) in participants" :key="index">
 
         <vs-list-item
-          v-if="participant.estado === 0"
           icon="inbox"
-          :title="participant.nombre"
-          :subtitle="participant.email">
+          :title="participant.destinoListaNombre"
+          :subtitle="participant.destinoNombre">
           <vs-chip color="success">Bandeja de entrada</vs-chip>
         </vs-list-item>
         <vs-list-item
           v-if="participant.estado === 1"
           icon="move_to_inbox"
-          :title="participant.nombre"
-          :subtitle="participant.email">
+          :title="participant.destinoListaNombre"
+          :subtitle="participant.destinoNombre">
           <vs-chip color="warning">Bandeja de finalizados</vs-chip>
         </vs-list-item>
       </div>

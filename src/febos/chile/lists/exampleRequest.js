@@ -16,7 +16,7 @@ const dnt = {
   emisorSucursalDireccion: 'Certificado de documentos', // nombre documento
   fechaEmision: '2020-01-20', // fecha documento
   materia: observaciones[0], // materia
-  transporteTipoPuerto: '1', // documnto privado (1 si - 0 no),
+  transportePuertoTipo: '1', // documnto privado (1 si - 0 no),
   compradorCodigo: 'INST', // tipo de institucion
   compradorArea: 'Tipo Institución nombre', // nombre de tipo institucion
   emisorContactoCodigo: 'INST01', // institucion

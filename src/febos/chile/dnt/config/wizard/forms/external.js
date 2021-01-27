@@ -29,8 +29,7 @@ export default {
         emisorSucursalDireccion: input.documentName,
         numeroInt: input.documentNumber,
         fechaEmision: input.issueDate,
-        materia: input.matter,
-        transporteTipoPuerto: input.isPrivate,
+        transportePuertoTipo: input.isPrivate,
         compradorCodigo: input.institutionType,
         compradorArea: input.institutionTypeName,
         emisorContactoCodigo: input.institution,
@@ -38,9 +37,16 @@ export default {
         emisorContactoNombre: input.personName,
         emisorContactoCargo: input.personPosition,
         transporteViaTransporteCodigoTransporte: input.withAttachment,
-        transporteNotas: input.documentDetail,
-        observacion: input.observation
+        transporteNotas: input.documentDetail
       },
+      dntObservacion: [
+        {
+          observacion: input.matter
+        },
+        {
+          obsevacion: input.observation
+        }
+      ],
       dntEtiqueta: input.tags,
       dntDestino: [
         ...input.subjectsSelected.map((subject) => {
@@ -85,17 +91,17 @@ export default {
       dntAdjuntos: [
         {
           tipo: 'principal',
-          mime: input.mainFile.mime,
-          nombre: input.mainFile.name,
+          adjuntoMime: input.mainFile.mime,
+          adjuntoNombre: input.mainFile.name,
           fecha: input.mainFile.date,
-          url: input.mainFile.path
+          adjuntoUrl: input.mainFile.path
         },
         ...input.additionalFiles.map((file) => ({
           tipo: 'adjunto',
-          mime: file.mime,
-          nombre: file.name,
+          adjuntoMime: file.mime,
+          adjuntoNombre: file.name,
           fecha: file.date,
-          url: file.path
+          adjuntoUrl: file.path
         }))
       ],
       dntReferencia: input.relatedDocumentsSelected.map((relatedDocument) => ({

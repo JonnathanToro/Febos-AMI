@@ -20,8 +20,11 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
+import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
+
 export default {
   name: 'PopUpProcessFile',
+  mixins: [FiltersDntMixin],
   props: {
     processedFile: {
       type: [Object],
@@ -49,14 +52,23 @@ export default {
     ...mapActions('Modals', [
       'closeModal'
     ]),
-    processFile() {
+    async processFile() {
       const view = this.$route.params.vista;
+      const filters = this.getFilterView(view);
       const toProcess = {
         febosId: this.processedFile.febosId,
-        tipo: 'escritotiodigitalfin',
-        esLeido: view.includes('entrada') ? 'Y' : 'N'
+        estadoId: 9
       };
-      this.processDntFileED(toProcess);
+      await this.processDntFileED(toProcess);
+      await this.listDocuments({
+        tipo: 'EXP',
+        campos: '*',
+        pagina: 1,
+        orden: '-fechaCreacion',
+        itemsPorPagina: 10,
+        // TODO agregar bien los filtros
+        filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
+      });
     },
     cancelProcess() {
       this.closeModal();

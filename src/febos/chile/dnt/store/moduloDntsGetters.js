@@ -38,9 +38,11 @@ export default {
     };
     return details;
   },
+  detailsFile: (state) => state.details,
+  attachmentsFile: (state) => state.attachments,
   commentsEd: (state) => (state.comments || []).map((comment) => {
     // eslint-disable-next-line no-param-reassign
-    comment.creado = Vue.moment(comment.creado).format('YYYY-MM-DD HH:ss');
+    comment.creado = Vue.moment(comment.fechaCreacion).format('YYYY-MM-DD HH:ss');
     return comment;
   }).reverse(),
   binnacleFile: (state) => {

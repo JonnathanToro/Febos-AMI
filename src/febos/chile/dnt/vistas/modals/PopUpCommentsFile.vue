@@ -99,15 +99,11 @@ export default {
       'closeModal'
     ]),
     async sendNewComment() {
-      const view = this.$route.params.vista;
-
       this.sendDntComment({
         febosId: this.file.febosId,
-        esLeido: view.includes('entrada') ? 'Y' : 'N',
         comentario: this.newComment.comment
       });
       await this.getFileComments({
-        esLeido: 'Y',
         febosId: this.file.febosId
       });
 
