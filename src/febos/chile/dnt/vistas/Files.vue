@@ -48,9 +48,9 @@
             class="state-icon"
             color="white"/>
           <vs-icon
-            title="En curso"
+            title="Borrador"
             v-if="file.estado === 3"
-            icon="schedule"
+            icon="more_time"
             size="medium"
             bg="#43C3B9"
             class="state-icon"
