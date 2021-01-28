@@ -14,6 +14,9 @@
         <b>Remitente</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
+        <b>Responsable</b>
+      </vs-col>
+      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
         <b>Actualización</b>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
@@ -90,6 +93,9 @@
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
           {{ file.emisorContactoNombre | capitalize }}
+        </vs-col>
+        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
+          Sin asignar
         </vs-col>
         <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
           {{ file.fechaActualizacion | dateFormat }}
@@ -185,12 +191,49 @@
       </vs-row>
     </div>
     <vs-popup title="Bitácora del Expediente" :active.sync="binnacleModal" v-if="binnacleFile">
-      <div style="height: 400px; overflow-y: scroll">
-        <Timeline
-          :timeline-items="binnacleFile"
-          message-when-no-items="No hay acciones realizadas aun"
-          :unique-year="false"
-          :show-day-and-month="true" />
+      <div>
+        <vs-list>
+          <div  v-for="binnacle in binnacleFile" :key="binnacle.bitacoraId">
+            <vs-list-item
+              v-if="binnacle.severidadNombre === 'ERROR'"
+              icon="warning"
+              style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+              :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
+            >
+              <vs-chip color="dark" v-if="binnacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="dark" v-if="binnacle.correoId">
+                <vs-icon icon="email" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="info">
+                <vs-icon icon="email" size="small">{{binnacle.fecha | dateFormat}}</vs-icon>
+              </vs-chip>
+              <!--<vs-chip color="dark" v-if="binacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>-->
+            </vs-list-item>
+            <vs-list-item
+              v-if="binnacle.severidadNombre === 'INFO'"
+              icon="info"
+              style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+              :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
+            >
+              <vs-chip color="dark" v-if="binnacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="dark" v-if="binnacle.correoId">
+                <vs-icon icon="email" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="info">
+                <vs-icon icon="email" size="small">{{binnacle.fecha | dateFormat}}</vs-icon>
+              </vs-chip>
+              <!--<vs-chip color="dark" v-if="binacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>-->
+            </vs-list-item>
+          </div>
+        </vs-list>
       </div>
     </vs-popup>
     <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
@@ -216,7 +259,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Timeline from 'timeline-vuejs';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 
@@ -235,7 +277,6 @@ export default {
     FbPaginacion,
     PopUpDetailFile,
     PopUpCancelFile,
-    Timeline,
     PopUpProcessFile,
     PopUpParticipantsFile,
     PopUpCommentsFile,

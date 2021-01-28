@@ -49,7 +49,7 @@ export default {
       ],
       dntEtiqueta: input.tags,
       dntDestino: [
-        ...input.subjectsSelected.map((subject) => {
+        ...(input.subjectsSelected || []).map((subject) => {
           const institution = Object.keys(subject.subjectTypeDigitalDoc).length
             ? {
               institucionCodigo: subject.subjectTypeDigitalDoc.value,
@@ -68,7 +68,7 @@ export default {
             ...institution
           };
         }),
-        ...input.copiesSelected.map((subject) => {
+        ...(input.copiesSelected || []).map((subject) => {
           const institution = Object.keys(subject.copySubjectTypeDigitalDoc).length
             ? {
               institucionCodigo: subject.copySubjectTypeDigitalDoc.value,
@@ -96,7 +96,7 @@ export default {
           fecha: input.mainFile.date,
           adjuntoUrl: input.mainFile.path
         },
-        ...input.additionalFiles.map((file) => ({
+        ...(input.additionalFiles || []).map((file) => ({
           tipo: 'adjunto',
           adjuntoMime: file.mime,
           adjuntoNombre: file.name,
@@ -104,7 +104,7 @@ export default {
           adjuntoUrl: file.path
         }))
       ],
-      dntReferencia: input.relatedDocumentsSelected.map((relatedDocument) => ({
+      dntReferencia: (input.relatedDocumentsSelected || []).map((relatedDocument) => ({
         linea: relatedDocument.id,
         tipoDocumento: relatedDocument.type,
         folio: relatedDocument.number

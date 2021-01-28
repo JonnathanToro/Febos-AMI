@@ -122,7 +122,7 @@ export default {
       );
     },
     onBackup() {
-      console.log('backup');
+      console.log('BACKUP data', this.wizard.mapper(this.rawStepData));
     }
   },
   created() {
