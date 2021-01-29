@@ -282,6 +282,7 @@ export default {
   }),
   watch: {
     tags(valorNuevo, valorAntiguo) {
+      console.log('watch.tags');
       if (this.filtroActual.tipo !== 'numero' && this.filtroActual.tipo !== 'rut') return;
       let valor = [];
       if (valorNuevo === '') {
@@ -307,9 +308,11 @@ export default {
       }
     },
     rangoAvanzado() {
+      console.log('watch.rangoAvanzado');
       this.seleccionarRango(this.filtroActual, this.filtroActual.valor);
     },
     tipoRangoFechaAvanzado() {
+      console.log('watch.tipoRangoFechaAvanzado');
       if (!this.filtroActual.valor.includes('--') && !this.filtroActual.valor.includes(' ')) {
         this.rangoAvanzado.desde = this.formatoTipoRango(this.filtroActual.valor);
         this.rangoAvanzado.hasta = Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
@@ -324,6 +327,7 @@ export default {
   },
   methods: {
     verificarFiltrosAlCerrar() {
+      console.log('methods.verificarFiltrosAlCerrar');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].valor === '' || this.filtrosAplicados[i].valor.length === 0) {
@@ -333,6 +337,7 @@ export default {
       }
     },
     aplicarFiltros() {
+      console.log('methods.aplicarFiltros');
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filtro) => {
@@ -359,33 +364,25 @@ export default {
       this.$emit('filtros-aplicados', query.join('|'));
     },
     formatoTipoRango(formato, humano = false) {
+      console.log('methods.formatoTipoRango');
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
       switch (formato) {
         case 'ultimas4semanas':
           return Vue.moment().subtract(28, 'days').format(estilo);
         case 'esteMes':
-          this.rangoAvanzado.desde = Vue.moment().startOf('month')
-            .format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().startOf('month').format(estilo);
         case 'esteMesConAnterior':
-          this.rangoAvanzado.desde = Vue.moment().subtract(1, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(1, 'month').startOf('month').format(estilo);
         case 'ultimos3meses':
-          this.rangoAvanzado.desde = Vue.moment().subtract(2, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(2, 'month').startOf('month').format(estilo);
         case 'ultimos6meses':
-          this.rangoAvanzado.desde = Vue.moment().subtract(5, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(5, 'month').startOf('month').format(estilo);
         default:
-          this.rangoAvanzado.desde = Vue.moment().subtract(5, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(5, 'month').startOf('month').format(estilo);
       }
     },
     seleccionarRango(filtro, valor, cerrar = true) {
+      console.log('methods.seleccionarRango');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === filtro.campo) {
@@ -397,9 +394,11 @@ export default {
       }
     },
     seleccionarAlMenosUnaOpcionDeFiltro(filtro) {
+      console.log('methods.seleccionarAlMenosUnaOpcionDeFiltro');
       filtro.valor.push(parseInt(filtro.opciones[0].valor, 10));
     },
     filtroYaEstaAplicado(campo) {
+      console.log('methods.filtroYaEstaAplicado');
       try {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < this.filtrosAplicados.length; i++) {
@@ -414,6 +413,7 @@ export default {
       return false;
     },
     eliminarFiltro(filtro) {
+      console.log('methods.eliminarFiltro');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === filtro.campo) {
@@ -424,6 +424,7 @@ export default {
       }
     },
     ventanaModificarFiltro(filtro) {
+      console.log('methods.ventanaModificarFiltro');
       this.tag = '';
       this.tags = [];
       if (this.filtroRecientementeEliminado) {
@@ -549,6 +550,7 @@ export default {
       return filtro;
     },
     agregarFiltro(filter, desplegarVentanaDeModificacion = false) {
+      console.log('methods.agregarFiltro');
       // console.log("AGREGANDO FILTRO",JSON.parse(JSON.stringify(filter)));
       // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
       const filtro = this.formatearValor(filter);
