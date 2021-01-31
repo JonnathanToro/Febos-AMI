@@ -220,11 +220,23 @@ export default {
     },
     seleccionarTodos: {
       get() {
-        const opcionesTotales = this.filtroActual.opciones.length;
-        const opcionesMarcadas = this.filtroActual.valor.length;
-        return opcionesMarcadas === opcionesTotales;
+        console.log('computed.seleccionarTodod.get');
+        try {
+          const opcionesTotales = this.filtroActual.opciones.length;
+          const opcionesMarcadas = this.filtroActual.valor.length;
+          return opcionesMarcadas === opcionesTotales;
+        } catch (e) {
+          const { filtrosHabilitados } = this.configuracionVista;
+          const filtro = filtrosHabilitados.find((o) => o.campo === this.filtroActual.campo);
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.filtroActual.opciones = filtro.opciones;
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.filtroActual.valor = [parseInt(filtro.opciones[0].valor, 10)];
+          return false;
+        }
       },
       set() {
+        console.log('computed.seleccionarTodod.set');
         const opcionesTotales = this.filtroActual.opciones.length;
         const opcionesMarcadas = this.filtroActual.valor.length;
         if (opcionesMarcadas === opcionesTotales) {
@@ -243,6 +255,7 @@ export default {
       }
     },
     filtrosDisponibles() {
+      console.log('computed.filtrosDisponibles');
       const filtros = [];
       try {
         // eslint-disable-next-line no-plusplus
@@ -500,6 +513,11 @@ export default {
             JSON.stringify({ opciones: filtroHabilitado.opciones })
           ).opciones;
           filtro.opciones = filtroHabilitado.opciones;
+          console.log('VALOR ANTES', JSON.parse(JSON.stringify(filtro)));
+          if (typeof filtro.valor === 'boolean') {
+            filtro.valor = [filtro.opciones[0].valor];
+          }
+          console.log('VALOR DESPUES', JSON.parse(JSON.stringify(filtro)));
           filtro.valor.forEach(
             (valor) => {
               valoresUsadosEnHumano.push(
