@@ -1,179 +1,338 @@
-<template lang="html">
+<template>
   <div>
-    <vs-row vs-w="12" class="list-wrapper title-columns" >
-      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
-        <b>Número</b>
+    <template slot="actions">
+  <span>
+    Viendo documentos que ingresaron
+  </span>
+      <span v-if="periodoSeleccionado.valor != 'personalizado'">
+    {{ periodoSeleccionado.nombre }}
+  </span>
+      <span v-if="periodoSeleccionado.valor == 'personalizado'">
+    entre el
+        <!--<input type="date" class="fecha" v-model="periodoDesde">-->
+    <datetime
+      v-model="periodoDesde"
+      input-class="fecha"
+      :phrases="{ok: 'Seleccionar',
+       cancel: 'Cancelar'}"
+      value-zone="local"
+      format="yyyy-MM-dd"
+    />
+    y el
+    <datetime
+      v-model="periodoHasta"
+      input-class="fecha"
+      :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
+      value-zone="local"
+      format="yyyy-MM-dd"
+    />
+  </span>
+      <vs-dropdown style="margin-left: 15px">
+        <a class="a-icon" href="#">
+          Cambiar
+          <vs-icon class="" icon="expand_more"></vs-icon>
+        </a>
+        <vs-dropdown-menu>
+          <vs-dropdown-item
+            style="width:200px"
+            v-for="periodo in periodos"
+            :key="periodo.valor"
+            v-on:click.native="seleccionarPeriodo(periodo)"
+          >
+            {{ periodo.nombre }}
+          </vs-dropdown-item>
+        </vs-dropdown-menu>
+      </vs-dropdown>
+    </template>
+    <filtros
+      :users="usersCompany"
+      :groups="groupsCompany"
+      :documents="documentTypesState.list"
+      :institutions="institutionTypesState.list"
+      :configuracion-vista="configuracion"
+      :periodos="periodos"
+      v-on:filtros-aplicados="manipularFiltros"
+    />
+    <vs-row class="bg-white shadow py-5 px-3 mb-4">
+      <vs-col vs-lg="11">
+        <vs-row>
+          <vs-col vs-lg="1" class="text-center">
+            <b>#</b>
+          </vs-col>
+          <vs-col vs-lg="2">
+            <b>Estado</b>
+          </vs-col>
+          <vs-col vs-lg="9">
+            <vs-row>
+              <vs-col vs-lg="4">
+                <b>Enviado por</b>
+              </vs-col>
+              <vs-col vs-lg="4">
+                <b>Remitente</b>
+              </vs-col>
+              <vs-col vs-lg="4">
+                <b>Responsable</b>
+              </vs-col>
+            </vs-row>
+          </vs-col>
+        </vs-row>
       </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
-        <b>Estado</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Enviado por</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Razón social receptor</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Último aprobador</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Actualización</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Creación</b>
+      <vs-col vs-lg="1" vs-sm="4" vs-xs="12" class="text-center">
+        <b>...</b>
       </vs-col>
     </vs-row>
     <div id="list-dnt">
       <vs-row
-        vs-w="12"
         :key="file.febosId"
         v-for="file in dntByFiles"
-        class="content-rows list-wrapper"
+        class="p-3 mt-2 bg-white shadow-sm"
       >
-        <vs-col vs-type="block" class="numero-file" vs-lg="1" vs-sm="4" vs-xs="12">
-          <div>
-            # <br>
-          </div>
-          <div>
-            {{ file.numero }}
-          </div>
+        <vs-col vs-lg="11">
+          <vs-row>
+            <vs-col class="text-center text-primary" vs-lg="1">
+              <div>
+                # <br>
+              </div>
+              <div>
+                {{ file.numero }}
+              </div>
+            </vs-col>
+            <vs-col vs-lg="2">
+              <vs-chip
+                v-if="file.estado === 1"
+                title="creado"
+              >
+                <vs-avatar icon="mail_outline" color="#43C3B9" />
+                Creado
+              </vs-chip>
+              <vs-chip
+                title="Borrador"
+                v-if="file.estado === 3"
+              >
+                <vs-avatar icon="query_builder" color="#43C3B9" />
+                Borrador
+              </vs-chip>
+              <vs-chip
+                title="Aprobado"
+                v-if="file.estado === 4"
+              >
+                <vs-avatar icon="thumb_up" color="#14AA59" />
+                Aprobado
+              </vs-chip>
+              <vs-chip
+                title="Rechazado"
+                v-if="file.estado === 5"
+              >
+                <vs-avatar icon="thumb_down" color="#CE4B4B" />
+                Rechazado
+              </vs-chip>
+              <vs-chip
+                title="Anulado"
+                v-if="file.estado === 8"
+              >
+                <vs-avatar icon="close" color="#A04E4E" />
+                Anulado
+              </vs-chip>
+              <vs-chip
+                title="Finalizado"
+                v-if="file.estado === 9"
+              >
+                <vs-avatar icon="move_to_inbox" color="#A04E4E" />
+                Finalizado
+              </vs-chip>
+            </vs-col>
+            <vs-col vs-lg="9">
+              <vs-row>
+                <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+                  {{file.compradorArea | capitalize }}
+                </vs-col>
+                <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+                  {{ file.emisorContactoNombre | capitalize }}
+                </vs-col>
+                <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+                  Sin asignar
+                </vs-col>
+              </vs-row>
+            </vs-col>
+          </vs-row>
+          <vs-row>
+            <vs-col vs-offset="3" vs-lg="7" vs-type="flex">
+              <vs-chip class="mr-4">
+                <vs-avatar icon="update" />
+                {{ file.fechaActualizacion | dateFormat }}
+              </vs-chip>
+              <vs-chip class="mr-4">
+                <vs-avatar icon="add_circle_outline" />
+                {{ file.fechaEntrega | dateFormat }}
+              </vs-chip>
+              <vs-button
+                size="small"
+                type="border"
+                color="#3ca2d6"
+                title="Es un archivo externo"
+                v-if="file.claseMercadoPublico === 'ext'"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              >
+                <span class="text-black">externo</span>
+              </vs-button>
+              <vs-button
+                size="small"
+                type="border"
+                color="#3ca2d6"
+                title="Es un archivo interno"
+                v-if="file.claseMercadoPublico === 'int'"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              >
+                <span class="text-black">interno</span>
+              </vs-button>
+              <vs-button
+                size="small"
+                type="border"
+                color="#3ca2d6"
+                icon="description"
+                title="Acompaña físico"
+                v-if="file.transporteViaTransporteCodigoTransporte === 1"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              >
+                <span class="text-black">acompaña físico</span>
+              </vs-button>
+              <vs-button
+                size="small"
+                type="border"
+                color="danger"
+                icon="lock"
+                ttitle="Es un archivo privado"
+                v-if="file.transportePuertoTipo === 1"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              />
+            </vs-col>
+          </vs-row>
         </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
-          <vs-icon
-            title="En curso"
-            v-if="file.estado === 3"
-            icon="schedule"
-            size="medium"
-            bg="#43C3B9"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Aprobado"
-            v-if="file.estado === 4"
-            icon="thumb_up"
-            size="medium"
-            bg="#14AA59"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Rechazado"
-            v-if="file.estado === 5"
-            icon="thumb_down"
-            size="medium"
-            bg="#CE4B4B"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Anulado"
-            v-if="file.estado === 6"
-            icon="close"
-            size="medium"
-            bg="#A04E4E"
-            class="state-icon"
-            color="white"/>
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{file.solicitanteNombre| capitalize }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.receptorSucursalNombre | capitalize }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.receptorContactoNombre | capitalize }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaActualizacion }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaEntrega }}
-        </vs-col>
-        <vs-col
-          vs-type="block"
-
-          class="aditional-info"
-          vs-lg="12"
-          vs-sm="12"
-          vs-xs="12"
-        >
-        <span class="pill-info" v-if="file.emisorInfoAdicional" title="División a la que pertenece">
-          {{file.emisorInfoAdicional}}
-        </span>
-          <span class="pill-info" v-if="file.privado === 'Y'" title="Es un archivo privado">
-          <vs-icon icon="lock"></vs-icon>
-        </span>
-          <span class="pill-info" v-if="file.numeroInt" title="Tipo de documento">
-          {{findTypeDocument(file.numeroInt)}}
-        </span>
-          <span class="pill-info" v-if="file.plazo" title="tiempo Transcurrido">
-          {{translateTime(file.plazo, true)}}
-        </span>
-          <span  class="actions">
-            <vs-dropdown vs-custom-content vs-trigger-click >
+        <vs-col vs-lg="1" vs-type="flex" vs-justify="center" vs-align="center">
+          <vs-dropdown vs-custom-content vs-trigger-click>
             <a class="a-icon" href.prevent>
               <vs-icon
-                class="" icon="bubble_chart"
+                icon="settings"
                 size="medium"
                 bg="#E4E4E4"
                 round
-                color="gray"></vs-icon>
+                color="gray"
+              />
             </a>
             <vs-dropdown-menu style="width: fit-content">
-              <vs-dropdown-item v-on:click="getCommentsFile(file)">
-                <vs-icon icon="search"/> Ver detalles
+              <vs-dropdown-item
+                v-if="file.estado === 3"
+                v-on:click="openDraft(file)"
+              >
+                <vs-icon icon="query_builder"/>
+                Continuar borrador
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="binnacleFileModal(file)">
+                <vs-icon icon="list"/>
+                Bitácora
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="getDetailsFile(file)">
+                <vs-icon icon="search"/>
+                Ver detalles
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="downloadFile(file)">
-                <vs-icon icon="save_alt"/> Descargar acta
+                <vs-icon icon="save_alt"/>
+                Descargar acta
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="downloadAttatchments(file)">
-                <vs-icon icon="save_alt"/> Descargar adjuntos
+                <vs-icon icon="save_alt"/>
+                Descargar adjuntos
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="cancelFileModal(file)">
-                <vs-icon icon="clear"/> Anular expediente
+                <vs-icon icon="clear"/>
+                Anular expediente
               </vs-dropdown-item>
-               <vs-dropdown-item v-on:click="binnacleFileModal(file)">
-                <vs-icon icon="list"/> Bitácora
+               <vs-dropdown-item v-on:click="processFileModal(file)">
+                <vs-icon icon="move_to_inbox"/>
+                 Finalizar documento
+              </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="getParticipants(file)">
+                <vs-icon icon="groups"/>
+                 Participantes
+              </vs-dropdown-item>
+               <vs-dropdown-item v-on:click="getComments(file)">
+                <vs-icon icon="chat"/>
+                 Comentarios
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="sendFile(file)">
+                <vs-icon icon="chat"/>
+                Enviar documento
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="ticketModalFile(file)">
-                <vs-icon icon="help"/> Ticket de ayuda
+                <vs-icon icon="help"/>
+                Ticket de ayuda
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
-          </span>
         </vs-col>
       </vs-row>
     </div>
-    <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
-      <PopUpDetailFile :fileCommentDetails="fileCommentDetails"/>
-    </vs-popup>
     <vs-popup title="Bitácora del Expediente" :active.sync="binnacleModal" v-if="binnacleFile">
-      <div style="height: 400px; overflow-y: scroll">
-        <Timeline
-          :timeline-items="binnacleFile"
-          message-when-no-items="No hay acciones realizadas aun"
-          :unique-year="false"
-          :show-day-and-month="true" />
-      </div>
-    </vs-popup>
-    <vs-popup title="Generar ticket de ayuda" :active.sync="showModal" v-if="binnacleFile">
       <div>
-        <label for="message">Cuéntanos en que podemos ayudarte</label>
-        <vs-textarea id="message" v-model="messageTicket"  counter="1000" />
+        <vs-list>
+          <div  v-for="binnacle in binnacleFile" :key="binnacle.bitacoraId">
+            <vs-list-item
+              v-if="binnacle.severidadNombre === 'ERROR'"
+              icon="warning"
+              style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+              :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
+            >
+              <vs-chip color="dark" v-if="binnacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="dark" v-if="binnacle.correoId">
+                <vs-icon icon="email" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="info">
+                <vs-icon icon="email" size="small">{{binnacle.fecha | dateFormat}}</vs-icon>
+              </vs-chip>
+              <!--<vs-chip color="dark" v-if="binacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>-->
+            </vs-list-item>
+            <vs-list-item
+              v-if="binnacle.severidadNombre === 'INFO'"
+              icon="info"
+              style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+              :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
+            >
+              <vs-chip color="dark" v-if="binnacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="dark" v-if="binnacle.correoId">
+                <vs-icon icon="email" size="small"></vs-icon>
+              </vs-chip>
+              <vs-chip color="info">
+                <vs-icon icon="email" size="small">{{binnacle.fecha | dateFormat}}</vs-icon>
+              </vs-chip>
+              <!--<vs-chip color="dark" v-if="binacle.externalId">
+                <vs-icon icon="pageview" size="small"></vs-icon>
+              </vs-chip>-->
+            </vs-list-item>
+          </div>
+        </vs-list>
       </div>
-      <vs-button
-        color="primary"
-        class="m-top-20"
-        style="float: right;"
-        type="filled"
-        v-on:click="sendTicketFile()"
-      >
-        Enviar ticket
-      </vs-button>
     </vs-popup>
-    <vs-popup title="Anular Expediente" :active.sync="cancelModal">
-      <PopUpCancelFile :canceledFile="canceledFile" />
+    <vs-popup title="Detalles del Expediente" :active.sync="detailsFile" v-if="file">
+      <PopUpDetailFile :file="file" :fileCommentDetails="fileCommentDetails"/>
     </vs-popup>
+    <PopUpCancelFile :canceledFile="canceledFile" />
+    <PopUpProcessFile :processedFile="file" />
+    <PopUpParticipantsFile :file="file" />
+    <PopUpCommentsFile :file="file" />
+    <PopUpTicketFile :file="file" />
+    <PopUpSendFile :file="file" />
     <vs-row v-if="!loading && dntByFiles.length">
-      <vs-col vs-w="12" class="m-top-20">
+      <vs-col vs-w="12" class="mt-4">
         <fb-paginacion
           :total="paginacion.paginasTotales"
           :max="10"
@@ -185,28 +344,56 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
-import Timeline from 'timeline-vuejs';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
+import Filtros from '../../../global/_vue/componentes/FiltrosDnt';
 
-import PopUpCancelFile from '@/febos/chile/dnt/vistas/PopUpCancelFile';
-import PopUpDetailFile from '@/febos/chile/dnt/vistas/PopUpDetailFile';
+import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
+import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
+import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
+import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
+import PopUpSendFile from '@/febos/chile/dnt/vistas/modals/PopUpSendFile';
+import PopUpParticipantsFile from '@/febos/chile/dnt/vistas/modals/PopUpParticipantsFile';
+import PopUpCommentsFile from '@/febos/chile/dnt/vistas/modals/PopUpCommentsFile';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
   components: {
-    FbPaginacion, PopUpDetailFile, PopUpCancelFile, Timeline
+    Filtros,
+    FbPaginacion,
+    PopUpDetailFile,
+    PopUpCancelFile,
+    PopUpProcessFile,
+    PopUpParticipantsFile,
+    PopUpCommentsFile,
+    PopUpTicketFile,
+    PopUpSendFile
   },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
+    const view = this.$route.params.vista;
+    const filters = this.getFilterView(view);
+
+    console.log('filters', filters);
     return {
+      periodos: [
+        { nombre: 'las últimas 4 semanas', valor: 'ultimas4semanas' },
+        { nombre: 'este mes', valor: 'esteMes' },
+        { nombre: 'este mes y el anterior', valor: 'esteMesConAnterior' },
+        { nombre: 'los últimos 3 meses', valor: 'ultimos3meses' },
+        { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
+        { nombre: '* Rango personalizado', valor: 'personalizado' }
+      ],
+      periodoSeleccionado: { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
+      periodoDesde: '',
+      periodoHasta: '',
+      configuracion: filters,
       cancelModal: false,
       detailsFile: false,
       binnacleModal: false,
-      ticketModal: false,
-      messageTicket: '',
       canceledFile: {},
       file: {}
     };
@@ -216,15 +403,14 @@ export default {
       const view = this.$route.params.vista;
       const filters = this.getFilterView(view);
 
-      console.log('aca si o no?', this.pagina);
       this.listDocuments({
-        tipo: 'aprobaciones',
+        tipo: 'EXP',
         campos: '*',
         pagina: this.pagina,
         orden: '-fechaCreacion',
         itemsPorPagina: 10,
         // TODO agregar bien los filtros
-        filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+        filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
       });
     },
     loading(value) {
@@ -270,11 +456,20 @@ export default {
       'paginaActual',
       'fileCommentDetails',
       'binnacleFile',
-      'showModalFile'
+      'showModalFile',
+      'fileCommentDetails',
+    ]),
+    ...mapGetters('Empresas', [
+      'empresa',
+      'usersCompany',
+      'groupsCompany'
     ]),
     ...mapGetters('Usuario', [
-      'verificationCode',
       'currentUser'
+    ]),
+    ...mapGetters('List', [
+      'documentTypesState',
+      'institutionTypesState'
     ]),
     pagina: {
       get() {
@@ -291,46 +486,116 @@ export default {
       set(value) {
         this.closeModal(value);
       }
+    },
+    showModalProcess: {
+      get() {
+        return this.showModalFile;
+      },
+      set(value) {
+        this.closeModal(value);
+      }
     }
   },
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
       'actualizarPagina',
-      'getFileDetails',
+      'getFileDnt',
       'downloadFilePDF',
       'attemptCancelFile',
       'limpiarMensajeDeError',
       'getFileBinnacle',
       'sendTicketHelp',
       'closeModal',
-      'downloadAttatchmentsFile'
+      'downloadAttatchmentsFile',
+      'getFileDetails',
+      'downloadFilePDF',
+      'limpiarMensajeDeError',
+      'closeModal',
+      'getFileComments',
+      'getAttachmentsDnt'
     ]),
-    getCommentsFile(file) {
-      this.getFileDetails({
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId
+    ...mapActions('Empresas', [
+      'getUsersCompany',
+      'getGroupsCompany'
+    ]),
+    ...mapActions('List', [
+      'fetchDocumentTypes',
+      'fetchInstitutionTypes'
+    ]),
+    ...mapActions('Modals', [
+      'showModals'
+    ]),
+    openDraft(file) {
+      // TODO: move this to another side, (why api doesn't save the full name? 😡😡)
+      const types = {
+        ext: 'externo'
+      };
+
+      this.$router.push(`/documentos/${types[file.claseMercadoPublico]}/${file.febosId}`);
+    },
+
+    manipularFiltros(filtros) {
+      // console.log('manipulando', filtros);
+      this.filtrosDelComponente = filtros;
+      this.filtros = `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;
+      if (filtros !== '') {
+        this.filtros += `|${filtros}`;
+      }
+      console.log('FILTROS', this.filtros);
+      this.listDocuments({
+        tipo: 'EXP',
+        campos: '*',
+        pagina: 1,
+        orden: '-fechaCreacion',
+        itemsPorPagina: 10,
+        // TODO agregar bien los filtros
+        filtros: this.filtros
       });
-      this.detailsFile = true;
     },
-    downloadAttatchments(file) {
-      this.downloadAttatchmentsFile({
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId,
-        retornarComoZip: 'Y'
-      });
+    seleccionarPeriodo(periodo) {
+      switch (periodo.valor) {
+        case 'ultimas4semanas':
+          this.periodoDesde = Vue.moment().subtract(28, 'days')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'esteMes':
+          this.periodoDesde = Vue.moment().startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'esteMesConAnterior':
+          this.periodoDesde = Vue.moment().subtract(2, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'ultimos3meses':
+          this.periodoDesde = Vue.moment().subtract(3, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'ultimos6meses':
+          this.periodoDesde = Vue.moment().subtract(6, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        default:
+          this.periodoDesde = Vue.moment().subtract(6, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+      }
+      this.periodoSeleccionado = periodo;
+      this.manipularFiltros(this.filtrosDelComponente);
     },
-    downloadFile(file) {
-      this.downloadFilePDF({
-        retornarPdf: 'si',
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId
-      });
-    },
-    cancelFileModal(file) {
-      this.cancelModal = true;
-      this.canceledFile = file;
-    },
+
     binnacleFileModal(file) {
       this.binnacleModal = true;
       this.getFileBinnacle({
@@ -339,127 +604,114 @@ export default {
         pagina: 1
       });
     },
+    getDetailsFile(file) {
+      this.file = file;
+      this.getFileDnt({
+        febosId: file.febosId,
+        destinatarios: 'si',
+        referencias: 'si'
+      });
+      this.getAttachmentsDnt({
+        febosId: file.febosId
+      });
+      this.detailsFile = true;
+    },
+    downloadFile(file) {
+      this.downloadFilePDF({
+        retornarPdf: 'si',
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId
+      });
+    },
+    downloadAttatchments(file) {
+      this.downloadAttatchmentsFile({
+        febosId: file.febosId,
+        comprimir: 'si'
+      });
+    },
+    cancelFileModal(file) {
+      this.showModals('cancelFile');
+      this.canceledFile = file;
+    },
+    processFileModal(file) {
+      this.showModals('processFile');
+      this.file = file;
+    },
+    getParticipants(file) {
+      this.showModals('participantsFile');
+      this.file = file;
+      this.getFileDnt({
+        febosId: file.febosId,
+        destinatarios: 'si'
+      });
+    },
+    getComments(file) {
+      this.showModals('commentsFile');
+      this.file = file;
+      this.getFileComments({
+        febosId: file.febosId
+      });
+    },
     ticketModalFile(file) {
       this.file = file;
-      this.showModal = true;
+      this.showModals('ticketFile');
     },
-    sendTicketFile() {
-      const ticket = {
-        febosId: this.file.febosId,
-        correo: this.currentUser.correo,
-        url: window.location.href,
-        mensaje: this.messageTicket
-      };
-      console.log('ticket', ticket);
-      this.sendTicketHelp(ticket);
-    },
-    translateTime: (time, abr) => { // ASCO
-      const seconds = time * 60;
-      const numdays = Math.floor(seconds / 86400);
-      const numhours = Math.floor((seconds % 86400) / 3600);
-      const numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-
-      if (numdays !== 0) {
-        if (abr) {
-          return `${numdays } d ${ numhours } hrs ${ numminutes } min `;
-        }
-        return `${numdays } dias ${ numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours !== 0) {
-        if (abr) {
-          return `${numhours } hrs ${ numminutes } min `;
-        }
-        return `${numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours === 0 && numminutes !== 0) {
-        if (abr) {
-          return `${numminutes } min `;
-        }
-        return `${numminutes } minutos `;
-      }
-
-      if (numminutes === 0) {
-        if (abr) {
-          return `${numminutes } min`;
-        }
-        return `${numminutes } minutos`;
-      }
-      return numminutes;
-    } // END ASCO, o no?
+    sendFile(file) {
+      this.getUsersCompany({
+        empresaId: this.empresa.id,
+        pagina: 1,
+        filas: 9999,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
+      });
+      this.getGroupsCompany({
+        empresaId: this.empresa.id
+      });
+      this.file = file;
+      this.showModals('sendFile');
+    }
+  },
+  created() {
+    this.periodoDesde = Vue.moment().subtract(6, 'month').format('YYYY-MM-DD');
+    this.periodoHasta = Vue.moment().format('YYYY-MM-DD');
   },
   mounted() {
+    // get data to fill selects of filters
+
+    if (!this.usersCompany.length) {
+      this.getUsersCompany({
+        empresaId: this.empresa.id,
+        pagina: 1,
+        filas: 9999,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
+      });
+    }
+    if (!this.groupsCompany.length) {
+      this.getGroupsCompany({
+        empresaId: this.empresa.id
+      });
+    }
+    if (!this.documentTypesState.length) {
+      this.fetchDocumentTypes();
+    }
+    if (!this.institutionTypesState.length) {
+      this.fetchInstitutionTypes();
+    }
+
+    /*
     const view = this.$route.params.vista;
     const filters = this.getFilterView(view);
     this.listDocuments({
-      tipo: 'aprobaciones',
+      tipo: 'EXP',
       campos: '*',
       pagina: 1,
       orden: '-fechaCreacion',
       itemsPorPagina: 10,
       // TODO agregar bien los filtros
-      filtros: filters.concat('|fechaCreacion:2020-06-13--2020-12-13')
+      filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
     });
-    console.log('hits', this);
+    */
   }
 };
 </script>
-<style>
-
-.m-top-20 {
-  margin-top: 20px;
-}
-
-.list-wrapper {
-  background: white;
-}
-
-.title-columns {
-  padding: 16px 10px;
-  margin-bottom: 10px;
-  background: white;
-  box-shadow: -1px 6px 12px 0 #80808075;
-}
-
-.content-rows {
-  padding: 10px;
-  margin-top: 4px;
-}
-
-.numero-file {
-  text-align: center;
-  color: #3ca2d6;
-}
-
-.pill-info {
-  border: 1px solid #3ca2d6;
-  padding: 1px 5px;
-  border-radius: 10px;
-  font-size: 12px;
-  margin-right: 20px;
-  cursor:pointer;
-}
-
-.actions {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  cursor: pointer;
-}
-.aditional-info {
-  padding: 4px 0;
-  margin-left: 16% !important;
-  position: relative;
-}
-
-.state-icon {
-  border-radius: 25px;
-  font-size: 22px !important;
-  padding: 5px;
-}
-.tooltip-inline {
-  display: inline !important;
-}
-
-</style>

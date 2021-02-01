@@ -14,9 +14,7 @@ export default {
   },
   async getTemplateById({ commit }, payload) {
     commit('SET_LOADING', true);
-    const response = await getOption({
-      febosId: payload
-    });
+    const response = await getOption(payload);
 
     const {
       descripcion: name,

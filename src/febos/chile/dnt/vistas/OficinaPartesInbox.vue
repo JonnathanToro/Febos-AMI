@@ -459,7 +459,7 @@ export default {
       'closeModal',
       'getFileDnt',
       'getFileComments',
-      'sendComment'
+      'sendDntComment'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
@@ -513,7 +513,7 @@ export default {
     },
     async sendNewComment() {
       const view = this.$route.params.vista;
-      this.sendComment({
+      this.sendDntComment({
         febosId: this.file.febosId,
         esLeido: view.includes('entrada') ? 'Y' : 'N',
         comentario: this.newComment.comment

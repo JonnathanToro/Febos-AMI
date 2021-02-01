@@ -161,6 +161,7 @@ export default {
     const category = this.$route.params.categoria;
     const view = this.$route.params.vista;
     const configView = configVistas[product][category][view];
+    console.log('CONFIGVIEW', configView);
     return {
       periodos: [
         { nombre: 'las últimas 4 semanas', valor: 'ultimas4semanas' },

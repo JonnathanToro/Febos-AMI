@@ -1,0 +1,11 @@
+
+// Fix vs-modal overflow
+// ====================================================================
+
+.vs-modal__container {
+  overflow: visible !important;
+}
+
+.vs-modal__body {
+  overflow-y: unset !important;
+}

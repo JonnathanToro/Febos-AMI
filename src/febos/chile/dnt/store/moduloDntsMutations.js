@@ -16,11 +16,23 @@ export default {
   SET_DETAIL_FILE(state, payload) {
     state.details = payload;
   },
+  SET_WIZARD_DATA(state, payload) {
+    state.wizardData = payload;
+  },
+  ADD_WIZARD_DATA(state, payload) {
+    state.wizardData = {
+      ...state.wizardData,
+      ...payload
+    };
+  },
   ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
   },
   SET_DETAIL_DNT(state, payload) {
     state.details = payload;
+  },
+  SET_ATTACHMENTS_DNT(state, payload) {
+    state.attachments = payload;
   },
   SET_SUCCESS_MENSAJE(state, payload) {
     state.successAccion = payload;
