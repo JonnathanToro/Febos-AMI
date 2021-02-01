@@ -463,7 +463,7 @@ export default {
     },
     filterUsers(valorNuevo) {
       this.filtroActual.valor = valorNuevo.map((user) => user.valor);
-      this.filtroActual.valorFormateado = this.filtroActual.valor.join(',');
+      this.filtroActual.valorFormateado = valorNuevo.map((group) => group.nombre).join(',');
     },
     filterGroups(valorNuevo) {
       this.filtroActual.valor = valorNuevo.map((group) => group.valor);
@@ -678,7 +678,7 @@ export default {
             filtro.opciones = this.users.map((user) => {
               const userOption = {
                 nombre: user.nombre,
-                valor: user.correo
+                valor: user.id
               };
               return userOption;
             });
@@ -727,7 +727,7 @@ export default {
           filtro.opciones = this.users.map((user) => {
             const userOption = {
               nombre: user.nombre,
-              valor: user.correo
+              valor: user.id
             };
             return userOption;
           });

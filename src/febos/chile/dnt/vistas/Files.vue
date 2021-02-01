@@ -399,18 +399,15 @@ export default {
     };
   },
   watch: {
-    pagina() {
-      const view = this.$route.params.vista;
-      const filters = this.getFilterView(view);
-
+    pagina(nuevoValor) {
       this.listDocuments({
         tipo: 'EXP',
         campos: '*',
-        pagina: this.pagina,
+        pagina: nuevoValor,
         orden: '-fechaCreacion',
         itemsPorPagina: 10,
         // TODO agregar bien los filtros
-        filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
+        filtros: this.filtros
       });
     },
     loading(value) {
