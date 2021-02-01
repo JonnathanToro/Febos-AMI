@@ -2,14 +2,65 @@ import { mapGetters } from 'vuex';
 
 const filterViews = {
   files: [{}],
-  myFiles: [
-    { field: 'tipo', value: 'EXP' },
-    { field: 'emisorRut', value: '{empresa.iut}' }
-  ],
-  'en-curso': [
-    { field: 'tipo', value: 'EXP', },
-    { field: 'emisorRut', value: '{empresa.iut}' }
-  ],
+  'en-curso': {
+    filtrosFijos: [
+      // eslint-disable-next-line no-template-curly-in-string
+      { campo: 'emisorRut', valor: '${iutEmpresa}' }
+    ],
+    filtrosPorDefecto: [
+      { campo: 'tipo', tipo: 'multi', valor: ['EXP', 'ACRE'] }
+    ],
+    filtrosHabilitados: [
+      { campo: 'fechaEmision', tipo: 'rangoFecha' },
+      { campo: 'numero', tipo: 'numero' },
+      {
+        campo: 'tipo',
+        tipo: 'multi',
+        opciones: [
+          { valor: 'EXP', nombre: 'Expedientes' },
+          { valor: 'ACRE', nombre: 'Oficina' },
+        ]
+      },
+      { campo: 'emisorCentroCostoNumero', tipo: 'tipoDocumento' }, // tipo de documento
+      // { campo: 'emisorSucursalDireccion', tipo: 'documento' }, // documento
+      {
+        campo: 'transportePuertoTipo', // es privado
+        tipo: 'multi',
+        opciones: [
+          { nombre: 'Documento privado', valor: '1' },
+          { nombre: 'Documento público', valor: '0' }
+        ]
+      },
+      { campo: 'compradorCodigo', tipo: 'tipoInstitucion' }, // tipo institucion
+      // { campo: 'emisorContactoArea', tipo: 'institucion' }, // nombre institucion
+      { campo: 'emisorContactoNombre', tipo: 'texto' }, // nombre remitente
+      { campo: 'emisorContactoCargo', tipo: 'texto' }, // cargo remitente
+      {
+        campo: 'transporteViaTransporteCodigoTransporte', // acompaña fisico
+        tipo: 'multi',
+        opciones: [
+          { nombre: 'Acompaña físico', valor: '1' },
+          { nombre: 'No acompaña físico', valor: '0' }
+        ]
+      },
+      {
+        campo: 'destinoCodigo', // tipos de destino
+        tipo: 'multi',
+        opciones: [
+          { nombre: 'Funcionarios', valor: 'usuarios' },
+          { nombre: 'Unidades', valor: 'unidades' },
+          { nombre: 'Oficinas de partes', valor: 'oficinas' },
+          { nombre: 'DocDigital', valor: 'docDigital' },
+          { nombre: 'Ministerios', valor: 'ministerios' },
+          { nombre: 'Empresas', valor: 'empresas' },
+          { nombre: 'Personas', valor: 'personas' }
+        ]
+      },
+      { campo: 'destinoUsuarios', tipo: 'destinoUsuarios' }, // tipo de destino usuarios
+      { campo: 'destinoGrupos', tipo: 'destinoGrupos' }, // tipo de destino de grupo
+      { campo: 'destinoCorreos', tipo: 'destinoCorreos' }, // tipo de destino de ministerio, persona o empresa
+    ]
+  },
   'of-entrada': [
     { field: 'tipo', value: 'EXP', },
     { field: 'emisorRut', value: '{empresa.iut}' },
@@ -36,15 +87,7 @@ export default {
   },
   methods: {
     getFilterView(view) {
-      console.log('VIEW', view, filterViews);
-      return (filterViews[view] || [])
-        .map((filter) => {
-          // eslint-disable-next-line no-unused-vars
-          const [all, key] = /^{((\w|\.)+)}$/.exec(filter.value) || [];
-          const value = key ? _.at(this, key) : filter.value;
-          return `${filter.field}:${value}`;
-        })
-        .join('|');
+      return filterViews[view];
     }
   }
 };

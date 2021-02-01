@@ -161,9 +161,6 @@ export default {
     ...mapActions('Dnts', [
       'downloadFilePDF'
     ])
-  },
-  mounted() {
-    console.log('ACA', this);
   }
 };
 </script>

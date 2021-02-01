@@ -40,6 +40,8 @@ import 'vue-datetime/dist/vue-datetime.css';
 // Styles: SCSS
 import './assets/scss/vuexy/main.scss';
 import './assets/scss/bootstrap/main.scss';
+import './assets/scss/main.scss';
+import './assets/scss/multiSelect.scss';
 
 // Tailwind
 import '@/assets/css/main.css';

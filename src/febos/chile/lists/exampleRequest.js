@@ -56,24 +56,24 @@ const copias = {
 const adjuntos = [
   {
     tipo: 'principal', // si el archivo es el principal
-    mime: 'pdf', // mime del archivo
-    nombre: 'test.pdf', // nombre del archivo
+    adjuntoMime: 'pdf', // mime del archivo
+    adjuntoNombre: 'test.pdf', // nombre del archivo
     fecha: '2020-01-23', // fecha en la que se sube
-    url: 'werwrwr' // url obtenida con la directiva
+    adjuntoUrl: 'werwrwr' // url obtenida con la directiva
   },
   {
     tipo: 'adjunto', // si el archivo es adjunto
-    mime: 'pdf', // mime del archivo
-    nombre: 'test1.pdf', // nombre del archivo
+    adjuntoMime: 'pdf', // mime del archivo
+    adjuntoNombre: 'test1.pdf', // nombre del archivo
     fecha: '2020-01-23', // fecha en la que se sube
-    url: 'werwrwr' // url obtenida con la directiva
+    adjuntoUrl: 'werwrwr' // url obtenida con la directiva
   },
   {
     tipo: 'adjunto', // si el archivo es adjunto
-    mime: 'pdf', // mime del archivo
-    nombre: 'test2.pdf', // nombre del archivo
+    adjuntoMime: 'pdf', // mime del archivo
+    adjuntoNombre: 'test2.pdf', // nombre del archivo
     fecha: '2020-01-23', // fecha en la que se sube
-    url: 'werwrwr' // url obtenida con la directiva
+    adjuntoUrl: 'werwrwr' // url obtenida con la directiva
   }
 ];
 

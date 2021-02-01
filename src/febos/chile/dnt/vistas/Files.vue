@@ -1,5 +1,58 @@
 <template>
   <div>
+    <template slot="actions">
+  <span>
+    Viendo documentos que ingresaron
+  </span>
+      <span v-if="periodoSeleccionado.valor != 'personalizado'">
+    {{ periodoSeleccionado.nombre }}
+  </span>
+      <span v-if="periodoSeleccionado.valor == 'personalizado'">
+    entre el
+        <!--<input type="date" class="fecha" v-model="periodoDesde">-->
+    <datetime
+      v-model="periodoDesde"
+      input-class="fecha"
+      :phrases="{ok: 'Seleccionar',
+       cancel: 'Cancelar'}"
+      value-zone="local"
+      format="yyyy-MM-dd"
+    />
+    y el
+    <datetime
+      v-model="periodoHasta"
+      input-class="fecha"
+      :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
+      value-zone="local"
+      format="yyyy-MM-dd"
+    />
+  </span>
+      <vs-dropdown style="margin-left: 15px">
+        <a class="a-icon" href="#">
+          Cambiar
+          <vs-icon class="" icon="expand_more"></vs-icon>
+        </a>
+        <vs-dropdown-menu>
+          <vs-dropdown-item
+            style="width:200px"
+            v-for="periodo in periodos"
+            :key="periodo.valor"
+            v-on:click.native="seleccionarPeriodo(periodo)"
+          >
+            {{ periodo.nombre }}
+          </vs-dropdown-item>
+        </vs-dropdown-menu>
+      </vs-dropdown>
+    </template>
+    <filtros
+      :users="usersCompany"
+      :groups="groupsCompany"
+      :documents="documentTypesState.list"
+      :institutions="institutionTypesState.list"
+      :configuracion-vista="configuracion"
+      :periodos="periodos"
+      v-on:filtros-aplicados="manipularFiltros"
+    />
     <vs-row class="bg-white shadow py-5 px-3 mb-4">
       <vs-col vs-lg="11">
         <vs-row>
@@ -291,9 +344,11 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
 
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
+import Filtros from '../../../global/_vue/componentes/FiltrosDnt';
 
 import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
 import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
@@ -307,6 +362,7 @@ import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixi
 
 export default {
   components: {
+    Filtros,
     FbPaginacion,
     PopUpDetailFile,
     PopUpCancelFile,
@@ -318,7 +374,23 @@ export default {
   },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
+    const view = this.$route.params.vista;
+    const filters = this.getFilterView(view);
+
+    console.log('filters', filters);
     return {
+      periodos: [
+        { nombre: 'las últimas 4 semanas', valor: 'ultimas4semanas' },
+        { nombre: 'este mes', valor: 'esteMes' },
+        { nombre: 'este mes y el anterior', valor: 'esteMesConAnterior' },
+        { nombre: 'los últimos 3 meses', valor: 'ultimos3meses' },
+        { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
+        { nombre: '* Rango personalizado', valor: 'personalizado' }
+      ],
+      periodoSeleccionado: { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
+      periodoDesde: '',
+      periodoHasta: '',
+      configuracion: filters,
       cancelModal: false,
       detailsFile: false,
       binnacleModal: false,
@@ -395,6 +467,10 @@ export default {
     ...mapGetters('Usuario', [
       'currentUser'
     ]),
+    ...mapGetters('List', [
+      'documentTypesState',
+      'institutionTypesState'
+    ]),
     pagina: {
       get() {
         return this.paginaActual;
@@ -443,6 +519,10 @@ export default {
       'getUsersCompany',
       'getGroupsCompany'
     ]),
+    ...mapActions('List', [
+      'fetchDocumentTypes',
+      'fetchInstitutionTypes'
+    ]),
     ...mapActions('Modals', [
       'showModals'
     ]),
@@ -454,6 +534,68 @@ export default {
 
       this.$router.push(`/documentos/${types[file.claseMercadoPublico]}/${file.febosId}`);
     },
+
+    manipularFiltros(filtros) {
+      // console.log('manipulando', filtros);
+      this.filtrosDelComponente = filtros;
+      this.filtros = `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;
+      if (filtros !== '') {
+        this.filtros += `|${filtros}`;
+      }
+      console.log('FILTROS', this.filtros);
+      this.listDocuments({
+        tipo: 'EXP',
+        campos: '*',
+        pagina: 1,
+        orden: '-fechaCreacion',
+        itemsPorPagina: 10,
+        // TODO agregar bien los filtros
+        filtros: this.filtros
+      });
+    },
+    seleccionarPeriodo(periodo) {
+      switch (periodo.valor) {
+        case 'ultimas4semanas':
+          this.periodoDesde = Vue.moment().subtract(28, 'days')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'esteMes':
+          this.periodoDesde = Vue.moment().startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'esteMesConAnterior':
+          this.periodoDesde = Vue.moment().subtract(2, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'ultimos3meses':
+          this.periodoDesde = Vue.moment().subtract(3, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        case 'ultimos6meses':
+          this.periodoDesde = Vue.moment().subtract(6, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+        default:
+          this.periodoDesde = Vue.moment().subtract(6, 'month').startOf('month')
+            .format('YYYY-MM-DD');
+          this.periodoHasta = Vue.moment().subtract(0, 'days')
+            .format('YYYY-MM-DD');
+          break;
+      }
+      this.periodoSeleccionado = periodo;
+      this.manipularFiltros(this.filtrosDelComponente);
+    },
+
     binnacleFileModal(file) {
       this.binnacleModal = true;
       this.getFileBinnacle({
@@ -529,7 +671,35 @@ export default {
       this.showModals('sendFile');
     }
   },
+  created() {
+    this.periodoDesde = Vue.moment().subtract(6, 'month').format('YYYY-MM-DD');
+    this.periodoHasta = Vue.moment().format('YYYY-MM-DD');
+  },
   mounted() {
+    // get data to fill selects of filters
+
+    if (!this.usersCompany.length) {
+      this.getUsersCompany({
+        empresaId: this.empresa.id,
+        pagina: 1,
+        filas: 9999,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
+      });
+    }
+    if (!this.groupsCompany.length) {
+      this.getGroupsCompany({
+        empresaId: this.empresa.id
+      });
+    }
+    if (!this.documentTypesState.length) {
+      this.fetchDocumentTypes();
+    }
+    if (!this.institutionTypesState.length) {
+      this.fetchInstitutionTypes();
+    }
+
+    /*
     const view = this.$route.params.vista;
     const filters = this.getFilterView(view);
     this.listDocuments({
@@ -541,7 +711,7 @@ export default {
       // TODO agregar bien los filtros
       filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
     });
-    console.log('hits', this);
+    */
   }
 };
 </script>
