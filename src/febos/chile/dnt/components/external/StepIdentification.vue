@@ -68,15 +68,14 @@
     </div>
     <div class="row mb-3">
       <div class="col-12">
-        <vs-select
-          class="w-100"
-          label="Etiquetas / Referencias del Documento"
-          name="tags"
-          v-model="step.tags"
-          autocomplete
-          multiple
-        >
-        </vs-select>
+        <vue-tags-input
+          class="w-100 b-radius"
+          v-model="tag"
+          :tags="step.tags"
+          @tags-changed="newTags => step.tags = newTags"
+          placeholder="Agregar"
+          :separators="[',']"
+        />
       </div>
     </div>
     <div class="row mb-3">
@@ -112,6 +111,7 @@
 <script>
 
 import Datepicker from 'vuejs-datepicker';
+import VueTagsInput from '@johmun/vue-tags-input'; // docs: http://www.vue-tags-input.com/#/api/props
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
 import ListDocumentTypes from '@/febos/chile/lists/components/ListDocumentTypes';
@@ -121,18 +121,20 @@ export default {
   mixins: [WizardStep],
   components: {
     Datepicker,
+    VueTagsInput,
     ListDocumentTypes,
     ListDocuments
   },
   data() {
     return {
+      tag: '',
       step: {
         documentType: '',
         document: '',
         documentNumber: '',
         issueDate: '',
         matter: '',
-        tags: '',
+        tags: [],
         isPrivate: 0,
         ...this.draft
       }
@@ -160,3 +162,8 @@ export default {
 };
 
 </script>
+<style>
+.ti-input {
+  border-radius: 6px;
+}
+</style>

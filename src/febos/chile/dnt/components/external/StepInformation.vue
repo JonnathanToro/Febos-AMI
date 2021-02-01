@@ -420,6 +420,7 @@ export default {
         return;
       }
 
+      console.log('LIST', this.subjectForm.subject);
       const subjectType = this.$refs.subjectType.getOption();
       const subject = this.isInput.includes(this.subjectForm.subjectType)
         ? {

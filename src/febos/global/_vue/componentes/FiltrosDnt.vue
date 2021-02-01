@@ -495,9 +495,11 @@ export default {
           query.push(`${filtro.campo}:${inicio}--${fin}`);
         } else {
           if (filtro.tipo === 'destinoUsuarios'
-            || filtro.tipo === 'destinoGrupos'
-            || filtro.tipo === 'destinoCorreos') {
+            || filtro.tipo === 'destinoGrupos') {
             filtro.campo = 'destinoListaCodigo';
+          }
+          if (filtro.tipo === 'destinoCorreos') {
+            filtro.campo = 'destinoCorreo';
           }
           query.push(`${filtro.campo }:${ filtro.valor}`);
         }

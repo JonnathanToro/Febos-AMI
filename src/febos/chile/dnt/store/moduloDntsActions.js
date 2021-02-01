@@ -124,7 +124,7 @@ export const loadWizardData = async ({ commit }, { id, mapper }) => {
     { febosId: id }
   );
 
-  data.dntAdjuntos = adjuntos;
+  data.adjuntos = adjuntos;
 
   commit(
     'SET_WIZARD_DATA',
@@ -171,11 +171,14 @@ export const sendTicketHelp = async ({ commit }, payload) => {
 };
 
 export const emitDnt = async ({ commit }, payload) => {
+  commit('SET_LOADING', true);
+  const response = await createDnt(payload);
+  if (response.data.codigo !== 10) {
+    commit('SET_ERROR_MENSAJE', response.data);
+  }
   await router.push({
     path: '/expedientes/en-curso'
   });
-  commit('SET_LOADING', true);
-  const response = await createDnt(payload);
   commit('SET_SUCCESS_MENSAJE', response.data);
   commit('SET_LOADING', false);
   return response.data;

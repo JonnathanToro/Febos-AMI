@@ -19,8 +19,9 @@ export default {
       dnt,
       observaciones,
       destinatarios,
-      dntAdjuntos,
-      referencias
+      adjuntos,
+      referencias,
+      etiquetas
     }
   ) {
     const data = {};
@@ -88,8 +89,8 @@ export default {
       data.copiesSelected = copies;
     }
 
-    if (dntAdjuntos && dntAdjuntos.length) {
-      const main = dntAdjuntos
+    if (adjuntos && adjuntos.length) {
+      const main = adjuntos
         .find((file) => file.tipo === 'principal');
 
       if (main) {
@@ -101,7 +102,7 @@ export default {
         };
       }
 
-      data.additionalFiles = dntAdjuntos
+      data.additionalFiles = adjuntos
         .filter((file) => file.tipo === 'adjunto')
         .map((file) => ({
           mime: file.adjuntoMime,
@@ -122,10 +123,15 @@ export default {
       data.relatedDocumentsSelected = relatedDocuments;
     }
 
+    if (etiquetas && etiquetas.length) {
+      data.tags = etiquetas.map((tag) => ({ text: tag }));
+    }
+
     return data;
   },
   draftMapper(input, iutCompany, nameCompany) {
     return {
+      debug: 'si',
       dnt: {
         tipo: 'EXP',
         emisorRut: iutCompany,
@@ -149,16 +155,23 @@ export default {
         transporteViaTransporteCodigoTransporte: input.withAttachment,
         transporteNotas: input.documentDetail
       },
-      dntObservacion: [
+      observaciones: [
         {
+          linea: '0',
           observacion: input.matter
         },
         {
-          obsevacion: input.observation
+          linea: '1',
+          observacion: input.observation
         }
       ],
-      dntEtiqueta: input.tags,
-      dntDestino: [
+      etiquetas: input.tags.map((tag) => {
+        const etiqueta = {
+          etiqueta: tag.text
+        };
+        return etiqueta;
+      }),
+      destinatarios: [
         ...(input.subjectsSelected || []).map((subject) => {
           const institution = Object.keys(subject.subjectTypeDigitalDoc).length
             ? {
@@ -191,14 +204,14 @@ export default {
             estado: 1,
             destinoCodigo: subject.copySubjectType.value,
             destinoNombre: subject.copySubjectType.label,
-            destinoListaCodigo: subject.copySubject.label,
+            destinoListaCodigo: subject.copySubject.value,
             destinoListaNombre: subject.copySubject.label,
             destinoCorreo: subject.copySubjectEmail,
             ...institution
           };
         })
       ],
-      dntAdjuntos: [
+      adjuntos: [
         {
           tipo: 'principal',
           adjuntoMime: input.mainFile.mime,
@@ -214,7 +227,7 @@ export default {
           adjuntoUrl: file.path
         }))
       ],
-      dntReferencia: (input.relatedDocumentsSelected || []).map((relatedDocument) => ({
+      referencias: (input.relatedDocumentsSelected || []).map((relatedDocument) => ({
         linea: relatedDocument.id,
         tipoDocumento: relatedDocument.type,
         folio: relatedDocument.number
