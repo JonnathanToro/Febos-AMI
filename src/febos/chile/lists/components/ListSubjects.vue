@@ -68,9 +68,16 @@ export default {
       this.$watch('parentValue', (newValue, oldValue) => {
         this.$emit('input', '');
         if (newValue !== oldValue) {
+          if (oldValue !== '') {
+            this.$emit('input', '');
+          }
           this.fetchSubjects(newValue);
         }
       });
+
+      if (this.parentValue) {
+        this.fetchSubjects(this.parentValue);
+      }
     } else {
       this.fetchSubjects(this.parentValue);
     }

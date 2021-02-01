@@ -14,7 +14,7 @@
     </vs-row>
     <vs-row vs-justify="center">
       <vs-col vs-w="10">
-        <vs-card>
+        <vs-card id="wizard">
           <div slot="header">
             <h3>
               {{currentStepSetting.title}}
@@ -24,6 +24,7 @@
             <component
               ref="step"
               :is="currentStepSetting.component"
+              :draft="wizardData"
             />
           </div>
           <div slot="footer">
@@ -61,9 +62,21 @@ export default {
       wizard: {
         currentStep: 0,
         steps: []
-      },
-      rawStepData: {}
+      }
     };
+  },
+  watch: {
+    loading(value) {
+      if (!value) {
+        this.$vs.loading.close('#wizard > .con-vs-loading');
+        return;
+      }
+
+      this.$vs.loading({
+        container: '#wizard',
+        scale: 0.6
+      });
+    }
   },
   computed: {
     ...mapGetters('Personalizacion', [
@@ -71,6 +84,10 @@ export default {
     ]),
     ...mapGetters('Empresas', [
       'empresa'
+    ]),
+    ...mapGetters('Dnts', [
+      'loading',
+      'wizardData'
     ]),
     isFirstStep() {
       return this.wizard.currentStep === 0;
@@ -88,7 +105,9 @@ export default {
   },
   methods: {
     ...mapActions('Dnts', [
-      'emitDnt'
+      'emitDnt',
+      'loadWizardData',
+      'addWizardData'
     ]),
     onBack() {
       if (this.isFirstStep) {
@@ -102,10 +121,7 @@ export default {
         return;
       }
 
-      this.rawStepData = {
-        ...this.rawStepData,
-        ...this.$refs.step.getStepData()
-      };
+      this.addWizardData(this.$refs.step.getStepData());
 
       if (this.isLastStep) {
         this.onEnd();
@@ -115,20 +131,25 @@ export default {
       this.wizard.currentStep += 1;
     },
     onEnd() {
-      console.log('mapped data', this.wizard.mapper(this.rawStepData));
-
       this.emitDnt(
-        this.wizard.mapper(this.rawStepData, this.empresa.iut, this.empresa.razonSocial)
+        this.wizard.draftMapper(this.wizardData, this.empresa.iut, this.empresa.razonSocial)
       );
     },
     onBackup() {
-      console.log('BACKUP data', this.wizard.mapper(this.rawStepData));
+      console.log('BACKUP data', this.wizard.draftMapper(this.wizardData));
     }
   },
   created() {
-    const { wizard } = this.$route.params;
+    const { wizard, id } = this.$route.params;
     if (config[wizard]) {
       this.wizard = config[wizard]();
+    }
+
+    if (id) {
+      this.loadWizardData({
+        id,
+        mapper: this.wizard.wizardMapper
+      });
     }
   }
 };
