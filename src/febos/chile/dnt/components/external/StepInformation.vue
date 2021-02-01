@@ -151,9 +151,9 @@
         <div class="col-12">
           <vs-table
             multiple
-            v-model="subjectsSelected"
+            v-model="step.subjectsSelected"
             no-data-text="No tienes destinatarios"
-            :data="subjects"
+            :data="step.subjects"
           >
             <template slot="thead">
               <vs-th>Destino</vs-th>
@@ -275,9 +275,9 @@
         <div class="col-12">
           <vs-table
             multiple
-            v-model="copiesSelected"
+            v-model="step.copiesSelected"
             no-data-text="No tienes distribuciones con copia"
-            :data="copies"
+            :data="step.copies"
           >
             <template slot="thead">
               <vs-th>Distribución</vs-th>
@@ -384,10 +384,6 @@ export default {
         message: ''
       },
       isInput: ['personas', 'empresas'],
-      subjects: [],
-      copies: [],
-      subjectsSelected: [],
-      copiesSelected: [],
       subjectForm: {
         subjectType: '',
         subject: '',
@@ -407,7 +403,12 @@ export default {
         personPosition: '',
         withAttachment: 0,
         documentDetail: '',
-        observation: ''
+        observation: '',
+        subjects: [],
+        copies: [],
+        subjectsSelected: [],
+        copiesSelected: [],
+        ...this.draft
       }
     };
   },
@@ -439,14 +440,14 @@ export default {
         subjectEmail: this.subjectForm.subjectEmail
       };
 
-      this.subjects.push(row);
-      this.subjectsSelected.push(row);
+      this.step.subjects.push(row);
+      this.step.subjectsSelected.push(row);
 
       this.subjectForm.subjectType = '';
       this.subjectForm.subject = '';
       this.subjectForm.subjectTypeDigitalDoc = '';
       this.subjectForm.subjectEmail = '';
-      this.$validator.reset();
+      await this.$validator.reset();
     },
     async addCopy() {
       const isValid = await this.validateForm('step-2-part-3');
@@ -475,14 +476,14 @@ export default {
         copySubjectEmail: this.copySubjectForm.copySubjectEmail
       };
 
-      this.copies.push(row);
-      this.copiesSelected.push(row);
+      this.step.copies.push(row);
+      this.step.copiesSelected.push(row);
 
       this.copySubjectForm.copySubjectType = '';
       this.copySubjectForm.copySubject = '';
       this.copySubjectForm.copySubjectTypeDigitalDoc = '';
       this.copySubjectForm.copySubjectEmail = '';
-      this.$validator.reset();
+      await this.$validator.reset();
     },
     async isValid() {
       const stepValidations = await Promise.all([
@@ -494,7 +495,7 @@ export default {
         return false;
       }
 
-      if (!this.subjectsSelected.length) {
+      if (!this.step.subjectsSelected.length) {
         this.error.message = 'Debes agregar al menos un destino';
         return false;
       }
@@ -511,8 +512,6 @@ export default {
       return {
         ...this.step,
         institutionTypeName: this.$refs.institutionType.getOption().label,
-        subjectsSelected: this.subjectsSelected,
-        copiesSelected: this.copiesSelected,
         ...institutionName
       };
     }

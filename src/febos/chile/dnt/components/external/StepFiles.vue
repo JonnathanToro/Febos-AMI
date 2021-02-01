@@ -136,9 +136,9 @@
         <div class="col-12">
           <vs-table
             multiple
-            v-model="relatedDocuments"
+            v-model="step.relatedDocuments"
             no-data-text="No tienes documentos relacionados"
-            :data="relatedDocumentsSelected"
+            :data="step.relatedDocumentsSelected"
           >
             <template slot="thead">
               <vs-th>Relacionado con</vs-th>
@@ -178,15 +178,16 @@ export default {
       },
       step: {
         mainFile: {},
-        additionalFiles: []
+        additionalFiles: [],
+        relatedDocuments: [],
+        relatedDocumentsSelected: [],
+        ...this.draft
       },
       additionalFile: {},
       relatedDocument: {
         type: '',
         number: ''
-      },
-      relatedDocuments: [],
-      relatedDocumentsSelected: []
+      }
     };
   },
   methods: {
@@ -219,21 +220,15 @@ export default {
         number: this.relatedDocument.number
       };
 
-      this.relatedDocuments.push(row);
-      this.relatedDocumentsSelected.push(row);
+      this.step.relatedDocuments.push(row);
+      this.step.relatedDocumentsSelected.push(row);
 
       this.relatedDocument.type = '';
       this.relatedDocument.number = '';
-      this.$validator.reset();
+      await this.$validator.reset();
     },
     isValid() {
       return this.validateForm('step-3-part-1');
-    },
-    getStepData() {
-      return {
-        ...this.step,
-        relatedDocumentsSelected: this.relatedDocumentsSelected,
-      };
     }
   }
 };

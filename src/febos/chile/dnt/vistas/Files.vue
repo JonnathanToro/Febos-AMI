@@ -1,192 +1,225 @@
-<template lang="html">
+<template>
   <div>
-    <vs-row vs-w="12" class="list-wrapper title-columns" >
-      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
-        <b>Número</b>
+    <vs-row class="bg-white shadow py-5 px-3 mb-4">
+      <vs-col vs-lg="11">
+        <vs-row>
+          <vs-col vs-lg="1" class="text-center">
+            <b>#</b>
+          </vs-col>
+          <vs-col vs-lg="2">
+            <b>Estado</b>
+          </vs-col>
+          <vs-col vs-lg="9">
+            <vs-row>
+              <vs-col vs-lg="4">
+                <b>Enviado por</b>
+              </vs-col>
+              <vs-col vs-lg="4">
+                <b>Remitente</b>
+              </vs-col>
+              <vs-col vs-lg="4">
+                <b>Responsable</b>
+              </vs-col>
+            </vs-row>
+          </vs-col>
+        </vs-row>
       </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
-        <b>Estado</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Enviado por</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Remitente</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Responsable</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Actualización</b>
-      </vs-col>
-      <vs-col vs-type="flex" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-        <b>Creación</b>
+      <vs-col vs-lg="1" vs-sm="4" vs-xs="12" class="text-center">
+        <b>...</b>
       </vs-col>
     </vs-row>
     <div id="list-dnt">
       <vs-row
-        vs-w="12"
         :key="file.febosId"
         v-for="file in dntByFiles"
-        class="content-rows list-wrapper"
+        class="p-3 mt-2 bg-white shadow-sm"
       >
-        <vs-col vs-type="block" class="numero-file" vs-lg="1" vs-sm="4" vs-xs="12">
-          <div>
-            # <br>
-          </div>
-          <div>
-            {{ file.numero }}
-          </div>
+        <vs-col vs-lg="11">
+          <vs-row>
+            <vs-col class="text-center text-primary" vs-lg="1">
+              <div>
+                # <br>
+              </div>
+              <div>
+                {{ file.numero }}
+              </div>
+            </vs-col>
+            <vs-col vs-lg="2">
+              <vs-chip
+                v-if="file.estado === 1"
+                title="creado"
+              >
+                <vs-avatar icon="mail_outline" color="#43C3B9" />
+                Creado
+              </vs-chip>
+              <vs-chip
+                title="Borrador"
+                v-if="file.estado === 3"
+              >
+                <vs-avatar icon="query_builder" color="#43C3B9" />
+                Borrador
+              </vs-chip>
+              <vs-chip
+                title="Aprobado"
+                v-if="file.estado === 4"
+              >
+                <vs-avatar icon="thumb_up" color="#14AA59" />
+                Aprobado
+              </vs-chip>
+              <vs-chip
+                title="Rechazado"
+                v-if="file.estado === 5"
+              >
+                <vs-avatar icon="thumb_down" color="#CE4B4B" />
+                Rechazado
+              </vs-chip>
+              <vs-chip
+                title="Anulado"
+                v-if="file.estado === 8"
+              >
+                <vs-avatar icon="close" color="#A04E4E" />
+                Anulado
+              </vs-chip>
+              <vs-chip
+                title="Finalizado"
+                v-if="file.estado === 9"
+              >
+                <vs-avatar icon="move_to_inbox" color="#A04E4E" />
+                Finalizado
+              </vs-chip>
+            </vs-col>
+            <vs-col vs-lg="9">
+              <vs-row>
+                <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+                  {{file.compradorArea | capitalize }}
+                </vs-col>
+                <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+                  {{ file.emisorContactoNombre | capitalize }}
+                </vs-col>
+                <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+                  Sin asignar
+                </vs-col>
+              </vs-row>
+            </vs-col>
+          </vs-row>
+          <vs-row>
+            <vs-col vs-offset="3" vs-lg="7" vs-type="flex">
+              <vs-chip class="mr-4">
+                <vs-avatar icon="update" />
+                {{ file.fechaActualizacion | dateFormat }}
+              </vs-chip>
+              <vs-chip class="mr-4">
+                <vs-avatar icon="add_circle_outline" />
+                {{ file.fechaEntrega | dateFormat }}
+              </vs-chip>
+              <vs-button
+                size="small"
+                type="border"
+                color="#3ca2d6"
+                title="Es un archivo externo"
+                v-if="file.claseMercadoPublico === 'ext'"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              >
+                <span class="text-black">externo</span>
+              </vs-button>
+              <vs-button
+                size="small"
+                type="border"
+                color="#3ca2d6"
+                title="Es un archivo interno"
+                v-if="file.claseMercadoPublico === 'int'"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              >
+                <span class="text-black">interno</span>
+              </vs-button>
+              <vs-button
+                size="small"
+                type="border"
+                color="#3ca2d6"
+                icon="description"
+                title="Acompaña físico"
+                v-if="file.transporteViaTransporteCodigoTransporte === 1"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              >
+                <span class="text-black">acompaña físico</span>
+              </vs-button>
+              <vs-button
+                size="small"
+                type="border"
+                color="danger"
+                icon="lock"
+                ttitle="Es un archivo privado"
+                v-if="file.transportePuertoTipo === 1"
+                class="p-2 rounded-lg mr-4"
+                disabled
+              />
+            </vs-col>
+          </vs-row>
         </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="1" vs-sm="4" vs-xs="12">
-          <vs-icon
-            title="Creado"
-            v-if="file.estado === 1"
-            icon="mail_outline"
-            size="medium"
-            bg="#43C3B9"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Borrador"
-            v-if="file.estado === 3"
-            icon="more_time"
-            size="medium"
-            bg="#43C3B9"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Aprobado"
-            v-if="file.estado === 4"
-            icon="thumb_up"
-            size="medium"
-            bg="#14AA59"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Rechazado"
-            v-if="file.estado === 5"
-            icon="thumb_down"
-            size="medium"
-            bg="#CE4B4B"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Anulado"
-            v-if="file.estado === 8"
-            icon="close"
-            size="medium"
-            bg="#A04E4E"
-            class="state-icon"
-            color="white"/>
-          <vs-icon
-            title="Finalizado"
-            v-if="file.estado === 9"
-            icon="move_to_inbox"
-            size="medium"
-            bg="#A04E4E"
-            class="state-icon"
-            color="white"/>
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{file.compradorArea | capitalize }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.emisorContactoNombre | capitalize }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          Sin asignar
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaActualizacion | dateFormat }}
-        </vs-col>
-        <vs-col vs-type="block" vs-justify="left" vs-align="center" vs-lg="2" vs-sm="4" vs-xs="12">
-          {{ file.fechaEntrega | dateFormat }}
-        </vs-col>
-        <vs-col
-          vs-type="block"
-
-          class="aditional-info"
-          vs-lg="12"
-          vs-sm="12"
-          vs-xs="12"
-        >
-          <span
-            class="pill-info"
-            v-if="file.claseMercadoPublico === 'ext'"
-            title="Es un archivo externo"
-          >
-            externo
-          </span>
-          <span
-            class="pill-info"
-            v-if="file.claseMercadoPublico === 'int'"
-            title="Es un archivo interno"
-          >
-            interno
-          </span>
-          <span
-            class="pill-info"
-            v-if="file.transporteViaTransporteCodigoTransporte === 1"
-            title="Acompaña físico"
-          >
-           <vs-icon icon="description" ></vs-icon>
-            acompaña físico
-          </span>
-          <span
-            class="pill-info"
-            v-if="file.transportePuertoTipo === 1"
-            title="Es un archivo privado"
-          >
-            <vs-icon icon="lock"></vs-icon>
-          </span>
-          <span class="pill-info" v-if="file.plazo" title="tiempo Transcurrido">
-            {{translateTime(file.plazo, true)}}
-          </span>
-          <span  class="actions">
-            <vs-dropdown vs-custom-content vs-trigger-click >
+        <vs-col vs-lg="1" vs-type="flex" vs-justify="center" vs-align="center">
+          <vs-dropdown vs-custom-content vs-trigger-click>
             <a class="a-icon" href.prevent>
               <vs-icon
-                class="" icon="bubble_chart"
+                icon="settings"
                 size="medium"
                 bg="#E4E4E4"
                 round
-                color="gray"></vs-icon>
+                color="gray"
+              />
             </a>
             <vs-dropdown-menu style="width: fit-content">
-               <vs-dropdown-item v-on:click="binnacleFileModal(file)">
-                <vs-icon icon="list"/> Bitácora
+              <vs-dropdown-item
+                v-if="file.estado === 3"
+                v-on:click="openDraft(file)"
+              >
+                <vs-icon icon="query_builder"/>
+                Continuar borrador
+              </vs-dropdown-item>
+              <vs-dropdown-item v-on:click="binnacleFileModal(file)">
+                <vs-icon icon="list"/>
+                Bitácora
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="getDetailsFile(file)">
-                <vs-icon icon="search"/> Ver detalles
+                <vs-icon icon="search"/>
+                Ver detalles
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="downloadFile(file)">
-                <vs-icon icon="save_alt"/> Descargar acta
+                <vs-icon icon="save_alt"/>
+                Descargar acta
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="downloadAttatchments(file)">
-                <vs-icon icon="save_alt"/> Descargar adjuntos
+                <vs-icon icon="save_alt"/>
+                Descargar adjuntos
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="cancelFileModal(file)">
-                <vs-icon icon="clear"/> Anular expediente
+                <vs-icon icon="clear"/>
+                Anular expediente
               </vs-dropdown-item>
                <vs-dropdown-item v-on:click="processFileModal(file)">
-                <vs-icon icon="move_to_inbox"/> Finalizar documento
+                <vs-icon icon="move_to_inbox"/>
+                 Finalizar documento
               </vs-dropdown-item>
                <vs-dropdown-item v-on:click="getParticipants(file)">
-                <vs-icon icon="groups"/> Participantes
+                <vs-icon icon="groups"/>
+                 Participantes
               </vs-dropdown-item>
                <vs-dropdown-item v-on:click="getComments(file)">
-                <vs-icon icon="chat"/> Comentarios
+                <vs-icon icon="chat"/>
+                 Comentarios
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="sendFile(file)">
-                <vs-icon icon="chat"/> Enviar documento
+                <vs-icon icon="chat"/>
+                Enviar documento
               </vs-dropdown-item>
               <vs-dropdown-item v-on:click="ticketModalFile(file)">
-                <vs-icon icon="help"/> Ticket de ayuda
+                <vs-icon icon="help"/>
+                Ticket de ayuda
               </vs-dropdown-item>
             </vs-dropdown-menu>
           </vs-dropdown>
-          </span>
         </vs-col>
       </vs-row>
     </div>
@@ -246,7 +279,7 @@
     <PopUpTicketFile :file="file" />
     <PopUpSendFile :file="file" />
     <vs-row v-if="!loading && dntByFiles.length">
-      <vs-col vs-w="12" class="m-top-20">
+      <vs-col vs-w="12" class="mt-4">
         <fb-paginacion
           :total="paginacion.paginasTotales"
           :max="10"
@@ -413,6 +446,14 @@ export default {
     ...mapActions('Modals', [
       'showModals'
     ]),
+    openDraft(file) {
+      // TODO: move this to another side, (why api doesn't save the full name? 😡😡)
+      const types = {
+        ext: 'externo'
+      };
+
+      this.$router.push(`/documentos/${types[file.claseMercadoPublico]}/${file.febosId}`);
+    },
     binnacleFileModal(file) {
       this.binnacleModal = true;
       this.getFileBinnacle({
@@ -486,42 +527,7 @@ export default {
       });
       this.file = file;
       this.showModals('sendFile');
-    },
-    translateTime: (time, abr) => { // ASCO
-      const seconds = time * 60;
-      const numdays = Math.floor(seconds / 86400);
-      const numhours = Math.floor((seconds % 86400) / 3600);
-      const numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
-
-      if (numdays !== 0) {
-        if (abr) {
-          return `${numdays } d ${ numhours } hrs ${ numminutes } min `;
-        }
-        return `${numdays } dias ${ numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours !== 0) {
-        if (abr) {
-          return `${numhours } hrs ${ numminutes } min `;
-        }
-        return `${numhours } horas ${ numminutes } minutos `;
-      }
-
-      if (numdays === 0 && numhours === 0 && numminutes !== 0) {
-        if (abr) {
-          return `${numminutes } min `;
-        }
-        return `${numminutes } minutos `;
-      }
-
-      if (numminutes === 0) {
-        if (abr) {
-          return `${numminutes } min`;
-        }
-        return `${numminutes } minutos`;
-      }
-      return numminutes;
-    } // END ASCO, o no?
+    }
   },
   mounted() {
     const view = this.$route.params.vista;
@@ -539,61 +545,3 @@ export default {
   }
 };
 </script>
-<style>
-
-.m-top-20 {
-  margin-top: 20px;
-}
-
-.list-wrapper {
-  background: white;
-}
-
-.title-columns {
-  padding: 16px 10px;
-  margin-bottom: 10px;
-  background: white;
-  box-shadow: -1px 6px 12px 0 #80808075;
-}
-
-.content-rows {
-  padding: 10px;
-  margin-top: 4px;
-}
-
-.numero-file {
-  text-align: center;
-  color: #3ca2d6;
-}
-
-.pill-info {
-  border: 1px solid #3ca2d6;
-  padding: 4px 6px;
-  border-radius: 10px;
-  font-size: 12px;
-  margin-right: 20px;
-  cursor:pointer;
-}
-
-.actions {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  cursor: pointer;
-}
-.aditional-info {
-  padding: 4px 0;
-  margin-left: 16% !important;
-  position: relative;
-}
-
-.state-icon {
-  border-radius: 25px;
-  font-size: 22px !important;
-  padding: 5px;
-}
-.tooltip-inline {
-  display: inline !important;
-}
-
-</style>

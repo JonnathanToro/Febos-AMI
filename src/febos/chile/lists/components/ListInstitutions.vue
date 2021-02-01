@@ -67,11 +67,17 @@ export default {
     if (this.nested) {
       // TODO: this.clearDocuments();
       this.$watch('parentValue', (newValue, oldValue) => {
-        this.$emit('input', '');
         if (newValue !== oldValue) {
+          if (oldValue !== '') {
+            this.$emit('input', '');
+          }
           this.fetchInstitutions(newValue);
         }
       });
+
+      if (this.parentValue) {
+        this.fetchInstitutions(this.parentValue);
+      }
     } else {
       this.fetchInstitutions(this.parentValue);
     }

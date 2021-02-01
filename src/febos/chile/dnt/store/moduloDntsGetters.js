@@ -45,5 +45,6 @@ export default {
     comment.creado = Vue.moment(comment.fechaCreacion).format('YYYY-MM-DD HH:ss');
     return comment;
   }),
-  binnacleFile: (state) => state.binnacle
+  binnacleFile: (state) => state.binnacle,
+  wizardData: (state) => state.wizardData
 };

@@ -12,5 +12,6 @@ export default {
     cuerpo: ''
   },
   comments: [],
-  binnacle: []
+  binnacle: [],
+  wizardData: {}
 };

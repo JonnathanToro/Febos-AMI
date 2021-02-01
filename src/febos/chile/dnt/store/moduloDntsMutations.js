@@ -16,6 +16,15 @@ export default {
   SET_DETAIL_FILE(state, payload) {
     state.details = payload;
   },
+  SET_WIZARD_DATA(state, payload) {
+    state.wizardData = payload;
+  },
+  ADD_WIZARD_DATA(state, payload) {
+    state.wizardData = {
+      ...state.wizardData,
+      ...payload
+    };
+  },
   ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
   },

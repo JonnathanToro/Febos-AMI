@@ -133,7 +133,8 @@ export default {
         issueDate: '',
         matter: '',
         tags: '',
-        isPrivate: 0
+        isPrivate: 0,
+        ...this.draft
       }
     };
   },

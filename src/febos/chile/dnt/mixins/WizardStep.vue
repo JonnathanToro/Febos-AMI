@@ -4,12 +4,24 @@ export default {
   props: {
     mapper: {
       type: Function
+    },
+    draft: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
     return {
       step: {}
     };
+  },
+  watch: {
+    draft(newValue) {
+      this.step = {
+        ...this.step,
+        ...newValue
+      };
+    }
   },
   methods: {
     async validateForm(scope) {

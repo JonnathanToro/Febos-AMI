@@ -111,6 +111,32 @@ export const getFileDnt = async ({ commit }, payload) => {
   return response.data;
 };
 
+export const loadWizardData = async ({ commit }, { id, mapper }) => {
+  commit('SET_LOADING', true);
+  const { data } = await getFile({
+    febosId: id,
+    destinatarios: 'si',
+    referencias: 'si',
+    dnt: 'si'
+  });
+
+  const { data: { adjuntos } } = await attachmentsFiles(
+    { febosId: id }
+  );
+
+  data.dntAdjuntos = adjuntos;
+
+  commit(
+    'SET_WIZARD_DATA',
+    mapper ? mapper(data) : data
+  );
+  commit('SET_LOADING', false);
+};
+
+export const addWizardData = ({ commit }, payload) => {
+  commit('ADD_WIZARD_DATA', payload);
+};
+
 export const getFileComments = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await fileComments(payload);

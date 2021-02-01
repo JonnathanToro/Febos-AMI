@@ -14,7 +14,117 @@ export default {
       component: require('../../../components/external/StepFiles').default
     }
   ],
-  mapper(input, iutCompany, nameCompany) {
+  wizardMapper(
+    {
+      dnt,
+      observaciones,
+      destinatarios,
+      dntAdjuntos,
+      referencias
+    }
+  ) {
+    const data = {};
+
+    if (dnt) {
+      data.documentType = dnt.emisorCentroCostoNumero;
+      data.document = dnt.emisorSucursalCodigo;
+      data.documentNumber = dnt.numeroInt;
+      data.issueDate = dnt.fechaEmision;
+      data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10);
+      data.institutionType = dnt.compradorCodigo;
+      data.institution = dnt.emisorContactoCodigo;
+      data.personName = dnt.emisorContactoNombre;
+      data.personPosition = dnt.emisorContactoCargo;
+      data.withAttachment = dnt.transporteViaTransporteCodigoTransporte;
+      data.documentDetail = dnt.transporteNotas;
+    }
+
+    if (observaciones && observaciones.length) {
+      data.matter = observaciones[0].observacion;
+      data.observation = observaciones[1].observacion;
+    }
+
+    if (destinatarios && destinatarios.length) {
+      const subjects = destinatarios
+        .filter((subject) => subject.tipoDestino === '1')
+        .map((subject) => ({
+          subjectType: {
+            value: subject.destinoCodigo,
+            label: subject.destinoNombre
+          },
+          subject: {
+            value: subject.destinoListaCodigo,
+            label: subject.destinoListaNombre
+          },
+          subjectEmail: subject.destinoCorreo,
+          subjectTypeDigitalDoc: {
+            value: subject.institucionCodigo || '',
+            label: subject.institucionNombre || ''
+          }
+        }));
+
+      data.subjects = subjects;
+      data.subjectsSelected = subjects;
+
+      const copies = destinatarios
+        .filter((subject) => subject.tipoDestino === '2')
+        .map((subject) => ({
+          copySubjectType: {
+            value: subject.destinoCodigo,
+            label: subject.destinoNombre
+          },
+          copySubject: {
+            value: subject.destinoListaCodigo,
+            label: subject.destinoListaNombre
+          },
+          copySubjectEmail: subject.destinoCorreo,
+          copySubjectTypeDigitalDoc: {
+            value: subject.institucionCodigo || '',
+            label: subject.institucionNombre || ''
+          }
+        }));
+
+      data.copies = copies;
+      data.copiesSelected = copies;
+    }
+
+    if (dntAdjuntos && dntAdjuntos.length) {
+      const main = dntAdjuntos
+        .find((file) => file.tipo === 'principal');
+
+      if (main) {
+        data.mainFile = {
+          mime: main.adjuntoMime,
+          name: main.adjuntoNombre,
+          path: main.adjuntoUrl,
+          date: main.fecha
+        };
+      }
+
+      data.additionalFiles = dntAdjuntos
+        .filter((file) => file.tipo === 'adjunto')
+        .map((file) => ({
+          mime: file.adjuntoMime,
+          name: file.adjuntoNombre,
+          path: file.adjuntoUrl,
+          date: file.fecha
+        }));
+    }
+
+    if (referencias && referencias.length) {
+      const relatedDocuments = referencias.map((relatedDocument) => ({
+        id: relatedDocument.linea,
+        type: relatedDocument.tipoDocumento,
+        number: relatedDocument.folio
+      }));
+
+      data.relatedDocuments = relatedDocuments;
+      data.relatedDocumentsSelected = relatedDocuments;
+    }
+
+    return data;
+  },
+  draftMapper(input, iutCompany, nameCompany) {
     return {
       dnt: {
         tipo: 'EXP',
@@ -62,7 +172,7 @@ export default {
             estado: 1,
             destinoCodigo: subject.subjectType.value,
             destinoNombre: subject.subjectType.label,
-            destinoListaCodigo: subject.subject.label,
+            destinoListaCodigo: subject.subject.value,
             destinoListaNombre: subject.subject.label,
             destinoCorreo: subject.subjectEmail,
             ...institution
