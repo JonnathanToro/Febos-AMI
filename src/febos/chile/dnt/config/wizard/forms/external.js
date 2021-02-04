@@ -131,6 +131,7 @@ export default {
   },
   documentMapper(input, iutCompany, nameCompany, isDraft = false) {
     const data = {
+      adjuntos: [],
       dnt: {
         tipo: 'EXP',
         emisorRut: iutCompany,
@@ -155,18 +156,9 @@ export default {
         transporteViaTransporteCodigoTransporte: input.withAttachment,
         transporteNotas: input.documentDetail
       },
-      observaciones: [
-        {
-          linea: '0',
-          observacion: input.matter
-        }
-      ],
-      etiquetas: input.tags.map((tag) => {
-        const etiqueta = {
-          etiqueta: tag.text
-        };
-        return etiqueta;
-      }),
+      etiquetas: (input.tags || []).map((tag) => ({
+        etiqueta: tag.text
+      })),
       destinatarios: [
         ...(input.subjectsSelected || []).map((subject) => {
           const institution = Object.keys(subject.subjectTypeDigitalDoc).length
@@ -207,22 +199,6 @@ export default {
           };
         })
       ],
-      adjuntos: [
-        {
-          tipo: 'principal',
-          adjuntoMime: input.mainFile.mime,
-          adjuntoNombre: input.mainFile.name,
-          fecha: input.mainFile.date,
-          adjuntoUrl: input.mainFile.path
-        },
-        ...(input.additionalFiles || []).map((file) => ({
-          tipo: 'adjunto',
-          adjuntoMime: file.mime,
-          adjuntoNombre: file.name,
-          fecha: file.date,
-          adjuntoUrl: file.path
-        }))
-      ],
       referencias: (input.relatedDocumentsSelected || []).map((relatedDocument) => ({
         linea: relatedDocument.id,
         tipoDocumento: relatedDocument.type,
@@ -230,11 +206,46 @@ export default {
       }))
     };
 
+    if (input.matter) {
+      data.observaciones = [
+        {
+          linea: '0',
+          observacion: input.matter
+        }
+      ];
+    }
+
     if (input.observation) {
-      data.dntObservacion.push({
+      data.observaciones.push({
         linea: '1',
         obsevacion: input.observation
       });
+    }
+
+    if (input.mainFile) {
+      data.adjuntos = [
+        ...data.adjuntos,
+        {
+          tipo: 'principal',
+          adjuntoMime: input.mainFile.mime,
+          adjuntoNombre: input.mainFile.name,
+          fecha: input.mainFile.date,
+          adjuntoUrl: input.mainFile.path
+        }
+      ];
+    }
+
+    if (input.additionalFiles && input.additionalFiles.length) {
+      data.adjuntos = [
+        ...data.adjuntos,
+        ...(input.additionalFiles || []).map((file) => ({
+          tipo: 'adjunto',
+          adjuntoMime: file.mime,
+          adjuntoNombre: file.name,
+          fecha: file.date,
+          adjuntoUrl: file.path
+        }))
+      ];
     }
 
     if (isDraft) {

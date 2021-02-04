@@ -174,6 +174,11 @@ export const sendTicketHelp = async ({ commit }, payload) => {
   return response.data;
 };
 
+/*
+ TODO: hay que verificar si el dnt tiene ID y si tiene id,
+  actualizar en lugar de crear, además si no tiene id y es
+  modo draft redireccionar después de guardar al editar
+*/
 export const saveDocument = async ({ commit }, { data, isDraft }) => {
   commit('SET_LOADING', true);
 
