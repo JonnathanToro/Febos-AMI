@@ -129,9 +129,8 @@ export default {
 
     return data;
   },
-  draftMapper(input, iutCompany, nameCompany) {
-    return {
-      debug: 'si',
+  documentMapper(input, iutCompany, nameCompany, isDraft = false) {
+    const data = {
       dnt: {
         tipo: 'EXP',
         emisorRut: iutCompany,
@@ -139,6 +138,7 @@ export default {
         emisorRazonSocial: nameCompany,
         receptorRazonSocial: nameCompany,
         claseMercadoPublico: 'ext',
+
         emisorCentroCostoNumero: input.documentType,
         emisorCentroCostoNombre: input.documentTypeName,
         emisorSucursalCodigo: input.document,
@@ -159,10 +159,6 @@ export default {
         {
           linea: '0',
           observacion: input.matter
-        },
-        {
-          linea: '1',
-          observacion: input.observation
         }
       ],
       etiquetas: input.tags.map((tag) => {
@@ -233,5 +229,18 @@ export default {
         folio: relatedDocument.number
       }))
     };
+
+    if (input.observation) {
+      data.dntObservacion.push({
+        linea: '1',
+        obsevacion: input.observation
+      });
+    }
+
+    if (isDraft) {
+      data.dnt.estado = 3;
+    }
+
+    return data;
   }
 };

@@ -77,7 +77,7 @@ export const attemptCancelFile = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await cancelFile(payload);
   if (response.data.codigo !== 10) {
-    commit('SET_ERROR_MENSAJE', response.data);
+    commit('SET_ERROR_MESSAGE', response.data);
   }
   store.commit('Modals/CLOSE_MODAL');
   commit('SET_LOADING', false);
@@ -85,14 +85,14 @@ export const attemptCancelFile = async ({ commit }, payload) => {
 };
 
 export const limpiarMensajeDeError = ({ commit }) => {
-  commit('SET_ERROR_MENSAJE', '');
+  commit('SET_ERROR_MESSAGE', '');
 };
 
 export const processDntFileED = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await clDntActFileED(payload);
   if (response.data.codigo !== 10) {
-    commit('SET_ERROR_MENSAJE', response.data);
+    commit('SET_ERROR_MESSAGE', response.data);
   }
   store.commit('Modals/CLOSE_MODAL');
   commit('SET_LOADING', false);
@@ -133,6 +133,10 @@ export const loadWizardData = async ({ commit }, { id, mapper }) => {
   commit('SET_LOADING', false);
 };
 
+export const clearWizardData = ({ commit }) => {
+  commit('CLEAR_WIZARD_DATA');
+};
+
 export const addWizardData = ({ commit }, payload) => {
   commit('ADD_WIZARD_DATA', payload);
 };
@@ -164,22 +168,26 @@ export const sendDntComment = async ({ commit }, payload) => {
 export const sendTicketHelp = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await sendTicket(payload);
-  commit('SET_SUCCESS_MENSAJE', 'Ticket de ayuda enviado, te contactaremos!');
+  commit('SET_SUCCESS_MESSAGE', 'Ticket de ayuda enviado, te contactaremos!');
   store.commit('Modals/CLOSE_MODAL');
   commit('SET_LOADING', false);
   return response.data;
 };
 
-export const emitDnt = async ({ commit }, payload) => {
+export const saveDocument = async ({ commit }, { data, isDraft }) => {
   commit('SET_LOADING', true);
-  const response = await createDnt(payload);
-  if (response.data.codigo !== 10) {
-    commit('SET_ERROR_MENSAJE', response.data);
+
+  try {
+    const response = await createDnt(data);
+    if (!isDraft) {
+      await router.push({
+        path: '/expedientes/en-curso'
+      });
+    }
+    commit('SET_SUCCESS_MESSAGE', response.data);
+  } catch (e) {
+    commit('SET_ERROR_MESSAGE', e.context);
+  } finally {
+    commit('SET_LOADING', false);
   }
-  await router.push({
-    path: '/expedientes/en-curso'
-  });
-  commit('SET_SUCCESS_MENSAJE', response.data);
-  commit('SET_LOADING', false);
-  return response.data;
 };
