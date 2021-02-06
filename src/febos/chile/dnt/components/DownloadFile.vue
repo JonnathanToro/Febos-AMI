@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="cursor: pointer;">
     <div v-on:click="getFile()" v-if="this.mood === 'normal'">
       {{name}}
     </div>

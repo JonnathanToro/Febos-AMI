@@ -48,13 +48,13 @@
                     <vs-checkbox v-model="recordar" class="mb-3">Recordar mi usuario</vs-checkbox>
                     <router-link to="">Olvidaste tu contraseña?</router-link>
                   </div>
-                  <vs-button type="border" v-if="botonRegistroProveedor">
+                  <vs-button type="border" v-if="botonRegistroProveedor && product !== 'ed'">
                     {{ nombreBotonRegistroProveedores }}
                   </vs-button>
                   <vs-button class="float-right btn-ingresar mb-10" v-on:click="attemptSignIn()">
                     {{ nombreBotonIngreso }}
                   </vs-button>
-                  <div id="clave-unica" v-if="botonClaveUnica">
+                  <div id="clave-unica" v-if="botonClaveUnica && product !== 'ed'">
                     <vs-divider>O</vs-divider>
                     También puedes ingresar con <B>Clave Única</B> del <B>Registro Civil</B>
                     <div class="flex flex-wrap mt-5 clave-unica">
@@ -82,6 +82,7 @@ export default {
   mixins: [I18nMixin, PersonalizacionMixin],
   data() {
     return {
+      product: process.env.VUE_APP_PRODUCTO,
       correo: '',
       clave: '',
       recordar: false,

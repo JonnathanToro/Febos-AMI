@@ -1,18 +1,35 @@
 export default [{
-  header: 'Documentos',
+  header: 'Oficina de Partes',
   icon: 'PackageIcon',
   i18n: 'Documentos',
   items: [
     {
       url: null,
+      name: 'Cargar documento',
+      slug: 'uploads',
+      icon: 'FolderPlusIcon',
+      permiso: '*', // TODO: setup permission
+      submenu: [
+        {
+          url: '/documentos/externo',
+          name: 'Externos',
+          slug: 'uploads',
+          icon: 'files',
+          permiso: '*', // TODO: setup permission
+          i18n: 'uploads'
+        }
+      ]
+    },
+    {
+      url: null,
       name: 'Expedientes',
       slug: 'files',
-      icon: 'FileIcon',
+      icon: 'FolderIcon',
       permiso: '*', // TODO: setup permission
       submenu: [
         {
           url: '/expedientes/en-curso',
-          name: 'En curso',
+          name: 'Pendientes',
           slug: '/expedientes/en-curso',
           icon: 'files',
           permiso: '*', // TODO: setup permission
@@ -20,22 +37,23 @@ export default [{
         },
         {
           url: '/expedientes/finalizados',
-          name: 'Finalizados',
+          name: 'Tramitados',
           slug: '/expedientes/finalizados',
           icon: 'files',
           permiso: '*', // TODO: setup permission
           i18n: 'expedientes'
         },
         {
-          url: '/oficinas/of-entrada',
-          name: 'Entrada',
-          slug: '/oficinas/of-entrada',
+          url: '/expedientes/general',
+          name: 'General',
+          slug: '/expedientes/general',
           icon: 'files',
           permiso: '*', // TODO: setup permission
           i18n: 'expedientes'
         },
       ]
     },
+    /*
     {
       url: null,
       name: 'DocDigital',
@@ -53,5 +71,6 @@ export default [{
         }
       ]
     }
+    */
   ]
 }];

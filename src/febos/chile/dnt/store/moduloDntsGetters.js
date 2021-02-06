@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 export default {
   dntByFiles: (state) => (
-    Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'APR')
+    Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'EXP' || dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO')
   ),
   dntByED: (state) => (
     Object.values(state.dnts || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
@@ -24,7 +24,7 @@ export default {
     (state.details || {}).comentarios || []
   ),
   showModalFile: (state) => state.showModal,
-  participants: (state) => state.details,
+  participants: (state) => state.details.destinatarios,
   detailsDnt: (state) => {
     const jsonBody = JSON.parse(atob((state.details || {}).cuerpo));
     const details = {
@@ -38,21 +38,13 @@ export default {
     };
     return details;
   },
-  commentsEd: (state) => state.comments.map((comment) => {
+  detailsFile: (state) => state.details,
+  attachmentsFile: (state) => state.attachments,
+  commentsEd: (state) => (state.comments || []).map((comment) => {
     // eslint-disable-next-line no-param-reassign
-    comment.creado = Vue.moment(comment.creado).format('YYYY-MM-DD HH:ss');
+    comment.creado = Vue.moment(comment.fechaCreacion).format('YYYY-MM-DD HH:ss');
     return comment;
-  }).reverse(),
-  binnacleFile: (state) => {
-    const binnacle = state.binnacle.map((info) => {
-      const infoBinnacle = {
-        from: new Date(Vue.moment(info.fecha).format('YYYY, MM, DD')),
-        showDayAndMonth: true,
-        description: info.mensaje,
-        title: info.usuarioNombre
-      };
-      return infoBinnacle;
-    });
-    return binnacle;
-  }
+  }),
+  binnacleFile: (state) => state.binnacle,
+  wizardData: (state) => state.wizardData
 };

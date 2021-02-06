@@ -16,16 +16,31 @@ export default {
   SET_DETAIL_FILE(state, payload) {
     state.details = payload;
   },
+  SET_WIZARD_DATA(state, payload) {
+    state.wizardData = payload;
+  },
+  ADD_WIZARD_DATA(state, payload) {
+    state.wizardData = {
+      ...state.wizardData,
+      ...payload
+    };
+  },
+  CLEAR_WIZARD_DATA(state) {
+    state.wizardData = {};
+  },
   ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
   },
   SET_DETAIL_DNT(state, payload) {
     state.details = payload;
   },
-  SET_SUCCESS_MENSAJE(state, payload) {
+  SET_ATTACHMENTS_DNT(state, payload) {
+    state.attachments = payload;
+  },
+  SET_SUCCESS_MESSAGE(state, payload) {
     state.successAccion = payload;
   },
-  SET_ERROR_MENSAJE(state, payload) {
+  SET_ERROR_MESSAGE(state, payload) {
     state.error = payload;
   },
   CLOSE_MODAL(state, payload) {
