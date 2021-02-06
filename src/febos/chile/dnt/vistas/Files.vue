@@ -71,7 +71,7 @@
                 <b>Remitente</b>
               </vs-col>
               <vs-col vs-lg="4">
-                <b>Responsable</b>
+                <b>Creado por</b>
               </vs-col>
             </vs-row>
           </vs-col>
@@ -99,7 +99,7 @@
             </vs-col>
             <vs-col vs-lg="2">
               <vs-chip
-                v-if="file.estado === 1"
+                v-if="file.estado === '1'"
                 title="creado"
               >
                 <vs-avatar icon="mail_outline" color="#43C3B9" />
@@ -107,35 +107,35 @@
               </vs-chip>
               <vs-chip
                 title="Borrador"
-                v-if="file.estado === 3"
+                v-if="file.estado === '3'"
               >
                 <vs-avatar icon="query_builder" color="#43C3B9" />
                 Borrador
               </vs-chip>
               <vs-chip
                 title="Aprobado"
-                v-if="file.estado === 4"
+                v-if="file.estado === '4'"
               >
                 <vs-avatar icon="thumb_up" color="#14AA59" />
                 Aprobado
               </vs-chip>
               <vs-chip
                 title="Rechazado"
-                v-if="file.estado === 5"
+                v-if="file.estado === '5'"
               >
                 <vs-avatar icon="thumb_down" color="#CE4B4B" />
                 Rechazado
               </vs-chip>
               <vs-chip
                 title="Anulado"
-                v-if="file.estado === 8"
+                v-if="file.estado === '8'"
               >
                 <vs-avatar icon="close" color="#A04E4E" />
                 Anulado
               </vs-chip>
               <vs-chip
                 title="Finalizado"
-                v-if="file.estado === 9"
+                v-if="file.estado === '9'"
               >
                 <vs-avatar icon="move_to_inbox" color="#A04E4E" />
                 Finalizado
@@ -150,129 +150,174 @@
                   {{ file.emisorContactoNombre | capitalize }}
                 </vs-col>
                 <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
-                  Sin asignar
+                  {{ file.solicitanteNombre }}
+                  <small>{{ file.solicitanteEmail }}</small>
                 </vs-col>
               </vs-row>
             </vs-col>
           </vs-row>
           <vs-row>
             <vs-col vs-offset="3" vs-lg="7" vs-type="flex">
-              <vs-chip class="mr-4">
-                <vs-avatar icon="update" />
-                {{ file.fechaActualizacion | dateFormat }}
-              </vs-chip>
-              <vs-chip class="mr-4">
-                <vs-avatar icon="add_circle_outline" />
-                {{ file.fechaEntrega | dateFormat }}
-              </vs-chip>
-              <vs-button
-                size="small"
-                type="border"
-                color="#3ca2d6"
-                title="Es un archivo externo"
-                v-if="file.claseMercadoPublico === 'ext'"
-                class="p-2 rounded-lg mr-4"
-                disabled
-              >
-                <span class="text-black">externo</span>
-              </vs-button>
-              <vs-button
-                size="small"
-                type="border"
-                color="#3ca2d6"
-                title="Es un archivo interno"
-                v-if="file.claseMercadoPublico === 'int'"
-                class="p-2 rounded-lg mr-4"
-                disabled
-              >
-                <span class="text-black">interno</span>
-              </vs-button>
-              <vs-button
-                size="small"
-                type="border"
-                color="#3ca2d6"
-                icon="description"
-                title="Acompaña físico"
-                v-if="file.transporteViaTransporteCodigoTransporte === 1"
-                class="p-2 rounded-lg mr-4"
-                disabled
-              >
-                <span class="text-black">acompaña físico</span>
-              </vs-button>
-              <vs-button
-                size="small"
-                type="border"
-                color="danger"
-                icon="lock"
-                ttitle="Es un archivo privado"
-                v-if="file.transportePuertoTipo === 1"
-                class="p-2 rounded-lg mr-4"
-                disabled
-              />
+              <vs-tooltip text="Fecha de Actualización">
+                <vs-chip class="mr-4">
+                  <vs-avatar icon="date_range" />
+                  {{ file.fechaActualizacion | dateFormat }}
+                </vs-chip>
+                <span>&nbsp;</span>
+              </vs-tooltip>
+              <vs-tooltip text="Fecha del documento">
+                <vs-chip class="mr-4">
+                  <vs-avatar icon="event" />
+                  {{ file.fechaEntrega | dateFormat }}
+                </vs-chip>
+                <span>&nbsp;</span>
+              </vs-tooltip>
+              <vs-tooltip text="Documento externo">
+                <vs-button
+                  size="small"
+                  type="border"
+                  color="#3ca2d6"
+                  v-if="file.claseMercadoPublico === 'ext'"
+                  class="p-2 rounded-lg mr-4"
+                  disabled
+                >
+                  <span class="text-black">externo</span>
+                </vs-button>
+                <span>&nbsp;</span>
+              </vs-tooltip>
+              <vs-tooltip text="Documento interno">
+                <vs-button
+                  size="small"
+                  type="border"
+                  color="#3ca2d6"
+                  title="Es un archivo interno"
+                  v-if="file.claseMercadoPublico === 'int'"
+                  class="p-2 rounded-lg mr-4"
+                  disabled
+                >
+                  <span class="text-black">interno</span>
+                </vs-button>
+                <span>&nbsp;</span>
+              </vs-tooltip>
+              <vs-tooltip text="Estoy en copia">
+                <vs-button
+                  size="small"
+                  type="border"
+                  color="#3ca2d6"
+                  v-if="file.enCopia === 'SI'"
+                  class="p-2 rounded-lg mr-4"
+                  disabled
+                >
+                  <span class="text-black">en copia</span>
+                </vs-button>
+                <span>&nbsp;</span>
+              </vs-tooltip>
+              <vs-tooltip text="Soy destinatario/responsable">
+                <vs-button
+                  size="small"
+                  type="border"
+                  color="#3ca2d6"
+                  v-if="file.enCopia === 'NO'"
+                  class="p-2 rounded-lg mr-4"
+                  disabled
+                >
+                  <span class="text-black">destinatario</span>
+                </vs-button>
+                <span>&nbsp;</span>
+              </vs-tooltip>
+              <vs-tooltip text="Acompaña físico">
+                <vs-button
+                  size="small"
+                  type="border"
+                  color="#3ca2d6"
+                  icon="description"
+                  v-if="file.transporteViaTransporteCodigoTransporte === 1"
+                  class="p-2 rounded-lg mr-4"
+                  disabled
+                >
+                  <span class="text-black">acompaña físico</span>
+                </vs-button>
+                <span>&nbsp;</span>
+              </vs-tooltip>
+              <vs-tooltip text="archivo privado">
+                <vs-button
+                  size="small"
+                  type="border"
+                  color="danger"
+                  icon="lock"
+                  v-if="file.transportePuertoTipo === 1"
+                  class="p-2 rounded-lg mr-4"
+                  disabled
+                />
+                <span>&nbsp;</span>
+              </vs-tooltip>
             </vs-col>
           </vs-row>
         </vs-col>
         <vs-col vs-lg="1" vs-type="flex" vs-justify="center" vs-align="center">
-          <vs-dropdown vs-custom-content vs-trigger-click>
-            <a class="a-icon" href.prevent>
-              <vs-icon
-                icon="settings"
-                size="medium"
-                bg="#E4E4E4"
-                round
-                color="gray"
-              />
-            </a>
-            <vs-dropdown-menu style="width: fit-content">
-              <vs-dropdown-item
-                v-if="file.estado === 3"
-                v-on:click="openDraft(file)"
-              >
-                <vs-icon icon="query_builder"/>
-                Continuar borrador
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="binnacleFileModal(file)">
-                <vs-icon icon="list"/>
-                Bitácora
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="getDetailsFile(file)">
-                <vs-icon icon="search"/>
-                Ver detalles
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="downloadFile(file)">
-                <vs-icon icon="save_alt"/>
-                Descargar acta
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="downloadAttatchments(file)">
-                <vs-icon icon="save_alt"/>
-                Descargar adjuntos
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="cancelFileModal(file)">
-                <vs-icon icon="clear"/>
-                Anular expediente
-              </vs-dropdown-item>
-               <vs-dropdown-item v-on:click="processFileModal(file)">
-                <vs-icon icon="move_to_inbox"/>
-                 Finalizar documento
-              </vs-dropdown-item>
-               <vs-dropdown-item v-on:click="getParticipants(file)">
-                <vs-icon icon="groups"/>
-                 Participantes
-              </vs-dropdown-item>
-               <vs-dropdown-item v-on:click="getComments(file)">
-                <vs-icon icon="chat"/>
-                 Comentarios
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="sendFile(file)">
-                <vs-icon icon="chat"/>
-                Enviar documento
-              </vs-dropdown-item>
-              <vs-dropdown-item v-on:click="ticketModalFile(file)">
-                <vs-icon icon="help"/>
-                Ticket de ayuda
-              </vs-dropdown-item>
-            </vs-dropdown-menu>
-          </vs-dropdown>
+          <vs-tooltip text="Desplegar acciones">
+            <vs-dropdown vs-custom-content vs-trigger-click>
+              <a class="a-icon" href.prevent>
+                <vs-icon
+                  icon="settings"
+                  size="medium"
+                  bg="#E4E4E4"
+                  round
+                  color="gray"
+                />
+              </a>
+              <vs-dropdown-menu style="width: fit-content">
+                <vs-dropdown-item
+                  v-if="file.estado === '3' && isPendingFiles"
+                  v-on:click="openDraft(file)"
+                >
+                  <vs-icon icon="query_builder"/>
+                  Continuar borrador
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="binnacleFileModal(file)">
+                  <vs-icon icon="list"/>
+                  Bitácora
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="getDetailsFile(file)">
+                  <vs-icon icon="search"/>
+                  Ver detalles
+                </vs-dropdown-item>
+                <!--<vs-dropdown-item v-on:click="downloadFile(file)">
+                  <vs-icon icon="save_alt"/>
+                  Descargar acta
+                </vs-dropdown-item>-->
+                <vs-dropdown-item v-on:click="downloadAttatchments(file)">
+                  <vs-icon icon="save_alt"/>
+                  Descargar adjuntos
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="cancelFileModal(file)" v-if="isPendingFiles">
+                  <vs-icon icon="clear"/>
+                  Anular expediente
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="processFileModal(file)" v-if="isPendingFiles">
+                  <vs-icon icon="move_to_inbox"/>
+                   Finalizar documento
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="getParticipants(file)">
+                  <vs-icon icon="groups"/>
+                   Participantes
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="getComments(file)" v-if="isPendingFiles">
+                  <vs-icon icon="chat"/>
+                   Comentarios
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="sendFile(file)" v-if="isPendingFiles">
+                  <vs-icon icon="chat"/>
+                  Enviar documento
+                </vs-dropdown-item>
+                <vs-dropdown-item v-on:click="ticketModalFile(file)">
+                  <vs-icon icon="help"/>
+                  Ticket de ayuda
+                </vs-dropdown-item>
+              </vs-dropdown-menu>
+            </vs-dropdown>
+            <span>&nbsp;</span>
+          </vs-tooltip>
         </vs-col>
       </vs-row>
     </div>
@@ -377,8 +422,8 @@ export default {
     const view = this.$route.params.vista;
     const filters = this.getFilterView(view);
 
-    console.log('filters', filters);
     return {
+      isPendingFiles: view === 'en-curso',
       periodos: [
         { nombre: 'las últimas 4 semanas', valor: 'ultimas4semanas' },
         { nombre: 'este mes', valor: 'esteMes' },
@@ -400,17 +445,16 @@ export default {
   },
   watch: {
     pagina() {
-      const view = this.$route.params.vista;
-      const filters = this.getFilterView(view);
-
+      console.log('this.pagina', this.pagina);
       this.listDocuments({
         tipo: 'EXP',
         campos: '*',
-        pagina: this.pagina,
+        pagina: 1,
+        // pagina: this.pagina,
         orden: '-fechaCreacion',
         itemsPorPagina: 10,
         // TODO agregar bien los filtros
-        filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
+        filtros: this.filtros
       });
     },
     loading(value) {
@@ -549,7 +593,6 @@ export default {
         pagina: 1,
         orden: '-fechaCreacion',
         itemsPorPagina: 10,
-        // TODO agregar bien los filtros
         filtros: this.filtros
       });
     },
@@ -676,8 +719,6 @@ export default {
     this.periodoHasta = Vue.moment().format('YYYY-MM-DD');
   },
   mounted() {
-    // get data to fill selects of filters
-
     if (!this.usersCompany.length) {
       this.getUsersCompany({
         empresaId: this.empresa.id,

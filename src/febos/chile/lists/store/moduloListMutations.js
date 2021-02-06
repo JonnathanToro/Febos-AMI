@@ -50,7 +50,7 @@ export default {
       case 'usuarios': {
         state.subjects.list = payload.list.map((option) => ({
           id: option.id,
-          value: option.correo,
+          value: option.id,
           label: option.nombre
         }));
         break;

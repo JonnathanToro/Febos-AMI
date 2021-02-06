@@ -88,13 +88,16 @@ apiClient.interceptors.response.use(
     };
 
     if (response.data.codigo < 10) {
-      throw new Error(
+      const error = new Error(
         `${response.data.mensaje}
         ${process.env.VUE_APP_AMBIENTE === 'desarrollo'
           ? ' ⚠️⚠️⚠️ si estas viendo este error en la consola borra el try catch de tu acción ⚠️⚠️⚠️'
           : ''
         }`
       );
+
+      error.context = response.data;
+      throw error;
     }
 
     validateSession();
@@ -104,7 +107,7 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log('la api dio un error, hacer algo!');
+    console.log('la api dio un ERROR, hacer algo!');
     return Promise.reject(error);
   }
 );

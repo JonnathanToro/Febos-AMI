@@ -83,7 +83,7 @@ export default {
       'colors'
     ]),
     ...mapGetters('Empresas', [
-      'empresa'
+      'company'
     ]),
     ...mapGetters('Dnts', [
       'loading',
@@ -105,7 +105,8 @@ export default {
   },
   methods: {
     ...mapActions('Dnts', [
-      'emitDnt',
+      'saveDocument',
+      'clearWizardData',
       'loadWizardData',
       'addWizardData'
     ]),
@@ -131,12 +132,32 @@ export default {
       this.wizard.currentStep += 1;
     },
     onEnd() {
-      this.emitDnt(
-        this.wizard.draftMapper(this.wizardData, this.empresa.iut, this.empresa.razonSocial)
-      );
+      const { id } = this.$route.params;
+
+      this.saveDocument({
+        id,
+        data: this.wizard.documentMapper(
+          this.wizardData,
+          this.company.iut,
+          this.company.razonSocial
+        )
+      });
     },
     onBackup() {
-      console.log('BACKUP data', this.wizard.draftMapper(this.wizardData));
+      const { id } = this.$route.params;
+
+      this.addWizardData(this.$refs.step.getStepData());
+
+      this.saveDocument({
+        id,
+        data: this.wizard.documentMapper(
+          this.wizardData,
+          this.company.iut,
+          this.company.razonSocial,
+          true
+        ),
+        isDraft: true
+      });
     }
   },
   created() {
@@ -150,6 +171,8 @@ export default {
         id,
         mapper: this.wizard.wizardMapper
       });
+    } else {
+      this.clearWizardData();
     }
   }
 };

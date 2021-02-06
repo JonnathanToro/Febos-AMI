@@ -19,8 +19,9 @@ export default {
       dnt,
       observaciones,
       destinatarios,
-      dntAdjuntos,
-      referencias
+      adjuntos,
+      referencias,
+      etiquetas
     }
   ) {
     const data = {};
@@ -88,8 +89,8 @@ export default {
       data.copiesSelected = copies;
     }
 
-    if (dntAdjuntos && dntAdjuntos.length) {
-      const main = dntAdjuntos
+    if (adjuntos && adjuntos.length) {
+      const main = adjuntos
         .find((file) => file.tipo === 'principal');
 
       if (main) {
@@ -101,7 +102,7 @@ export default {
         };
       }
 
-      data.additionalFiles = dntAdjuntos
+      data.additionalFiles = adjuntos
         .filter((file) => file.tipo === 'adjunto')
         .map((file) => ({
           mime: file.adjuntoMime,
@@ -122,10 +123,16 @@ export default {
       data.relatedDocumentsSelected = relatedDocuments;
     }
 
+    if (etiquetas && etiquetas.length) {
+      data.tags = etiquetas.map((tag) => ({ text: tag }));
+    }
+
     return data;
   },
-  draftMapper(input, iutCompany, nameCompany) {
-    return {
+  documentMapper(input, iutCompany, nameCompany, isDraft = false) {
+    console.log('llegadaaa', input);
+    const data = {
+      adjuntos: [],
       dnt: {
         tipo: 'EXP',
         emisorRut: iutCompany,
@@ -133,6 +140,7 @@ export default {
         emisorRazonSocial: nameCompany,
         receptorRazonSocial: nameCompany,
         claseMercadoPublico: 'ext',
+        estado: 1,
         emisorCentroCostoNumero: input.documentType,
         emisorCentroCostoNombre: input.documentTypeName,
         emisorSucursalCodigo: input.document,
@@ -149,16 +157,10 @@ export default {
         transporteViaTransporteCodigoTransporte: input.withAttachment,
         transporteNotas: input.documentDetail
       },
-      dntObservacion: [
-        {
-          observacion: input.matter
-        },
-        {
-          obsevacion: input.observation
-        }
-      ],
-      dntEtiqueta: input.tags,
-      dntDestino: [
+      etiquetas: (input.tags || []).map((tag) => ({
+        etiqueta: tag.text
+      })),
+      destinatarios: [
         ...(input.subjectsSelected || []).map((subject) => {
           const institution = Object.keys(subject.subjectTypeDigitalDoc).length
             ? {
@@ -191,21 +193,52 @@ export default {
             estado: 1,
             destinoCodigo: subject.copySubjectType.value,
             destinoNombre: subject.copySubjectType.label,
-            destinoListaCodigo: subject.copySubject.label,
+            destinoListaCodigo: subject.copySubject.value,
             destinoListaNombre: subject.copySubject.label,
             destinoCorreo: subject.copySubjectEmail,
             ...institution
           };
         })
       ],
-      dntAdjuntos: [
+      referencias: (input.relatedDocumentsSelected || []).map((relatedDocument) => ({
+        linea: relatedDocument.id,
+        tipoDocumento: relatedDocument.type,
+        folio: relatedDocument.number
+      }))
+    };
+
+    if (input.matter) {
+      data.observaciones = [
+        {
+          linea: '0',
+          observacion: input.matter
+        }
+      ];
+    }
+
+    if (input.observation) {
+      data.observaciones.push({
+        linea: '1',
+        obsevacion: input.observation
+      });
+    }
+
+    if (input.mainFile) {
+      data.adjuntos = [
+        ...data.adjuntos,
         {
           tipo: 'principal',
           adjuntoMime: input.mainFile.mime,
           adjuntoNombre: input.mainFile.name,
           fecha: input.mainFile.date,
           adjuntoUrl: input.mainFile.path
-        },
+        }
+      ];
+    }
+
+    if (input.additionalFiles && input.additionalFiles.length) {
+      data.adjuntos = [
+        ...data.adjuntos,
         ...(input.additionalFiles || []).map((file) => ({
           tipo: 'adjunto',
           adjuntoMime: file.mime,
@@ -213,12 +246,13 @@ export default {
           fecha: file.date,
           adjuntoUrl: file.path
         }))
-      ],
-      dntReferencia: (input.relatedDocumentsSelected || []).map((relatedDocument) => ({
-        linea: relatedDocument.id,
-        tipoDocumento: relatedDocument.type,
-        folio: relatedDocument.number
-      }))
-    };
+      ];
+    }
+
+    if (isDraft) {
+      data.dnt.estado = 3;
+    }
+
+    return data;
   }
 };

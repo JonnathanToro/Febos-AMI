@@ -25,6 +25,9 @@ export default {
       ...payload
     };
   },
+  CLEAR_WIZARD_DATA(state) {
+    state.wizardData = {};
+  },
   ACT_PAGINA(state, payload) {
     state.paginaActual = payload;
   },
@@ -34,10 +37,10 @@ export default {
   SET_ATTACHMENTS_DNT(state, payload) {
     state.attachments = payload;
   },
-  SET_SUCCESS_MENSAJE(state, payload) {
+  SET_SUCCESS_MESSAGE(state, payload) {
     state.successAccion = payload;
   },
-  SET_ERROR_MENSAJE(state, payload) {
+  SET_ERROR_MESSAGE(state, payload) {
     state.error = payload;
   },
   CLOSE_MODAL(state, payload) {

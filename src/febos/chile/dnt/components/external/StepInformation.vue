@@ -122,7 +122,7 @@
           />
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-3" v-if="emailRequired.includes(subjectForm.subjectType)">
         <div class="col-12">
           <vs-input
             class="w-100"
@@ -130,8 +130,7 @@
             name="subjectEmail"
             v-model="subjectForm.subjectEmail"
             v-validate="{
-              required: isInput.includes(subjectForm.subjectType)
-                || subjectForm.subjectType === 'ministerios'
+              required: emailRequired.includes(subjectForm.subjectType)
               ,
               email: true
             }"
@@ -246,7 +245,7 @@
           />
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-3" v-if="emailRequired.includes(copySubjectForm.copySubjectType)">
         <div class="col-12">
           <vs-input
             class="w-100"
@@ -254,8 +253,7 @@
             name="copySubjectEmail"
             v-model="copySubjectForm.copySubjectEmail"
             v-validate="{
-              required: isInput.includes(copySubjectForm.copySubjectType)
-                || copySubjectForm.copySubjectType === 'ministerios'
+              required: emailRequired.includes(copySubjectForm.copySubjectType)
               ,
               email: true
             }"
@@ -383,6 +381,7 @@ export default {
       error: {
         message: ''
       },
+      emailRequired: ['personas', 'empresas', 'ministerios'],
       isInput: ['personas', 'empresas'],
       subjectForm: {
         subjectType: '',
@@ -440,8 +439,21 @@ export default {
         subjectEmail: this.subjectForm.subjectEmail
       };
 
-      this.step.subjects.push(row);
-      this.step.subjectsSelected.push(row);
+      const isSelected = this.step.subjectsSelected
+        .some((subjectRow) => subjectRow.subject.id === row.subject.id);
+
+      if (!isSelected) {
+        this.step.subjects.push(row);
+        this.step.subjectsSelected.push(row);
+      } else {
+        this.$vs.notify({
+          title: 'Oops!',
+          text: 'Ya agregaste este destinatario',
+          color: 'warning',
+          time: 3000,
+          position: 'top-center'
+        });
+      }
 
       this.subjectForm.subjectType = '';
       this.subjectForm.subject = '';
@@ -476,8 +488,21 @@ export default {
         copySubjectEmail: this.copySubjectForm.copySubjectEmail
       };
 
-      this.step.copies.push(row);
-      this.step.copiesSelected.push(row);
+      const isSelected = this.step.copiesSelected
+        .some((copyRow) => copyRow.copySubject.id === row.copySubject.id);
+
+      if (!isSelected) {
+        this.step.copies.push(row);
+        this.step.copiesSelected.push(row);
+      } else {
+        this.$vs.notify({
+          title: 'Oops!',
+          text: 'Ya agregaste esta copia',
+          color: 'warning',
+          time: 3000,
+          position: 'top-center'
+        });
+      }
 
       this.copySubjectForm.copySubjectType = '';
       this.copySubjectForm.copySubject = '';
