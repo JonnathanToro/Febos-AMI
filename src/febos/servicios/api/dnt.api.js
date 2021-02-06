@@ -73,6 +73,13 @@ export const sendComment = (payload) => {
     { operacionId: 'io.dnt.send.comment' });
 };
 
+export const sendFile = (payload) => {
+  console.log('ENVIANDOO', payload);
+  return apiClient.post(`${RESOURCE}/${payload.febosId}/destinos`,
+    { destinos: payload.destinos },
+    { operacionId: 'io.dnt.send.file' });
+};
+
 export const createDnt = (payload) => {
   const params = apiClient.queryParams({
     entrada: 'json',
@@ -81,8 +88,23 @@ export const createDnt = (payload) => {
     simular: 'no',
     foliar: 'si'
   });
-  console.log('PAYLOAD', btoa(payload));
-  return apiClient.post(`${RESOURCE}/crear?${params}`,
+  console.log('CREAR BORRADOR', payload, params);
+  return apiClient.post(
+    `${RESOURCE}/crear?${params}`,
     payload,
-    { operacionId: 'io.dnt.creat.dnt' });
+    { operacionId: 'io.dnt.crear.dnt' }
+  );
+};
+
+export const updateDnt = (payload) => {
+  const params = apiClient.queryParams({
+    entrada: 'json',
+    tipoDocumento: 'EXP'
+  });
+  console.log('GUARDAR BORRADOR', payload, params);
+  return apiClient.post(
+    `${RESOURCE}/${payload.dnt.febosId}/actualizar?${params}`,
+    payload,
+    { operacionId: 'io.dnt.actualizar.dnt' }
+  );
 };

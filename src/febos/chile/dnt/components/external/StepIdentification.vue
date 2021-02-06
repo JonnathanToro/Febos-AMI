@@ -145,6 +145,7 @@ export default {
       return this.validateForm('step-1');
     },
     getStepData() {
+      console.log('getStepData 1', this.step);
       const documentName = this.step.document
         ? {
           documentName: this.$refs.documents.getOption().label

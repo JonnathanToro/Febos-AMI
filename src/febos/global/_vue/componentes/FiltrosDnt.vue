@@ -133,6 +133,46 @@
           />
         </div>
       </div>
+      <div v-if="filtroActual.tipo == 'solicitanteCorreo'">
+        <div class="texto-normal">
+          <multiselect
+            v-model="filterCreators"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
+            placeholder="Seleccione los usuarios"
+            label="nombre" track-by="valor"
+            :options="filtroActual.opciones" :multiple="true"
+            :close-on-select="false" :clear-on-select="false"
+            :preserve-search="true" :preselect-first="false"
+          >
+            <template slot="selection" slot-scope="{ values, search, isOpen }">
+              <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
+                {{ values.length }} usuarios seleccionados</span>
+            </template>
+          </multiselect>
+        </div>
+      </div>
+      <div v-if="filtroActual.tipo == 'destinoCopiaIds'">
+        <div class="texto-normal">
+          <multiselect
+            v-model="filterCopies"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
+            placeholder="Seleccione los usuarios"
+            label="nombre" track-by="valor"
+            :options="filtroActual.opciones" :multiple="true"
+            :close-on-select="false" :clear-on-select="false"
+            :preserve-search="true" :preselect-first="false"
+          >
+            <template slot="selection" slot-scope="{ values, search, isOpen }">
+              <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
+                {{ values.length }} usuarios seleccionados</span>
+            </template>
+          </multiselect>
+        </div>
+      </div>
       <div v-if="filtroActual.tipo == 'destinoUsuarios'">
         <div class="texto-normal">
           <multiselect
@@ -270,7 +310,7 @@
 
 <script>
 
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import Vue from 'vue';
 import VsModal from 'vs-modal';
 import Multiselect from 'vue-multiselect';
@@ -311,6 +351,9 @@ export default {
     ...mapState('Empresas', {
       empresaActual: (state) => state.empresa,
     }),
+    ...mapGetters('Usuario', [
+      'usuarioActual'
+    ]),
     tituloConfiguracion() {
       return `Configuración de filtro: <strong>${ this.filtroActual.nombre }</strong>`;
     },
@@ -408,7 +451,11 @@ export default {
     filterDocuments: [],
     filterInstitutions: [],
     emails: '',
-    filterEmails: []
+    filterEmails: [],
+    creators: '',
+    filterCreators: [],
+    copies: '',
+    filterCopies: []
   }),
   watch: {
     tags(valorNuevo, valorAntiguo) {
@@ -472,6 +519,14 @@ export default {
     filterEmails(valorNuevo) {
       this.filtroActual.valor = valorNuevo.map((email) => email.text);
       this.filtroActual.valorFormateado = valorNuevo.map((email) => email.text).join(',');
+    },
+    filterCreators(valorNuevo) {
+      this.filtroActual.valor = valorNuevo.map((user) => user.valor);
+      this.filtroActual.valorFormateado = valorNuevo.map((group) => group.nombre).join(',');
+    },
+    filterCopies(valorNuevo) {
+      this.filtroActual.valor = valorNuevo.map((user) => user.valor);
+      this.filtroActual.valorFormateado = valorNuevo.map((group) => group.nombre).join(',');
     }
   },
   methods: {
@@ -496,10 +551,19 @@ export default {
         } else {
           if (filtro.tipo === 'destinoUsuarios'
             || filtro.tipo === 'destinoGrupos') {
-            filtro.campo = 'destinoListaCodigo';
+            filtro.campo = 'destinoParticipanteIds';
           }
           if (filtro.tipo === 'destinoCorreos') {
-            filtro.campo = 'destinoCorreo';
+            filtro.campo = 'destinoCorreoIds';
+          }
+          if (filtro.campo === 'referenciaTipo') {
+            filtro.campo = 'codigosReferenciasTipos';
+          }
+          if (filtro.campo === 'destinoCodigo') {
+            filtro.campo = 'destinoCodigoIds';
+          }
+          if (filtro.campo === 'solicitanteCorreo') {
+            filtro.campo = 'solicitanteEmail';
           }
           query.push(`${filtro.campo }:${ filtro.valor}`);
         }
@@ -511,38 +575,35 @@ export default {
         // mapeo de variables de filtros estaticos
         // TODO se debe acomodar con la config que esta en las vistas
         // eslint-disable-next-line no-template-curly-in-string
-        valor = valor.replace('${iutEmpresa}', that.empresaActual.iut);
+        if (valor === '${iutEmpresa}') {
+          // eslint-disable-next-line no-template-curly-in-string
+          valor = valor.replace('${iutEmpresa}', that.empresaActual.iut);
+        }
+        // eslint-disable-next-line no-template-curly-in-string
+        if (valor === '${idUsuario}') {
+          // eslint-disable-next-line no-template-curly-in-string
+          valor = valor.replace('${idUsuario}', that.usuarioActual.id);
+        }
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      // console.log('APLICAR', this, query);
       this.$emit('filtros-aplicados', query.join('|'));
     },
     formatoTipoRango(formato, humano = false) {
-      const estilo = humano ? 'LL' : 'YYYY-MM-DD';
+      const estilo = humano ? 'YYYY-MM-DD' : 'YYYY-MM-DD';
       switch (formato) {
         case 'ultimas4semanas':
           return Vue.moment().subtract(28, 'days').format(estilo);
         case 'esteMes':
-          this.rangoAvanzado.desde = Vue.moment().startOf('month')
-            .format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().startOf('month').format(estilo);
         case 'esteMesConAnterior':
-          this.rangoAvanzado.desde = Vue.moment().subtract(1, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(1, 'month').startOf('month').format(estilo);
         case 'ultimos3meses':
-          this.rangoAvanzado.desde = Vue.moment().subtract(2, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(2, 'month').startOf('month').format(estilo);
         case 'ultimos6meses':
-          this.rangoAvanzado.desde = Vue.moment().subtract(5, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(5, 'month').startOf('month').format(estilo);
         default:
-          this.rangoAvanzado.desde = Vue.moment().subtract(5, 'month')
-            .startOf('month').format(estilo);
-          return this.rangoAvanzado.desde;
+          return Vue.moment().subtract(5, 'month').startOf('month').format(estilo);
       }
     },
     seleccionarRango(filtro, valor, cerrar = true) {
@@ -557,11 +618,7 @@ export default {
       }
     },
     seleccionarAlMenosUnaOpcionDeFiltro(filtro) {
-      if (typeof filtro.opciones[0].valor === 'number') {
-        filtro.valor.push(filtro.opciones[0].valor);
-      } else {
-        filtro.valor.push(filtro.opciones[0].valor);
-      }
+      filtro.valor.push(filtro.opciones[0].valor);
     },
     filtroYaEstaAplicado(campo) {
       try {
@@ -590,11 +647,15 @@ export default {
         this.filterDocuments = [];
       } else if (filtro.tipo === 'tipoInstitucion') {
         this.filterInstitutions = [];
+      } else if (filtro.tipo === 'solicitanteCorreo') {
+        this.filterCreators = [];
+      } else if (filtro.tipo === 'destinoCopiaIds') {
+        this.filterCopies = [];
       }
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === filtro.campo) {
-          this.filtrosAplicados[i].valor = '';
+          this.filtrosAplicados[i].valor = [];
           this.filtrosAplicados[i].valorFormateado = '';
           this.filtrosAplicados.splice(i, 1);
           this.filtroRecientementeEliminado = true;
@@ -694,6 +755,26 @@ export default {
             });
             break;
           }
+          case 'solicitanteCorreo': {
+            filtro.opciones = this.users.map((user) => {
+              const userOption = {
+                nombre: user.nombre,
+                valor: user.correo
+              };
+              return userOption;
+            });
+            break;
+          }
+          case 'destinoCopiaIds': {
+            filtro.opciones = this.users.map((user) => {
+              const userOption = {
+                nombre: user.nombre,
+                valor: user.id
+              };
+              return userOption;
+            });
+            break;
+          }
           default: {
             console.log('format filtro default', filtro);
           }
@@ -724,6 +805,26 @@ export default {
           break;
         }
         case 'destinoUsuarios': {
+          filtro.opciones = this.users.map((user) => {
+            const userOption = {
+              nombre: user.nombre,
+              valor: user.id
+            };
+            return userOption;
+          });
+          break;
+        }
+        case 'solicitanteCorreo': {
+          filtro.opciones = this.users.map((user) => {
+            const userOption = {
+              nombre: user.nombre,
+              valor: user.correo
+            };
+            return userOption;
+          });
+          break;
+        }
+        case 'destinoCopiaIds': {
           filtro.opciones = this.users.map((user) => {
             const userOption = {
               nombre: user.nombre,
@@ -821,11 +922,9 @@ export default {
       return filtro;
     },
     agregarFiltro(filter, desplegarVentanaDeModificacion = false) {
-      // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
       const filtro = this.formatearValor(filter);
       this.filtrosAplicados.push(filtro);
       if (desplegarVentanaDeModificacion) this.ventanaModificarFiltro(filtro);
-      // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
     }
   },
   mounted() {

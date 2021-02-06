@@ -42,17 +42,15 @@ export default [{
           icon: 'files',
           permiso: '*', // TODO: setup permission
           i18n: 'expedientes'
-        }
-        /*
+        },
         {
-          url: '/oficinas/of-entrada',
-          name: 'Entrada',
-          slug: '/oficinas/of-entrada',
+          url: '/expedientes/general',
+          name: 'General',
+          slug: '/expedientes/general',
           icon: 'files',
           permiso: '*', // TODO: setup permission
           i18n: 'expedientes'
         },
-        */
       ]
     },
     /*

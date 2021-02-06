@@ -132,7 +132,10 @@ export default {
       this.wizard.currentStep += 1;
     },
     onEnd() {
+      const { id } = this.$route.params;
+
       this.saveDocument({
+        id,
         data: this.wizard.documentMapper(
           this.wizardData,
           this.company.iut,
@@ -141,7 +144,12 @@ export default {
       });
     },
     onBackup() {
+      const { id } = this.$route.params;
+
+      this.addWizardData(this.$refs.step.getStepData());
+
       this.saveDocument({
+        id,
         data: this.wizard.documentMapper(
           this.wizardData,
           this.company.iut,

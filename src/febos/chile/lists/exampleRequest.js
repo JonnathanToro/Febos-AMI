@@ -6,9 +6,10 @@ const observaciones = [
 const etiquetas = [];
 
 const dnt = {
-  emisorRut: '26066368-2', // rut empresa
-  receptorRut: '26066368-2', // rut empresa
+  emisorRut: '26066368-2', // rut empresa y razon en el campo emisorRazonSocial
+  receptorRut: '26066368-2', // rut empresa  y razon en el campo receptorRazonSocial
   claseMercadoPublico: 'ext', // documento externo o interno (ext-int)
+  // estado: 3 se envia si se crea un borrador
 
   emisorCentroCostoNumero: 'CERT', // tipo documento
   emisorCentroCostoNombre: 'Certificado', // nombre tipo documento

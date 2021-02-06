@@ -1,24 +1,28 @@
 import router from '@/router';
 import store from '@/store/store';
 import {
-  clDntsList,
+  // clDntsList,
   clDntActFileED,
   getFile,
   fileComments,
   sendComment,
   fileBinnacle,
   createDnt,
+  updateDnt,
   cancelFile,
   downloadAttachments,
-  attachmentsFiles
+  attachmentsFiles,
+  sendFile
 } from '@/febos/servicios/api/dnt.api';
+import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
 import { fileDetails } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
 export const listDocuments = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
-  const response = await clDntsList(payload);
+  const response = await clDntCloudSearchList(payload);
+  // const response = await clDntsList(payload);
   commit('SET_LISTADO_DNT', response.data);
   commit('SET_LOADING', false);
   return response.data;
@@ -79,6 +83,9 @@ export const attemptCancelFile = async ({ commit }, payload) => {
   if (response.data.codigo !== 10) {
     commit('SET_ERROR_MESSAGE', response.data);
   }
+  await router.push({
+    path: '/expedientes/en-curso'
+  });
   store.commit('Modals/CLOSE_MODAL');
   commit('SET_LOADING', false);
   return response.data;
@@ -94,6 +101,9 @@ export const processDntFileED = async ({ commit }, payload) => {
   if (response.data.codigo !== 10) {
     commit('SET_ERROR_MESSAGE', response.data);
   }
+  await router.push({
+    path: '/expedientes/en-curso'
+  });
   store.commit('Modals/CLOSE_MODAL');
   commit('SET_LOADING', false);
   return response.data;
@@ -117,7 +127,7 @@ export const loadWizardData = async ({ commit }, { id, mapper }) => {
     febosId: id,
     destinatarios: 'si',
     referencias: 'si',
-    dnt: 'si'
+    retornarDnt: 'si'
   });
 
   const { data: { adjuntos } } = await attachmentsFiles(
@@ -165,6 +175,14 @@ export const sendDntComment = async ({ commit }, payload) => {
   return response.data;
 };
 
+export const sendDntFile = async ({ commit }, payload) => {
+  commit('SET_LOADING', true);
+  const response = await sendFile(payload);
+  commit('SET_SUCCESS_MESSAGE', response.data);
+  commit('SET_LOADING', false);
+  return response.data;
+};
+
 export const sendTicketHelp = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await sendTicket(payload);
@@ -179,17 +197,25 @@ export const sendTicketHelp = async ({ commit }, payload) => {
   actualizar en lugar de crear, además si no tiene id y es
   modo draft redireccionar después de guardar al editar
 */
-export const saveDocument = async ({ commit }, { data, isDraft }) => {
+export const saveDocument = async ({ commit }, { id, data, isDraft }) => {
   commit('SET_LOADING', true);
 
   try {
-    const response = await createDnt(data);
-    if (!isDraft) {
-      await router.push({
-        path: '/expedientes/en-curso'
-      });
-    }
+    const response = !id
+      ? await createDnt(data)
+      : await updateDnt(data);
+
     commit('SET_SUCCESS_MESSAGE', response.data);
+
+    if (isDraft && id) {
+      return;
+    }
+
+    const path = isDraft
+      ? `/documentos/externo/${response.data.dnt.febosId}`
+      : '/expedientes/en-curso';
+
+    await router.push({ path });
   } catch (e) {
     commit('SET_ERROR_MESSAGE', e.context);
   } finally {

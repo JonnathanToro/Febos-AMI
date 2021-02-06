@@ -3,6 +3,14 @@ export default {
     nombre: 'RUT Emisor',
     tipo: 'rut'
   },
+  destinoResponsableIds: {
+    nombre: 'Destinatario/Responsable',
+    tipo: 'texto'
+  },
+  destinoParticipanteIds: {
+    nombre: 'Destinatario/Responsable',
+    tipo: 'texto'
+  },
   fechaEmision: {
     nombre: 'Fecha de Emisión',
     tipo: 'fecha'
@@ -14,6 +22,14 @@ export default {
   numero: {
     nombre: 'Numero',
     tipo: 'numero'
+  },
+  estado: {
+    nombre: 'Estado de expedientes',
+    tipo: 'multi'
+  },
+  destinoCopiaIds: {
+    nombre: 'Esta en copia',
+    tipo: 'destinoCopiaIds'
   },
   tipo: {
     nombre: 'Tipo de expedientes',
@@ -55,7 +71,7 @@ export default {
     nombre: 'Acompaña físico',
     tipo: 'multi'
   },
-  destinoCodigo: { // tipos de destinos
+  destinoCodigoIds: { // tipos de destinos
     nombre: 'Tipo de destino',
     tipo: 'multi'
   },
@@ -70,5 +86,13 @@ export default {
   destinoCorreos: { // tipos de destinos
     nombre: 'Destino Correo',
     tipo: 'destinoCorreos'
-  }
+  },
+  referenciaTipo: {
+    nombre: 'Tipo de referencia', // tipo de referencia
+    tipo: 'referenciaTipo'
+  },
+  solicitanteCorreo: {
+    nombre: 'Usuario creador',
+    tipo: 'solicitanteCorreo'
+  },
 };

@@ -130,6 +130,7 @@ export default {
     return data;
   },
   documentMapper(input, iutCompany, nameCompany, isDraft = false) {
+    console.log('llegadaaa', input);
     const data = {
       adjuntos: [],
       dnt: {
@@ -139,7 +140,7 @@ export default {
         emisorRazonSocial: nameCompany,
         receptorRazonSocial: nameCompany,
         claseMercadoPublico: 'ext',
-
+        estado: 1,
         emisorCentroCostoNumero: input.documentType,
         emisorCentroCostoNombre: input.documentTypeName,
         emisorSucursalCodigo: input.document,

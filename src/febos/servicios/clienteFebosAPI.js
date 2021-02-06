@@ -107,7 +107,7 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log('la api dio un error, hacer algo!');
+    console.log('la api dio un ERROR, hacer algo!');
     return Promise.reject(error);
   }
 );

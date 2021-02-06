@@ -119,18 +119,6 @@ export default {
         cancel.otp = this.cancel.code;
       }
       await this.attemptCancelFile(cancel);
-
-      const view = this.$route.params.vista;
-      const filters = this.getFilterView(view);
-      await this.listDocuments({
-        tipo: 'EXP',
-        campos: '*',
-        pagina: 1,
-        orden: '-fechaCreacion',
-        itemsPorPagina: 10,
-        // TODO agregar bien los filtros
-        filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
-      });
     },
     getCode() {
       this.getVerificationCode(

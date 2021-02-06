@@ -9,7 +9,7 @@
           <div class="pill-comment-user" v-if="comment.usuarioId !== currentUserId">
             <vs-list-item
               :title="comment.comentario"
-              :subtitle="comment.usuarioNombre">
+              :subtitle="comment.usuarioComentario">
               <template slot="avatar">
                 <vs-avatar />
               </template>
@@ -21,7 +21,7 @@
           <div class="pill-comment-me" v-if="comment.usuarioId === currentUserId">
             <vs-list-item
               :title="comment.comentario"
-              :subtitle="comment.usuarioNombre">
+              :subtitle="comment.usuarioComentario">
               <template slot="avatar">
                 <vs-avatar />
               </template>
@@ -99,7 +99,7 @@ export default {
       'closeModal'
     ]),
     async sendNewComment() {
-      this.sendDntComment({
+      await this.sendDntComment({
         febosId: this.file.febosId,
         comentario: this.newComment.comment
       });

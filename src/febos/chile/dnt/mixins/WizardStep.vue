@@ -29,6 +29,7 @@ export default {
       return !!result;
     },
     getStepData() {
+      console.log('getStepData', this.step);
       return this.step;
     }
   }
