@@ -152,7 +152,7 @@ export default {
     ...mapGetters('Dnts', [
       'loading',
       'error',
-      'successAccion',
+      'successAction',
       'detailsFile',
       'attachmentsFile'
     ])

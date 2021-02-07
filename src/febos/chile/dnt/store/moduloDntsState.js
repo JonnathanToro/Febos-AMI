@@ -1,17 +1,18 @@
 export default {
   loading: false,
-  successAccion: false,
+  successAction: false,
   error: '',
   showModal: false,
-  paginaActual: 1,
-  paginasTotales: 0,
-  registrosEncontrados: 0,
-  dnts: {},
+  list: {},
   details: {
     comentarios: [],
     cuerpo: ''
   },
   comments: [],
   binnacle: [],
-  wizardData: {}
+  wizardData: {},
+  pagination: {
+    items: 0,
+    pages: 0
+  }
 };

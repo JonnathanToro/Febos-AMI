@@ -23,13 +23,9 @@ export const listDocuments = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await clDntCloudSearchList(payload);
   // const response = await clDntsList(payload);
-  commit('SET_LISTADO_DNT', response.data);
+  commit('SET_DNT_LIST', response.data);
   commit('SET_LOADING', false);
   return response.data;
-};
-
-export const actualizarPagina = ({ commit }, payload) => {
-  commit('ACT_PAGINA', payload);
 };
 
 export const detailDnt = async ({ commit }, payload) => {
@@ -70,7 +66,7 @@ export const downloadPrivateFile = async ({ commit }, payload) => {
   commit('SET_LOADING', false);
 };
 
-export const downloadAttatchmentsFile = async ({ commit }, payload) => {
+export const downloadAttachmentFiles = async ({ commit }, payload) => {
   commit('SET_LOADING', true);
   const response = await downloadAttachments(payload);
   window.open(response.data.rutaArchivosComprimidos, '_blank');
@@ -91,7 +87,7 @@ export const attemptCancelFile = async ({ commit }, payload) => {
   return response.data;
 };
 
-export const limpiarMensajeDeError = ({ commit }) => {
+export const clearErrorMessage = ({ commit }) => {
   commit('SET_ERROR_MESSAGE', '');
 };
 

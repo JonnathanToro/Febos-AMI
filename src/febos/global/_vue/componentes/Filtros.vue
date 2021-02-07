@@ -49,7 +49,7 @@
           v-on:click.native="eliminarFiltro(filtro)"
           v-if="esEliminable[filtro.campo]"
         />
-        <span>&nbsp;</span>
+        <span />
       <vs-tooltip :text="`Modificar filtro ${filtro.nombre}`">
         <strong>{{ typeof filtro == 'undefined' ? '' : filtro.nombre }}: </strong>
         <span class="pl-1">

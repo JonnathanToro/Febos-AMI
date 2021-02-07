@@ -1,32 +1,32 @@
 <template>
   <div>
     <template slot="actions">
-  <span>
-    Viendo documentos que ingresaron
-  </span>
-      <span v-if="periodoSeleccionado.valor != 'personalizado'">
-    {{ periodoSeleccionado.nombre }}
-  </span>
-      <span v-if="periodoSeleccionado.valor == 'personalizado'">
-    entre el
-        <!--<input type="date" class="fecha" v-model="periodoDesde">-->
-    <datetime
-      v-model="periodoDesde"
-      input-class="fecha"
-      :phrases="{ok: 'Seleccionar',
-       cancel: 'Cancelar'}"
-      value-zone="local"
-      format="yyyy-MM-dd"
-    />
-    y el
-    <datetime
-      v-model="periodoHasta"
-      input-class="fecha"
-      :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
-      value-zone="local"
-      format="yyyy-MM-dd"
-    />
-  </span>
+    <span>
+      Viendo documentos que ingresaron
+    </span>
+    <span v-if="periodoSeleccionado.valor != 'personalizado'">
+      {{ periodoSeleccionado.nombre }}
+    </span>
+    <span v-if="periodoSeleccionado.valor == 'personalizado'">
+      entre el
+      <!--<input type="date" class="fecha" v-model="periodoDesde">-->
+      <datetime
+        v-model="periodoDesde"
+        input-class="fecha"
+        :phrases="{ok: 'Seleccionar',
+         cancel: 'Cancelar'}"
+        value-zone="local"
+        format="yyyy-MM-dd"
+      />
+      y el
+      <datetime
+        v-model="periodoHasta"
+        input-class="fecha"
+        :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
+        value-zone="local"
+        format="yyyy-MM-dd"
+      />
+    </span>
       <vs-dropdown style="margin-left: 15px">
         <a class="a-icon" href="#">
           Cambiar
@@ -151,7 +151,7 @@
                 </vs-col>
                 <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
                   {{ file.solicitanteNombre }}
-                  <small>{{ file.solicitanteEmail }}</small>
+                  <small class="d-block">{{ file.solicitanteEmail }}</small>
                 </vs-col>
               </vs-row>
             </vs-col>
@@ -163,14 +163,14 @@
                   <vs-avatar icon="date_range" />
                   {{ file.fechaActualizacion | dateFormat }}
                 </vs-chip>
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
               <vs-tooltip text="Fecha del documento">
                 <vs-chip class="mr-4">
                   <vs-avatar icon="event" />
                   {{ file.fechaEntrega | dateFormat }}
                 </vs-chip>
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
               <vs-tooltip text="Documento externo">
                 <vs-button
@@ -183,7 +183,7 @@
                 >
                   <span class="text-black">externo</span>
                 </vs-button>
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
               <vs-tooltip text="Documento interno">
                 <vs-button
@@ -197,7 +197,7 @@
                 >
                   <span class="text-black">interno</span>
                 </vs-button>
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
               <vs-tooltip text="Estoy en copia">
                 <vs-button
@@ -210,7 +210,7 @@
                 >
                   <span class="text-black">en copia</span>
                 </vs-button>
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
               <vs-tooltip text="Soy destinatario/responsable">
                 <vs-button
@@ -223,7 +223,7 @@
                 >
                   <span class="text-black">destinatario</span>
                 </vs-button>
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
               <vs-tooltip text="Acompaña físico">
                 <vs-button
@@ -237,7 +237,7 @@
                 >
                   <span class="text-black">acompaña físico</span>
                 </vs-button>
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
               <vs-tooltip text="archivo privado">
                 <vs-button
@@ -249,7 +249,7 @@
                   class="p-2 rounded-lg mr-4"
                   disabled
                 />
-                <span>&nbsp;</span>
+                <span />
               </vs-tooltip>
             </vs-col>
           </vs-row>
@@ -286,7 +286,7 @@
                   <vs-icon icon="save_alt"/>
                   Descargar acta
                 </vs-dropdown-item>-->
-                <vs-dropdown-item v-on:click="downloadAttatchments(file)">
+                <vs-dropdown-item v-on:click="downloadAttachments(file)">
                   <vs-icon icon="save_alt"/>
                   Descargar adjuntos
                 </vs-dropdown-item>
@@ -316,7 +316,7 @@
                 </vs-dropdown-item>
               </vs-dropdown-menu>
             </vs-dropdown>
-            <span>&nbsp;</span>
+            <span />
           </vs-tooltip>
         </vs-col>
       </vs-row>
@@ -376,13 +376,12 @@
     <PopUpCommentsFile :file="file" />
     <PopUpTicketFile :file="file" />
     <PopUpSendFile :file="file" />
-    <vs-row v-if="!loading && dntByFiles.length">
+    <vs-row v-if="dntByFiles.length">
       <vs-col vs-w="12" class="mt-4">
         <fb-paginacion
-          :total="paginacion.paginasTotales"
+          :total="pagination.pages"
           :max="10"
-          v-model="pagina"
-          class="mt-7"
+          v-model="page"
         />
       </vs-col>
     </vs-row>
@@ -440,20 +439,19 @@ export default {
       detailsFile: false,
       binnacleModal: false,
       canceledFile: {},
-      file: {}
+      file: {},
+      page: Number.parseInt(this.$route.query.page || 1, 10),
+      paginate: Number.parseInt(this.$route.query.paginate || 2, 10)
     };
   },
   watch: {
-    pagina() {
-      console.log('this.pagina', this.pagina);
+    page(newValue) {
       this.listDocuments({
         tipo: 'EXP',
         campos: '*',
-        pagina: 1,
-        // pagina: this.pagina,
+        pagina: newValue,
         orden: '-fechaCreacion',
-        itemsPorPagina: 10,
-        // TODO agregar bien los filtros
+        itemsPorPagina: this.paginate,
         filtros: this.filtros
       });
     },
@@ -468,7 +466,7 @@ export default {
         scale: 0.6
       });
     },
-    successAccion() {
+    successAction() {
       this.$vs.notify({
         title: 'Genial!',
         text: 'Acción realizada exitosamente',
@@ -486,7 +484,7 @@ export default {
           time: 10000,
           position: 'top-center'
         });
-        this.limpiarMensajeDeError();
+        this.clearErrorMessage();
       }
     }
   },
@@ -494,14 +492,13 @@ export default {
     ...mapGetters('Dnts', [
       'loading',
       'error',
-      'successAccion',
+      'successAction',
       'dntByFiles',
-      'paginacion',
-      'paginaActual',
       'fileCommentDetails',
       'binnacleFile',
       'showModalFile',
       'fileCommentDetails',
+      'pagination'
     ]),
     ...mapGetters('Empresas', [
       'empresa',
@@ -515,14 +512,6 @@ export default {
       'documentTypesState',
       'institutionTypesState'
     ]),
-    pagina: {
-      get() {
-        return this.paginaActual;
-      },
-      set(value) {
-        this.actualizarPagina(value);
-      }
-    },
     showModal: {
       get() {
         return this.showModalFile;
@@ -543,18 +532,16 @@ export default {
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
-      'actualizarPagina',
       'getFileDnt',
       'downloadFilePDF',
       'attemptCancelFile',
-      'limpiarMensajeDeError',
+      'clearErrorMessage',
       'getFileBinnacle',
       'sendTicketHelp',
       'closeModal',
-      'downloadAttatchmentsFile',
+      'downloadAttachmentFiles',
       'getFileDetails',
       'downloadFilePDF',
-      'limpiarMensajeDeError',
       'closeModal',
       'getFileComments',
       'getAttachmentsDnt'
@@ -579,8 +566,11 @@ export default {
       this.$router.push(`/documentos/${types[file.claseMercadoPublico]}/${file.febosId}`);
     },
 
-    manipularFiltros(filtros) {
+    manipularFiltros(filtros, onMounted) {
       // console.log('manipulando', filtros);
+      if (onMounted) {
+        this.page = 1;
+      }
       this.filtrosDelComponente = filtros;
       this.filtros = `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;
       if (filtros !== '') {
@@ -590,9 +580,9 @@ export default {
       this.listDocuments({
         tipo: 'EXP',
         campos: '*',
-        pagina: 1,
+        pagina: this.page,
         orden: '-fechaCreacion',
-        itemsPorPagina: 10,
+        itemsPorPagina: this.paginate,
         filtros: this.filtros
       });
     },
@@ -666,8 +656,8 @@ export default {
         ejecucionId: file.febosId
       });
     },
-    downloadAttatchments(file) {
-      this.downloadAttatchmentsFile({
+    downloadAttachments(file) {
+      this.downloadAttachmentFiles({
         febosId: file.febosId,
         comprimir: 'si'
       });
@@ -722,7 +712,7 @@ export default {
     if (!this.usersCompany.length) {
       this.getUsersCompany({
         empresaId: this.empresa.id,
-        pagina: 1,
+        pagina: this.page,
         filas: 9999,
         buscarInfoExtra: 'si',
         filtroInfoExtra: 'CARGO'
