@@ -22,3 +22,5 @@ export const windowBreakPoint = (state) => {
 export const scrollbarTag = (state) => (state.is_touch_device ? 'div' : 'VuePerfectScrollbar');
 
 export const currentModule = (state) => state.moduloActual;
+
+export const apiError = (state) => state.apiError;

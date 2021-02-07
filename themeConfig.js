@@ -11,7 +11,7 @@
 import Vue from 'vue';
 import Vuesax from 'vuesax';
 
-const colors = {
+export const colors = {
   primary: '#ff8000',
   success: '#28C76F',
   danger: '#EA5455',
