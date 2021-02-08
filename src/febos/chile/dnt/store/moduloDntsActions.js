@@ -157,6 +157,7 @@ export const loadWizardData = async ({ commit }, { id, mapper }) => {
       febosId: id,
       destinatarios: 'si',
       referencias: 'si',
+      etiquetas: 'si',
       retornarDnt: 'si'
     });
 
@@ -165,7 +166,7 @@ export const loadWizardData = async ({ commit }, { id, mapper }) => {
     );
 
     data.adjuntos = adjuntos;
-
+    commit('CLEAR_WIZARD_DATA');
     commit(
       'SET_WIZARD_DATA',
       mapper ? mapper(data) : data
@@ -246,11 +247,10 @@ export const sendTicketHelp = async ({ commit }, payload) => {
 */
 export const saveDocument = async ({ commit }, { id, data, isDraft }) => {
   commit('SET_LOADING', true);
-
   try {
     const response = !id
       ? await createDnt(data)
-      : await updateDnt(data);
+      : await updateDnt(id, data);
 
     commit('SET_SUCCESS_MESSAGE', response.data);
 

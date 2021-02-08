@@ -42,8 +42,7 @@ export default {
       default: true
     },
     parentValue: {
-      type: String,
-      required: true
+      type: String
     }
   },
   computed: {

@@ -168,7 +168,7 @@
               <vs-tooltip text="Fecha del documento">
                 <vs-chip class="mr-4">
                   <vs-avatar icon="event" />
-                  {{ file.fechaEntrega | dateFormat }}
+                  {{ file.fechaEmision | dateFormat }}
                 </vs-chip>
                 <span />
               </vs-tooltip>
@@ -441,7 +441,7 @@ export default {
       canceledFile: {},
       file: {},
       page: Number.parseInt(this.$route.query.page || 1, 10),
-      paginate: Number.parseInt(this.$route.query.paginate || 2, 10)
+      paginate: Number.parseInt(this.$route.query.paginate || 10, 10)
     };
   },
   watch: {
@@ -580,7 +580,7 @@ export default {
       this.listDocuments({
         tipo: 'EXP',
         campos: '*',
-        pagina: this.page,
+        pagina: 1,
         orden: '-fechaCreacion',
         itemsPorPagina: this.paginate,
         filtros: this.filtros

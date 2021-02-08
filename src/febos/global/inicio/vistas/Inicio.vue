@@ -75,6 +75,39 @@
           </div>
         </vx-card>
       </vs-col>
+      <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
+        <vx-card title="Documentos" class="ml-2 mt-5">
+          <div class="container">
+            <div class="centrador">
+              <div class="modulo mr-5 mt-5 pt-5">
+                <div class="nombre-modulo">
+                  14 Pendientes
+                </div>
+                <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+              </div>
+              <div class="modulo mr-5 mt-5 pt-5">
+                <div class="nombre-modulo">
+                  3 Finalizados
+                </div>
+                <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+              </div>
+              <div class="modulo mr-5 mt-5 pt-5">
+                <div class="nombre-modulo">
+                  3 en copia
+                </div>
+                <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+              </div>
+              <div class="modulo mr-5 mt-5 pt-5">
+                <div class="nombre-modulo">
+                  2 anulados
+                </div>
+                <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+              </div>
+            </div>
+          </div>
+        </vx-card>
+
+      </vs-col>
     </vs-row>
 
   </div>

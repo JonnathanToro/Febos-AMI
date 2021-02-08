@@ -72,6 +72,7 @@ export default {
         break;
       }
       case 'docDigital': {
+        // TODO: test form with this case
         state.subjects.list = payload.list.map((option) => ({
           id: option.opcionId,
           value: option.valor,
@@ -80,6 +81,7 @@ export default {
         break;
       }
       case 'ministerios': {
+        // TODO: test form with this case
         state.subjects.list = payload.list.map((option) => ({
           id: option.opcionId,
           value: option.valor,
