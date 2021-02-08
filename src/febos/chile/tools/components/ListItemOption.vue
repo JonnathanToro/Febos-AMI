@@ -32,7 +32,7 @@
           v-on:click="listDocuments(option)"
           icon="search"
         />
-        <span>&nbsp;</span>
+        <span />
       </vs-tooltip>
       <vs-tooltip text="Editar Opción" v-if="!editMood">
         <vs-button
@@ -43,7 +43,7 @@
           v-on:click="editOption(option)"
           icon="edit"
         />
-        <span>&nbsp;</span>
+        <span />
       </vs-tooltip>
       <vs-tooltip text="Guardar edición" v-if="editMood">
         <vs-button
@@ -54,7 +54,7 @@
           v-on:click="saveOption(option)"
           icon="save"
         />
-        <span>&nbsp;</span>
+        <span />
       </vs-tooltip>
       <vs-tooltip text="Cancelar edición" v-if="editMood">
         <vs-button color="danger" class="margin-right" size="small"
@@ -66,7 +66,7 @@
           v-model="selected"
           v-on:click="toggleEnableOption({ option, selected, type })"
         />
-        <span>&nbsp;</span>
+        <span />
       </vs-tooltip>
     </vs-col>
   </vs-row>

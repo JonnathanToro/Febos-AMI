@@ -2,24 +2,17 @@ import Vue from 'vue';
 
 export default {
   dntByFiles: (state) => (
-    Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'EXP' || dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO')
+    Object.values(state.list || {}).filter((dnt) => dnt.tipo === 'EXP' || dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO')
   ),
   dntByED: (state) => (
-    Object.values(state.dnts || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
+    Object.values(state.list || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
   ),
   dntByDocDigital: (state) => (
-    Object.values(state.dnts || {}).filter((dnt) => dnt.tipo === 'DDD')
+    Object.values(state.list || {}).filter((dnt) => dnt.tipo === 'DDD')
   ),
   loading: (state) => state.loading,
   error: (state) => state.error,
-  successAccion: (state) => state.successAccion,
-  paginacion: (state) => ({
-    paginaActual: state.paginaActual,
-    paginasTotales: state.paginasTotales,
-    registrosPorPagina: state.registrosPorPagina,
-    registrosEncontrados: 10
-  }),
-  paginaActual: (state) => state.paginaActual,
+  successAction: (state) => state.successAction,
   fileCommentDetails: (state) => (
     (state.details || {}).comentarios || []
   ),
@@ -27,7 +20,7 @@ export default {
   participants: (state) => state.details.destinatarios,
   detailsDnt: (state) => {
     const jsonBody = JSON.parse(atob((state.details || {}).cuerpo));
-    const details = {
+    return {
       document: jsonBody.documento_principal,
       attachedDocuments: jsonBody.documentos_anexos,
       creator: jsonBody.info_creador,
@@ -36,7 +29,6 @@ export default {
       institutions: jsonBody.info_visaciones,
       pdf: state.details.imagenLink
     };
-    return details;
   },
   detailsFile: (state) => state.details,
   attachmentsFile: (state) => state.attachments,
@@ -46,5 +38,6 @@ export default {
     return comment;
   }),
   binnacleFile: (state) => state.binnacle,
-  wizardData: (state) => state.wizardData
+  wizardData: (state) => state.wizardData,
+  pagination: (state) => state.pagination
 };

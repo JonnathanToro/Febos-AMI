@@ -49,7 +49,7 @@
           v-on:click.native="eliminarFiltro(filtro)"
           v-if="esEliminable[filtro.campo]"
         />
-        <span>&nbsp;</span>
+        <span />
       <vs-tooltip :text="`Modificar filtro ${filtro.nombre}`">
         <strong>{{ typeof filtro == 'undefined' ? '' : filtro.nombre }}: </strong>
         <span class="pl-1">
@@ -539,7 +539,7 @@ export default {
         }
       }
     },
-    aplicarFiltros() {
+    aplicarFiltros(onMounted = false) {
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filter) => {
@@ -587,7 +587,7 @@ export default {
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      this.$emit('filtros-aplicados', query.join('|'));
+      this.$emit('filtros-aplicados', query.join('|'), onMounted);
     },
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'YYYY-MM-DD' : 'YYYY-MM-DD';
@@ -939,7 +939,7 @@ export default {
         this.agregarFiltro(filtro);
       }
     }
-    this.aplicarFiltros();
+    this.aplicarFiltros(true);
   }
 };
 </script>

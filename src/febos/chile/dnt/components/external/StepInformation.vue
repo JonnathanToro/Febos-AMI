@@ -37,6 +37,7 @@
           <vs-input
             class="w-100"
             label="Nombre Persona"
+            maxlength="50"
             name="personName"
             v-model="step.personName"
           />
@@ -47,6 +48,7 @@
           <vs-input
             class="w-100"
             label="Cargo Persona"
+            maxlength="50"
             name="personPosition"
             v-model="step.personPosition"
           />
@@ -328,6 +330,7 @@
           <vs-input
             class="w-100"
             label="Detalle"
+            maxlength="250"
             name="documentDetail"
             v-model="step.documentDetail"
             v-validate="{ required: step.withAttachment === 1 }"
@@ -339,6 +342,7 @@
       <div class="row">
         <div class="col-12">
           <vs-textarea
+            maxlength="5000"
             label="Observacion (5000 caracteres)"
             name="observacion"
             v-model="step.observation"
@@ -528,6 +532,12 @@ export default {
       return true;
     },
     getStepData() {
+      const institutionTypeName = this.step.institutionType
+        ? {
+          institutionTypeName: this.$refs.institutionType.getOption().label
+        }
+        : {};
+
       const institutionName = this.step.institution
         ? {
           institutionName: this.$refs.institution.getOption().label
@@ -536,7 +546,7 @@ export default {
 
       return {
         ...this.step,
-        institutionTypeName: this.$refs.institutionType.getOption().label,
+        ...institutionTypeName,
         ...institutionName
       };
     }

@@ -101,7 +101,7 @@ export default {
       default: 'primary'
     },
     total: {
-      type: String,
+      type: [String, Number],
       required: true
     },
     value: {
@@ -192,8 +192,7 @@ export default {
     },
     getPages() {
       if (this.total <= this.max) {
-        const pages = this.setPages(1, this.total);
-        this.pages = pages;
+        this.pages = this.setPages(1, this.total);
         return;
       }
       const even = this.max % 2 === 0 ? 1 : 0;

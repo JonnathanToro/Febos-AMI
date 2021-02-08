@@ -387,7 +387,7 @@ export default {
         scale: 0.6
       });
     },
-    successAccion() {
+    successAction() {
       this.$vs.notify({
         title: 'Genial!',
         text: 'Acción realizada exitosamente',
@@ -405,7 +405,7 @@ export default {
           time: 10000,
           position: 'top-center'
         });
-        this.limpiarMensajeDeError();
+        this.clearErrorMessage();
       }
     }
   },
@@ -413,7 +413,7 @@ export default {
     ...mapGetters('Dnts', [
       'loading',
       'error',
-      'successAccion',
+      'successAction',
       'dntByED',
       'paginacion',
       'paginaActual',
@@ -454,7 +454,7 @@ export default {
       'actualizarPagina',
       'getFileDetails',
       'downloadFilePDF',
-      'limpiarMensajeDeError',
+      'clearErrorMessage',
       'processDntFileED',
       'closeModal',
       'getFileDnt',
