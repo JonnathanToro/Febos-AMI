@@ -89,11 +89,11 @@ export const createDnt = (payload) => {
     foliar: 'si'
   });
   console.log('CREAR EXPEDIENTE', payload, params);
-  /* return apiClient.post(
+  return apiClient.post(
     `${RESOURCE}/crear?${params}`,
     payload,
     { operacionId: 'io.dnt.crear.dnt' }
-  ); */
+  );
 };
 
 export const updateDnt = (id, payload) => {
