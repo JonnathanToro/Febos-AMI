@@ -13,6 +13,7 @@
   <div id="app" :class="vueAppClasses">
     <router-view @setAppClasses="setAppClasses" :key="$route.fullPath"/>
     <idle-tracking v-if="isLogged"/>
+    <ApiErrorModal />
   </div>
 </template>
 
@@ -22,9 +23,11 @@ import { mapGetters } from 'vuex';
 import themeConfig from '../themeConfig';
 
 import IdleTracking from '@/febos/global/_vue/componentes/IdleTracking';
+import ApiErrorModal from '@/febos/global/_vue/componentes/ApiErrorModal';
 
 export default {
   components: {
+    ApiErrorModal,
     IdleTracking
   },
   data() {

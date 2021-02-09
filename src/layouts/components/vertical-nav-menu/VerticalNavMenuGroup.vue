@@ -185,6 +185,9 @@ export default {
     },
     // OPEN AND CLOSES DROPDOWN MENU ON NavMenu COLLAPSE AND DEFAULT VIEW
     '$store.state.verticalNavMenuItemsMin': function (val) {
+      if (!this.$refs.items) {
+        return;
+      }
       const { scrollHeight } = this.$refs.items;
 
       if (!val && this.open) {

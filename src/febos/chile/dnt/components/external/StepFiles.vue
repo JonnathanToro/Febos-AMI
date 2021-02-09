@@ -136,9 +136,9 @@
         <div class="col-12">
           <vs-table
             multiple
-            v-model="step.relatedDocuments"
+            v-model="step.relatedDocumentsSelected"
             no-data-text="No tienes documentos relacionados"
-            :data="step.relatedDocumentsSelected"
+            :data="step.relatedDocuments"
           >
             <template slot="thead">
               <vs-th>Relacionado con</vs-th>

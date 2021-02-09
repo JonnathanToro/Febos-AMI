@@ -53,6 +53,7 @@
           width="100%"
           v-validate="'required|min:3'"
           height="100px"
+          maxlength="5000"
           class="mb-0"
           v-model="step.matter"
         />
@@ -145,17 +146,21 @@ export default {
       return this.validateForm('step-1');
     },
     getStepData() {
-      console.log('getStepData 1', this.step);
       const documentName = this.step.document
         ? {
           documentName: this.$refs.documents.getOption().label
         }
         : {};
 
+      const documentTypeName = this.step.documentType
+        ? {
+          documentTypeName: this.$refs.documentTypes.getOption().label
+        }
+        : {};
+
       return {
         ...this.step,
-        documentTypeName: this.$refs.documentTypes.getOption().label,
-        issueDate: this.$moment(this.issueDate).format('YYYY-MM-DD'),
+        ...documentTypeName,
         ...documentName
       };
     }

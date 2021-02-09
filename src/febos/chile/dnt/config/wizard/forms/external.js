@@ -1,17 +1,23 @@
-export default {
+import Vue from 'vue';
+
+import StepIdentification from '@/febos/chile/dnt/components/external/StepIdentification';
+import StepInformation from '@/febos/chile/dnt/components/external/StepInformation';
+import StepFiles from '@/febos/chile/dnt/components/external/StepFiles';
+
+export default () => ({
   currentStep: 0,
   steps: [
     {
       title: 'Identification',
-      component: require('../../../components/external/StepIdentification').default
+      component: StepIdentification
     },
     {
       title: 'Información',
-      component: require('../../../components/external/StepInformation').default
+      component: StepInformation
     },
     {
       title: 'Documentos relacionados',
-      component: require('../../../components/external/StepFiles').default
+      component: StepFiles
     }
   ],
   wizardMapper(
@@ -27,10 +33,13 @@ export default {
     const data = {};
 
     if (dnt) {
+      data.fileNumber = dnt.numero;
       data.documentType = dnt.emisorCentroCostoNumero;
       data.document = dnt.emisorSucursalCodigo;
       data.documentNumber = dnt.numeroInt;
-      data.issueDate = dnt.fechaEmision;
+      if (dnt.fechaEmision) {
+        data.issueDate = Date.parse(dnt.fechaEmision);
+      }
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10);
       data.institutionType = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
@@ -42,51 +51,71 @@ export default {
 
     if (observaciones && observaciones.length) {
       data.matter = observaciones[0].observacion;
-      data.observation = observaciones[1].observacion;
+      if (observaciones[1]) {
+        data.observation = observaciones[1].observacion;
+      }
     }
 
     if (destinatarios && destinatarios.length) {
       const subjects = destinatarios
         .filter((subject) => subject.tipoDestino === '1')
-        .map((subject) => ({
-          subjectType: {
-            value: subject.destinoCodigo,
-            label: subject.destinoNombre
-          },
-          subject: {
-            value: subject.destinoListaCodigo,
-            label: subject.destinoListaNombre
-          },
-          subjectEmail: subject.destinoCorreo,
-          subjectTypeDigitalDoc: {
-            value: subject.institucionCodigo || '',
-            label: subject.institucionNombre || ''
-          }
-        }));
+        .map((subject) => {
+          const subjectTypeDigitalDoc = subject.institucionCodigo
+            ? {
+              id: subject.institucionCodigoId,
+              value: subject.institucionCodigo,
+              label: subject.institucionNombre
+            }
+            : {};
 
-      data.subjects = subjects;
-      data.subjectsSelected = subjects;
+          return {
+            subjectType: {
+              id: subject.destinoCodigoId,
+              value: subject.destinoCodigo,
+              label: subject.destinoNombre
+            },
+            subject: {
+              id: subject.destinoListaCodigoId,
+              value: subject.destinoListaCodigo,
+              label: subject.destinoListaNombre
+            },
+            subjectEmail: subject.destinoCorreo,
+            subjectTypeDigitalDoc
+          };
+        });
+
+      data.subjects = [...subjects];
+      data.subjectsSelected = [...subjects];
 
       const copies = destinatarios
         .filter((subject) => subject.tipoDestino === '2')
-        .map((subject) => ({
-          copySubjectType: {
-            value: subject.destinoCodigo,
-            label: subject.destinoNombre
-          },
-          copySubject: {
-            value: subject.destinoListaCodigo,
-            label: subject.destinoListaNombre
-          },
-          copySubjectEmail: subject.destinoCorreo,
-          copySubjectTypeDigitalDoc: {
-            value: subject.institucionCodigo || '',
-            label: subject.institucionNombre || ''
-          }
-        }));
+        .map((subject) => {
+          const copySubjectTypeDigitalDoc = subject.institucionCodigo
+            ? {
+              id: subject.institucionCodigoId,
+              value: subject.institucionCodigo,
+              label: subject.institucionNombre
+            }
+            : {};
 
-      data.copies = copies;
-      data.copiesSelected = copies;
+          return {
+            copySubjectType: {
+              id: subject.destinoCodigoId,
+              value: subject.destinoCodigo,
+              label: subject.destinoNombre
+            },
+            copySubject: {
+              id: subject.destinoListaCodigoId,
+              value: subject.destinoListaCodigo,
+              label: subject.destinoListaNombre
+            },
+            copySubjectEmail: subject.destinoCorreo,
+            copySubjectTypeDigitalDoc
+          };
+        });
+
+      data.copies = [...copies];
+      data.copiesSelected = [...copies];
     }
 
     if (adjuntos && adjuntos.length) {
@@ -119,18 +148,17 @@ export default {
         number: relatedDocument.folio
       }));
 
-      data.relatedDocuments = relatedDocuments;
-      data.relatedDocumentsSelected = relatedDocuments;
+      data.relatedDocuments = [...relatedDocuments];
+      data.relatedDocumentsSelected = [...relatedDocuments];
     }
 
     if (etiquetas && etiquetas.length) {
-      data.tags = etiquetas.map((tag) => ({ text: tag }));
+      data.tags = etiquetas.map((tag) => ({ text: tag.etiqueta }));
     }
 
     return data;
   },
   documentMapper(input, iutCompany, nameCompany, isDraft = false) {
-    console.log('llegadaaa', input);
     const data = {
       adjuntos: [],
       dnt: {
@@ -146,7 +174,6 @@ export default {
         emisorSucursalCodigo: input.document,
         emisorSucursalDireccion: input.documentName,
         numeroInt: input.documentNumber,
-        fechaEmision: input.issueDate,
         transportePuertoTipo: input.isPrivate,
         compradorCodigo: input.institutionType,
         compradorArea: input.institutionTypeName,
@@ -164,6 +191,7 @@ export default {
         ...(input.subjectsSelected || []).map((subject) => {
           const institution = Object.keys(subject.subjectTypeDigitalDoc).length
             ? {
+              institucionCodigoId: subject.subjectTypeDigitalDoc.id,
               institucionCodigo: subject.subjectTypeDigitalDoc.value,
               institucionNombre: subject.subjectTypeDigitalDoc.label,
             }
@@ -172,8 +200,10 @@ export default {
           return {
             tipoDestino: 1,
             estado: 1,
+            destinoCodigoId: subject.subjectType.id,
             destinoCodigo: subject.subjectType.value,
             destinoNombre: subject.subjectType.label,
+            destinoListaCodigoId: subject.subject.id,
             destinoListaCodigo: subject.subject.value,
             destinoListaNombre: subject.subject.label,
             destinoCorreo: subject.subjectEmail,
@@ -183,6 +213,7 @@ export default {
         ...(input.copiesSelected || []).map((subject) => {
           const institution = Object.keys(subject.copySubjectTypeDigitalDoc).length
             ? {
+              institucionCodigoId: subject.copySubjectTypeDigitalDoc.id,
               institucionCodigo: subject.copySubjectTypeDigitalDoc.value,
               institucionNombre: subject.copySubjectTypeDigitalDoc.label,
             }
@@ -191,8 +222,10 @@ export default {
           return {
             tipoDestino: 2,
             estado: 1,
+            destinoCodigoId: subject.copySubjectType.id,
             destinoCodigo: subject.copySubjectType.value,
             destinoNombre: subject.copySubjectType.label,
+            destinoListaCodigoId: subject.copySubject.id,
             destinoListaCodigo: subject.copySubject.value,
             destinoListaNombre: subject.copySubject.label,
             destinoCorreo: subject.copySubjectEmail,
@@ -207,6 +240,10 @@ export default {
       }))
     };
 
+    if (input.issueDate) {
+      data.dnt.fechaEmision = Vue.moment(input.issueDate).format('YYYY-MM-DD');
+    }
+
     if (input.matter) {
       data.observaciones = [
         {
@@ -219,7 +256,7 @@ export default {
     if (input.observation) {
       data.observaciones.push({
         linea: '1',
-        obsevacion: input.observation
+        observacion: input.observation
       });
     }
 
@@ -255,4 +292,4 @@ export default {
 
     return data;
   }
-};
+});

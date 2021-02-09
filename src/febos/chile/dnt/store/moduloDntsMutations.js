@@ -1,20 +1,26 @@
 export default {
-  SET_LISTADO_DNT(state, payload) {
-    state.dnts = {};
-    state.dnts = (payload.documentos || [])
+  SET_DNT_LIST(state, payload) {
+    state.list = (payload.documentos || [])
       .reduce((index, option) => ({
         ...index,
         [option.febosId]: option
       }), {});
-    state.paginaActual = Number.parseInt(payload.paginaActual, 10);
-    state.paginasTotales = payload.totalPaginas;
-    state.registrosEncontrados = payload.totalElementos;
+    state.pagination = {
+      items: Number.parseInt(payload.totalElementos, 10),
+      pages: Number.parseInt(payload.totalPaginas, 10)
+    };
   },
   SET_LOADING(state, payload) {
     state.loading = payload;
   },
   SET_DETAIL_FILE(state, payload) {
     state.details = payload;
+  },
+  UPDATE_CANCELED_DNT(state, payload) {
+    state.list[payload.febosId].estado = '8';
+  },
+  UPDATE_PROCESSED_DNT(state, payload) {
+    state.list[payload.febosId].estado = '9';
   },
   SET_WIZARD_DATA(state, payload) {
     state.wizardData = payload;
@@ -28,9 +34,6 @@ export default {
   CLEAR_WIZARD_DATA(state) {
     state.wizardData = {};
   },
-  ACT_PAGINA(state, payload) {
-    state.paginaActual = payload;
-  },
   SET_DETAIL_DNT(state, payload) {
     state.details = payload;
   },
@@ -38,7 +41,7 @@ export default {
     state.attachments = payload;
   },
   SET_SUCCESS_MESSAGE(state, payload) {
-    state.successAccion = payload;
+    state.successAction = payload;
   },
   SET_ERROR_MESSAGE(state, payload) {
     state.error = payload;

@@ -88,7 +88,7 @@ export const createDnt = (payload) => {
     simular: 'no',
     foliar: 'si'
   });
-  console.log('CREAR BORRADOR', payload, params);
+  console.log('CREAR EXPEDIENTE', payload, params);
   return apiClient.post(
     `${RESOURCE}/crear?${params}`,
     payload,
@@ -96,14 +96,16 @@ export const createDnt = (payload) => {
   );
 };
 
-export const updateDnt = (payload) => {
+export const updateDnt = (id, payload) => {
   const params = apiClient.queryParams({
     entrada: 'json',
-    tipoDocumento: 'EXP'
+    tipoDocumento: 'EXP',
+    febosId: id,
+    sobreEscribir: 'si'
   });
   console.log('GUARDAR BORRADOR', payload, params);
   return apiClient.post(
-    `${RESOURCE}/${payload.dnt.febosId}/actualizar?${params}`,
+    `${RESOURCE}/${id}/actualizar?${params}`,
     payload,
     { operacionId: 'io.dnt.actualizar.dnt' }
   );
