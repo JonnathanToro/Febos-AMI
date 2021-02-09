@@ -39,9 +39,9 @@
         </vs-list>
       </vs-tab>
       <vs-tab label="Adjuntos">
-        <vs-list v-if="attachmentsFile && attachmentsFile.length">
+        <vs-list>
           <div
-            v-for="attachment in attachmentsFile"
+            v-for="attachment in detailsFile.adjuntos"
             :key="attachment.adjuntoId"
           >
             <vs-list-item
@@ -59,7 +59,7 @@
         </vs-list>
       </vs-tab>
       <vs-tab label="Destinatarios">
-        <vs-list>
+        <vs-list class="box-participants">
           <div
             v-for="(subject, index) in detailsFile.destinatarios"
             :key="index"
@@ -84,7 +84,7 @@
               <!--<div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
                 <DownloadFile :path="doc.adjuntoUrl" :name="doc.nombre"/>
               </div>-->
-              <vs-chip color="primary" v-if="subject.tipoDestino === '2'">
+              <vs-chip color="#43C3B9" v-if="subject.tipoDestino === '2'">
                 En copia
               </vs-chip>
             </vs-list-item>
@@ -173,5 +173,10 @@ export default {
   font-size: 12px;
   margin-right: 5px;
   cursor:pointer;
+}
+
+.box-participants {
+  height: 300px;
+  overflow-y: scroll;
 }
 </style>

@@ -87,7 +87,7 @@ apiClient.interceptors.response.use(
       data: response.data
     };
 
-    if (response.data.codigo !== 10 && !!response.data.message) {
+    if (response.data.codigo !== 10 && !!response.data) {
       const error = new Error(
         `${response.data.mensaje}
         ${process.env.VUE_APP_AMBIENTE === 'desarrollo'

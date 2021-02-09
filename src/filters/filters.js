@@ -40,6 +40,7 @@ Vue.filter('date', (value, fullDate = false) => {
 Vue.filter('csv', (value) => value.join(', '));
 
 Vue.filter('dateFormat', (value) => Vue.moment(value).format('DD-MM-YYYY'));
+Vue.filter('dateCompleteFormat', (value) => Vue.moment(value).format('LLL'));
 
 Vue.filter('filter_tags', (value) => value.replace(/<\/?[^>]+(>|$)/g, ''));
 
