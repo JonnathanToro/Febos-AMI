@@ -16,6 +16,12 @@ export default {
   SET_DETAIL_FILE(state, payload) {
     state.details = payload;
   },
+  UPDATE_CANCELED_DNT(state, payload) {
+    state.list[payload.febosId].estado = '8';
+  },
+  UPDATE_PROCESSED_DNT(state, payload) {
+    state.list[payload.febosId].estado = '9';
+  },
   SET_WIZARD_DATA(state, payload) {
     state.wizardData = payload;
   },

@@ -290,11 +290,17 @@
                   <vs-icon icon="save_alt"/>
                   Descargar adjuntos
                 </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="cancelFileModal(file)" v-if="isPendingFiles">
+                <vs-dropdown-item
+                  v-on:click="cancelFileModal(file)"
+                  v-if="file.estado !== '3' && isPendingFiles"
+                >
                   <vs-icon icon="clear"/>
                   Anular expediente
                 </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="processFileModal(file)" v-if="isPendingFiles">
+                <vs-dropdown-item
+                  v-on:click="processFileModal(file)"
+                  v-if="file.estado !== '3' && isPendingFiles"
+                >
                   <vs-icon icon="move_to_inbox"/>
                    Finalizar documento
                 </vs-dropdown-item>
@@ -302,15 +308,21 @@
                   <vs-icon icon="groups"/>
                    Participantes
                 </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="getComments(file)" v-if="isPendingFiles">
+                <vs-dropdown-item
+                  v-on:click="getComments(file)"
+                  v-if="file.estado !== '3' && isPendingFiles"
+                >
                   <vs-icon icon="chat"/>
                    Comentarios
                 </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="sendFile(file)" v-if="isPendingFiles">
+                <vs-dropdown-item
+                  v-on:click="sendFile(file)"
+                  v-if="file.estado !== '3' && isPendingFiles"
+                >
                   <vs-icon icon="chat"/>
                   Enviar documento
                 </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="ticketModalFile(file)">
+                <vs-dropdown-item v-on:click="ticketModalFile(file)" v-if="file.estado !== '3'">
                   <vs-icon icon="help"/>
                   Ticket de ayuda
                 </vs-dropdown-item>
@@ -321,24 +333,29 @@
         </vs-col>
       </vs-row>
     </div>
-    <vs-popup title="Bitácora del Expediente" :active.sync="binnacleModal" v-if="binnacleFile">
+    <vs-popup
+      title="Bitácora del Expediente"
+      :active.sync="binnacleModal"
+      v-if="binnacleFile"
+      @close="closeModal"
+    >
       <div>
-        <vs-list>
+        <vs-list class="wrap-binnacle">
           <div  v-for="binnacle in binnacleFile" :key="binnacle.bitacoraId">
+            <vs-list-header :title="binnacle.fecha | dateCompleteFormat"></vs-list-header>
             <vs-list-item
               v-if="binnacle.severidadNombre === 'ERROR'"
               icon="warning"
               style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
               :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
             >
-              <vs-chip color="dark" v-if="binnacle.externalId">
-                <vs-icon icon="pageview" size="small"></vs-icon>
-              </vs-chip>
-              <vs-chip color="dark" v-if="binnacle.correoId">
-                <vs-icon icon="email" size="small"></vs-icon>
-              </vs-chip>
-              <vs-chip color="info">
-                <vs-icon icon="email" size="small">{{binnacle.fecha | dateFormat}}</vs-icon>
+              <vs-chip
+                class="add-code"
+                @click.native="copyToClipboard(binnacle.seguimientoId)"
+                ref="toClipboardId"
+              >
+                <vs-icon icon="search" size="small"></vs-icon>
+                {{ binnacle.seguimientoId }}
               </vs-chip>
               <!--<vs-chip color="dark" v-if="binacle.externalId">
                 <vs-icon icon="pageview" size="small"></vs-icon>
@@ -350,14 +367,13 @@
               style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
               :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
             >
-              <vs-chip color="dark" v-if="binnacle.externalId">
-                <vs-icon icon="pageview" size="small"></vs-icon>
-              </vs-chip>
-              <vs-chip color="dark" v-if="binnacle.correoId">
-                <vs-icon icon="email" size="small"></vs-icon>
-              </vs-chip>
-              <vs-chip color="info">
-                <vs-icon icon="email" size="small">{{binnacle.fecha | dateFormat}}</vs-icon>
+              <vs-chip
+                class="add-code"
+                @click.native="copyToClipboard(binnacle.seguimientoId)"
+                ref="toClipboardId"
+              >
+                <vs-icon icon="search" size="small"></vs-icon>
+                {{ binnacle.seguimientoId }}
               </vs-chip>
               <!--<vs-chip color="dark" v-if="binacle.externalId">
                 <vs-icon icon="pageview" size="small"></vs-icon>
@@ -637,15 +653,24 @@ export default {
         pagina: 1
       });
     },
+    copyToClipboard(code) {
+      const element = document.createElement('input');
+      element.value = code;
+      document.body.appendChild(element);
+      element.select();
+      document.execCommand('copy');
+      document.body.removeChild(element);
+    },
+    closeModal() {
+      this.binnacleModal = false;
+    },
     getDetailsFile(file) {
       this.file = file;
       this.getFileDnt({
         febosId: file.febosId,
         destinatarios: 'si',
-        referencias: 'si'
-      });
-      this.getAttachmentsDnt({
-        febosId: file.febosId
+        referencias: 'si',
+        adjuntos: 'si'
       });
       this.detailsFile = true;
     },
@@ -746,3 +771,13 @@ export default {
   }
 };
 </script>
+<style>
+.wrap-binnacle {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.add-code {
+  cursor: copy;
+}
+</style>

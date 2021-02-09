@@ -101,12 +101,7 @@ export const attemptCancelFile = async ({ commit }, payload) => {
   try {
     commit('SET_LOADING', true);
     const response = await cancelFile(payload);
-    if (response.data.codigo !== 10) {
-      commit('SET_ERROR_MESSAGE', response.data);
-    }
-    await router.push({
-      path: '/expedientes/en-curso'
-    });
+    await commit('UPDATE_CANCELED_DNT', payload);
     store.commit('Modals/CLOSE_MODAL');
     return response.data;
   } finally {
@@ -122,12 +117,7 @@ export const processDntFileED = async ({ commit }, payload) => {
   try {
     commit('SET_LOADING', true);
     const response = await clDntActFileED(payload);
-    if (response.data.codigo !== 10) {
-      commit('SET_ERROR_MESSAGE', response.data);
-    }
-    await router.push({
-      path: '/expedientes/en-curso'
-    });
+    await commit('UPDATE_PROCESSED_DNT', payload);
     store.commit('Modals/CLOSE_MODAL');
     return response.data;
   } finally {

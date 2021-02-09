@@ -3,7 +3,7 @@
     :title="`Participantes del Expediente ${file.numero}`"
     :active.sync="showModal"
   >
-    <vs-list>
+    <vs-list class="box-participants">
       <div
         v-for="(subject, index) in participants"
         :key="index"
@@ -28,7 +28,7 @@
           <!--<div v-for="(doc, index) in comment.documentos" :key="index" class="pill-info">
             <DownloadFile :path="doc.adjuntoUrl" :name="doc.nombre"/>
           </div>-->
-          <vs-chip color="primary" v-if="subject.tipoDestino === '2'">
+          <vs-chip color="#43C3B9" v-if="subject.tipoDestino === '2'">
             En copia
           </vs-chip>
         </vs-list-item>
@@ -73,5 +73,10 @@ export default {
 };
 </script>
 <style scoped>
+
+.box-participants {
+  height: 300px;
+  overflow-y: scroll;
+}
 
 </style>

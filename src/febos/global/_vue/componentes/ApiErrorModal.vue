@@ -1,5 +1,5 @@
 <template>
-  <vs-modal ref="errorModal">
+  <vs-modal ref="errorModal" style="z-index: 100000">
     <div slot="header" class="p-3">
       <h1 class="h4 text-center">¡Chanfle! Algo pasó...</h1>
     </div>

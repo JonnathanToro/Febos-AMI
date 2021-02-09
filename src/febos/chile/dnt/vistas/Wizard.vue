@@ -12,6 +12,11 @@
         />
       </vs-col>
     </vs-row>
+    <vs-row vs-justify="center" v-if="wizardData.fileNumber">
+      <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="10">
+        <h4 style="color: #662583">Expediente # {{wizardData.fileNumber}}</h4>
+      </vs-col>
+    </vs-row>
     <vs-row vs-justify="center">
       <vs-col vs-w="10">
         <vs-card id="wizard">

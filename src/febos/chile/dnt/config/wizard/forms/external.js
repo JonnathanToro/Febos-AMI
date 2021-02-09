@@ -33,6 +33,7 @@ export default () => ({
     const data = {};
 
     if (dnt) {
+      data.fileNumber = dnt.numero;
       data.documentType = dnt.emisorCentroCostoNumero;
       data.document = dnt.emisorSucursalCodigo;
       data.documentNumber = dnt.numeroInt;
