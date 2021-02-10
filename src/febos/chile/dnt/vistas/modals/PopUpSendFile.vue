@@ -161,8 +161,8 @@ export default {
       return {
         tipoDestino: type,
         estado: 1,
-        destinoCodigo: 'usuario',
-        destinoNombre: 'Usuario',
+        destinoCodigo: 'usuarios',
+        destinoNombre: 'Funcionario',
         destinoListaCodigo: data.id,
         destinoListaNombre: data.nombre,
         destinoCorreo: '',
@@ -201,7 +201,6 @@ export default {
         newSubjects.push(this.copySend = this.converSubjectGroup(group, 2));
       }
 
-      console.log('NE', newSubjects);
       this.sendDntFile({
         febosId: this.file.febosId,
         destinos: newSubjects
