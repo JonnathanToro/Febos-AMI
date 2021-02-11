@@ -82,6 +82,8 @@ const filterViews = {
         ]
       },
       { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' }, // correo de usuario que creo el expediente
+      { campo: 'codigosEtiqueta', tipo: 'texto' },
+      { campo: 'textoObservaciones', tipo: 'texto' }
     ]
   },
   general: {
@@ -168,6 +170,8 @@ const filterViews = {
         tipo: 'destinoCopiaIds'
       },
       { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' }, // correo de usuario que creo el expediente
+      { campo: 'codigosEtiqueta', tipo: 'texto' },
+      { campo: 'textoObservaciones', tipo: 'texto' }
     ]
   },
   finalizados: {
@@ -250,6 +254,8 @@ const filterViews = {
         ]
       },
       { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' }, // correo de usuario que creo el expediente
+      { campo: 'codigosEtiqueta', tipo: 'texto' },
+      { campo: 'textoObservaciones', tipo: 'texto' }
     ]
   },
   entrada: [

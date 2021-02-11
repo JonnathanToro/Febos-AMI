@@ -33,6 +33,10 @@ export const cancelFile = (payload) => {
   });
 };
 
+export const clAsignFile = (febosId) => apiClient.post(`${RESOURCE}/${febosId}/destinos/asignar`, {
+  operacionId: 'io.asign.file'
+});
+
 export const getFile = (payload) => {
   const params = apiClient.queryParams(payload);
 

@@ -30,5 +30,13 @@ export default {
   estadoComercial: {
     nombre: 'Estado Comercial',
     tipo: 'multi'
+  },
+  codigosEtiqueta: {
+    nombre: 'Etiquetas',
+    tipo: 'texto'
+  },
+  textoObservaciones: {
+    nombre: 'Observaciones/Materia',
+    tipo: 'texto'
   }
 };
