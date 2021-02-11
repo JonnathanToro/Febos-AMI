@@ -1,5 +1,5 @@
 <template>
-  <vs-modal ref="errorModal" style="z-index: 100000">
+  <vs-modal ref="errorModal" style="z-index: 100000" @close="onModalClose()">
     <div slot="header" class="p-3">
       <h1 class="h4 text-center">¡Chanfle! Algo pasó...</h1>
     </div>
@@ -69,21 +69,24 @@ export default {
   watch: {
     apiError(newValue) {
       if (Object.keys(newValue).length) {
-        console.log('->', newValue);
         this.$refs.errorModal.open();
       }
     }
+  },
+  created() {
+    this.setApiError({});
   },
   methods: {
     ...mapActions([
       'setApiError'
     ]),
-    clearError() {
+    onModalClose() {
       this.setApiError({});
+    },
+    clearError() {
       this.$refs.errorModal.close();
     },
     copyToClipboard() {
-      console.log(this.$refs.toClipboard);
       this.$refs.toClipboard.select();
       document.execCommand('copy');
     }

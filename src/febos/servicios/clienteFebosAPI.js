@@ -10,6 +10,7 @@ const defaultConfig = {
 
 const apiClient = axios.create(defaultConfig);
 const withoutLog = ['io.usuario.latido'];
+const unreportableStatus = [1, 3, 5, 10];
 
 const authInterceptor = async (config) => {
   const storage = await localForage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`);
@@ -88,16 +89,13 @@ apiClient.interceptors.response.use(
     };
 
     if (response.data.codigo !== 10 && !!response.data) {
-      const error = new Error(
-        `${response.data.mensaje}
-        ${process.env.VUE_APP_AMBIENTE === 'desarrollo'
-          ? ' ⚠️⚠️⚠️ si estas viendo este error en la consola borra el try catch de tu acción ⚠️⚠️⚠️'
-          : ''
-        }`
-      );
+      if (!unreportableStatus.includes(response.data.codigo)) {
+        store.dispatch('setApiError', response.data);
+      }
+
+      const error = new Error(response.data.mensaje);
 
       error.context = response.data;
-      store.dispatch('setApiError', response.data);
       throw error;
     }
 

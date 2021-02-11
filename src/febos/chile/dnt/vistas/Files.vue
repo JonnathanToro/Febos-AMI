@@ -754,20 +754,6 @@ export default {
     if (!this.institutionTypesState.length) {
       this.fetchInstitutionTypes();
     }
-
-    /*
-    const view = this.$route.params.vista;
-    const filters = this.getFilterView(view);
-    this.listDocuments({
-      tipo: 'EXP',
-      campos: '*',
-      pagina: 1,
-      orden: '-fechaCreacion',
-      itemsPorPagina: 10,
-      // TODO agregar bien los filtros
-      filtros: filters.concat('|fechaCreacion:2020-06-13--2021-02-13')
-    });
-    */
   }
 };
 </script>

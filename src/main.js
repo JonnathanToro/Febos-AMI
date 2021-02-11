@@ -70,6 +70,8 @@ import '../node_modules/timeline-vuejs/dist/timeline-vuejs.css';
 import VeeValidate from 'vee-validate';
 import spanish from 'vee-validate/dist/locale/es';
 
+import './shame';
+
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
 
