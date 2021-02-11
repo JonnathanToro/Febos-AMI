@@ -22,7 +22,7 @@
                   <p v-html="textoHtml"></p>
                 </div>
 
-                <div>
+                <form ref="form" data-vv-scope="form" @submit.prevent="attemptSignIn()">
                   <vs-input
                     name="correo"
                     icon-no-border
@@ -31,8 +31,11 @@
                     :label-placeholder="nombreCampoUsuario"
                     v-model="correo"
                     class="w-full"
-                    @keyup.enter.native="attemptSignIn()"/>
-
+                    v-validate="'required|email'"
+                    :danger="errors.has('form.correo')"
+                    :danger-text="errors.first('form.correo')"
+                    @keyup.enter.native="attemptSignIn()"
+                  />
                   <vs-input
                     type="password"
                     name="clave"
@@ -42,8 +45,12 @@
                     :label-placeholder="nombreCampoClave"
                     v-model="clave"
                     class="w-full mt-8"
-                    @keyup.enter.native="attemptSignIn()"/>
-
+                    required
+                    v-validate="'required'"
+                    :danger="errors.has('form.clave')"
+                    :danger-text="errors.first('form.clave')"
+                    @keyup.enter.native="attemptSignIn()"
+                  />
                   <div class="flex flex-wrap justify-between my-5">
                     <vs-checkbox v-model="recordar" class="mb-3">Recordar mi usuario</vs-checkbox>
                     <router-link to="">Olvidaste tu contraseña?</router-link>
@@ -61,7 +68,7 @@
                       <img src="@/assets/images/logo_clave_unica.png"/>
                     </div>
                   </div>
-                </div>
+                </form>
 
               </div>
             </div>
@@ -101,6 +108,12 @@ export default {
   methods: {
     ...mapActions('Usuario', ['signIn']),
     async attemptSignIn() {
+      const result = await this.$validator.validateAll('form');
+
+      if (!result) {
+        return;
+      }
+
       if (this.recordar) {
         localStorage.setItem(this.keyRecordar, this.correo);
       } else {

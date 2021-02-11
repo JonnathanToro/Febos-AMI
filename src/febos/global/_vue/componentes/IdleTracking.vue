@@ -11,10 +11,12 @@ export default {
       timer: null
     };
   },
-  methods: {
+  computed: {
     ...mapGetters('Usuario', [
       'isSessionAlive'
-    ]),
+    ])
+  },
+  methods: {
     ...mapActions('Usuario', [
       'heartbeat',
       'signOut'
@@ -30,7 +32,7 @@ export default {
       });
     },
     keepAliveSession() {
-      if (!this.isSessionAlive()) {
+      if (!this.isSessionAlive) {
         this.logOut();
         return;
       }
