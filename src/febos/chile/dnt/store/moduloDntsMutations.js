@@ -22,6 +22,9 @@ export default {
   UPDATE_PROCESSED_DNT(state, payload) {
     state.list[payload.febosId].estado = '9';
   },
+  UPDATE_ASIGNED_FILE(state, febosId) {
+    state.list[febosId].enGrupo = 'NO';
+  },
   SET_WIZARD_DATA(state, payload) {
     state.wizardData = payload;
   },

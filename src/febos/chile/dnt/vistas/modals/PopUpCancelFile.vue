@@ -1,5 +1,5 @@
 <template>
-  <vs-popup title="Anular Expediente" :active.sync="showModal">
+  <vs-popup :title="`Anular Expediente ${canceledFile.numero}`" :active.sync="showModal">
     <div class="">
       Para anular el expediente debes realizarlo
        bajo la seguridad del 2FA o Cód. de verificación
