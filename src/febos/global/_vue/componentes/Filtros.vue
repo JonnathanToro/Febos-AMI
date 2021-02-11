@@ -573,8 +573,16 @@ export default {
       // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
       const filtro = this.formatearValor(filter);
       this.filtrosAplicados.push(filtro);
-      if (desplegarVentanaDeModificacion) this.ventanaModificarFiltro(filtro);
-      // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
+      if (desplegarVentanaDeModificacion) {
+        // si la ventana de modificar se abre es porque se agrega desde cero, entonces hay que
+        // limpiar los valores residuales
+        if (filtro.tipo === 'multi') {
+          filtro.valor = [parseInt(filtro.opciones[0].valor, 10)];
+        } else {
+          filtro.valor = '';
+        }
+        this.ventanaModificarFiltro(filtro);
+      }
     }
   },
   mounted() {

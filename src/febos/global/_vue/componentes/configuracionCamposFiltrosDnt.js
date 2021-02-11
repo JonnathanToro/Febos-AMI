@@ -95,4 +95,12 @@ export default {
     nombre: 'Usuario creador',
     tipo: 'solicitanteCorreo'
   },
+  codigosEtiqueta: {
+    nombre: 'Etiquetas',
+    tipo: 'texto'
+  },
+  textoObservaciones: {
+    nombre: 'Observaciones/Materia',
+    tipo: 'texto'
+  }
 };
