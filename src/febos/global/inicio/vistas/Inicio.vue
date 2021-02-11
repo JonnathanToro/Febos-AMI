@@ -81,7 +81,7 @@
             <div class="centrador">
               <div class="modulo mr-5 mt-5 pt-5">
                 <div class="nombre-modulo">
-                  14 Pendientes
+                  14 Pendientes {{indicators}}
                 </div>
                 <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
               </div>
@@ -123,6 +123,7 @@ export default {
     ...mapGetters('Usuario', { usuario: 'currentUser' }),
     ...mapGetters({ moduloActual: 'currentModule' }),
     ...mapGetters('Empresas', { empresa: 'company' }),
+    ...mapGetters('Inicio', ['indicators']),
     enabledModules() {
       return this.modules.filter((module) => module.visible && module.habilitado);
     },
@@ -132,10 +133,12 @@ export default {
   },
   methods: {
     ...mapActions('Menus', { seleccionarModulo: 'seleccionarModulo' }),
-    ...mapActions('Usuario', ['loadPermissions'])
+    ...mapActions('Usuario', ['loadPermissions']),
+    ...mapActions('Inicio', ['fetchIndicatorsTypes']),
   },
   created() {
     this.loadPermissions();
+    this.fetchIndicatorsTypes();
   }
 };
 </script>
