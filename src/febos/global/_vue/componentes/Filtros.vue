@@ -208,7 +208,7 @@ export default {
       colores: (state) => state.colores,
     }),
     esEliminable() {
-      console.log('computed.esEliminable');
+      this.$log.debug('computed.esEliminable');
       const tipoFiltros = {};
       this.configuracionVista.filtrosHabilitados.forEach((filtro) => {
         tipoFiltros[filtro.campo] = true;
@@ -220,7 +220,7 @@ export default {
     },
     seleccionarTodos: {
       get() {
-        console.log('computed.seleccionarTodod.get');
+        this.$log.debug('computed.seleccionarTodod.get');
         try {
           const opcionesTotales = this.filtroActual.opciones.length;
           const opcionesMarcadas = this.filtroActual.valor.length;
@@ -236,7 +236,7 @@ export default {
         }
       },
       set() {
-        console.log('computed.seleccionarTodod.set');
+        this.$log.debug('computed.seleccionarTodod.set');
         const opcionesTotales = this.filtroActual.opciones.length;
         const opcionesMarcadas = this.filtroActual.valor.length;
         if (opcionesMarcadas === opcionesTotales) {
@@ -255,7 +255,7 @@ export default {
       }
     },
     filtrosDisponibles() {
-      console.log('computed.filtrosDisponibles');
+      this.$log.debug('computed.filtrosDisponibles');
       const filtros = [];
       try {
         // eslint-disable-next-line no-plusplus
@@ -295,7 +295,7 @@ export default {
   }),
   watch: {
     tags(valorNuevo, valorAntiguo) {
-      console.log('watch.tags');
+      this.$log.debug('watch.tags');
       if (this.filtroActual.tipo !== 'numero' && this.filtroActual.tipo !== 'rut') return;
       let valor = [];
       if (valorNuevo === '') {
@@ -321,11 +321,10 @@ export default {
       }
     },
     rangoAvanzado() {
-      console.log('watch.rangoAvanzado');
+      this.$log.debug('watch.rangoAvanzado');
       this.seleccionarRango(this.filtroActual, this.filtroActual.valor);
     },
     tipoRangoFechaAvanzado() {
-      console.log('watch.tipoRangoFechaAvanzado');
       if (!this.filtroActual.valor.includes('--') && !this.filtroActual.valor.includes(' ')) {
         this.rangoAvanzado.desde = this.formatoTipoRango(this.filtroActual.valor);
         this.rangoAvanzado.hasta = Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
@@ -340,7 +339,15 @@ export default {
   },
   methods: {
     verificarFiltrosAlCerrar() {
-      console.log('methods.verificarFiltrosAlCerrar');
+      this.$log.debug('methods.verificarFiltrosAlCerrar');
+      // 2021-01-01T00:00:00.000-03:00
+      if (this.filtroActual.tipo === 'rangoFecha' && this.tipoRangoFechaAvanzado) {
+        let rango = this.rangoAvanzado.desde.split('T')[0];
+        rango += '--';
+        rango += this.rangoAvanzado.hasta.split('T')[0];
+        this.filtroActual = rango;
+      }
+
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].valor === '' || this.filtrosAplicados[i].valor.length === 0) {
@@ -350,16 +357,19 @@ export default {
       }
     },
     aplicarFiltros() {
-      console.log('methods.aplicarFiltros');
+      this.$log.debug('methods.aplicarFiltros');
       const query = [];
       const that = this;
+      const filtros = {};
       this.filtrosAplicados.forEach((filtro) => {
         if (filtro.tipo === 'rangoFecha' && !filtro.valor.includes('--')) {
           const inicio = that.formatoTipoRango(filtro.valor);
           const fin = Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
           query.push(`${filtro.campo}:${inicio}--${fin}`);
+          filtros[filtro.campo] = `${inicio}--${fin}`;
         } else {
           query.push(`${filtro.campo }:${ filtro.valor}`);
+          filtros[filtro.campo] = filtro.valor;
         }
       });
 
@@ -372,6 +382,7 @@ export default {
         valor = valor.replace('${iutEmpresa}', that.empresaActual.iut);
 
         query.push(`${filtro.campo }:${ valor}`);
+        filtros[filtro.campo] = valor;
       });
       // console.log('APLICAR', this, query);
       this.$emit('filtros-aplicados', query.join('|'));
@@ -395,7 +406,7 @@ export default {
       }
     },
     seleccionarRango(filtro, valor, cerrar = true) {
-      console.log('methods.seleccionarRango');
+      this.$log.debug('methods.seleccionarRango');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === filtro.campo) {
@@ -407,11 +418,11 @@ export default {
       }
     },
     seleccionarAlMenosUnaOpcionDeFiltro(filtro) {
-      console.log('methods.seleccionarAlMenosUnaOpcionDeFiltro');
+      this.$log.debug('methods.seleccionarAlMenosUnaOpcionDeFiltro');
       filtro.valor.push(parseInt(filtro.opciones[0].valor, 10));
     },
     filtroYaEstaAplicado(campo) {
-      console.log('methods.filtroYaEstaAplicado');
+      this.$log.debug('methods.filtroYaEstaAplicado');
       try {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < this.filtrosAplicados.length; i++) {
@@ -420,13 +431,13 @@ export default {
           }
         }
       } catch (e) {
-        console.log(e);
+        this.$log.error(e);
         return false;
       }
       return false;
     },
     eliminarFiltro(filtro) {
-      console.log('methods.eliminarFiltro');
+      this.$log.debug('methods.eliminarFiltro');
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].campo === filtro.campo) {
@@ -437,7 +448,7 @@ export default {
       }
     },
     ventanaModificarFiltro(filtro) {
-      console.log('methods.ventanaModificarFiltro');
+      this.$log.debug('methods.ventanaModificarFiltro');
       this.tag = '';
       this.tags = [];
       if (this.filtroRecientementeEliminado) {
@@ -472,7 +483,7 @@ export default {
       }
     },
     modificarFiltro(filtro) {
-      console.log('methods.modificarFiltro');
+      this.$log.debug('methods.modificarFiltro');
       if (this.filtrosAplicados.length === 0) {
         this.seleccionarAlMenosUnaOpcionDeFiltro(filtro);
       }
@@ -485,7 +496,7 @@ export default {
       }
     },
     formatearValor(filter) {
-      console.log('methods.formatearValor');
+      this.$log.debug('methods.formatearValor');
       const filtro = filter;
       if (filtro.valor === '' || typeof filtro.valor === 'undefined') {
         filtro.valor = '';
@@ -498,8 +509,7 @@ export default {
         case 'rangoFecha': {
           if (filtro.valor.includes('--')) {
             const [desde, hasta] = filtro.valor.split('--');
-            filtro.valorFormateado = `${desde[2]}-${desde[1]}-${desde[0].substring(2)}
-             al ${hasta[2]}-${hasta[1]}-${hasta[0].substring(2)}`;
+            filtro.valorFormateado = `${desde} al ${hasta}`;
           } else {
             filtro.valorFormateado = (this.periodosDisponibles
               .find((o) => o.valor.toString() === filtro.valor.toString()) || {})
@@ -513,11 +523,9 @@ export default {
             JSON.stringify({ opciones: filtroHabilitado.opciones })
           ).opciones;
           filtro.opciones = filtroHabilitado.opciones;
-          console.log('VALOR ANTES', JSON.parse(JSON.stringify(filtro)));
           if (typeof filtro.valor === 'boolean') {
             filtro.valor = [filtro.opciones[0].valor];
           }
-          console.log('VALOR DESPUES', JSON.parse(JSON.stringify(filtro)));
           filtro.valor.forEach(
             (valor) => {
               valoresUsadosEnHumano.push(
@@ -568,7 +576,7 @@ export default {
       return filtro;
     },
     agregarFiltro(filter, desplegarVentanaDeModificacion = false) {
-      console.log('methods.agregarFiltro');
+      this.$log.debug('methods.agregarFiltro');
       // console.log("AGREGANDO FILTRO",JSON.parse(JSON.stringify(filter)));
       // console.log("filtros aplicados",JSON.parse(JSON.stringify(this.filtrosAplicados)));
       const filtro = this.formatearValor(filter);
@@ -586,7 +594,7 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted()');
+    this.$log.debug('mounted()');
     this.periodosDisponibles = this.periodos.filter((periodo) => periodo.valor !== 'personalizado');
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < this.configuracionVista.filtrosPorDefecto.length; i++) {

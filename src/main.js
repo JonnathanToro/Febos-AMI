@@ -70,6 +70,8 @@ import '../node_modules/timeline-vuejs/dist/timeline-vuejs.css';
 import VeeValidate from 'vee-validate';
 import spanish from 'vee-validate/dist/locale/es';
 
+import VueLogger from 'vuejs-logger';
+
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
 
@@ -160,6 +162,19 @@ process.env.VUE_APP_VERSION = archivoPackage.version;
 console.log('VERSION: ',process.env.VUE_APP_VERSION)
 */
 Vue.config.productionTip = false;
+
+const isProduction = process.env.NODE_ENV === 'production';
+const options = {
+  isEnabled: true,
+  logLevel: isProduction ? 'error' : 'debug',
+  stringifyArguments: false,
+  showLogLevel: true,
+  showMethodName: true,
+  separator: '|',
+  showConsoleColors: true
+};
+
+Vue.use(VueLogger, options);
 
 new Vue({
   router,
