@@ -109,7 +109,7 @@
                 title="Borrador"
                 v-if="file.estado === '3'"
               >
-                <vs-avatar icon="query_builder" color="#43C3B9" />
+                <vs-avatar icon="query_builder" color="#87579e" />
                 Borrador
               </vs-chip>
               <vs-chip
@@ -268,7 +268,7 @@
               </a>
               <vs-dropdown-menu style="width: fit-content">
                 <vs-dropdown-item
-                  v-if="file.estado === '3' && isPendingFiles"
+                  v-if="isDraft(file)  && isPendingFiles"
                   v-on:click="openDraft(file)"
                 >
                   <vs-icon icon="query_builder"/>
@@ -291,38 +291,45 @@
                   Descargar adjuntos
                 </vs-dropdown-item>
                 <vs-dropdown-item
+                  v-on:click="asignFileModal(file)"
+                  v-if="!isDraft(file)  && isPendingFiles && !isAsigned(file)"
+                >
+                  <vs-icon icon="how_to_reg"/>
+                  Asignarme expediente
+                </vs-dropdown-item>
+                <vs-dropdown-item
                   v-on:click="cancelFileModal(file)"
-                  v-if="file.estado !== '3' && isPendingFiles"
+                  v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
                 >
                   <vs-icon icon="clear"/>
                   Anular expediente
                 </vs-dropdown-item>
                 <vs-dropdown-item
                   v-on:click="processFileModal(file)"
-                  v-if="file.estado !== '3' && isPendingFiles"
+                  v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
                 >
                   <vs-icon icon="move_to_inbox"/>
                    Finalizar documento
                 </vs-dropdown-item>
                 <vs-dropdown-item v-on:click="getParticipants(file)">
-                  <vs-icon icon="groups"/>
+                  <vs-icon icon="group"/>
                    Participantes
                 </vs-dropdown-item>
                 <vs-dropdown-item
                   v-on:click="getComments(file)"
-                  v-if="file.estado !== '3' && isPendingFiles"
+                  v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
                 >
                   <vs-icon icon="chat"/>
                    Comentarios
                 </vs-dropdown-item>
                 <vs-dropdown-item
                   v-on:click="sendFile(file)"
-                  v-if="file.estado !== '3' && isPendingFiles"
+                  v-if="!isDraft(file) && isPendingFiles && isAsigned(file)"
                 >
                   <vs-icon icon="chat"/>
                   Enviar documento
                 </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="ticketModalFile(file)" v-if="file.estado !== '3'">
+                <vs-dropdown-item v-on:click="ticketModalFile(file)" v-if="!isDraft(file)">
                   <vs-icon icon="help"/>
                   Ticket de ayuda
                 </vs-dropdown-item>
@@ -388,6 +395,7 @@
     </vs-popup>
     <PopUpCancelFile :canceledFile="canceledFile" />
     <PopUpProcessFile :processedFile="file" />
+    <PopUpAsignFile :file="file" />
     <PopUpParticipantsFile :file="file" />
     <PopUpCommentsFile :file="file" />
     <PopUpTicketFile :file="file" />
@@ -413,6 +421,7 @@ import Filtros from '../../../global/_vue/componentes/FiltrosDnt';
 import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
 import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
 import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
+import PopUpAsignFile from '@/febos/chile/dnt/vistas/modals/PopUpAsignFile';
 import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
 import PopUpSendFile from '@/febos/chile/dnt/vistas/modals/PopUpSendFile';
 import PopUpParticipantsFile from '@/febos/chile/dnt/vistas/modals/PopUpParticipantsFile';
@@ -426,6 +435,7 @@ export default {
     FbPaginacion,
     PopUpDetailFile,
     PopUpCancelFile,
+    PopUpAsignFile,
     PopUpProcessFile,
     PopUpParticipantsFile,
     PopUpCommentsFile,
@@ -573,6 +583,12 @@ export default {
     ...mapActions('Modals', [
       'showModals'
     ]),
+    isAsigned(file) {
+      return file.enGrupo === 'NO';
+    },
+    isDraft(file) {
+      return file.estado === '3';
+    },
     openDraft(file) {
       // TODO: move this to another side, (why api doesn't save the full name? 😡😡)
       const types = {
@@ -592,7 +608,6 @@ export default {
       if (filtros !== '') {
         this.filtros += `|${filtros}`;
       }
-      console.log('FILTROS', this.filtros);
       this.listDocuments({
         tipo: 'EXP',
         campos: '*',
@@ -686,6 +701,10 @@ export default {
         febosId: file.febosId,
         comprimir: 'si'
       });
+    },
+    asignFileModal(file) {
+      this.showModals('asignFile');
+      this.file = file;
     },
     cancelFileModal(file) {
       this.showModals('cancelFile');

@@ -1,17 +1,22 @@
 <template>
-  <vs-popup :title="`Finalizar Expediente ${processedFile.numero}`" :active.sync="showModal">
+  <vs-popup :title="`Asignarme Expediente ${file.numero}`" :active.sync="showModal">
     <div>
-      Al dar por finalizado este documento, no podras actuar sobre el, estas de acuerdo?
+      Al asignarte el expediente serás responsable y podrás realizar acciones sobre éste
+    </div>
+    <div>
+      <small>
+        (Esta acción puede demorar unos segundos en completarse)
+      </small>
     </div>
     <div class="m-top-20" style="display: flex;justify-content: flex-end;">
-      <vs-button color="dark" v-on:click="cancelProcess()" type="border">Cancelar</vs-button>
+      <vs-button color="dark" v-on:click="cancelAsign()" type="border">Cancelar</vs-button>
       <vs-button
-        v-on:click="processFile()"
+        v-on:click="asignFile()"
         color="primary"
         style="margin-left: 12px;"
         type="border"
       >
-        Si, finalizar
+        Si, asignar
       </vs-button>
     </div>
   </vs-popup>
@@ -20,13 +25,11 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
-
 export default {
-  name: 'PopUpProcessFile',
-  mixins: [FiltersDntMixin],
+  name: 'PopUpAsignFile',
+  mixins: [],
   props: {
-    processedFile: {
+    file: {
       type: [Object],
       required: true,
       default: () => {}
@@ -38,7 +41,7 @@ export default {
     ]),
     showModal: {
       get() {
-        return this.modalName === 'processFile';
+        return this.modalName === 'asignFile';
       },
       set() {
         this.closeModal();
@@ -47,19 +50,15 @@ export default {
   },
   methods: {
     ...mapActions('Dnts', [
-      'processDntFileED'
+      'asignDntFileED'
     ]),
     ...mapActions('Modals', [
       'closeModal'
     ]),
-    async processFile() {
-      const toProcess = {
-        febosId: this.processedFile.febosId,
-        estadoId: 9
-      };
-      await this.processDntFileED(toProcess);
+    async asignFile() {
+      await this.asignDntFileED(this.file.febosId);
     },
-    cancelProcess() {
+    cancelAsign() {
       this.closeModal();
     }
   }

@@ -13,7 +13,7 @@ export const clDntsList = (payload) => {
 export const clDntActFileED = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.put(`${RESOURCE}/${payload.febosId}/estado?${params}`, {estadoId: payload.estadoId}, {
+  return apiClient.put(`${RESOURCE}/${payload.febosId}/estado?${params}`, { estadoId: payload.estadoId }, {
     operacionId: 'io.dnts.ed.act.estado'
   });
 };
@@ -22,7 +22,7 @@ export const downloadAttachments = (payload) => {
   const params = apiClient.queryParams(payload);
 
   return apiClient.get(`${RESOURCE}/${payload.febosId}/adjuntos?${params}`,
-    {operacionId: 'io.download.attachments.dnt'});
+    { operacionId: 'io.download.attachments.dnt' });
 };
 
 export const cancelFile = (payload) => {
@@ -32,6 +32,10 @@ export const cancelFile = (payload) => {
     operacionId: 'io.get.dnt'
   });
 };
+
+export const clAsignFile = (febosId) => apiClient.post(`${RESOURCE}/${febosId}/destinos/asignar`, {
+  operacionId: 'io.asign.file'
+});
 
 export const getFile = (payload) => {
   const params = apiClient.queryParams(payload);
@@ -69,15 +73,15 @@ export const sendComment = (payload) => {
   const params = apiClient.queryParams(payload);
 
   return apiClient.post(`${RESOURCE}/${payload.febosId}/expedientes/comentarios?${params}`,
-    {comentario: payload.comentario},
-    {operacionId: 'io.dnt.send.comment'});
+    { comentario: payload.comentario },
+    { operacionId: 'io.dnt.send.comment' });
 };
 
 export const sendFile = (payload) => {
   console.log('ENVIANDOO', payload);
   return apiClient.post(`${RESOURCE}/${payload.febosId}/destinos`,
-    {destinos: payload.destinos},
-    {operacionId: 'io.dnt.send.file'});
+    { destinos: payload.destinos },
+    { operacionId: 'io.dnt.send.file' });
 };
 
 export const createDnt = (payload) => {
@@ -92,7 +96,7 @@ export const createDnt = (payload) => {
   return apiClient.post(
     `${RESOURCE}/crear?${params}`,
     payload,
-    {operacionId: 'io.dnt.crear.dnt'}
+    { operacionId: 'io.dnt.crear.dnt' }
   );
 };
 
@@ -107,9 +111,9 @@ export const updateDnt = (id, payload) => {
   return apiClient.post(
     `${RESOURCE}/${id}/actualizar?${params}`,
     payload,
-    {operacionId: 'io.dnt.actualizar.dnt'}
+    { operacionId: 'io.dnt.actualizar.dnt' }
   );
 };
-export const indicatorFilesED = () => apiClient.put(`${RESOURCE}/https://api.febos.cl/desarrollo/notributarios/0/expedientes/indicadores`, {}, {
+export const indicatorFilesED = () => apiClient.get(`${RESOURCE}/https://api.febos.cl/desarrollo/notributarios/0/expedientes/indicadores`, {
   operacionId: 'io.dnts.ed.indicadores.inicio'
 });

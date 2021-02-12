@@ -94,6 +94,7 @@
     "vuecode.js": "0.0.27",
     "vuedraggable": "^2.21.0",
     "vuejs-datepicker": "^1.5.4",
+    "vuejs-logger": "1.5.5",
     "vuesax": "3.11.13",
     "vuex": "^3.1.1",
     "vuex-persist": "^3.1.3",

@@ -1,6 +1,7 @@
 export default {
   indicators: {
-    types: {},
+    global: {},
+    personal: {},
     loading: false
   }
 };
