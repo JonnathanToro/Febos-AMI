@@ -538,6 +538,7 @@ export default {
         rango += this.rangoAvanzado.hasta.split('T')[0];
         this.filtroActual = rango;
         console.log('aca', this.filtroActual);
+        this.aplicarFiltros();
       }
 
       // eslint-disable-next-line no-plusplus

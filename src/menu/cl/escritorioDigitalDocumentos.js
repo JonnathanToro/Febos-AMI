@@ -1,5 +1,5 @@
 export default [{
-  header: 'Oficina de Partes',
+  header: 'Documentos',
   icon: 'PackageIcon',
   i18n: 'Documentos',
   items: [
@@ -8,14 +8,14 @@ export default [{
       name: 'Cargar documento',
       slug: 'uploads',
       icon: 'FolderPlusIcon',
-      permiso: '*', // TODO: setup permission
+      permiso: 'ED013',
       submenu: [
         {
           url: '/documentos/externo',
           name: 'Externos',
           slug: 'uploads',
           icon: 'files',
-          permiso: '*', // TODO: setup permission
+          permiso: 'ED012',
           i18n: 'uploads'
         }
       ]
@@ -25,14 +25,14 @@ export default [{
       name: 'Expedientes',
       slug: 'files',
       icon: 'FolderIcon',
-      permiso: '*', // TODO: setup permission
+      permiso: 'ED008',
       submenu: [
         {
           url: '/expedientes/en-curso',
           name: 'Pendientes',
           slug: '/expedientes/en-curso',
           icon: 'files',
-          permiso: '*', // TODO: setup permission
+          permiso: 'ED009',
           i18n: 'expedientes'
         },
         {
@@ -40,7 +40,7 @@ export default [{
           name: 'Tramitados',
           slug: '/expedientes/finalizados',
           icon: 'files',
-          permiso: '*', // TODO: setup permission
+          permiso: 'ED010',
           i18n: 'expedientes'
         },
         {
@@ -48,7 +48,7 @@ export default [{
           name: 'General',
           slug: '/expedientes/general',
           icon: 'files',
-          permiso: '*', // TODO: setup permission
+          permiso: 'ED011',
           i18n: 'expedientes'
         },
       ]

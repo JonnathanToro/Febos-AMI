@@ -1,5 +1,5 @@
 <template>
-  <vs-popup title="Comentarios Expediente" :active.sync="showModal">
+  <vs-popup :title="`Comentarios Expediente ${file.numero}`" :active.sync="showModal">
     <div style="display: flex;flex-direction: column;">
       <template style="background: pink;height:200px; overflow-y:scroll">
         <div

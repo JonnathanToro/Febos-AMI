@@ -68,8 +68,8 @@ export const getFileDetails = async ({ commit }, payload) => {
 export const downloadFilePDF = async ({ commit }, payload) => {
   try {
     commit('SET_LOADING', true);
-    const response = await fileDetails(payload);
-    window.open(response.data.pdfUrl, '_blank');
+    const response = await getFile(payload);
+    window.open(response.data.imagenLink, '_blank');
     return response.data;
   } finally {
     commit('SET_LOADING', false);

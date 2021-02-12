@@ -47,30 +47,35 @@
         <vx-card title="Mis módulos" class="ml-2">
           <div class="container">
             <div class="centrador">
-              <div
+              <CheckPermission
+                :key="module.nombre"
                 class="modulo mr-5 mt-5 pt-5"
                 v-for="module in enabledModules"
-                :key="module.nombre"
-                v-on:click="seleccionarModulo(module.nombre)"
+                :permission="module.permission"
               >
-                <div class="nombre-modulo">{{ module.descripcion }}</div>
-                <vs-icon :icon="module.icono" size="75px" color="#ffffff" class="mt-2"></vs-icon>
-                <vs-icon
-                  icon="star"
-                  size="20px"
-                  color="#ffffff"
-                  class="modulo-actual"
-                  v-if="module.nombre === moduloActual"
-                />
-              </div>
-              <div
+                <div
+                  v-on:click="seleccionarModulo(module.nombre)"
+                >
+                  <div class="nombre-modulo">{{ module.descripcion }}</div>
+                  <vs-icon :icon="module.icono" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+                  <vs-icon
+                    icon="star"
+                    size="20px"
+                    color="#ffffff"
+                    class="modulo-actual"
+                    v-if="module.nombre === moduloActual"
+                  />
+                </div>
+              </CheckPermission>
+              <CheckPermission
                 class="modulo modulo-deshabilitado mr-5 mt-5 pt-5"
                 v-for="module in disabledModules"
                 :key="module.nombre"
+                :permission="module.permission"
               >
                 <div class="nombre-modulo">{{ module.descripcion }}</div>
                 <vs-icon :icon="module.icono" size="75px" color="#ffffff" class="mt-2"></vs-icon>
-              </div>
+              </CheckPermission>
             </div>
           </div>
         </vx-card>
@@ -89,6 +94,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 import ModuleSettingsMixin from '@/febos/global/inicio/mixins/ModuleSettingsMixin';
 import Dashboard from '@/febos/global/inicio/components/Dashboard';
 
@@ -99,12 +105,12 @@ export default {
     };
   },
   mixins: [ModuleSettingsMixin],
-  components: { Dashboard },
+  components: { Dashboard, CheckPermission },
   computed: {
     ...mapGetters('Usuario', { usuario: 'currentUser' }),
     ...mapGetters({ moduloActual: 'currentModule' }),
     ...mapGetters('Empresas', { empresa: 'company' }),
-    ...mapGetters('Inicio', ['globalIndicators','personalIndicators']),
+    ...mapGetters('Inicio', ['globalIndicators', 'personalIndicators']),
     enabledModules() {
       return this.modules.filter((module) => module.visible && module.habilitado);
     },
