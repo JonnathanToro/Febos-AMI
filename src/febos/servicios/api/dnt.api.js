@@ -13,7 +13,7 @@ export const clDntsList = (payload) => {
 export const clDntActFileED = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.put(`${RESOURCE}/${payload.febosId}/estado?${ params }`, { estadoId: payload.estadoId }, {
+  return apiClient.put(`${RESOURCE}/${payload.febosId}/estado?${params}`, { estadoId: payload.estadoId }, {
     operacionId: 'io.dnts.ed.act.estado'
   });
 };
@@ -114,3 +114,6 @@ export const updateDnt = (id, payload) => {
     { operacionId: 'io.dnt.actualizar.dnt' }
   );
 };
+export const indicatorFilesED = () => apiClient.get(`${RESOURCE}/0/expedientes/indicadores`, {
+  operacionId: 'io.dnts.ed.indicadores.inicio'
+});
