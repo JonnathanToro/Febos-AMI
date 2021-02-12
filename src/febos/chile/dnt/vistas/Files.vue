@@ -267,72 +267,96 @@
                 />
               </a>
               <vs-dropdown-menu style="width: fit-content">
-                <vs-dropdown-item
-                  v-if="isDraft(file)  && isPendingFiles"
-                  v-on:click="openDraft(file)"
-                >
-                  <vs-icon icon="query_builder"/>
-                  Continuar borrador
-                </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="binnacleFileModal(file)">
-                  <vs-icon icon="list"/>
-                  Bitácora
-                </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="getDetailsFile(file)">
-                  <vs-icon icon="search"/>
-                  Ver detalles
-                </vs-dropdown-item>
-                <!--<vs-dropdown-item v-on:click="downloadFile(file)">
-                  <vs-icon icon="save_alt"/>
-                  Descargar acta
-                </vs-dropdown-item>-->
-                <vs-dropdown-item v-on:click="downloadAttachments(file)">
-                  <vs-icon icon="save_alt"/>
-                  Descargar adjuntos
-                </vs-dropdown-item>
-                <vs-dropdown-item
-                  v-on:click="asignFileModal(file)"
-                  v-if="!isDraft(file)  && isPendingFiles && !isAsigned(file)"
-                >
-                  <vs-icon icon="how_to_reg"/>
-                  Asignarme expediente
-                </vs-dropdown-item>
-                <vs-dropdown-item
-                  v-on:click="cancelFileModal(file)"
-                  v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
-                >
-                  <vs-icon icon="clear"/>
-                  Anular expediente
-                </vs-dropdown-item>
-                <vs-dropdown-item
-                  v-on:click="processFileModal(file)"
-                  v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
-                >
-                  <vs-icon icon="move_to_inbox"/>
-                   Finalizar documento
-                </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="getParticipants(file)">
-                  <vs-icon icon="group"/>
-                   Participantes
-                </vs-dropdown-item>
-                <vs-dropdown-item
-                  v-on:click="getComments(file)"
-                  v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
-                >
-                  <vs-icon icon="chat"/>
-                   Comentarios
-                </vs-dropdown-item>
-                <vs-dropdown-item
-                  v-on:click="sendFile(file)"
-                  v-if="!isDraft(file) && isPendingFiles && isAsigned(file)"
-                >
-                  <vs-icon icon="chat"/>
-                  Enviar documento
-                </vs-dropdown-item>
-                <vs-dropdown-item v-on:click="ticketModalFile(file)" v-if="!isDraft(file)">
-                  <vs-icon icon="help"/>
-                  Ticket de ayuda
-                </vs-dropdown-item>
+                <CheckPermission permission="ED016">
+                  <vs-dropdown-item
+                    v-if="isDraft(file)  && isPendingFiles"
+                    v-on:click="openDraft(file)"
+                  >
+                    <vs-icon icon="query_builder"/>
+                    Continuar borrador
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED017">
+                  <vs-dropdown-item v-on:click="binnacleFileModal(file)">
+                    <vs-icon icon="list"/>
+                    Bitácora
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED018">
+                  <vs-dropdown-item v-on:click="getDetailsFile(file)">
+                    <vs-icon icon="search"/>
+                    Ver detalles
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED019">
+                  <vs-dropdown-item v-on:click="downloadFile(file)">
+                    <vs-icon icon="save_alt"/>
+                    Descargar pdf
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED020">
+                  <vs-dropdown-item v-on:click="downloadAttachments(file)">
+                    <vs-icon icon="save_alt"/>
+                    Descargar adjuntos
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED021">
+                  <vs-dropdown-item
+                    v-on:click="asignFileModal(file)"
+                    v-if="!isDraft(file)  && isPendingFiles && !isAsigned(file)"
+                  >
+                    <vs-icon icon="how_to_reg"/>
+                    Asignarme expediente
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED022">
+                  <vs-dropdown-item
+                    v-on:click="cancelFileModal(file)"
+                    v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
+                  >
+                    <vs-icon icon="clear"/>
+                    Anular expediente
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED023">
+                  <vs-dropdown-item
+                    v-on:click="processFileModal(file)"
+                    v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
+                  >
+                    <vs-icon icon="move_to_inbox"/>
+                    Finalizar documento
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED024">
+                  <vs-dropdown-item v-on:click="getParticipants(file)">
+                    <vs-icon icon="group"/>
+                    Participantes
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED025">
+                  <vs-dropdown-item
+                    v-on:click="getComments(file)"
+                    v-if="!isDraft(file)  && isPendingFiles && isAsigned(file)"
+                  >
+                    <vs-icon icon="chat"/>
+                    Comentarios
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED026">
+                  <vs-dropdown-item
+                    v-on:click="sendFile(file)"
+                    v-if="!isDraft(file) && isPendingFiles && isAsigned(file)"
+                  >
+                    <vs-icon icon="chat"/>
+                    Enviar documento
+                  </vs-dropdown-item>
+                </CheckPermission>
+                <CheckPermission permission="ED027">
+                  <vs-dropdown-item v-on:click="ticketModalFile(file)" v-if="!isDraft(file)">
+                    <vs-icon icon="help"/>
+                    Ticket de ayuda
+                  </vs-dropdown-item>
+                </CheckPermission>
               </vs-dropdown-menu>
             </vs-dropdown>
             <span />
@@ -418,6 +442,7 @@ import { mapActions, mapGetters } from 'vuex';
 import FbPaginacion from '../../_vue/componentes/FbPaginacion';
 import Filtros from '../../../global/_vue/componentes/FiltrosDnt';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
 import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
 import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
@@ -440,7 +465,8 @@ export default {
     PopUpParticipantsFile,
     PopUpCommentsFile,
     PopUpTicketFile,
-    PopUpSendFile
+    PopUpSendFile,
+    CheckPermission
   },
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
@@ -691,9 +717,10 @@ export default {
     },
     downloadFile(file) {
       this.downloadFilePDF({
-        retornarPdf: 'si',
-        aprobacionId: file.solicitanteDocumentoId,
-        ejecucionId: file.febosId
+        febosId: file.febosId,
+        imagen: 'si',
+        regenerar: 'si',
+        tipoImagen: 0
       });
     },
     downloadAttachments(file) {

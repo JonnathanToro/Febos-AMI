@@ -11,7 +11,7 @@ export default [
       {
         path: '/',
         name: 'inicio',
-        meta: { permiso: 'WB001', requiereLogin: true },
+        meta: { requiereLogin: true },
         component: () => import('@/febos/global/inicio/vistas/Inicio.vue')
       },
       {

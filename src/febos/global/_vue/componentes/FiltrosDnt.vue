@@ -531,6 +531,16 @@ export default {
   },
   methods: {
     verificarFiltrosAlCerrar() {
+      if (this.filtroActual.tipo === 'rangoFecha' && this.tipoRangoFechaAvanzado) {
+        console.log('aca 1', this.filtroActual);
+        let rango = this.rangoAvanzado.desde.split('T')[0];
+        rango += '--';
+        rango += this.rangoAvanzado.hasta.split('T')[0];
+        this.filtroActual = rango;
+        console.log('aca', this.filtroActual);
+        this.aplicarFiltros();
+      }
+
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < this.filtrosAplicados.length; i++) {
         if (this.filtrosAplicados[i].valor === '' || this.filtrosAplicados[i].valor.length === 0) {
@@ -546,7 +556,7 @@ export default {
         const filtro = filter;
         if (filtro.tipo === 'rangoFecha' && !filtro.valor.includes('--')) {
           const inicio = that.formatoTipoRango(filtro.valor);
-          const fin = Vue.moment().format('YYYY-MM-DD');
+          const fin = Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
           query.push(`${filtro.campo}:${inicio}--${fin}`);
         } else {
           if (filtro.tipo === 'destinoUsuarios'
@@ -591,7 +601,7 @@ export default {
       this.$emit('filtros-aplicados', query.join('|'), onMounted);
     },
     formatoTipoRango(formato, humano = false) {
-      const estilo = humano ? 'YYYY-MM-DD' : 'YYYY-MM-DD';
+      const estilo = humano ? 'LL' : 'YYYY-MM-DD';
       switch (formato) {
         case 'ultimas4semanas':
           return Vue.moment().subtract(28, 'days').format(estilo);
@@ -852,8 +862,7 @@ export default {
         case 'rangoFecha': {
           if (filtro.valor.includes('--')) {
             const [desde, hasta] = filtro.valor.split('--');
-            filtro.valorFormateado = `${desde[2]}-${desde[1]}-${desde[0].substring(2)}
-             al ${hasta[2]}-${hasta[1]}-${hasta[0].substring(2)}`;
+            filtro.valorFormateado = `${desde} al ${hasta}`;
           } else {
             filtro.valorFormateado = (this.periodosDisponibles
               .find((o) => o.valor.toString() === filtro.valor.toString()) || {})

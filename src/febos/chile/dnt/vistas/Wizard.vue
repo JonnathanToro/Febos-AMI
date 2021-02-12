@@ -37,13 +37,17 @@
               <vs-button color="primary" v-if="!isFirstStep" @click="onBack">
                 Volver
               </vs-button>
-              <vs-button color="primary" class="ml-2" @click="onBackup">
-                Guardar Borrador
-              </vs-button>
-              <vs-button color="success" class="ml-2" @click="onNext">
-                <span v-if="isLastStep">Guardar y Enviar</span>
-                <span v-if="!isLastStep">Siguiente</span>
-              </vs-button>
+              <CheckPermission permission="ED014">
+                <vs-button color="primary" class="ml-2" @click="onBackup">
+                  Guardar Borrador
+                </vs-button>
+              </CheckPermission>
+              <CheckPermission permission="ED015">
+                <vs-button color="success" class="ml-2" @click="onNext">
+                  <span v-if="isLastStep">Guardar y Enviar</span>
+                  <span v-if="!isLastStep">Siguiente</span>
+                </vs-button>
+              </CheckPermission>
             </vs-row>
           </div>
         </vs-card>
@@ -58,9 +62,12 @@ import { mapGetters, mapActions } from 'vuex';
 
 import config from '../config/wizard';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+
 export default {
   components: {
-    StepProgress
+    StepProgress,
+    CheckPermission
   },
   data() {
     return {

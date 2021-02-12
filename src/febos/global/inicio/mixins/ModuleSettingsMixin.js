@@ -76,7 +76,8 @@ const moduleSettings = {
       tooltip: '',
       icono: 'settings',
       habilitado: true,
-      visible: true
+      visible: true,
+      permission: 'ED001'
     },
     {
       nombre: 'documentosEd',
@@ -84,7 +85,8 @@ const moduleSettings = {
       tooltip: '',
       icono: 'description',
       habilitado: true,
-      visible: true
+      visible: true,
+      permission: 'ED003'
     },
     {
       nombre: 'templates',
@@ -92,7 +94,8 @@ const moduleSettings = {
       tooltip: '',
       icono: 'description',
       habilitado: true,
-      visible: true
+      visible: true,
+      permission: 'ED002'
     }
   ]
 };
