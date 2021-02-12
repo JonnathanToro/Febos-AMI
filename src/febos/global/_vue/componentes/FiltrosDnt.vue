@@ -583,6 +583,7 @@ export default {
         if (valor === '${idUsuario}') {
           // eslint-disable-next-line no-template-curly-in-string
           valor = valor.replace('${idUsuario}', that.usuarioActual.id);
+          valor = valor.concat(',--grupos--');
         }
 
         query.push(`${filtro.campo }:${ valor}`);

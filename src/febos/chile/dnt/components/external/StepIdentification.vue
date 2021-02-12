@@ -168,8 +168,3 @@ export default {
 };
 
 </script>
-<style>
-.ti-input {
-  border-radius: 6px;
-}
-</style>

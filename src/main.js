@@ -71,6 +71,7 @@ import VeeValidate from 'vee-validate';
 import spanish from 'vee-validate/dist/locale/es';
 
 import VueLogger from 'vuejs-logger';
+import './shame';
 
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));

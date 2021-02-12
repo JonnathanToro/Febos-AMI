@@ -12,6 +12,7 @@ import {
   cancelFile,
   downloadAttachments,
   attachmentsFiles,
+  clAsignFile,
   sendFile
 } from '@/febos/servicios/api/dnt.api';
 import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
@@ -125,6 +126,19 @@ export const processDntFileED = async ({ commit }, payload) => {
   }
 };
 
+export const asignDntFileED = async ({ commit }, febosId) => {
+  try {
+    commit('SET_LOADING', true);
+    const response = await clAsignFile(febosId);
+    commit('SET_SUCCESS_MESSAGE', response.data);
+    commit('UPDATE_ASIGNED_FILE', febosId);
+    store.commit('Modals/CLOSE_MODAL');
+    return response.data;
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
 export const closeModal = ({ commit }, payload) => {
   commit('CLOSE_MODAL', payload);
 };
@@ -212,6 +226,7 @@ export const sendDntFile = async ({ commit }, payload) => {
     commit('SET_LOADING', true);
     const response = await sendFile(payload);
     commit('SET_SUCCESS_MESSAGE', response.data);
+    store.commit('Modals/CLOSE_MODAL');
     return response.data;
   } finally {
     commit('SET_LOADING', false);
