@@ -114,6 +114,6 @@ export const updateDnt = (id, payload) => {
     { operacionId: 'io.dnt.actualizar.dnt' }
   );
 };
-export const indicatorFilesED = () => apiClient.get(`${RESOURCE}/https://api.febos.cl/desarrollo/notributarios/0/expedientes/indicadores`, {
+export const indicatorFilesED = () => apiClient.get(`${RESOURCE}/0/expedientes/indicadores`, {
   operacionId: 'io.dnts.ed.indicadores.inicio'
 });

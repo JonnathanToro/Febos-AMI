@@ -76,7 +76,11 @@
         </vx-card>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-        <Dashboard v-if="product === 'ed'"/>
+        <Dashboard
+          v-if="product === 'ed'"
+          :globalIndicators="globalIndicators"
+          :personalIndicators="personalIndicators"
+        />
       </vs-col>
     </vs-row>
 
@@ -115,7 +119,9 @@ export default {
   },
   created() {
     this.loadPermissions();
-    this.fetchIndicatorsTypes();
+    if (this.product === 'ed') {
+      this.fetchIndicatorsTypes();
+    }
   }
 };
 </script>

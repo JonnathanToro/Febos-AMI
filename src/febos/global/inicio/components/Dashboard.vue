@@ -4,25 +4,25 @@
       <div class="centrador">
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            14 Pendientes
+            {{globalIndicators.finalizados}} Finalizados
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            3 Finalizados
+            {{globalIndicators.pendientes}} Pendientes
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            3 en copia
+            {{globalIndicators.enCopia}} en copia
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            2 anulados
+            {{globalIndicators.anulado}} anulados
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
@@ -34,6 +34,16 @@
 
 export default {
   mixins: [],
+  props: {
+    globalIndicators: {
+      type: Object,
+      required: false
+    },
+    personalIndicators: {
+      type: Object,
+      required: false
+    },
+  },
   computed: {},
   methods: {},
   created() {}
