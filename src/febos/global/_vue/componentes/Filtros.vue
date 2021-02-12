@@ -10,7 +10,7 @@
         <vs-avatar icon="search" color="primary" :badge="filtrosAplicados.length"/>
         <strong>Aplicar filtros</strong>
       </vs-chip>
-      <vs-chip color="gray" v-if="filtrosAplicados.length === 0" >
+      <vs-chip color="gray" v-if="filtrosAplicados.length === 0">
         <vs-avatar icon="search" color="#ccc"/>
         <strong>No hay filtros aplicados</strong>
       </vs-chip>
@@ -43,13 +43,13 @@
       style="cursor: context-menu"
     >
 
-        <vs-avatar
-          icon="clear"
-          color="primary"
-          v-on:click.native="eliminarFiltro(filtro)"
-          v-if="esEliminable[filtro.campo]"
-        />
-        <span />
+      <vs-avatar
+        icon="clear"
+        color="primary"
+        v-on:click.native="eliminarFiltro(filtro)"
+        v-if="esEliminable[filtro.campo]"
+      />
+      <span/>
       <vs-tooltip :text="`Modificar filtro ${filtro.nombre}`">
         <strong>{{ typeof filtro == 'undefined' ? '' : filtro.nombre }}: </strong>
         <span class="pl-1">
@@ -202,7 +202,7 @@ export default {
       empresaActual: (state) => state.empresa,
     }),
     tituloConfiguracion() {
-      return `Configuración de filtro: <strong>${ this.filtroActual.nombre }</strong>`;
+      return `Configuración de filtro: <strong>${this.filtroActual.nombre}</strong>`;
     },
     ...mapState('Personalizacion', {
       colores: (state) => state.colores,
@@ -320,15 +320,27 @@ export default {
         }
       }
     },
-    rangoAvanzado() {
-      this.$log.debug('watch.rangoAvanzado');
-      this.seleccionarRango(this.filtroActual, this.filtroActual.valor);
+    rangoAvanzado: {
+      handler(valor) {
+        this.$log.debug('watch.rangoAvanzado');
+        this.$log.info('valor rango avanzado', JSON.parse(JSON.stringify(valor)));
+        try {
+          const desde = valor.desde.split('T')[0];
+          const hasta = valor.hasta.split('T')[0];
+          this.filtroActual.valor = `${desde}--${hasta}`;
+        } catch (e) {
+          this.$log.info('Una de las fechas de rango avanzado no esta correctamente '
+            + 'formateada,se necesitan ambas para setear el valor del filtro');
+        }
+        this.seleccionarRango(this.filtroActual, this.filtroActual.valor, false);
+      },
+      deep: true
     },
     tipoRangoFechaAvanzado() {
       if (!this.filtroActual.valor.includes('--') && !this.filtroActual.valor.includes(' ')) {
         this.rangoAvanzado.desde = this.formatoTipoRango(this.filtroActual.valor);
         this.rangoAvanzado.hasta = Vue.moment().subtract(0, 'days').format('YYYY-MM-DD');
-        this.filtroActual.valor = `${this.rangoAvanzado.desde }--${ this.rangoAvanzado.hasta}`;
+        this.filtroActual.valor = `${this.rangoAvanzado.desde}--${this.rangoAvanzado.hasta}`;
         this.seleccionarRango(this.filtroActual, this.filtroActual.valor, false);
       } else {
         const [desde, hasta] = this.filtroActual.valor.split('--');
@@ -368,7 +380,7 @@ export default {
           query.push(`${filtro.campo}:${inicio}--${fin}`);
           filtros[filtro.campo] = `${inicio}--${fin}`;
         } else {
-          query.push(`${filtro.campo }:${ filtro.valor}`);
+          query.push(`${filtro.campo}:${filtro.valor}`);
           filtros[filtro.campo] = filtro.valor;
         }
       });
@@ -381,7 +393,7 @@ export default {
         // eslint-disable-next-line no-template-curly-in-string
         valor = valor.replace('${iutEmpresa}', that.empresaActual.iut);
 
-        query.push(`${filtro.campo }:${ valor}`);
+        query.push(`${filtro.campo}:${valor}`);
         filtros[filtro.campo] = valor;
       });
       // console.log('APLICAR', this, query);
@@ -546,7 +558,7 @@ export default {
             filtro.valorFormateado = valoresUsadosEnHumano.join(', ')
               .replace(/,(?=[^,]*$)/, ' y');
           } else {
-            filtro.valorFormateado = `Todos menos ${ valoresNoUsadosEnHumano.map(
+            filtro.valorFormateado = `Todos menos ${valoresNoUsadosEnHumano.map(
               (valor) => valor.nombre
             ).join(', ').replace(/,(?=[^,]*$)/, ' y')}`;
           }
@@ -555,11 +567,11 @@ export default {
         case 'rut':
         case 'numero': {
           if (filtro.valor.includes('--')) {
-            filtro.valorFormateado = `del ${ filtro.valor.split('--')[0] } al ${ filtro.valor.split('--')[1]}`;
+            filtro.valorFormateado = `del ${filtro.valor.split('--')[0]} al ${filtro.valor.split('--')[1]}`;
           } else if (Array.isArray(filtro.valor)) {
             if (filtro.valor.length > 7) {
               const nuevoArreglo = filtro.valor.slice(0, 7);
-              filtro.valorFormateado = `${nuevoArreglo.join(', ') } y ${ filtro.valor.length - 7 } más`;
+              filtro.valorFormateado = `${nuevoArreglo.join(', ')} y ${filtro.valor.length - 7} más`;
             } else {
               filtro.valorFormateado = filtro.valor.join(', ');
               filtro.valorFormateado = filtro.valorFormateado.replace(/,([^,]*)$/, ' y$1');
