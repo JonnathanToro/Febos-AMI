@@ -4,25 +4,56 @@
       <div class="centrador">
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            14 Pendientes
+            {{globalIndicators.finalizados}} Finalizados
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            3 Finalizados
+            {{globalIndicators.pendientes}} Pendientes
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            3 en copia
+            {{globalIndicators.enCopia}} en copia
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            2 anulados
+            {{globalIndicators.anulado}} anulados
+          </div>
+          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+        </div>
+      </div>
+    </div>
+    <div class="centrador">
+      <h4 :style="titleStyles" :class="titleClasses">Mis documentos</h4>
+    </div>
+    <div class="container">
+      <div class="centrador">
+        <div class="modulo mr-5 mt-5 pt-5">
+          <div class="nombre-modulo">
+            {{personalIndicators.finalizados || 0}} Finalizados
+          </div>
+          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+        </div>
+        <div class="modulo mr-5 mt-5 pt-5">
+          <div class="nombre-modulo">
+            {{personalIndicators.pendientes || 0}} Pendientes
+          </div>
+          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+        </div>
+        <div class="modulo mr-5 mt-5 pt-5">
+          <div class="nombre-modulo">
+            {{personalIndicators.enCopia || 0}} en copia
+          </div>
+          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+        </div>
+        <div class="modulo mr-5 mt-5 pt-5">
+          <div class="nombre-modulo">
+            {{personalIndicators.anulado || 0}} anulados
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
@@ -34,6 +65,16 @@
 
 export default {
   mixins: [],
+  props: {
+    globalIndicators: {
+      type: Object,
+      required: false
+    },
+    personalIndicators: {
+      type: Object,
+      required: false
+    },
+  },
   computed: {},
   methods: {},
   created() {}
@@ -71,22 +112,5 @@ export default {
 
 .nombre-modulo {
   font-weight: bold;
-}
-
-.modulo-deshabilitado {
-  background-color: #ccc !important;
-}
-
-.modulo-deshabilitado:hover {
-  background-color: #ccc !important;
-  box-shadow: 3px 3px 10px #ccc;
-  cursor: default;
-  text-shadow: none !important;
-}
-
-.modulo-actual {
-  position: relative;
-  right: -20px;
-  bottom: -5px;
 }
 </style>

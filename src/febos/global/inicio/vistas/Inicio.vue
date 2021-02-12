@@ -76,7 +76,11 @@
         </vx-card>
       </vs-col>
       <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-        <Dashboard v-if="product === 'ed'"/>
+        <Dashboard
+          v-if="product === 'ed'"
+          :globalIndicators="globalIndicators"
+          :personalIndicators="personalIndicators"
+        />
       </vs-col>
     </vs-row>
 
@@ -85,8 +89,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import Dashboard from '@/febos/global/inicio/components/Dashboard';
 import ModuleSettingsMixin from '@/febos/global/inicio/mixins/ModuleSettingsMixin';
+import Dashboard from '@/febos/global/inicio/components/Dashboard';
 
 export default {
   data() {
@@ -100,6 +104,7 @@ export default {
     ...mapGetters('Usuario', { usuario: 'currentUser' }),
     ...mapGetters({ moduloActual: 'currentModule' }),
     ...mapGetters('Empresas', { empresa: 'company' }),
+    ...mapGetters('Inicio', ['globalIndicators','personalIndicators']),
     enabledModules() {
       return this.modules.filter((module) => module.visible && module.habilitado);
     },
@@ -109,10 +114,14 @@ export default {
   },
   methods: {
     ...mapActions('Menus', { seleccionarModulo: 'seleccionarModulo' }),
-    ...mapActions('Usuario', ['loadPermissions'])
+    ...mapActions('Usuario', ['loadPermissions']),
+    ...mapActions('Inicio', ['fetchIndicatorsTypes']),
   },
   created() {
     this.loadPermissions();
+    if (this.product === 'ed') {
+      this.fetchIndicatorsTypes();
+    }
   }
 };
 </script>
