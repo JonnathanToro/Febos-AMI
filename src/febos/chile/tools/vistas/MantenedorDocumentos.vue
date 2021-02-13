@@ -23,10 +23,13 @@
         <vs-col class="margin-top" vs-sm="12" vs-lg="5">
           <div class="add-new">
             <h4>Categorías</h4>
-            <vs-tooltip text="Agregar categoría">
-              <vs-button color="primary" class="margin-right" v-on:click="createOption()"
-                         type="border" icon="playlist_add" />
-            </vs-tooltip>
+            <CheckPermission permission="ED028">
+              <vs-tooltip text="Agregar categoría">
+                <vs-button color="primary" class="margin-right" v-on:click="createOption()"
+                           type="border" icon="playlist_add" />
+              </vs-tooltip>
+              <span />
+            </CheckPermission>
           </div>
           <vs-list class="bg-white margin-top box-options">
             <div
@@ -49,16 +52,18 @@
         >
           <div class="add-new">
             <h4>Documentos</h4>
-            <vs-tooltip text="Agregar documento a categoría">
-              <vs-button
-                color="primary"
-                class="margin-right"
-                v-if="selectedCategory.opcionId"
-                v-on:click="createOption(selectedCategory)"
-                type="border"
-                icon="playlist_add"
-              />
-            </vs-tooltip>
+            <CheckPermission permission="ED031">
+              <vs-tooltip text="Agregar documento a categoría">
+                <vs-button
+                  color="primary"
+                  class="margin-right"
+                  v-if="selectedCategory.opcionId"
+                  v-on:click="createOption(selectedCategory)"
+                  type="border"
+                  icon="playlist_add"
+                />
+              </vs-tooltip>
+            </CheckPermission>
           </div>
           <vs-list
             class="bg-white margin-top box-options"
@@ -116,8 +121,10 @@ import { mapActions, mapGetters } from 'vuex';
 
 import ListItemOption from '../components/ListItemOption';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+
 export default {
-  components: { ListItemOption },
+  components: { ListItemOption, CheckPermission },
   mixins: [],
   data() {
     return {
