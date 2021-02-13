@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export default {
   SET_LISTADO_EMPRESAS(state, payload) {
     const empresas = [];
@@ -8,7 +10,7 @@ export default {
         empresas.push(empresa);
       }
     }
-    console.log(`Se cargaron ${empresas.length} de ${payload.empresas.length}`);
+    Vue.$log.info(`Se cargaron ${empresas.length} de ${payload.empresas.length}`);
     state.empresas = empresas;
   },
   SET_EMPRESA(state, payload) {
