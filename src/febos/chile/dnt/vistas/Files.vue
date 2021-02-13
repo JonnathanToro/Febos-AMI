@@ -1,32 +1,32 @@
 <template>
-  <div>
-    <template slot="actions">
-    <span>
-      Viendo documentos que ingresaron
-    </span>
-    <span v-if="periodoSeleccionado.valor != 'personalizado'">
-      {{ periodoSeleccionado.nombre }}
-    </span>
-    <span v-if="periodoSeleccionado.valor == 'personalizado'">
-      entre el
-      <!--<input type="date" class="fecha" v-model="periodoDesde">-->
-      <datetime
-        v-model="periodoDesde"
-        input-class="fecha"
-        :phrases="{ok: 'Seleccionar',
-         cancel: 'Cancelar'}"
-        value-zone="local"
-        format="yyyy-MM-dd"
-      />
-      y el
-      <datetime
-        v-model="periodoHasta"
-        input-class="fecha"
-        :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
-        value-zone="local"
-        format="yyyy-MM-dd"
-      />
-    </span>
+  <div >
+    <div style="text-align: right;margin-bottom: 5px;">
+      <span>
+        Viendo documentos que ingresaron
+      </span>
+      <span v-if="periodoSeleccionado.valor != 'personalizado'">
+        {{ periodoSeleccionado.nombre }}
+      </span>
+      <span v-if="periodoSeleccionado.valor == 'personalizado'">
+        entre el
+        <!--<input type="date" class="fecha" v-model="periodoDesde">-->
+        <datetime
+          v-model="periodoDesde"
+          input-class="fecha"
+          :phrases="{ok: 'Seleccionar',
+           cancel: 'Cancelar'}"
+          value-zone="local"
+          format="yyyy-MM-dd"
+        />
+        y el
+        <datetime
+          v-model="periodoHasta"
+          input-class="fecha"
+          :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
+          value-zone="local"
+          format="yyyy-MM-dd"
+        />
+      </span>
       <vs-dropdown style="margin-left: 15px">
         <a class="a-icon" href="#">
           Cambiar
@@ -43,7 +43,7 @@
           </vs-dropdown-item>
         </vs-dropdown-menu>
       </vs-dropdown>
-    </template>
+    </div>
     <filtros
       :users="usersCompany"
       :groups="groupsCompany"

@@ -28,8 +28,8 @@
         </div>
       </div>
     </div>
-    <div class="centrador">
-      <h4 :style="titleStyles" :class="titleClasses">Mis documentos</h4>
+    <div class="mt-5">
+      <h4>Mis documentos</h4>
     </div>
     <div class="container">
       <div class="centrador">
