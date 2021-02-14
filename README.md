@@ -25,7 +25,7 @@ npm run serve:febos-cloud:production
 ```
 127.0.0.1 vue.portal.narvi.cl
 127.0.0.1 vue.portal.febos.cl
-120.0.0.1 vue.portal.escritoriodigital.cl
+127.0.0.1 vue.portal.escritoriodigital.cl
 ```
 
 ## Deploy
