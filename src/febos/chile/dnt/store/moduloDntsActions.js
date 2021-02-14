@@ -146,6 +146,7 @@ export const closeModal = ({ commit }, payload) => {
 export const getFileDnt = async ({ commit }, payload) => {
   try {
     commit('SET_LOADING', true);
+    commit('SET_DETAIL_FILE', {});
     const response = await getFile(payload);
     commit('SET_DETAIL_FILE', response.data);
     return response.data;
@@ -191,6 +192,7 @@ export const addWizardData = ({ commit }, payload) => {
 export const getFileComments = async ({ commit }, payload) => {
   try {
     commit('SET_LOADING', true);
+    commit('SET_COMMENTS', []);
     const response = await fileComments(payload);
     commit('SET_COMMENTS', response.data.comentarios);
     return response.data;
@@ -202,6 +204,7 @@ export const getFileComments = async ({ commit }, payload) => {
 export const getFileBinnacle = async ({ commit }, payload) => {
   try {
     commit('SET_LOADING', true);
+    commit('SET_BINNACLE', {});
     const response = await fileBinnacle(payload);
     commit('SET_BINNACLE', response.data.bitacora);
     return response.data;

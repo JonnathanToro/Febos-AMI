@@ -44,14 +44,16 @@ export default {
       'sendTicketHelp'
     ]),
     sendTicketFile() {
-      const ticket = {
-        febosId: this.file.febosId,
-        correo: this.currentUser.correo,
-        url: window.location.href,
-        mensaje: this.messageTicket
-      };
-      console.log('ticket', ticket);
-      this.sendTicketHelp(ticket);
+      if (this.messageTicket !== '') {
+        const ticket = {
+          febosId: this.file.febosId,
+          correo: this.currentUser.correo,
+          url: window.location.href,
+          mensaje: this.messageTicket
+        };
+        console.log('ticket', ticket);
+        this.sendTicketHelp(ticket);
+      }
     },
   },
   computed: {

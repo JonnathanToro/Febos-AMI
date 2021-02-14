@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <vs-popup title="Detalles del Expediente" :active.sync="showModal">
     <vs-tabs>
       <vs-tab label="Remitente">
         <vs-list>
@@ -61,7 +61,7 @@
       <vs-tab label="Destinatarios">
         <vs-list class="box-participants">
           <div
-            v-for="(subject, index) in detailsFile.destinatarios"
+            v-for="(subject, index) in (detailsFile.destinatarios || [])"
             :key="index"
           >
             <vs-list-item
@@ -96,7 +96,7 @@
           message-when-no-items="No hay comentarios"/>-->
       </vs-tab>
       <vs-tab label="Referencias">
-        <vs-table stripe :data="detailsFile.referencias">
+        <vs-table stripe :data="(detailsFile.referencias || [])">
           <template slot="header">
           </template>
           <template slot="thead">
@@ -110,7 +110,9 @@
 
           <template>
             <tbody>
-            <vs-tr v-for="reference in detailsFile.referencias" :key="reference.dntReferenciaId">
+            <vs-tr
+              v-for="reference in (detailsFile.referencias || [])" :key="reference.dntReferenciaId"
+            >
               <vs-td>
                 {{reference.tipoDocumento}}
               </vs-td>
@@ -123,7 +125,7 @@
         </vs-table>
       </vs-tab>
     </vs-tabs>
-  </div>
+  </vs-popup>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
@@ -134,11 +136,6 @@ export default {
   name: 'PopUpDetailFile',
   components: { DownloadFile },
   props: {
-    fileCommentDetails: {
-      type: Array,
-      required: true,
-      default: () => []
-    },
     file: {
       type: Object,
       required: true,
@@ -154,14 +151,29 @@ export default {
       'error',
       'successAction',
       'detailsFile',
-      'attachmentsFile'
-    ])
+      'attachmentsFile',
+      'fileCommentDetails'
+    ]),
+    ...mapGetters('Modals', [
+      'modalName'
+    ]),
+    showModal: {
+      get() {
+        return this.modalName === 'detailsFile';
+      },
+      set() {
+        this.closeModal();
+      }
+    }
   },
   methods: {
     ...mapActions('Dnts', [
       'downloadFilePDF'
+    ]),
+    ...mapActions('Modals', [
+      'closeModal'
     ])
-  }
+  },
 };
 </script>
 <style scoped>
