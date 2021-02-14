@@ -8,6 +8,8 @@ export default {
     state.avatar = undefined;
     state.cambiarClave = undefined;
     state.estado = undefined;
+    state.successAction = false;
+    state.loading = false;
     state.token = undefined;
   },
   SET_USUARIO(state, payload) {
@@ -41,5 +43,8 @@ export default {
   },
   SET_LOADING(state, payload) {
     state.loading = payload;
+  },
+  SET_SUCCESS_MESSAGE(state, payload) {
+    state.successAction = payload;
   }
 };
