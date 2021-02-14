@@ -8,7 +8,7 @@ export default [{
       name: 'Mantenedores',
       slug: 'settings',
       icon: 'FileIcon',
-      permiso: '*',
+      permiso: 'ED004',
       submenu: [
         {
           url: '/mantenedores/documentos',
@@ -16,14 +16,14 @@ export default [{
           slug: '/herramientas/mantenedor-documentos',
           icon: 'library_books',
           i18n: 'Documents',
-          permiso: '*' // TODO: setup permission
+          permiso: 'ED005'
         },
         {
           url: '/mantenedores/instituciones',
           name: 'Instituciones',
           slug: '/herramientas/mantenedor-instituciones',
           icon: 'library_books',
-          permiso: 'WB000',
+          permiso: 'ED006',
           i18n: 'Instituciones'
         },
         {
@@ -31,7 +31,7 @@ export default [{
           name: 'Destinos',
           slug: '/herramientas/mantenedor-destinos',
           icon: 'library_books',
-          permiso: 'WB000',
+          permiso: 'ED007',
           i18n: 'Destinos'
         }
       ]

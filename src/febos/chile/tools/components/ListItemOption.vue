@@ -34,17 +34,19 @@
         />
         <span />
       </vs-tooltip>
-      <vs-tooltip text="Editar Opción" v-if="!editMood">
-        <vs-button
-          color="primary"
-          class="margin-right"
-          size="small"
-          type="border"
-          v-on:click="editOption(option)"
-          icon="edit"
-        />
-        <span />
-      </vs-tooltip>
+      <CheckPermission permission="ED029">
+        <vs-tooltip text="Editar Opción" v-if="!editMood">
+          <vs-button
+            color="primary"
+            class="margin-right"
+            size="small"
+            type="border"
+            v-on:click="editOption(option)"
+            icon="edit"
+          />
+          <span />
+        </vs-tooltip>
+      </CheckPermission>
       <vs-tooltip text="Guardar edición" v-if="editMood">
         <vs-button
           color="success"
@@ -60,14 +62,16 @@
         <vs-button color="danger" class="margin-right" size="small"
                    type="border" v-on:click="editOption(option)" icon="cancel" />
       </vs-tooltip>
-      <vs-tooltip text="Deshabilitar opción">
-        <vs-switch
-          color="primary"
-          v-model="selected"
-          v-on:click="toggleEnableOption({ option, selected, type })"
-        />
-        <span />
-      </vs-tooltip>
+      <CheckPermission permission="ED030">
+        <vs-tooltip text="Deshabilitar opción">
+          <vs-switch
+            color="primary"
+            v-model="selected"
+            v-on:click="toggleEnableOption({ option, selected, type })"
+          />
+          <span />
+        </vs-tooltip>
+      </CheckPermission>
     </vs-col>
   </vs-row>
 </template>
@@ -76,8 +80,10 @@
 
 import { mapActions } from 'vuex';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+
 export default {
-  components: {},
+  components: { CheckPermission },
   mixins: [],
   data() {
     return {

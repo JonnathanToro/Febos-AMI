@@ -32,17 +32,21 @@
           v-on:click="listInstitutions(option)"
           icon="search"
         />
+        <span />
       </vs-tooltip>
-      <vs-tooltip text="Editar Opción" v-if="!editMood">
-        <vs-button
-          color="primary"
-          class="margin-right"
-          size="small"
-          type="border"
-          v-on:click="editOption(option)"
-          icon="edit"
-        />
-      </vs-tooltip>
+      <CheckPermission permission="ED029">
+        <vs-tooltip text="Editar Opción" v-if="!editMood">
+          <vs-button
+            color="primary"
+            class="margin-right"
+            size="small"
+            type="border"
+            v-on:click="editOption(option)"
+            icon="edit"
+          />
+          <span />
+        </vs-tooltip>
+      </CheckPermission>
       <vs-tooltip text="Guardar edición" v-if="editMood">
         <vs-button
           color="success"
@@ -52,18 +56,23 @@
           v-on:click="saveOption(option)"
           icon="save"
         />
+        <span />
       </vs-tooltip>
       <vs-tooltip text="Cancelar edición" v-if="editMood">
         <vs-button color="danger" class="margin-right" size="small"
                    type="border" v-on:click="editOption(option)" icon="cancel" />
+        <span />
       </vs-tooltip>
-      <vs-tooltip text="Deshabilitar opción">
-        <vs-switch
-          color="primary"
-          v-model="selected"
-          v-on:click="toggleEnableOptionInstitution({ option, selected, type })"
-        />
-      </vs-tooltip>
+      <CheckPermission permission="ED030">
+        <vs-tooltip text="Deshabilitar opción">
+          <vs-switch
+            color="primary"
+            v-model="selected"
+            v-on:click="toggleEnableOptionInstitution({ option, selected, type })"
+          />
+          <span />
+        </vs-tooltip>
+      </CheckPermission>
     </vs-col>
   </vs-row>
 </template>
@@ -72,8 +81,10 @@
 
 import { mapActions } from 'vuex';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+
 export default {
-  components: {},
+  components: { CheckPermission },
   mixins: [],
   data() {
     return {
@@ -119,9 +130,6 @@ export default {
       this.editMood = false;
       this.saveOptions(option);
     }
-  },
-  mounted() {
-    console.log('ACA', this);
   }
 };
 </script>

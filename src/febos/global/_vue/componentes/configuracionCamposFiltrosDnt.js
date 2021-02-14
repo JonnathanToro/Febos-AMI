@@ -12,7 +12,7 @@ export default {
     tipo: 'texto'
   },
   fechaEmision: {
-    nombre: 'Fecha de Emisión',
+    nombre: 'Fecha de Documento',
     tipo: 'fecha'
   },
   fechaCreacion: {

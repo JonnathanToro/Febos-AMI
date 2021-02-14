@@ -10,27 +10,36 @@
                 <vs-avatar
                   class="border-2 border-solid border-white"
                   id="avatar"
-                  :src=consultarAvatar
+                  :src=currentUser.avatar
                   size="100px"
                   @click="abrirPrompAvatar"
                 ></vs-avatar>
               </div>
               <div class="text-center">
-                <h4 id="alias-usuario-actual">{{ usuario.alias }}</h4>
-                <p id="nombre-usuario-actual" class="text-grey">({{ usuario.nombre }})</p>
-                <p id="correo-usuario-actual" class="text-grey">{{ usuario.correo }}</p>
-                <p id="iut-usuario-actual" class="text-grey">{{ usuario.iut }}</p>
+                <h4 id="alias-usuario-actual">{{ currentUser.alias }}</h4>
+                <p id="nombre-usuario-actual" class="text-grey">({{ currentUser.nombre }})</p>
+                <p id="correo-usuario-actual" class="text-grey">{{ currentUser.correo }}</p>
+                <p id="iut-usuario-actual" class="text-grey">{{ currentUser.iut }}</p>
               </div>
             </div>
             <div class="vx-card__footer">
               <div class="vs-component vs-divider">
-                <span class="vs-divider-border after" style="width: 100%; border-top: 1px solid rgba(0, 0, 0, 0.1);"></span>
+                <span
+                  class="vs-divider-border after"
+                  style="width: 100%; border-top: 1px solid rgba(0, 0, 0, 0.1);"
+                />
               </div>
-              <div>
+              <!--<div>
                 <vx-tooltip text="Aqui puede cambiar su imagen" position="top">
-                  <vs-button type="border" class="w-full mb-3 btn-cambiar-avatar" @click="abrirPrompAvatar">Cambiar Avatar</vs-button>
+                  <vs-button
+                   type="border"
+                   class="w-full mb-3 btn-cambiar-avatar"
+                   @click="abrirPrompAvatar"
+                   >
+                     Cambiar Avatar
+                   </vs-button>
                 </vx-tooltip>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>
@@ -52,7 +61,7 @@
                   icon-pack="material-icons"
                   icon="fingerprint"
                   icon-no-border
-                  :value="usuario.iut"
+                  :value="currentUser.iut"
                   :disabled="true"
                 ></vs-input>
                 <span class="text-danger text-sm">{{ errors.first('iut') }}</span>
@@ -66,7 +75,7 @@
                   icon="account_circle"
                   icon-no-border
                   label="Nombre"
-                  :value="usuario.nombre"
+                  :value="currentUser.nombre"
                   @input="actualiza('nombre', $event)"
                 ></vs-input>
                 <span class="text-danger text-sm">{{ errors.first('nombre') }}</span>
@@ -82,7 +91,7 @@
                   icon="favorite"
                   icon-no-border
                   label="Alias"
-                  :value="usuario.alias"
+                  :value="currentUser.alias"
                   @input="actualiza('alias', $event)"
                 ></vs-input>
                 <span class="text-danger text-sm">{{ errors.first('alias') }}</span>
@@ -97,13 +106,13 @@
                   icon="email"
                   icon-no-border
                   label="Correo"
-                  :value="usuario.correo"
+                  :value="currentUser.correo"
                   @input="actualiza('correo', $event)"
                 ></vs-input>
                 <span class="text-danger text-sm">{{ errors.first('correo') }}</span>
               </div>
             </div>
-            <div class="vs-row mt-6">
+           <!-- <div class="vs-row mt-6">
               <vs-col vs-offset="2" vs-type="flex" vs-justify="center" vs-align="center" vs-w="8">
                 <vx-tooltip text="Al hacer click modificara sus datos" position="top">
                   <vs-button
@@ -114,7 +123,7 @@
                   >Modificar</vs-button>
                 </vx-tooltip>
               </vs-col>
-            </div>
+            </div>-->
           </form>
 
         </vx-card>
@@ -130,17 +139,19 @@
               <div class="vx-col w-full">
                 <vs-input
                   v-validate="'required|min:4|max:20'"
-                  autocomplete="current-password"
+                  autocomplete
                   class="w-full"
                   icon-pack="material-icons"
                   icon="vpn_key"
                   icon-no-border
                   type="password"
                   placeholder="************"
+                  readonly
                   label="Clave actual"
-                  name="clave-actual"
-                  v-model="claveActual"></vs-input>
-                <span class="text-danger text-sm">{{ errors.first('claveActual') }}</span>
+                  name="actualPassword"
+                  :danger="errors.has('actualPassword')"
+                  :danger-text="errors.first('actualPassword')"
+                  v-model="claveActual" />
               </div>
             </div>
             <div class="vx-row mb-1">
@@ -148,7 +159,7 @@
                 <vs-input
                   v-validate="'required|min:4|max:20'"
                   ref="password"
-                  autocomplete="new-password"
+                  autocomplete
                   class="w-full"
                   icon-pack="material-icons"
                   icon="vpn_key"
@@ -156,35 +167,41 @@
                   type="password"
                   label="Clave nueva"
                   placeholder="************"
-                  name="nueva-clave"
-                  v-model="nuevaClave"></vs-input>
-                <span class="text-danger text-sm">{{ errors.first('nuevaClave') }}</span>
+                  readonly
+                  name="password"
+                  v-model="nuevaClave"
+                  :danger="errors.has('password')"
+                  :danger-text="errors.first('password')"
+                />
               </div>
             </div>
             <div class="vx-row mb-1">
               <div class="vx-col w-full">
                 <vs-input
                   v-validate="'required|min:4|max:20|confirmed:password'"
-                  autocomplete="new-password"
+                  autocomplete
                   class="w-full"
                   icon-pack="material-icons"
                   icon="vpn_key"
+                  readonly
                   icon-no-border
                   type="password"
                   label="Repita clave nueva"
                   placeholder="************"
-                  name="re-nueva-clave"
-                  v-model="reNuevaClave"></vs-input>
-                <span class="text-danger text-sm">{{ errors.first('reNuevaClave') }}</span>
+                  name="confirmPassword"
+                  v-model="reNuevaClave"
+                  :danger="errors.has('confirmPassword')"
+                  :danger-text="errors.first('confirmPassword')"
+                />
               </div>
             </div>
             <div class="vs-row">
               <vs-col vs-offset="2" vs-type="flex" vs-justify="center" vs-align="center" vs-w="8">
                 <vx-tooltip text="Al hacer click se modificara su clave" position="top">
                   <vs-button
+                    disabled
                     class="mt-5"
                     type="border"
-                    :disabled="!validarFormularioClave"
                     @click="modificarClave"
                   >Cambiar</vs-button>
                 </vx-tooltip>
@@ -200,7 +217,7 @@
     <div class="vx-row mt-5">
 
       <!--listado empresas-->
-      <div class="vx-col w-full lg:w-1/2">
+      <!--<div class="vx-col w-full lg:w-1/2">
         <vx-card title="Empresas a las que pertenezco" class="card-mid">
           <form id="form-empresas">
             <vs-input
@@ -214,23 +231,40 @@
               name="filtro-empresas"
             />
             <vs-alert :active="mensajeAyudaEmpresas" color="dark" icon="new_releases" class="mb-2" >
-              <span>Aqui se muestran <b>"las primeras 4 empresas de {{ empresasFiltradas.length }}".</b> Si desea ver mas, utilice el buscador para filtrarlas.</span>
+              <span>
+                Aqui se muestran
+                <b>"las primeras 4 empresas de {{ empresasFiltradas.length }}".</b>
+                Si desea ver mas, utilice el buscador para filtrarlas.
+              </span>
             </vs-alert>
             <div class="listado-mid" style="max-height: 300px;overflow-y: scroll">
               <VuePerfectScrollbar class="" :settings="settings">
                 <transition-group name="febos" tag="ul" appear>
-                  <li class="cursor-pointer item-animado" v-for="(empresa, index) in empresasFiltradas" :key="empresa.id"
-                      :style="{transitionDelay: (index * 0.1) + 's'}" v-if="index < mostrarMaximo"
-                      v-on:click="seleccionar(empresa)">
-                    <empresa-item :empresa="empresa"></empresa-item>
+                  <li
+                    class="cursor-pointer item-animado"
+                    v-for="(empresa, index) in empresasFiltradas"
+                    :key="empresa.id"
+                    :style="{transitionDelay: (index * 0.1) + 's'}"
+                    v-if="index < mostrarMaximo"
+                    v-on:click="seleccionarEmpresa(empresa)">
+                    <empresa-item :empresa="empresa"/>
                   </li>
                 </transition-group>
               </VuePerfectScrollbar>
               <div class="noEmpresas" v-if="noHayEmpresas">
                 <vs-row vs-w="12" style="margin-top:30px">
-                  <vs-col vs-offset="3" vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                  <vs-col
+                    vs-offset="3"
+                    vs-type="flex"
+                    vs-justify="center"
+                    vs-align="center"
+                    vs-w="6"
+                  >
                     <div class="icono">
-                      <feather-icon icon="FrownIcon" class="text-white text-primary" svgClasses="h-12 w-12"></feather-icon>
+                      <feather-icon
+                        icon="FrownIcon"
+                        class="text-white text-primary"
+                        svgClasses="h-12 w-12" />
                     </div>
                     <div class="texto">Ups! No hay empresas que mostrar</div>
                   </vs-col>
@@ -239,74 +273,9 @@
             </div>
           </form>
         </vx-card>
-      </div>
+      </div>-->
       <!-- END listado empresas-->
-
-      <!-- listado Permisos-->
-      <div class="vx-col w-full lg:w-1/2">
-        <vx-card title="Permisos que tengo asignado" class="card-mid">
-          <form id="form-permisos">
-            <vs-input
-              autofocus="true"
-              icon="icon icon-search"
-              icon-pack="feather"
-              label-placeholder="Buscar"
-              v-model="textoFiltroPermisos"
-              v-bind:class="{ 'mb-6': !mensajeAyudaPermiso }"
-              class="w-full no-icon-border mt-none"
-              name="filtro-permiso"
-            />
-            <vs-alert :active="mensajeAyudaPermiso" color="dark" icon="new_releases" class="mb-2" >
-              <span>Aqui se muestran <b>"los primeros 4 permisos de {{ permisosFiltrados.length }}".</b> Si desea ver mas, utilice el buscador para filtrarlos.</span>
-            </vs-alert>
-
-            <div class="listado-mid">
-              <VuePerfectScrollbar class="" :settings="settings">
-                <li class="cursor-pointer item-animado" v-for="(permiso, index) in permisosFiltrados" :key="permiso.id"
-                    :style="{transitionDelay: (index * 0.1) + 's'}" v-if="index < mostrarMaximo"
-                    v-on:click="seleccionarPermiso(permiso)">
-                  <permisos-item :permiso="permiso"></permisos-item>
-                </li>
-              </VuePerfectScrollbar>
-              <div class="noEmpresas" v-if="noHayPermisos">
-                <vs-row vs-w="12" style="margin-top:30px">
-                  <vs-col vs-offset="3" vs-type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                    <div class="icono">
-                      <feather-icon icon="FrownIcon" class="text-white text-primary" svgClasses="h-12 w-12"></feather-icon>
-                    </div>
-                    <div class="texto">Ups! No hay permisos que mostrar</div>
-                  </vs-col>
-                </vs-row>
-              </div>
-            </div>
-          </form>
-
-        </vx-card>
-      </div>
-      <!-- END listado Permisos-->
     </div>
-
-    <div class="vx-row mt-5">
-
-      <!-- Actividades -->
-      <div class="vx-col w-full">
-        <vx-card title="Ultima acciones que he realizado en Febos">
-
-          <listado-actividades
-            :data="actividadesArray"
-          />
-
-          <!-- Paginado -->
-          <div class="mt-4">
-<!--            <vs-pagination :total="totalPaginas" v-model="paginaActual" @change="cambiarPaginaActividades"></vs-pagination>-->
-          </div>
-          <!-- END Paginado -->
-
-        </vx-card>
-      </div>
-    </div>
-    <!-- END Actividades -->
-
     <!-- Ventana para modificar avatar -->
     <vs-prompt
       accept-text="Cambiar Avatar"
@@ -327,7 +296,10 @@
 <!--          ref="cropper"-->
 <!--        />-->
         <div class="button-wrapper">
-          <span class="button-imagen vs-button-primary vs-button-border" @click="$refs.imagen.click()">
+          <span
+            class="button-imagen vs-button-primary vs-button-border"
+            @click="$refs.imagen.click()"
+          >
             <input type="file" ref="imagen" @change="seleccionarImagen($event)" accept="image/*">
             Seleccionar imagen
           </span>
@@ -340,24 +312,18 @@
 </template>
 
 <script>
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
-import FiltroPerfil from "./FiltroPerfil";
-import EmpresaItem from './EmpresaItem';
-import PermisosItem from './PermisosItem';
+// import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+import { mapActions, mapGetters } from 'vuex';
+
+// import FiltroPerfil from './FiltroPerfil';
+// import EmpresaItem from './EmpresaItem';
 // import { Cropper, CircleStencil } from 'vue-advanced-cropper';
-import ListadoActividades from './ListadoActividades';
-import {mapActions, mapGetters, mapState} from "vuex";
-import { Validator } from 'vee-validate';
-import dict from "./validaciones";
-Validator.localize("cloud", dict);
 
 export default {
   components: {
-    ListadoActividades,
-    FiltroPerfil,
-    EmpresaItem,
-    VuePerfectScrollbar,
-    PermisosItem,
+    // FiltroPerfil,
+    // EmpresaItem,
+    // VuePerfectScrollbar
     // Cropper,
     // CircleStencil,
   },
@@ -393,24 +359,41 @@ export default {
         top: 0
       },
 
-
       /* Listado de actividades */
       paginaActual: 1,
       actividadesArray: [],
       /* END Listado de actividades */
 
-    }
+    };
+  },
+  watch: {
+    successAction() {
+      this.$vs.notify({
+        title: 'Genial!',
+        text: 'Acción realizada exitosamente',
+        color: 'success',
+        time: 3000,
+        position: 'top-center'
+      });
+    },
+    loading(value) {
+      if (!value) {
+        this.$vs.loading.close('#perfil > .con-vs-loading');
+        return;
+      }
 
+      this.$vs.loading({
+        container: '#perfil',
+        scale: 0.6
+      });
+    }
   },
   computed: {
-    ...mapGetters("Usuario", {usuario: "usuarioActual"}),
-    ...mapState("Usuario", {
-      iut: state => state.iut,
-      alias: state => state.alias,
-      avatar: state => state.avatar,
-      correo: state => state.correo,
-      nombre: state => state.nombre,
-    }),
+    ...mapGetters('Usuario', [
+      'currentUser',
+      'loading',
+      'successAction'
+    ]),
     totalPaginas() {
       return this.$store.getters['usuarios/totalPaginas'];
     },
@@ -421,12 +404,11 @@ export default {
       return this.textoFiltroPermisos.length < 4;
     },
     consultarAvatar() {
-      if(this.avatar) {
-        return this.avatar
-      } else {
-        // return `https://api.adorable.io/avatars/285/${this.correo}`;
-        return 'https://www.flaticon.es/svg/static/icons/svg/149/149071.svg';
+      if (this.currentUser.avatar) {
+        return this.currentUser.avatar;
       }
+      // return `https://api.adorable.io/avatars/285/${this.correo}`;
+      return 'https://www.flaticon.es/svg/static/icons/svg/149/149071.svg';
     },
 
     /* listado empresas */
@@ -453,10 +435,10 @@ export default {
       // });
       return [];
     },
-    noHayEmpresas: function () {
+    noHayEmpresas() {
       return !this.buscando && this.empresasFiltradas.length === 0;
     },
-    noHayPermisos: function () {
+    noHayPermisos() {
       return !this.buscandoPermiso && this.permisosFiltrados.length === 0;
     },
     /* END listado empresas */
@@ -466,47 +448,28 @@ export default {
     validarFormularioPerfil() {
       return !this.errors.any() && this.correo !== '' && this.alias !== '' && this.iut !== '' && this.nombre !== '';
     },
-    validarFormularioClave() {
-      return !this.errors.any() && this.claveActual !== '' && this.nuevaClave !== '' && this.reNuevaClave !== '';
-    },
     validarImagenVacia() {
       return this.imagenPreviaCropper !== '';
-     }
+    }
   },
 
   methods: {
-    ...mapActions("Usuario", {actualizarMiPerfil: "actualizarMiPerfil"}),
-    /* Metodos listado de actividades */
-    cambiarPaginaActividades(pagina) {
-      console.log(pagina)
-      // if(this.$store.state.usuarios.actividades.paginaActual !== pagina) {
-      //   let payload = {
-      //     id: this.usuario.id,
-      //     pagina
-      //   };
-      //   this.$vs.loading({color: '#0004AC', text: 'Consultando actividades...', type: 'sound'});
-      //   this.$store.dispatch('usuarios/listarActividades', payload)
-      //     .then(() => {
-      //       this.$vs.loading.close();
-      //       this.actividadesArray = this.$store.state.usuarios.actividades.data;
-      //     });
-      // }
-    },
-    /* END Metodos listado de actividades */
-
-
+    ...mapActions('Usuario', [
+      'actualizarMiPerfil',
+      'changePassword'
+    ]),
     /* Metodos para el tratado del avatar */
-    transformaImagenFile(url, filename, mimeType) {
-      mimeType = mimeType || (url.match(/^data:([^;]+);/)||'')[1];
+    transformaImagenFile(url, filename, mimeTypeParam) {
+      const mimeType = mimeTypeParam || (url.match(/^data:([^;]+);/) || '')[1];
       return (fetch(url)
-          .then(function(res){return res.arrayBuffer();})
-          .then(function(buf){return new File([buf], filename, {type:mimeType});})
+        .then((res) => res.arrayBuffer())
+        .then((buf) => new File([buf], filename, { type: mimeType }))
       );
     },
     seleccionarImagen(event) {
-      var input = event.target;
+      const input = event.target;
       if (input.files && input.files[0]) {
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = (e) => {
           this.imagenPreviaCropper = e.target.result;
         };
@@ -514,13 +477,13 @@ export default {
       }
     },
     subirImagen() {
-      const {coordinates, canvas} = this.$refs.cropper.getResult();
+      const { coordinates, canvas } = this.$refs.cropper.getResult();
       this.coordenadasImagen = coordinates;
       this.imagenPreviaCropper = canvas.toDataURL();
       this.transformaImagenFile(this.imagenPreviaCropper, 'perfil.jpg')
         .then((imagen) => {
           this.imagenASubir = imagen;
-          console.log("Imagen a subir",imagen);
+          console.log('Imagen a subir', imagen);
         });
     },
     cerrarPromptAvatar() {
@@ -528,47 +491,40 @@ export default {
     },
     abrirPrompAvatar() {
       this.promtpAvatar = true;
-      this.imagenPreviaCropper = this.usuario.avatar;
+      this.imagenPreviaCropper = this.currentUser.avatar;
     },
     /* END Metodos para el tratado del avatar */
 
     /* Metodos para modificar los usuarios */
-    actualiza (key, value) {
-      this.usuario[key]=value;
+    actualiza(key, value) {
+      this.currentUser[key] = value;
     },
     modificarPerfil() {
       this.$vs.loading();
       const payload = {
         ...this.payload,
-        usuario: this.usuario
+        currentUser: this.currentUser
       };
-      this.actualizarMiPerfil(payload).then(function(modificado){
-        console.log("modificado",modificado);
+      this.actualizarMiPerfil(payload).then((modificado) => {
+        console.log('modificado', modificado);
         payload.cerrarAnimacion();
-      }).catch(function(error){
-        console.log("error",error);
+      }).catch((error) => {
+        console.log('error', error);
         payload.cerrarAnimacion();
       });
     },
     modificarClave() {
-      this.$vs.loading();
-      const payload = {
-        ...this.payload,
-        usuario: this.usuario = {
-          ...this.usuario,
-          clave: this.nuevaClave
-        }
-      };
-      setTimeout(function(){
-        this.claveActual = this.nuevaClave = this.reNuevaClave = '';
-        payload.cerrarAnimacion();
-      },2000)
+      if (this.claveActual !== '' && (this.nuevaClave === this.reNuevaClave)) {
+        this.changePassword({
+          claveActual: this.claveActual,
+          claveNueva: this.nuevaClave
+        });
+      }
     },
     /* END Metodos para modificar los usuarios */
 
     /* listado empresas */
     seleccionarEmpresa() {},
-    seleccionarPermiso() {}
     /* END listado empresas */
   },
   created() {
@@ -576,9 +532,9 @@ export default {
   beforeCreate() {
   },
   beforeDestroy() {
-    if(this.promtpAvatar) document.getElementById("prompt-avatar").remove();
+    if (this.promtpAvatar) document.getElementById('prompt-avatar').remove();
   }
-}
+};
 </script>
 
 <style lang="scss">

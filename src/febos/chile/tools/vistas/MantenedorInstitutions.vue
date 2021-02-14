@@ -23,10 +23,13 @@
         <vs-col class="margin-top" vs-sm="12" vs-lg="5">
           <div class="add-new">
             <h4>Tipos de instituciones</h4>
-            <vs-tooltip text="Agregar categoría">
-              <vs-button color="primary" class="margin-right" v-on:click="createOption()"
-                         type="border" icon="playlist_add" />
-            </vs-tooltip>
+            <CheckPermission permission="ED028">
+              <vs-tooltip text="Agregar categoría">
+                <vs-button color="primary" class="margin-right" v-on:click="createOption()"
+                           type="border" icon="playlist_add" />
+                <span />
+              </vs-tooltip>
+            </CheckPermission>
           </div>
           <vs-list class="bg-white margin-top box-options">
             <div
@@ -49,16 +52,19 @@
         >
           <div class="add-new">
             <h4>Instituciones</h4>
-            <vs-tooltip text="Agregar institución a categoría">
-              <vs-button
-                color="primary"
-                class="margin-right"
-                v-if="selectedInstitution.opcionId"
-                v-on:click="createOption(selectedInstitution)"
-                type="border"
-                icon="playlist_add"
-              />
-            </vs-tooltip>
+            <CheckPermission permission="ED031">
+              <vs-tooltip text="Agregar institución a categoría">
+                <vs-button
+                  color="primary"
+                  class="margin-right"
+                  v-if="selectedInstitution.opcionId"
+                  v-on:click="createOption(selectedInstitution)"
+                  type="border"
+                  icon="playlist_add"
+                />
+                <span />
+              </vs-tooltip>
+            </CheckPermission>
           </div>
           <vs-list
             class="bg-white margin-top box-options"
@@ -118,8 +124,10 @@ import { mapActions, mapGetters } from 'vuex';
 
 import ListItemOptionInstitution from '../components/ListItemOptionInstitution';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+
 export default {
-  components: { ListItemOptionInstitution },
+  components: { ListItemOptionInstitution, CheckPermission },
   mixins: [],
   data() {
     return {

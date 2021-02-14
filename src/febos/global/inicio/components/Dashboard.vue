@@ -16,12 +16,6 @@
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
-            {{globalIndicators.enCopia}} en copia
-          </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
-        </div>
-        <div class="modulo mr-5 mt-5 pt-5">
-          <div class="nombre-modulo">
             {{globalIndicators.anulado}} anulados
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
@@ -42,6 +36,12 @@
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
             {{personalIndicators.pendientes || 0}} Pendientes
+          </div>
+          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+        </div>
+        <div class="modulo mr-5 mt-5 pt-5">
+          <div class="nombre-modulo">
+            {{personalIndicators.borradores || 0}} Borradores
           </div>
           <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>

@@ -16,6 +16,7 @@ const filterViews = {
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
+      /*
       {
         campo: 'tipo',
         tipo: 'multi',
@@ -24,6 +25,7 @@ const filterViews = {
           { valor: 'ACRE', nombre: 'Oficina' },
         ]
       },
+      */
       {
         campo: 'estado',
         tipo: 'multi',
@@ -100,6 +102,7 @@ const filterViews = {
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
+      /*
       {
         campo: 'tipo',
         tipo: 'multi',
@@ -108,6 +111,7 @@ const filterViews = {
           { valor: 'ACRE', nombre: 'Oficina' },
         ]
       },
+       */
       {
         campo: 'estado',
         tipo: 'multi',
@@ -188,6 +192,7 @@ const filterViews = {
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
+      /*
       {
         campo: 'tipo',
         tipo: 'multi',
@@ -196,6 +201,7 @@ const filterViews = {
           { valor: 'ACRE', nombre: 'Oficina' },
         ]
       },
+      */
       {
         campo: 'estado',
         tipo: 'multi',

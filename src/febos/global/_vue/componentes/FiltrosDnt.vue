@@ -485,8 +485,21 @@ export default {
         }
       }
     },
-    rangoAvanzado() {
-      this.seleccionarRango(this.filtroActual, this.filtroActual.valor);
+    rangoAvanzado: {
+      handler(valor) {
+        this.$log.debug('watch.rangoAvanzado');
+        this.$log.info('valor rango avanzado', JSON.parse(JSON.stringify(valor)));
+        try {
+          const desde = valor.desde.split('T')[0];
+          const hasta = valor.hasta.split('T')[0];
+          this.filtroActual.valor = `${desde}--${hasta}`;
+        } catch (e) {
+          this.$log.info('Una de las fechas de rango avanzado no esta correctamente '
+            + 'formateada,se necesitan ambas para setear el valor del filtro');
+        }
+        this.seleccionarRango(this.filtroActual, this.filtroActual.valor, false);
+      },
+      deep: true
     },
     tipoRangoFechaAvanzado() {
       if (!this.filtroActual.valor.includes('--') && !this.filtroActual.valor.includes(' ')) {

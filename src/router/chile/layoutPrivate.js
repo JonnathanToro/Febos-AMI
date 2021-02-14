@@ -17,7 +17,7 @@ export default [
       {
         path: '/usuario/perfil',
         name: 'Perfil de Usuario',
-        meta: { permiso: 'WB001', requiereLogin: true },
+        meta: { permiso: 'ED032', requiereLogin: true },
         component: () => import('@/febos/global/usuario/vistas/perfil/Perfil.vue')
       },
       {

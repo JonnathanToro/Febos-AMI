@@ -45,7 +45,15 @@ export const getUsers = (payload) => {
 export const ioGetAuthCode = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.get(`${RESOURCE}/autenticadoble?${ params}`, {
+  return apiClient.get(`${RESOURCE}/autenticadoble?${params}`, {
     operacionId: 'io.user.authCode'
   });
+};
+
+export const updatePassword = (passwords) => {
+  const params = apiClient.queryParams({
+    simular: 'no'
+  });
+  apiClient.put(`${RESOURCE}/login/recuperar?${params}`, passwords,
+    { operacionId: 'io.usuario.update.password' });
 };

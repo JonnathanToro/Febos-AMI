@@ -13,5 +13,6 @@ export default {
   permisos: [],
   empresas: [],
   verificationCode: '',
-  loading: false
+  loading: false,
+  successAction: false,
 };
