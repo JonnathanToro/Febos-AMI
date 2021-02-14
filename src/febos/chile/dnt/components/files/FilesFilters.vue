@@ -94,7 +94,7 @@ export default {
     if (!this.usersCompany.length) {
       this.getUsersCompany({
         empresaId: this.empresa.id,
-        pagina: this.page,
+        pagina: 1,
         filas: 9999,
         buscarInfoExtra: 'si',
         filtroInfoExtra: 'CARGO'
