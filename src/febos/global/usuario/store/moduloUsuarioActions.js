@@ -54,7 +54,6 @@ export default {
     try {
       commit('SET_LOADING', true);
       await updatePassword(passwords);
-      console.log('ACA', passwords);
       commit('SET_SUCCESS_MESSAGE', true);
     } finally {
       commit('SET_LOADING', false);

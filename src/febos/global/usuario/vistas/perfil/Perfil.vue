@@ -10,7 +10,7 @@
                 <vs-avatar
                   class="border-2 border-solid border-white"
                   id="avatar"
-                  :src=consultarAvatar
+                  :src=currentUser.avatar
                   size="100px"
                   @click="abrirPrompAvatar"
                 ></vs-avatar>
@@ -139,17 +139,19 @@
               <div class="vx-col w-full">
                 <vs-input
                   v-validate="'required|min:4|max:20'"
-                  autocomplete="current-password"
+                  autocomplete
                   class="w-full"
                   icon-pack="material-icons"
                   icon="vpn_key"
                   icon-no-border
                   type="password"
                   placeholder="************"
+                  readonly
                   label="Clave actual"
-                  name="clave-actual"
-                  v-model="claveActual"></vs-input>
-                <span class="text-danger text-sm">{{ errors.first('claveActual') }}</span>
+                  name="actualPassword"
+                  :danger="errors.has('actualPassword')"
+                  :danger-text="errors.first('actualPassword')"
+                  v-model="claveActual" />
               </div>
             </div>
             <div class="vx-row mb-1">
@@ -157,7 +159,7 @@
                 <vs-input
                   v-validate="'required|min:4|max:20'"
                   ref="password"
-                  autocomplete="new-password"
+                  autocomplete
                   class="w-full"
                   icon-pack="material-icons"
                   icon="vpn_key"
@@ -165,6 +167,7 @@
                   type="password"
                   label="Clave nueva"
                   placeholder="************"
+                  readonly
                   name="password"
                   v-model="nuevaClave"
                   :danger="errors.has('password')"
@@ -176,10 +179,11 @@
               <div class="vx-col w-full">
                 <vs-input
                   v-validate="'required|min:4|max:20|confirmed:password'"
-                  autocomplete="new-password"
+                  autocomplete
                   class="w-full"
                   icon-pack="material-icons"
                   icon="vpn_key"
+                  readonly
                   icon-no-border
                   type="password"
                   label="Repita clave nueva"
@@ -195,6 +199,7 @@
               <vs-col vs-offset="2" vs-type="flex" vs-justify="center" vs-align="center" vs-w="8">
                 <vx-tooltip text="Al hacer click se modificara su clave" position="top">
                   <vs-button
+                    disabled
                     class="mt-5"
                     type="border"
                     @click="modificarClave"
@@ -309,14 +314,10 @@
 <script>
 // import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { mapActions, mapGetters } from 'vuex';
-import { Validator } from 'vee-validate';
 
 // import FiltroPerfil from './FiltroPerfil';
 // import EmpresaItem from './EmpresaItem';
 // import { Cropper, CircleStencil } from 'vue-advanced-cropper';
-import dict from './validaciones';
-
-Validator.localize('cloud', dict);
 
 export default {
   components: {
@@ -366,7 +367,7 @@ export default {
     };
   },
   watch: {
-    successAccion() {
+    successAction() {
       this.$vs.notify({
         title: 'Genial!',
         text: 'Acción realizada exitosamente',
@@ -388,8 +389,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('Usuario',
-      ['currentUser', 'loading', 'successAcction']),
+    ...mapGetters('Usuario', [
+      'currentUser',
+      'loading',
+      'successAction'
+    ]),
     totalPaginas() {
       return this.$store.getters['usuarios/totalPaginas'];
     },
@@ -400,8 +404,8 @@ export default {
       return this.textoFiltroPermisos.length < 4;
     },
     consultarAvatar() {
-      if (this.avatar) {
-        return this.avatar;
+      if (this.currentUser.avatar) {
+        return this.currentUser.avatar;
       }
       // return `https://api.adorable.io/avatars/285/${this.correo}`;
       return 'https://www.flaticon.es/svg/static/icons/svg/149/149071.svg';
@@ -510,13 +514,12 @@ export default {
       });
     },
     modificarClave() {
-      if (this.nuevaClave !== this.reNuevaClave) {
-        return;
+      if (this.claveActual !== '' && (this.nuevaClave === this.reNuevaClave)) {
+        this.changePassword({
+          claveActual: this.claveActual,
+          claveNueva: this.nuevaClave
+        });
       }
-      this.changePassword({
-        claveActual: this.claveActual,
-        claveNueva: this.nuevaClave
-      });
     },
     /* END Metodos para modificar los usuarios */
 
