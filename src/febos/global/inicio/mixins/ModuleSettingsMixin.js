@@ -80,8 +80,17 @@ const moduleSettings = {
       permission: 'ED001'
     },
     {
-      nombre: 'documentosEd',
-      descripcion: 'Documentos Escritorio',
+      nombre: 'oficinaPartesEd',
+      descripcion: 'Oficina de Partes',
+      tooltip: '',
+      icono: 'description',
+      habilitado: true,
+      visible: true,
+      permission: 'ED003'
+    },
+    {
+      nombre: 'expedientesEd',
+      descripcion: 'Expedientes',
       tooltip: '',
       icono: 'description',
       habilitado: true,
