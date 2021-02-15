@@ -22,7 +22,7 @@ export default [{
     },
     {
       url: null,
-      name: 'Ofic. de Partes',
+      name: 'Expedientes',
       slug: 'files',
       icon: 'FolderIcon',
       permiso: 'ED008',
