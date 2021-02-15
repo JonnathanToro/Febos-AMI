@@ -18,7 +18,7 @@ export default {
       case 'facturaElectronica': commit('SET_MENU', facturaElectronica); break;
       case 'aprobaciones': commit('SET_MENU', aprobaciones); break;
       case 'herramientas': commit('SET_MENU', herramientas); break;
-      case 'documentosEd': commit('SET_MENU', documentosEd); break;
+      case 'oficinaPartesEd': commit('SET_MENU', documentosEd); break;
       case 'compras': commit('SET_MENU', compras); break;
       case 'gastos': commit('SET_MENU', gastos); break;
       case 'configuracion': commit('SET_MENU', configuracion); break;
