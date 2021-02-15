@@ -132,18 +132,14 @@ export default {
       'fetchDocumentTypes',
       'fetchInstitutionTypes'
     ]),
-    changeFilters(filters, onMounted) {
-      // console.log('manipulando', filtros);
-      if (onMounted) {
-        this.page = 1;
-      }
+    changeFilters(filters) {
+      const defaultFilters = `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;
       this.currentFilters = filters;
-      this.$emit(
-        'input',
-        filters !== ''
-          ? `|${filters}`
-          : `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}|${filters}`
-      );
+      const newFilters = filters !== ''
+        ? `${defaultFilters}|${filters}`
+        : defaultFilters;
+
+      this.$emit('input', newFilters);
     },
     seleccionarPeriodo(periodo) {
       switch (periodo.valor) {
