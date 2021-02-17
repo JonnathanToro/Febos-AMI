@@ -3,6 +3,10 @@
     <div>
       Al dar por finalizado este documento, no podras actuar sobre el, estas de acuerdo?
     </div>
+    <div class="chip-custom">
+      ¡La realizar esta acción se marcará
+      como finalizado el expediente para todos los participantes!
+    </div>
     <div class="m-top-20" style="display: flex;justify-content: flex-end;">
       <vs-button color="dark" v-on:click="cancelProcess()" type="border">Cancelar</vs-button>
       <vs-button
@@ -66,5 +70,12 @@ export default {
 };
 </script>
 <style scoped>
-
+.chip-custom {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #ffb300;
+  background: #fff5df;
+  border-radius: 10px;
+  padding: 4px 8px;
+}
 </style>
