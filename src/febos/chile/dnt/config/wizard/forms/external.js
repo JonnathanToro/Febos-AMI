@@ -8,7 +8,7 @@ export default () => ({
   currentStep: 0,
   steps: [
     {
-      title: 'Identification',
+      title: 'Identificación',
       component: StepIdentification
     },
     {
