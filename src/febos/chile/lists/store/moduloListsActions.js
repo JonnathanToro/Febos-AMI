@@ -1,6 +1,6 @@
 import { listOptions } from '@/febos/servicios/api/opciones.api';
 import { getUsers } from '@/febos/servicios/api/usuarios.api';
-import { ioCompanyGroups } from '@/febos/servicios/api/empresas.api';
+import { ioCompanyGroups, getUsersByGroup } from '@/febos/servicios/api/empresas.api';
 
 export const fetchDocumentTypes = async ({ commit }) => {
   commit('SET_DOCUMENT_TYPES_LOADING', true);
@@ -113,4 +113,27 @@ export const fetchSubjects = async ({ commit, rootState }, payload) => {
       break;
   }
   commit('SET_SUBJECTS_LOADING', false);
+};
+
+export const fetchGroups = async ({ commit, rootState }) => {
+  commit('SET_GROUPS_LOADING', true);
+  commit('SET_GROUPS', []);
+  const response = await ioCompanyGroups(
+    { empresaId: rootState.Empresas.empresa.id }
+  );
+  commit('SET_GROUPS', response.data.grupos);
+  commit('SET_GROUPS_LOADING', false);
+};
+
+export const getUsersGroup = async ({ commit, rootState }, groupId) => {
+  commit('SET_USERS_LOADING', true);
+  commit('SET_USERS', []);
+  const response = await getUsersByGroup({
+    empresaId: rootState.Empresas.empresa.id,
+    pagina: 1,
+    filas: 9999,
+    groupId
+  });
+  commit('SET_USERS', response.data.usuarios);
+  commit('SET_USERS_LOADING', false);
 };

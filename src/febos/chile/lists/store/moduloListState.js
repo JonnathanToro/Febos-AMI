@@ -63,5 +63,13 @@ export default {
   institutionsDocDigital: {
     list: [],
     loading: false
+  },
+  groups: {
+    list: [],
+    loading: false
+  },
+  users: {
+    list: [],
+    loading: false
   }
 };

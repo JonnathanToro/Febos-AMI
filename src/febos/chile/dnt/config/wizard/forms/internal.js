@@ -1,7 +1,5 @@
-import Vue from 'vue';
-
-import StepIdentification from '@/febos/chile/dnt/components/wizard/external/StepIdentification';
-import StepInformation from '@/febos/chile/dnt/components/wizard/external/StepInformation';
+import StepIdentification from '@/febos/chile/dnt/components/wizard/internal/StepIdentification';
+import StepInformation from '@/febos/chile/dnt/components/wizard/internal/StepInformation';
 import StepFiles from '@/febos/chile/dnt/components/wizard/external/StepFiles';
 
 export default () => ({
@@ -167,18 +165,16 @@ export default () => ({
         receptorRut: iutCompany,
         emisorRazonSocial: nameCompany,
         receptorRazonSocial: nameCompany,
-        claseMercadoPublico: 'ext',
+        claseMercadoPublico: 'int',
         estado: 1,
         emisorCentroCostoNumero: input.documentType,
         emisorCentroCostoNombre: input.documentTypeName,
         emisorSucursalCodigo: input.document,
         emisorSucursalDireccion: input.documentName,
-        numeroInt: input.documentNumber,
+        condicionDespacho: input.formatDocument,
         transportePuertoTipo: input.isPrivate,
-        compradorCodigo: input.institutionType,
-        compradorArea: input.institutionTypeName,
-        emisorContactoCodigo: input.institution,
-        emisorContactoArea: input.institutionName,
+        compradorCodigo: input.directionId,
+        compradorArea: input.directionName,
         emisorContactoNombre: input.personName,
         emisorContactoCargo: input.personPosition,
         transporteViaTransporteCodigoTransporte: input.withAttachment,
@@ -239,10 +235,6 @@ export default () => ({
         folio: relatedDocument.number
       }))
     };
-
-    if (input.issueDate) {
-      data.dnt.fechaEmision = Vue.moment(input.issueDate).format('YYYY-MM-DD');
-    }
 
     if (input.matter) {
       data.observaciones = [

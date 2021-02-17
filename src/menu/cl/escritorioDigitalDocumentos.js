@@ -17,6 +17,14 @@ export default [{
           icon: 'files',
           permiso: 'ED012',
           i18n: 'uploads'
+        },
+        {
+          url: '/documentos/interno',
+          name: 'Internos',
+          slug: 'uploads',
+          icon: 'files',
+          permiso: '*', // TODO set permission
+          i18n: 'uploads'
         }
       ]
     },

@@ -108,5 +108,27 @@ export default {
         value: option.valor,
         label: option.descripcion
       }));
-  }
+  },
+  SET_GROUPS(state, payload) {
+    state.groups.list = payload
+      .map((option) => ({
+        id: option.id,
+        value: option.id,
+        label: option.nombre
+      }));
+  },
+  SET_GROUPS_LOADING(state, payload) {
+    state.groups.loading = payload;
+  },
+  SET_USERS(state, payload) {
+    state.users.list = payload
+      .map((option) => ({
+        id: option.id,
+        value: option.id,
+        label: option.nombre
+      }));
+  },
+  SET_USERS_LOADING(state, payload) {
+    state.users.loading = payload;
+  },
 };

@@ -18,3 +18,11 @@ export const ioCompanyGroups = (payload) => {
     operacionId: 'io.empresas.grupos'
   });
 };
+
+export const getUsersByGroup = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.empresaId}/grupos/${payload.groupId}?${params}`, {
+    operacionId: 'io.empresas.usuariosBygroup'
+  });
+};

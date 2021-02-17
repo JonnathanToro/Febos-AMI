@@ -8,3 +8,6 @@ export const subjectTypesState = (state) => state.subjectTypes;
 export const subjectsState = (state) => state.subjects;
 
 export const institutionsDocDigitalState = (state) => state.institutionsDocDigital;
+
+export const groupsState = (state) => state.groups;
+export const usersState = (state) => state.users;
