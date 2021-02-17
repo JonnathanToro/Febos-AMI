@@ -22,7 +22,7 @@ export const ioCompanyGroups = (payload) => {
 export const getUsersByGroup = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.get(`${RESOURCE}/${payload.empresaId}/grupos/${payload.groupId}?${params}`, {
+  return apiClient.get(`${RESOURCE}/${payload.empresaId}/grupos/${payload.groupId}/usuarios?${params}`, {
     operacionId: 'io.empresas.usuariosBygroup'
   });
 };
