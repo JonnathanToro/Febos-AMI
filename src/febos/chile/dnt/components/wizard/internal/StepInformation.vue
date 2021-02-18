@@ -522,22 +522,22 @@ export default {
       return true;
     },
     getStepData() {
-      const institutionTypeName = this.step.institutionType
+      const directionName = this.step.directionId
         ? {
-          institutionTypeName: this.$refs.institutionType.getOption().label
+          directionName: this.$refs.directionId.getOption().label
         }
         : {};
 
-      const institutionName = this.step.institution
+      const personName = this.step.personName
         ? {
-          institutionName: this.$refs.institution.getOption().label
+          personName: this.$refs.personName.getOption().label
         }
         : {};
 
       return {
         ...this.step,
-        ...institutionTypeName,
-        ...institutionName
+        ...directionName,
+        ...personName
       };
     }
   }

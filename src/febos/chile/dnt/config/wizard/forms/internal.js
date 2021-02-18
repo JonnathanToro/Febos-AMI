@@ -39,7 +39,7 @@ export default () => ({
         data.issueDate = Date.parse(dnt.fechaEmision);
       }
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10);
-      data.institutionType = dnt.compradorCodigo;
+      data.direccionId = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
       data.personPosition = dnt.emisorContactoCargo;

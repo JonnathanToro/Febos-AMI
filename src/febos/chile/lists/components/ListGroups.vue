@@ -51,6 +51,7 @@ export default {
       'fetchGroups'
     ]),
     getOption() {
+      console.log('ACA', this.groupsState.list.find((option) => option.value === this.value));
       return this.groupsState.list.find((option) => option.value === this.value);
     }
   },
