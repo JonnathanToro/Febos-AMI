@@ -15,16 +15,16 @@ import {
   clAsignFile,
   sendFile
 } from '@/febos/servicios/api/dnt.api';
-// import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
+import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
 import { fileDetails } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
-export const listDocuments = async ({ commit }, payload) => {
+export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
   try {
     commit('SET_LOADING', true);
-    // const response = await clDntCloudSearchList(payload);
-    const response = await clDntsList(payload);
+    const service = fromCS ? clDntCloudSearchList : clDntsList;
+    const response = await service(data);
     commit('SET_DNT_LIST', response.data);
     return response.data;
   } finally {
