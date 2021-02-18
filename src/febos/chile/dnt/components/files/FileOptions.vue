@@ -13,7 +13,7 @@
       <vs-dropdown-menu style="width: fit-content">
         <CheckPermission permission="ED016">
           <vs-dropdown-item
-            v-if="isDraft && onPendingFiles"
+            v-if="isDraft && onPendingFiles && isResposible"
             v-on:click="openDraft()"
           >
             <vs-icon icon="query_builder"/>
@@ -47,7 +47,7 @@
         <CheckPermission permission="ED021">
           <vs-dropdown-item
             v-on:click="onOptionAssignFile(file)"
-            v-if="!isDraft  && onPendingFiles && !isAssigned"
+            v-if="!isDraft  && onPendingFiles && !isAssigned && !isResposible"
           >
             <vs-icon icon="how_to_reg"/>
             Asignarme expediente
@@ -56,7 +56,7 @@
         <CheckPermission permission="ED022">
           <vs-dropdown-item
             v-on:click="onOptionCancelFile(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned"
+            v-if="!isDraft  && onPendingFiles && isAssigned && isResposible"
           >
             <vs-icon icon="clear"/>
             Anular expediente
@@ -65,7 +65,7 @@
         <CheckPermission permission="ED023">
           <vs-dropdown-item
             v-on:click="onOptionProcessFile(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned"
+            v-if="!isDraft  && onPendingFiles && isAssigned && isResposible"
           >
             <vs-icon icon="move_to_inbox"/>
             Finalizar documento
@@ -80,7 +80,7 @@
         <CheckPermission permission="ED025">
           <vs-dropdown-item
             v-on:click="onOptionGetComments(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned"
+            v-if="!isDraft  && onPendingFiles && isAssigned && isResposible"
           >
             <vs-icon icon="chat"/>
             Comentarios
@@ -89,7 +89,7 @@
         <CheckPermission permission="ED026">
           <vs-dropdown-item
             v-on:click="onOptionSendFile(file)"
-            v-if="!isDraft && onPendingFiles && isAssigned"
+            v-if="!isDraft && onPendingFiles && isAssigned && isResposible"
           >
             <vs-icon icon="chat"/>
             Enviar documento
@@ -122,6 +122,7 @@ export default {
     'onPendingFiles',
     'isDraft',
     'isAssigned',
+    'isResposible',
     'selectFile'
   ],
   computed: {
