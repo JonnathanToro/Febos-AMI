@@ -35,8 +35,9 @@
         <span />
       </vs-tooltip>
       <CheckPermission permission="ED029">
-        <vs-tooltip text="Editar Opción" v-if="!editMood">
+        <vs-tooltip text="Editar Opción">
           <vs-button
+            v-if="!editMood"
             color="primary"
             class="margin-right"
             size="small"
@@ -47,8 +48,9 @@
           <span />
         </vs-tooltip>
       </CheckPermission>
-      <vs-tooltip text="Guardar edición" v-if="editMood">
+      <vs-tooltip text="Guardar edición">
         <vs-button
+          v-if="editMood"
           color="success"
           class="margin-right"
           size="small"
@@ -58,9 +60,10 @@
         />
         <span />
       </vs-tooltip>
-      <vs-tooltip text="Cancelar edición" v-if="editMood">
-        <vs-button color="danger" class="margin-right" size="small"
+      <vs-tooltip text="Cancelar edición">
+        <vs-button color="danger" class="margin-right" size="small" v-if="editMood"
                    type="border" v-on:click="editOption(option)" icon="cancel" />
+        <span />
       </vs-tooltip>
       <CheckPermission permission="ED030">
         <vs-tooltip text="Deshabilitar opción">
