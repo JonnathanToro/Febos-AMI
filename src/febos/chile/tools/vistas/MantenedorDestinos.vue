@@ -30,11 +30,10 @@
           <div class="add-new">
             <h4>Tipos de destino</h4>
             <CheckPermission permission="ED028">
-              <vs-tooltip text="Agregar categoría">
-                <vs-button color="primary" class="margin-right" v-on:click="createOption()"
-                           type="border" icon="playlist_add" />
-                <span />
-              </vs-tooltip>
+              <vs-button
+                v-tooltip="'Agregar categoría'"
+                color="primary" class="margin-right" v-on:click="createOption()"
+                type="border" icon="playlist_add" />
             </CheckPermission>
           </div>
           <vs-list class="bg-white margin-top box-options">
@@ -59,17 +58,15 @@
           <div class="add-new">
             <h4>Destinos</h4>
             <CheckPermission permission="ED031">
-              <vs-tooltip text="Agregar destino a categoría">
-                <vs-button
-                  color="primary"
-                  class="margin-right"
-                  v-if="selectedSubject.opcionId"
-                  v-on:click="createOption(selectedSubject)"
-                  type="border"
-                  icon="playlist_add"
-                />
-                <span />
-              </vs-tooltip>
+              <vs-button
+                v-tooltip="'Agregar destino a categoría'"
+                color="primary"
+                class="margin-right"
+                v-if="selectedSubject.opcionId"
+                v-on:click="createOption(selectedSubject)"
+                type="border"
+                icon="playlist_add"
+              />
             </CheckPermission>
           </div>
           <vs-list

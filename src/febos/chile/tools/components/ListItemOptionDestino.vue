@@ -22,58 +22,54 @@
       </div>
     </vs-col>
     <vs-col vs-type="flex" vs-justify="flex-end" vs-align="center" vs-lg="4" vs-sm="4" vs-xs="12">
-      <vs-tooltip text="Ver Destinos">
+      <vs-button
+        v-if="type === 'category'"
+        v-tooltip="'Ver Destinos'"
+        color="primary"
+        class="margin-right"
+        size="small"
+        type="border"
+        v-on:click="listSubjects(option)"
+        icon="search"
+      />
+      <CheckPermission permission="ED029" v-if="!editMood">
         <vs-button
-          v-if="type === 'category'"
+          v-tooltip="'Editar Opción'"
           color="primary"
           class="margin-right"
           size="small"
           type="border"
-          v-on:click="listSubjects(option)"
-          icon="search"
+          v-on:click="editOption(option)"
+          icon="edit"
         />
-        <span />
-      </vs-tooltip>
-      <CheckPermission permission="ED029">
-        <vs-tooltip text="Editar Opción">
-          <vs-button
-            v-if="!editMood"
-            color="primary"
-            class="margin-right"
-            size="small"
-            type="border"
-            v-on:click="editOption(option)"
-            icon="edit"
-          />
-          <span />
-        </vs-tooltip>
       </CheckPermission>
-      <vs-tooltip text="Guardar edición">
-        <vs-button
-          v-if="editMood"
-          color="success"
-          class="margin-right"
-          size="small"
-          type="border"
-          v-on:click="saveOption(option)"
-          icon="save"
-        />
-        <span />
-      </vs-tooltip>
-      <vs-tooltip text="Cancelar edición">
-        <vs-button color="danger" class="margin-right" size="small" v-if="editMood"
-                   type="border" v-on:click="editOption(option)" icon="cancel" />
-        <span />
-      </vs-tooltip>
+      <vs-button
+        v-if="editMood"
+        v-tooltip="'Guardar edición'"
+        color="success"
+        class="margin-right"
+        size="small"
+        type="border"
+        v-on:click="saveOption(option)"
+        icon="save"
+      />
+      <vs-button
+        color="danger"
+        v-tooltip="'Cancelar edición'"
+        class="margin-right"
+        size="small"
+        v-if="editMood"
+        type="border"
+        v-on:click="editOption(option)"
+        icon="cancel"
+      />
       <CheckPermission permission="ED030">
-        <vs-tooltip text="Deshabilitar opción">
-          <vs-switch
-            color="primary"
-            v-model="selected"
-            v-on:click="toggleEnableOptionSubject({ option, selected, type })"
-          />
-          <span />
-        </vs-tooltip>
+        <vs-switch
+          v-tooltip="'Deshabilitar opción'"
+          color="primary"
+          v-model="selected"
+          v-on:click="toggleEnableOptionSubject({ option, selected, type })"
+        />
       </CheckPermission>
     </vs-col>
   </vs-row>
