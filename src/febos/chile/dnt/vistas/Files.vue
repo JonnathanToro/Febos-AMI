@@ -65,7 +65,7 @@ export default {
 
     return {
       onPendingFiles: view === 'en-curso',
-      inicial: true,
+      fromCS: false,
       selectedFile: {},
       filters: '',
       page: Number.parseInt(this.$route.query.page || 1, 10),
@@ -74,23 +74,33 @@ export default {
   },
   watch: {
     filters(newValue) {
-      this.listarDocumentos({
-        tipo: 'EXP',
-        campos: '*',
-        pagina: 1,
-        orden: '-fechaCreacion',
-        itemsPorPagina: this.paginate,
-        filtros: newValue
+      this.listDocuments({
+        data: {
+          tipo: 'EXP',
+          campos: '*',
+          pagina: 1,
+          orden: '-fechaCreacion',
+          itemsPorPagina: this.paginate,
+          filtros: newValue
+        },
+        fromCS: this.fromCS
       });
+
+      if (!this.fromCS) {
+        this.fromCS = true;
+      }
     },
     page(newValue) {
-      this.listarDocumentos({
-        tipo: 'EXP',
-        campos: '*',
-        pagina: newValue,
-        orden: '-fechaCreacion',
-        itemsPorPagina: this.paginate,
-        filtros: this.filters
+      this.listDocuments({
+        data: {
+          tipo: 'EXP',
+          campos: '*',
+          pagina: newValue,
+          orden: '-fechaCreacion',
+          itemsPorPagina: this.paginate,
+          filtros: this.filters
+        },
+        fromCS: this.fromCS
       });
     },
     loading(value) {
@@ -137,21 +147,11 @@ export default {
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
-      'listDocumentsCS',
       'clearErrorMessage'
     ]),
-    listarDocumentos(llamada) {
-      if (this.inicial) {
-        // console.log('CARGA INICIAL')
-        this.inicial = false;
-        this.listDocuments(llamada);
-      } else {
-        this.listDocumentsCS(llamada);
-      }
-    },
     selectFile(file) {
       this.selectedFile = file;
     }
-  },
+  }
 };
 </script>
