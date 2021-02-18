@@ -197,6 +197,9 @@
         <div class="texto-normal">
           <multiselect
             v-model="filterDocuments"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
             placeholder="Seleccione los tipos"
             label="nombre" track-by="valor"
             :options="filtroActual.opciones" :multiple="true"
@@ -214,6 +217,9 @@
         <div class="texto-normal">
           <multiselect
             v-model="filterInstitutions"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
             placeholder="Seleccione los tipos"
             label="nombre" track-by="valor"
             :options="filtroActual.opciones" :multiple="true"
@@ -231,6 +237,9 @@
         <div class="texto-normal">
           <multiselect
             v-model="filterGroups"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
             placeholder="Seleccione los grupos"
             label="nombre" track-by="valor"
             :options="filtroActual.opciones" :multiple="true"
