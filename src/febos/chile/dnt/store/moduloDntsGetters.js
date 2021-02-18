@@ -1,8 +1,8 @@
 import Vue from 'vue';
 
 export default {
-  dntByFiles: (state) => (
-    Object.values(state.list || {}).filter((dnt) => dnt.tipo === 'EXP' || dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO')
+  files: (state) => (
+    Object.values(state.list || {})
   ),
   dntByED: (state) => (
     Object.values(state.list || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
