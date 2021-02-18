@@ -8,16 +8,16 @@ export default () => ({
   currentStep: 0,
   steps: [
     {
+      title: 'Documentos relacionados',
+      component: StepFiles
+    },
+    {
       title: 'Identificación',
       component: StepIdentification
     },
     {
       title: 'Información',
       component: StepInformation
-    },
-    {
-      title: 'Documentos relacionados',
-      component: StepFiles
     }
   ],
   wizardMapper(

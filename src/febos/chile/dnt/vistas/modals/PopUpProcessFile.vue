@@ -4,7 +4,7 @@
       Al dar por finalizado este documento, no podras actuar sobre el, estas de acuerdo?
     </div>
     <div class="chip-custom">
-      ¡La realizar esta acción se marcará
+      ¡Al realizar esta acción se marcará
       como finalizado el expediente para todos los participantes!
     </div>
     <div class="m-top-20" style="display: flex;justify-content: flex-end;">

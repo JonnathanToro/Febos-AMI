@@ -61,7 +61,13 @@
           />
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-3" v-if="Object.keys(step.mainFile).length">
+        <div class="col-3">
+          <div class="d-flex flex-column align-items-center">
+            <vs-icon icon="description" size="75px" color="primary" />
+            <b class="text-truncate w-100 text-center">{{ step.mainFile.name }}</b>
+          </div>
+        </div>
         <div class="col-3" v-for="file in step.additionalFiles" :key="file.id">
           <div class="d-flex flex-column align-items-center">
             <vs-icon icon="description" size="75px" color="primary" />

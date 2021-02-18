@@ -174,6 +174,8 @@
         :file="file"
         :is-draft="isDraft"
         :is-assigned="isAssigned"
+        :is-processed="isProcessed"
+        :is-cancelled="isCancelled"
         :is-resposible="isResposible"
         :on-pending-files="onPendingFiles"
         :select-file="selectFile"
@@ -202,6 +204,12 @@ export default {
     },
     isResposible() {
       return this.file.enResponsable === 'SI';
+    },
+    isProcessed() {
+      return this.file.estado === '9';
+    },
+    isCancelled() {
+      return this.file.estado === '8';
     }
   }
 };

@@ -15,14 +15,16 @@
             style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
             :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
           >
-            <vs-chip
-              class="add-code"
-              @click.native="copyToClipboard(binnacle.seguimientoId)"
-              ref="toClipboardId"
-            >
-              <vs-icon icon="search" size="small"></vs-icon>
-              {{ binnacle.seguimientoId }}
-            </vs-chip>
+            <CheckPermission permission="FEB99">
+              <vs-chip
+                class="add-code"
+                @click.native="copyToClipboard(binnacle.seguimientoId)"
+                ref="toClipboardId"
+              >
+                <vs-icon icon="search" size="small"></vs-icon>
+                <span></span>
+              </vs-chip>
+            </CheckPermission>
             <!--<vs-chip color="dark" v-if="binacle.externalId">
               <vs-icon icon="pageview" size="small"></vs-icon>
             </vs-chip>-->
@@ -33,14 +35,16 @@
             style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
             :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
           >
-            <vs-chip
-              class="add-code"
-              @click.native="copyToClipboard(binnacle.seguimientoId)"
-              ref="toClipboardId"
-            >
-              <vs-icon icon="search" size="small"></vs-icon>
-              {{ binnacle.seguimientoId }}
-            </vs-chip>
+            <CheckPermission permission="FEB99">
+              <vs-chip
+                class="add-code"
+                @click.native="copyToClipboard(binnacle.seguimientoId)"
+                ref="toClipboardId"
+              >
+                <vs-icon icon="search" size="small"></vs-icon>
+                <span></span>
+              </vs-chip>
+            </CheckPermission>
             <!--<vs-chip color="dark" v-if="binacle.externalId">
               <vs-icon icon="pageview" size="small"></vs-icon>
             </vs-chip>-->
@@ -54,7 +58,10 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+
 export default {
+  components: { CheckPermission },
   computed: {
     ...mapGetters('Dnts', [
       'binnacleFile'
