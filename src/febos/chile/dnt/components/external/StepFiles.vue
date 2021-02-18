@@ -12,11 +12,11 @@
             class="w-100"
             label="Documento Principal (Si piensa firmar electrónicamente no debe ser escaneado)"
             name="mainFileName"
+            readonly
+            v-model="step.mainFile.name"
             v-validate="'required'"
             :danger="errors.has('step-3-part-1.mainFileName')"
             :danger-text="errors.first('step-3-part-1.mainFileName')"
-            readonly
-            v-model="step.mainFile.name"
           />
         </div>
         <div class="col-md-3 d-flex align-items-end">
@@ -25,7 +25,7 @@
             text="Seleccionar"
             v-model="step.mainFile"
             upload-to="ed"
-            :button-class="{ 'btn-block': true, 'mb-5': errors.has('step-3.mainFileName') }"
+            :button-class="{ 'btn-block': true, 'mb-5': errors.has('step-3-part-1.mainFileName') }"
             container-class="w-100"
           />
         </div>
@@ -135,6 +135,7 @@
       <div class="row mb-3">
         <div class="col-12">
           <vs-table
+            class="pb-2 mb-2"
             multiple
             v-model="step.relatedDocumentsSelected"
             no-data-text="No tienes documentos relacionados"
@@ -190,8 +191,13 @@ export default {
       }
     };
   },
+  watch: {
+    'step.mainFile.name': function () {
+      this.$validator.reset();
+    }
+  },
   methods: {
-    addAdditionalFile() {
+    async addAdditionalFile() {
       if (!Object.keys(this.additionalFile).length) {
         return;
       }
@@ -203,6 +209,7 @@ export default {
       }
 
       this.step.additionalFiles.push(this.additionalFile);
+      await this.$validator.reset();
     },
     removeAdditionalFile(fileId) {
       this.step.additionalFiles = this.step.additionalFiles.filter((file) => file.id !== fileId);
@@ -219,9 +226,22 @@ export default {
         type: this.relatedDocument.type,
         number: this.relatedDocument.number
       };
+      const isSelected = this.step.relatedDocumentsSelected
+        .some((relatedDoc) => relatedDoc.id === row.id
+          && relatedDoc.type === row.type && relatedDoc.number === row.number);
 
-      this.step.relatedDocuments.push(row);
-      this.step.relatedDocumentsSelected.push(row);
+      if (!isSelected) {
+        this.step.relatedDocuments.push(row);
+        this.step.relatedDocumentsSelected.push(row);
+      } else {
+        this.$vs.notify({
+          title: 'Oops!',
+          text: 'Ya agregaste esta referencia',
+          color: 'warning',
+          time: 3000,
+          position: 'top-center'
+        });
+      }
 
       this.relatedDocument.type = '';
       this.relatedDocument.number = '';

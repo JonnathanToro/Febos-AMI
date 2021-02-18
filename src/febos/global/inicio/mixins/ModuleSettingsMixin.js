@@ -71,24 +71,6 @@ const moduleSettings = {
   febos: [],
   ed: [
     {
-      nombre: 'herramientas',
-      descripcion: 'Herramientas',
-      tooltip: '',
-      icono: 'settings',
-      habilitado: true,
-      visible: true,
-      permission: 'ED001'
-    },
-    {
-      nombre: 'oficinaPartesEd',
-      descripcion: 'Oficina de Partes',
-      tooltip: '',
-      icono: 'description',
-      habilitado: true,
-      visible: true,
-      permission: 'ED003'
-    },
-    {
       nombre: 'expedientesEd',
       descripcion: 'Expedientes',
       tooltip: '',
@@ -96,15 +78,6 @@ const moduleSettings = {
       habilitado: true,
       visible: true,
       permission: 'ED003'
-    },
-    {
-      nombre: 'templates',
-      descripcion: 'Plantillas',
-      tooltip: '',
-      icono: 'description',
-      habilitado: true,
-      visible: true,
-      permission: 'ED002'
     }
   ]
 };

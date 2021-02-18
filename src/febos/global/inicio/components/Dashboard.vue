@@ -6,19 +6,19 @@
           <div class="nombre-modulo">
             {{globalIndicators.finalizados}} Finalizados
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="mark_as_unread" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
             {{globalIndicators.pendientes}} Pendientes
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="archive" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
             {{globalIndicators.anulado}} anulados
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="close" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
       </div>
     </div>
@@ -31,31 +31,31 @@
           <div class="nombre-modulo">
             {{personalIndicators.finalizados || 0}} Finalizados
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="mark_as_unread" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
             {{personalIndicators.pendientes || 0}} Pendientes
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="archive" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
             {{personalIndicators.borradores || 0}} Borradores
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="save" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
             {{personalIndicators.enCopia || 0}} en copia
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="group" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
         <div class="modulo mr-5 mt-5 pt-5">
           <div class="nombre-modulo">
             {{personalIndicators.anulado || 0}} anulados
           </div>
-          <vs-icon icon="folder_open" size="75px" color="#ffffff" class="mt-2"></vs-icon>
+          <vs-icon icon="close" size="75px" color="#ffffff" class="mt-2"></vs-icon>
         </div>
       </div>
     </div>

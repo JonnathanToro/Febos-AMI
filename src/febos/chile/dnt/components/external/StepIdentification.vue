@@ -46,6 +46,7 @@
     </div>
     <div class="row mb-3">
       <div class="col-12">
+        <label for="matter">Materia</label>
         <vs-textarea
           type="text"
           label="Materia (Mínimo 2 palabras, máximo 5000 caracteres)"
@@ -69,9 +70,11 @@
     </div>
     <div class="row mb-3">
       <div class="col-12">
+        <label for="tags">Etiquetas</label>
         <vue-tags-input
           class="w-100 b-radius"
           v-model="tag"
+          name="tags"
           :tags="step.tags"
           @tags-changed="newTags => step.tags = newTags"
           placeholder="Agregar"
@@ -82,7 +85,7 @@
     <div class="row mb-3">
       <div class="col-12">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-2">
             <label>Documento Privado</label>
           </div>
           <div class="col-md-1">
@@ -168,3 +171,8 @@ export default {
 };
 
 </script>
+<style>
+.ti-input {
+  border-radius: 5px !important;
+}
+</style>
