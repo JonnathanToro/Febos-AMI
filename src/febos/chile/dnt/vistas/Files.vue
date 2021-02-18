@@ -65,6 +65,7 @@ export default {
 
     return {
       onPendingFiles: view === 'en-curso',
+      inicial: true,
       selectedFile: {},
       filters: '',
       page: Number.parseInt(this.$route.query.page || 1, 10),
@@ -73,7 +74,7 @@ export default {
   },
   watch: {
     filters(newValue) {
-      this.listDocuments({
+      this.listarDocumentos({
         tipo: 'EXP',
         campos: '*',
         pagina: 1,
@@ -83,7 +84,7 @@ export default {
       });
     },
     page(newValue) {
-      this.listDocuments({
+      this.listarDocumentos({
         tipo: 'EXP',
         campos: '*',
         pagina: newValue,
@@ -136,11 +137,21 @@ export default {
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
+      'listDocumentsCS',
       'clearErrorMessage'
     ]),
+    listarDocumentos(llamada) {
+      if (this.inicial) {
+        // console.log('CARGA INICIAL')
+        this.inicial = false;
+        this.listDocuments(llamada);
+      } else {
+        this.listDocumentsCS(llamada);
+      }
+    },
     selectFile(file) {
       this.selectedFile = file;
     }
-  }
+  },
 };
 </script>
