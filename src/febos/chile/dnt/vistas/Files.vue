@@ -6,7 +6,7 @@
     <FilesHeader />
     <FileRow
       :key="file.febosId"
-      v-for="file in dntByFiles"
+      v-for="file in files"
       :file="file"
       :on-pending-files="onPendingFiles"
       :select-file="selectFile"
@@ -21,7 +21,7 @@
     <PopUpTicketFile :file="selectedFile" />
     <PopUpSendFile :file="selectedFile" />
     <FilesPagination
-      :show="dntByFiles.length"
+      :show="files.length"
       v-model="page"
     />
   </div>
@@ -141,7 +141,7 @@ export default {
       'loading',
       'error',
       'successAction',
-      'dntByFiles'
+      'files'
     ]),
   },
   methods: {
