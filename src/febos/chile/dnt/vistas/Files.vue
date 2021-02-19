@@ -155,9 +155,15 @@ export default {
       'listDocuments',
       'clearErrorMessage'
     ]),
+    ...mapActions('Modals', [
+      'closeModal'
+    ]),
     selectFile(file) {
       this.selectedFile = file;
     }
+  },
+  created() {
+    this.closeModal();
   }
 };
 </script>
