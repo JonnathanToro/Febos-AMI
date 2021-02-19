@@ -83,9 +83,9 @@ const filterViews = {
           { nombre: 'Proceso SSD', valor: 'SSD' }
         ]
       },
-      { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' } // correo de usuario que creo el expediente
-      // { campo: 'codigosEtiqueta', tipo: 'texto' },
-      // { campo: 'textoObservaciones', tipo: 'texto' }
+      { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' }, // correo de usuario que creo el expediente
+      { campo: 'codigosEtiqueta', tipo: 'texto' },
+      { campo: 'textoObservaciones', tipo: 'texto' }
     ]
   },
   general: {
@@ -173,9 +173,9 @@ const filterViews = {
         campo: 'destinoCopiaIds', // tipos de referencias
         tipo: 'destinoCopiaIds'
       },
-      { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' } // correo de usuario que creo el expediente
-      // { campo: 'codigosEtiqueta', tipo: 'texto' },
-      // { campo: 'textoObservaciones', tipo: 'texto' }
+      { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' }, // correo de usuario que creo el expediente
+      { campo: 'codigosEtiqueta', tipo: 'texto' },
+      { campo: 'textoObservaciones', tipo: 'texto' }
     ]
   },
   finalizados: {
@@ -259,9 +259,9 @@ const filterViews = {
           { nombre: 'Proceso SSD', valor: 'SSD' }
         ]
       },
-      { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' } // correo de usuario que creo el expediente
-      // { campo: 'codigosEtiqueta', tipo: 'texto' },
-      // { campo: 'textoObservaciones', tipo: 'texto' }
+      { campo: 'solicitanteCorreo', tipo: 'solicitanteCorreo' }, // correo de usuario que creo el expediente
+      { campo: 'codigosEtiqueta', tipo: 'texto' },
+      { campo: 'textoObservaciones', tipo: 'texto' }
     ]
   },
   entrada: [
