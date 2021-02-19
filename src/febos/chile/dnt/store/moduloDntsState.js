@@ -3,7 +3,7 @@ export default {
   successAction: false,
   error: '',
   showModal: false,
-  list: {},
+  list: {}, // TODO: <-
   details: {
     comentarios: [],
     cuerpo: ''

@@ -571,7 +571,7 @@ export default {
         }
       }
     },
-    aplicarFiltros(onMounted = false) {
+    aplicarFiltros() {
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filter) => {
@@ -620,7 +620,7 @@ export default {
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      this.$emit('filtros-aplicados', query.join('|'), onMounted);
+      this.$emit('filtros-aplicados', query.join('|'));
     },
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
@@ -971,7 +971,7 @@ export default {
         this.agregarFiltro(filtro);
       }
     }
-    this.aplicarFiltros(true);
+    this.aplicarFiltros();
   }
 };
 </script>

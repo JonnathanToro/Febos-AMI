@@ -127,9 +127,6 @@ export default {
       this.editMood = false;
       this.saveOptions(option);
     }
-  },
-  mounted() {
-    console.log('ACA', this);
   }
 };
 </script>

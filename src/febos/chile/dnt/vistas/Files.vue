@@ -4,13 +4,15 @@
       v-model="filters"
     />
     <FilesHeader />
-    <FileRow
-      :key="file.febosId"
-      v-for="file in files"
-      :file="file"
-      :on-pending-files="onPendingFiles"
-      :select-file="selectFile"
-    />
+    <div class="force-render" :key="forceRender">
+      <FileRow
+        :key="file.febosId"
+        v-for="file in files"
+        :file="file"
+        :on-pending-files="onPendingFiles"
+        :select-file="selectFile"
+      />
+    </div>
     <PopUpBinnacleFile />
     <PopUpDetailFile :file="selectedFile" />
     <PopUpCancelFile :canceledFile="selectedFile" />
@@ -69,10 +71,14 @@ export default {
       selectedFile: {},
       filters: '',
       page: Number.parseInt(this.$route.query.page || 1, 10),
-      paginate: Number.parseInt(this.$route.query.paginate || 10, 10)
+      paginate: Number.parseInt(this.$route.query.paginate || 10, 10),
+      forceRender: Date.now() // TODO: the files watch is triggered but the component not re-render.
     };
   },
   watch: {
+    files() {
+      this.forceRender = Date.now(); // TODO: remove this.
+    },
     filters(newValue) {
       this.listDocuments({
         data: {
@@ -142,7 +148,7 @@ export default {
       'error',
       'successAction',
       'files'
-    ]),
+    ])
   },
   methods: {
     ...mapActions('Dnts', [
