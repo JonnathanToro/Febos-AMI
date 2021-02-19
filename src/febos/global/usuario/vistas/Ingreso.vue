@@ -51,14 +51,18 @@
                     :danger-text="errors.first('form.clave')"
                     @keyup.enter.native="attemptSignIn()"
                   />
-                  <div class="flex flex-wrap justify-between my-5">
+                  <div v-if="product !== 'ed'" class="flex flex-wrap justify-between my-5">
                     <vs-checkbox v-model="recordar" class="mb-3">Recordar mi usuario</vs-checkbox>
                     <router-link to="">Olvidaste tu contraseña?</router-link>
                   </div>
                   <vs-button type="border" v-if="botonRegistroProveedor && product !== 'ed'">
                     {{ nombreBotonRegistroProveedores }}
                   </vs-button>
-                  <vs-button class="float-right btn-ingresar mb-10" v-on:click="attemptSignIn()">
+                  <vs-button
+                    class="float-right btn-ingresar mb-10"
+                    style="margin-top:20px"
+                    v-on:click="attemptSignIn()"
+                  >
                     {{ nombreBotonIngreso }}
                   </vs-button>
                   <div id="clave-unica" v-if="botonClaveUnica && product !== 'ed'">
