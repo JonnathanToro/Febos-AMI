@@ -28,13 +28,7 @@
       <vs-row vs-type="flex" vs-align="space-around" vs-justify="space-around">
         <vs-col class="margin-top" vs-sm="12" vs-lg="5">
           <div class="add-new">
-            <h4>Tipos de destino</h4>
-            <CheckPermission permission="ED028">
-              <vs-button
-                v-tooltip="'Agregar categoría'"
-                color="primary" class="margin-right" v-on:click="createOption()"
-                type="border" icon="playlist_add" />
-            </CheckPermission>
+            <h4>Tipo de destino Ministerios / Organizaciones</h4>
           </div>
           <vs-list class="bg-white margin-top box-options">
             <div
@@ -56,7 +50,7 @@
           vs-lg="5"
         >
           <div class="add-new">
-            <h4>Destinos</h4>
+            <h4>Ministerios y Organizaciones</h4>
             <CheckPermission permission="ED031">
               <vs-button
                 v-tooltip="'Agregar destino a categoría'"
