@@ -74,6 +74,14 @@ export default [{
           icon: 'library_books',
           permiso: 'ED007',
           i18n: 'Destinos'
+        },
+        {
+          url: '/mantenedores/actividades',
+          name: 'Actividades',
+          slug: '/herramientas/mantenedor-actividades',
+          icon: 'library_books',
+          permiso: 'ED007',
+          i18n: 'Destinos'
         }
       ]
     }

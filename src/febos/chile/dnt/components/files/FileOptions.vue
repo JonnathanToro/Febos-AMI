@@ -89,6 +89,13 @@
             Comentarios
           </vs-dropdown-item>
         </CheckPermission>
+        <vs-dropdown-item
+          v-if="!isDraft  && onPendingFiles && isAssigned
+             && isResposible && !isProcessed && !isCancelled"
+        >
+          <vs-icon icon="chat"/>
+          Actualizar estado
+        </vs-dropdown-item>
         <CheckPermission permission="ED026">
           <vs-dropdown-item
             v-on:click="onOptionSendFile(file)"

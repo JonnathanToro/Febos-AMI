@@ -4,6 +4,7 @@ export default {
   category: {},
   subject: {},
   institution: {},
+  activity: {},
   error: '',
   herramientas: {
     mantenedores: {
@@ -12,7 +13,9 @@ export default {
       categoryInstitutions: [],
       institutions: [],
       categorySubjects: [],
-      subjects: []
+      subjects: [],
+      categoryActivities: [],
+      activityStates: []
     }
   }
 };

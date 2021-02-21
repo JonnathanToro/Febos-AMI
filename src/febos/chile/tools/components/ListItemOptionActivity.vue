@@ -24,7 +24,7 @@
     <vs-col vs-type="flex" vs-justify="flex-end" vs-align="center" vs-lg="4" vs-sm="4" vs-xs="12">
       <vs-button
         v-if="type === 'category'"
-        v-tooltip="'Ver documentos'"
+        v-tooltip="'Ver estados'"
         color="primary"
         class="margin-right"
         size="small"
@@ -68,7 +68,7 @@
           v-tooltip="'Deshabilitar opción'"
           color="primary"
           v-model="selected"
-          v-on:click="toggleEnableOptionActivity({ option, selected, type })"
+          v-on:click="toggleEnableOption({ option, selected, type })"
         />
       </CheckPermission>
     </vs-col>
@@ -113,7 +113,7 @@ export default {
   methods: {
     ...mapActions('Herramientas', [
       'listActivities',
-      'toggleEnableOptionActivity',
+      'toggleEnableOption',
       'saveOptions',
       'clearSelected'
     ]),
@@ -121,7 +121,7 @@ export default {
       this.editMood = !this.editMood;
       this.createMood = false;
       if (this.type === 'category') {
-        this.clearSelected({ type: 'ACTIVITY', option: this.option });
+        this.clearSelected({ type: 'CATEGORY', option: this.option });
       }
     },
     saveOption(option) {
