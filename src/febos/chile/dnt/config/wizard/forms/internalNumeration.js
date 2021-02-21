@@ -1,6 +1,6 @@
-import StepIdentification from '@/febos/chile/dnt/components/wizard/internal/StepIdentification';
-import StepInformation from '@/febos/chile/dnt/components/wizard/internal/StepInformation';
-import StepFiles from '@/febos/chile/dnt/components/wizard/internal/StepFiles';
+import StepIdentification from '@/febos/chile/dnt/components/wizard/internalNumeration/StepIdentification';
+import StepInformation from '@/febos/chile/dnt/components/wizard/internalNumeration/StepInformation';
+import StepFiles from '@/febos/chile/dnt/components/wizard/internalNumeration/StepFiles';
 
 export default () => ({
   currentStep: 0,
@@ -165,7 +165,7 @@ export default () => ({
         receptorRut: iutCompany,
         emisorRazonSocial: nameCompany,
         receptorRazonSocial: nameCompany,
-        claseMercadoPublico: 'int',
+        claseMercadoPublico: 'numInt',
         estado: 1,
         emisorCentroCostoNumero: input.documentType,
         emisorCentroCostoNombre: input.documentTypeName,

@@ -4,13 +4,15 @@
       v-model="filters"
     />
     <FilesHeader />
-    <FileRow
-      :key="file.febosId"
-      v-for="file in dntByFiles"
-      :file="file"
-      :on-pending-files="onPendingFiles"
-      :select-file="selectFile"
-    />
+    <div class="force-render" :key="forceRender">
+      <FileRow
+        :key="file.febosId"
+        v-for="file in files"
+        :file="file"
+        :on-pending-files="onPendingFiles"
+        :select-file="selectFile"
+      />
+    </div>
     <PopUpBinnacleFile />
     <PopUpDetailFile :file="selectedFile" />
     <PopUpCancelFile :canceledFile="selectedFile" />
@@ -21,7 +23,7 @@
     <PopUpTicketFile :file="selectedFile" />
     <PopUpSendFile :file="selectedFile" />
     <FilesPagination
-      :show="dntByFiles.length"
+      :show="files.length"
       v-model="page"
     />
   </div>
@@ -65,31 +67,46 @@ export default {
 
     return {
       onPendingFiles: view === 'en-curso',
+      fromCS: false,
       selectedFile: {},
       filters: '',
       page: Number.parseInt(this.$route.query.page || 1, 10),
-      paginate: Number.parseInt(this.$route.query.paginate || 10, 10)
+      paginate: Number.parseInt(this.$route.query.paginate || 10, 10),
+      forceRender: Date.now() // TODO: the files watch is triggered but the component not re-render.
     };
   },
   watch: {
+    files() {
+      this.forceRender = Date.now(); // TODO: remove this.
+    },
     filters(newValue) {
       this.listDocuments({
-        tipo: 'EXP',
-        campos: '*',
-        pagina: 1,
-        orden: '-fechaCreacion',
-        itemsPorPagina: this.paginate,
-        filtros: newValue
+        data: {
+          tipo: 'EXP',
+          campos: '*',
+          pagina: 1,
+          orden: '-fechaCreacion',
+          itemsPorPagina: this.paginate,
+          filtros: newValue
+        },
+        fromCS: this.fromCS
       });
+
+      if (!this.fromCS) {
+        this.fromCS = true;
+      }
     },
     page(newValue) {
       this.listDocuments({
-        tipo: 'EXP',
-        campos: '*',
-        pagina: newValue,
-        orden: '-fechaCreacion',
-        itemsPorPagina: this.paginate,
-        filtros: this.filters
+        data: {
+          tipo: 'EXP',
+          campos: '*',
+          pagina: newValue,
+          orden: '-fechaCreacion',
+          itemsPorPagina: this.paginate,
+          filtros: this.filters
+        },
+        fromCS: this.fromCS
       });
     },
     loading(value) {
@@ -130,17 +147,23 @@ export default {
       'loading',
       'error',
       'successAction',
-      'dntByFiles'
-    ]),
+      'files'
+    ])
   },
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
       'clearErrorMessage'
     ]),
+    ...mapActions('Modals', [
+      'closeModal'
+    ]),
     selectFile(file) {
       this.selectedFile = file;
     }
+  },
+  created() {
+    this.closeModal();
   }
 };
 </script>

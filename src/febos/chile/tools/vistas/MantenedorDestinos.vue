@@ -28,14 +28,7 @@
       <vs-row vs-type="flex" vs-align="space-around" vs-justify="space-around">
         <vs-col class="margin-top" vs-sm="12" vs-lg="5">
           <div class="add-new">
-            <h4>Tipos de destino</h4>
-            <CheckPermission permission="ED028">
-              <vs-tooltip text="Agregar categoría">
-                <vs-button color="primary" class="margin-right" v-on:click="createOption()"
-                           type="border" icon="playlist_add" />
-                <span />
-              </vs-tooltip>
-            </CheckPermission>
+            <h4>Tipo de destino Ministerios / Organizaciones</h4>
           </div>
           <vs-list class="bg-white margin-top box-options">
             <div
@@ -57,19 +50,17 @@
           vs-lg="5"
         >
           <div class="add-new">
-            <h4>Destinos</h4>
+            <h4>Ministerios y Organizaciones</h4>
             <CheckPermission permission="ED031">
-              <vs-tooltip text="Agregar destino a categoría">
-                <vs-button
-                  color="primary"
-                  class="margin-right"
-                  v-if="selectedSubject.opcionId"
-                  v-on:click="createOption(selectedSubject)"
-                  type="border"
-                  icon="playlist_add"
-                />
-                <span />
-              </vs-tooltip>
+              <vs-button
+                v-tooltip="'Agregar destino a categoría'"
+                color="primary"
+                class="margin-right"
+                v-if="selectedSubject.opcionId"
+                v-on:click="createOption(selectedSubject)"
+                type="border"
+                icon="playlist_add"
+              />
             </CheckPermission>
           </div>
           <vs-list
@@ -95,6 +86,7 @@
     >
       <div>
         <input
+          maxlength="10"
           class="input-option input-edit"
           placeholder="Abreviación"
           size="small"
@@ -103,6 +95,7 @@
       </div>
       <div>
         <input
+          maxlength="100"
           class="input-option input-edit"
           placeholder="Nombre de opción"
           size="small"

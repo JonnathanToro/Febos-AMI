@@ -18,7 +18,7 @@ export default {
     state.iut = payload.usuario.iut;
     state.correo = payload.usuario.correo;
     state.alias = payload.usuario.alias;
-    state.avatar = payload.usuario.avatar;
+    state.avatar = payload.usuario.avatar || '';
     state.cambiarClave = payload.usuario.cambiarClave;
     state.estado = payload.usuario.estado;
   },

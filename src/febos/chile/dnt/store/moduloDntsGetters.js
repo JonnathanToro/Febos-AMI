@@ -1,9 +1,8 @@
 import Vue from 'vue';
 
 export default {
-  dntByFiles: (state) => (
-    Object.values(state.list || {}).filter((dnt) => dnt.tipo === 'EXP' || dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO')
-  ),
+  // TODO: test return the same reference and not a copy.
+  files: (state) => Object.values(state.list || {}),
   dntByED: (state) => (
     Object.values(state.list || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
   ),
@@ -39,5 +38,6 @@ export default {
   }),
   binnacleFile: (state) => state.binnacle,
   wizardData: (state) => state.wizardData,
+  // TODO: this is the same object.
   pagination: (state) => state.pagination
 };

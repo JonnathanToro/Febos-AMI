@@ -197,6 +197,9 @@
         <div class="texto-normal">
           <multiselect
             v-model="filterDocuments"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
             placeholder="Seleccione los tipos"
             label="nombre" track-by="valor"
             :options="filtroActual.opciones" :multiple="true"
@@ -214,6 +217,9 @@
         <div class="texto-normal">
           <multiselect
             v-model="filterInstitutions"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
             placeholder="Seleccione los tipos"
             label="nombre" track-by="valor"
             :options="filtroActual.opciones" :multiple="true"
@@ -231,6 +237,9 @@
         <div class="texto-normal">
           <multiselect
             v-model="filterGroups"
+            select-label="Presiona enter para seleccionar"
+            selected-label="Presiona enter para remover"
+            deselect-label="Presiona enter para remover"
             placeholder="Seleccione los grupos"
             label="nombre" track-by="valor"
             :options="filtroActual.opciones" :multiple="true"
@@ -562,7 +571,7 @@ export default {
         }
       }
     },
-    aplicarFiltros(onMounted = false) {
+    aplicarFiltros() {
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filter) => {
@@ -611,7 +620,7 @@ export default {
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      this.$emit('filtros-aplicados', query.join('|'), onMounted);
+      this.$emit('filtros-aplicados', query.join('|'));
     },
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
@@ -962,7 +971,7 @@ export default {
         this.agregarFiltro(filtro);
       }
     }
-    this.aplicarFiltros(true);
+    this.aplicarFiltros();
   }
 };
 </script>

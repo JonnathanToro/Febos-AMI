@@ -2,8 +2,8 @@ export default {
   loading: false,
   successAction: false,
   error: '',
-  showModal: false,
-  list: {},
+  showModal: false, // TODO: delete this.
+  list: {}, // TODO: <-
   details: {
     comentarios: [],
     cuerpo: ''

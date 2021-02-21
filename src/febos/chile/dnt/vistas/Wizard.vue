@@ -32,7 +32,7 @@
               :draft="wizardData"
             />
           </div>
-          <div slot="footer">
+          <div slot="footer" class="mt-4 pt-5">
             <vs-row vs-justify="flex-end">
               <vs-button color="primary" v-if="!isFirstStep" @click="onBack">
                 Volver

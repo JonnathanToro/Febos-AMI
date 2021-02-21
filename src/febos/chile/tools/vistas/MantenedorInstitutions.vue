@@ -24,11 +24,9 @@
           <div class="add-new">
             <h4>Tipos de instituciones</h4>
             <CheckPermission permission="ED028">
-              <vs-tooltip text="Agregar categoría">
-                <vs-button color="primary" class="margin-right" v-on:click="createOption()"
-                           type="border" icon="playlist_add" />
-                <span />
-              </vs-tooltip>
+              <vs-button
+                color="primary" class="margin-right" v-on:click="createOption()"
+                type="border" icon="playlist_add" v-tooltip="'Agregar categoría'" />
             </CheckPermission>
           </div>
           <vs-list class="bg-white margin-top box-options">
@@ -53,17 +51,15 @@
           <div class="add-new">
             <h4>Instituciones</h4>
             <CheckPermission permission="ED031">
-              <vs-tooltip text="Agregar institución a categoría">
-                <vs-button
-                  color="primary"
-                  class="margin-right"
-                  v-if="selectedInstitution.opcionId"
-                  v-on:click="createOption(selectedInstitution)"
-                  type="border"
-                  icon="playlist_add"
-                />
-                <span />
-              </vs-tooltip>
+              <vs-button
+                v-tooltip="'Agregar institución a categoría'"
+                color="primary"
+                class="margin-right"
+                v-if="selectedInstitution.opcionId"
+                v-on:click="createOption(selectedInstitution)"
+                type="border"
+                icon="playlist_add"
+              />
             </CheckPermission>
           </div>
           <vs-list
@@ -89,6 +85,7 @@
     >
       <div>
         <input
+          maxlength="10"
           class="input-option input-edit"
           placeholder="Abreviación"
           size="small"
@@ -97,6 +94,7 @@
       </div>
       <div>
         <input
+          maxlength="100"
           class="input-option input-edit"
           placeholder="Nombre de opción"
           size="small"

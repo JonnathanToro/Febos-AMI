@@ -7,39 +7,30 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-6">
-          <list-institution-types
+        <div class="col-md-12">
+          <list-groups
             class="w-100"
             autocomplete
-            label="Tipo Institución"
-            name="institutionType"
-            v-model="step.institutionType"
-            :danger="errors.has('step-2-part-1.institutionType')"
-            :danger-text="errors.first('step-2-part-1.institutionType')"
+            label="Dirección - Región"
+            name="directionId"
+            v-model="step.directionId"
+            :danger="errors.has('step-2-part-1.directionId')"
+            :danger-text="errors.first('step-2-part-1.directionId')"
             v-validate="'required'"
-            ref="institutionType"
-          />
-        </div>
-        <div class="col-md-6">
-          <list-institutions
-            class="w-100"
-            autocomplete
-            label="Institución"
-            name="institution"
-            v-model="step.institution"
-            :parent-value="step.institutionType"
-            ref="institution"
+            ref="directionId"
           />
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-12">
-          <vs-input
+          <list-users
             class="w-100"
-            label="Nombre Persona"
-            maxlength="50"
+            autocomplete
+            label="Nombre de Persona que Genera Documento"
             name="personName"
             v-model="step.personName"
+            :parent-value="step.directionId"
+            ref="personName"
           />
         </div>
       </div>
@@ -48,7 +39,7 @@
           <vs-input
             class="w-100"
             label="Cargo Persona"
-            maxlength="50"
+            maxlength="150"
             name="personPosition"
             v-model="step.personPosition"
           />
@@ -341,7 +332,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <label for="observation">Observación</label>
+          <label for="observation">Etiquetas / Referencias del Documento</label>
           <vs-textarea
             id="observation"
             maxlength="5000"
@@ -367,17 +358,17 @@
 <script>
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
-import ListInstitutions from '@/febos/chile/lists/components/ListInstitutions';
-import ListInstitutionTypes from '@/febos/chile/lists/components/ListInstitutionTypes';
 import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
 import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
 import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
+import ListGroups from '@/febos/chile/lists/components/ListGroups';
+import ListUsers from '@/febos/chile/lists/components/ListUsers';
 
 export default {
   mixins: [WizardStep],
   components: {
-    ListInstitutionTypes,
-    ListInstitutions,
+    ListGroups,
+    ListUsers,
     ListSubjects,
     ListSubjectTypes,
     ListInstitutionsDocDigital
@@ -402,8 +393,7 @@ export default {
         copySubjectEmail: '',
       },
       step: {
-        institutionType: '',
-        institution: '',
+        directionId: '',
         personName: '',
         personPosition: '',
         withAttachment: 0,
@@ -534,22 +524,22 @@ export default {
       return true;
     },
     getStepData() {
-      const institutionTypeName = this.step.institutionType
+      const directionName = this.step.directionId
         ? {
-          institutionTypeName: this.$refs.institutionType.getOption().label
+          directionName: this.$refs.directionId.getOption().label
         }
         : {};
 
-      const institutionName = this.step.institution
+      const personName = this.step.personName
         ? {
-          institutionName: this.$refs.institution.getOption().label
+          personName: this.$refs.personName.getOption().label
         }
         : {};
 
       return {
         ...this.step,
-        ...institutionTypeName,
-        ...institutionName
+        ...directionName,
+        ...personName
       };
     }
   }

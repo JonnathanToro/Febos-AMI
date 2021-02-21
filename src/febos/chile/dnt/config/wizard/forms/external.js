@@ -47,6 +47,7 @@ export default () => ({
       data.personPosition = dnt.emisorContactoCargo;
       data.withAttachment = dnt.transporteViaTransporteCodigoTransporte;
       data.documentDetail = dnt.transporteNotas;
+      data.safiContract = dnt.transportePuertoCodigo;
     }
 
     if (observaciones && observaciones.length) {
@@ -182,7 +183,8 @@ export default () => ({
         emisorContactoNombre: input.personName,
         emisorContactoCargo: input.personPosition,
         transporteViaTransporteCodigoTransporte: input.withAttachment,
-        transporteNotas: input.documentDetail
+        transporteNotas: input.documentDetail,
+        transportePuertoCodigo: input.safiContract
       },
       etiquetas: (input.tags || []).map((tag) => ({
         etiqueta: tag.text

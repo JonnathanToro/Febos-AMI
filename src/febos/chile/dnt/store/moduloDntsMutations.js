@@ -1,5 +1,6 @@
 export default {
   SET_DNT_LIST(state, payload) {
+    // TODO: test clean the list state before.
     state.list = (payload.documentos || [])
       .reduce((index, option) => ({
         ...index,

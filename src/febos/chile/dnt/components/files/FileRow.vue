@@ -132,11 +132,11 @@
               size="small"
               type="border"
               color="#3ca2d6"
-              v-if="file.enCopia === 'NO'"
+              v-if="file.enResponsable === 'SI'"
               class="p-2 rounded-lg mr-4"
               disabled
             >
-              <span class="text-black">destinatario</span>
+              <span class="text-black">responsable</span>
             </vs-button>
             <span />
           </vs-tooltip>
@@ -174,6 +174,9 @@
         :file="file"
         :is-draft="isDraft"
         :is-assigned="isAssigned"
+        :is-processed="isProcessed"
+        :is-cancelled="isCancelled"
+        :is-resposible="isResposible"
         :on-pending-files="onPendingFiles"
         :select-file="selectFile"
       />
@@ -199,6 +202,15 @@ export default {
     isAssigned() {
       return this.file.enGrupo === 'NO';
     },
+    isResposible() {
+      return this.file.enResponsable === 'SI';
+    },
+    isProcessed() {
+      return this.file.estado === '9';
+    },
+    isCancelled() {
+      return this.file.estado === '8';
+    }
   }
 };
 

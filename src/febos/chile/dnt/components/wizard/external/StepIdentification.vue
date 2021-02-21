@@ -46,8 +46,10 @@
     </div>
     <div class="row mb-3">
       <div class="col-12">
+        <label for="matter">Materia</label>
         <vs-textarea
           type="text"
+          id="matter"
           label="Materia (Mínimo 2 palabras, máximo 5000 caracteres)"
           name="matter"
           width="100%"
@@ -69,12 +71,13 @@
     </div>
     <div class="row mb-3 mt-2">
       <div class="col-12">
-        <label for="tags">Etiquetas / Referencias del Documento</label>
+        <label for="tags">Etiquetas</label>
         <vue-tags-input
+          id="tags"
           class="w-100 b-radius"
           v-model="tag"
-          :tags="step.tags"
           name="tags"
+          :tags="step.tags"
           @tags-changed="newTags => step.tags = newTags"
           placeholder="Agregar"
           :separators="[',']"
@@ -84,7 +87,7 @@
     <div class="row mb-3">
       <div class="col-12">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-2">
             <label>Documento Privado</label>
           </div>
           <div class="col-md-1">
@@ -172,7 +175,6 @@ export default {
 </script>
 <style>
 .ti-input {
-  border-radius: 5px;
+  border-radius: 5px !important;
 }
-
 </style>

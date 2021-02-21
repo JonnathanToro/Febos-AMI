@@ -27,54 +27,19 @@
         </vs-dropdown-menu>
       </vs-dropdown>
     </div>
-
-    <div class="bookmark-container">
-      <feather-icon icon="StarIcon" :svgClasses="['stoke-current text-warning', textColor]" class="cursor-pointer p-2" @click.stop="showBookmarkPagesDropdown = !showBookmarkPagesDropdown" />
-      <div v-click-outside="outside" class="absolute bookmark-list w-1/3 xl:w-1/4 mt-4" v-if="showBookmarkPagesDropdown">
-        <vx-auto-suggest
-          ref="bookmarkAutoSuggest"
-          :autoFocus="true"
-          :data="navbarSearchAndPinList"
-          :initalData="{pages: starredPagesLimited.concat(starredPagesMore)}"
-          :searchLimit="5"
-          placeholder="Funciones Narvi"
-          inputClassses="w-full"
-          show-action
-          show-pinned
-          hideGroupTitle
-          background-overlay
-          @input="hnd_search_query_update"
-          @selected="selected">
-
-          <!-- Pages Suggestion -->
-          <template v-slot:pages="{ suggestion }">
-            <div class="flex items-center justify-between">
-              <div class="flex items-end leading-none py-1">
-                <feather-icon :icon="suggestion.icon" svgClasses="h-5 w-5" class="mr-4" />
-                <span class="mt-1">{{ suggestion.title }}</span>
-              </div>
-              <feather-icon
-                icon="StarIcon"
-                :svgClasses="[{'text-warning': suggestion.is_bookmarked}, 'h-5 w-5 stroke-current mt-1']"
-                @click.stop="actionClicked(suggestion)" />
-            </div>
-          </template>
-
-        </vx-auto-suggest>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import draggable     from 'vuedraggable'
-import VxAutoSuggest from '@/components/vx-auto-suggest/VxAutoSuggest.vue'
+import draggable from 'vuedraggable';
+
+import VxAutoSuggest from '@/components/vx-auto-suggest/VxAutoSuggest.vue';
 
 export default {
   props: {
     navbarColor: {
       type: String,
-      default: "#fff",
+      default: '#fff',
     },
   },
   components: {
@@ -83,79 +48,78 @@ export default {
   },
   data() {
     return {
-      showBookmarkPagesDropdown : false,
-    }
+      showBookmarkPagesDropdown: false,
+    };
   },
   watch: {
-    '$route'() {
-      if (this.showBookmarkPagesDropdown) this.showBookmarkPagesDropdown = false
+    $route() {
+      if (this.showBookmarkPagesDropdown) this.showBookmarkPagesDropdown = false;
     }
   },
   computed: {
     navbarSearchAndPinList() {
-      return {pages: this.$store.state.navbarSearchAndPinList["pages"]}
+      return { pages: this.$store.state.navbarSearchAndPinList.pages };
     },
     starredPages() {
-      return this.$store.state.starredPages
+      return this.$store.state.starredPages;
     },
     starredPagesLimited: {
       get() {
-        return this.starredPages.slice(0, 10)
+        return this.starredPages.slice(0, 10);
       },
       set(list) {
-        this.$store.dispatch('arrangeStarredPagesLimited', list)
+        this.$store.dispatch('arrangeStarredPagesLimited', list);
       }
     },
     starredPagesMore: {
       get() {
-        return this.starredPages.slice(10)
+        return this.starredPages.slice(10);
       },
       set(list) {
-        this.$store.dispatch('arrangeStarredPagesMore', list)
+        this.$store.dispatch('arrangeStarredPagesMore', list);
       }
     },
     textColor() {
-      return {'text-white': this.$store.state.mainLayoutType === 'vertical' && this.navbarColor != (this.$store.state.theme === 'dark' ? "#10163a" : "#fff") }
+      return { 'text-white': this.$store.state.mainLayoutType === 'vertical' && this.navbarColor != (this.$store.state.theme === 'dark' ? '#10163a' : '#fff') };
     }
   },
   methods: {
     selected(obj) {
-      this.$store.commit('TOGGLE_CONTENT_OVERLAY', false)
-      this.showBookmarkPagesDropdown = false
-      this.$router.push(obj.pages.url).catch(() => {})
+      this.$store.commit('TOGGLE_CONTENT_OVERLAY', false);
+      this.showBookmarkPagesDropdown = false;
+      this.$router.push(obj.pages.url).catch(() => {});
     },
     actionClicked(item) {
-      this.$store.dispatch('updateStarredPage', { url: item.url, val: !item.is_bookmarked })
+      this.$store.dispatch('updateStarredPage', { url: item.url, val: !item.is_bookmarked });
       // this.$refs.bookmarkAutoSuggest.filterData()
     },
-    outside: function() {
-      this.showBookmarkPagesDropdown = false
+    outside() {
+      this.showBookmarkPagesDropdown = false;
     },
     hnd_search_query_update(query) {
       // Show overlay if any character is entered
-      this.$store.commit('TOGGLE_CONTENT_OVERLAY', query ? true : false)
+      this.$store.commit('TOGGLE_CONTENT_OVERLAY', !!query);
     }
   },
   directives: {
     'click-outside': {
-      bind: function(el, binding) {
-        const bubble = binding.modifiers.bubble
+      bind(el, binding) {
+        const { bubble } = binding.modifiers;
         const handler = (e) => {
           if (bubble || (!el.contains(e.target) && el !== e.target)) {
-            binding.value(e)
+            binding.value(e);
           }
-        }
-        el.__vueClickOutside__ = handler
-        document.addEventListener('click', handler)
+        };
+        el.__vueClickOutside__ = handler;
+        document.addEventListener('click', handler);
       },
 
-      unbind: function(el) {
-        document.removeEventListener('click', el.__vueClickOutside__)
-        el.__vueClickOutside__ = null
-
+      unbind(el) {
+        document.removeEventListener('click', el.__vueClickOutside__);
+        el.__vueClickOutside__ = null;
       }
     }
   }
-}
+};
 
 </script>

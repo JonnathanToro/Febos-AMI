@@ -75,7 +75,9 @@ import RutMixin from '../../../../febos/chile/_vue/mixins/RutMixin';
 export default {
   mixins: [RutMixin],
   data() {
-    return {};
+    return {
+      noAvatar: require('../../../../assets/images/no-avatar.svg')
+    };
   },
   computed: {
     ...mapGetters('Usuario', ['currentUser']),
@@ -91,7 +93,7 @@ export default {
         return this.currentUser.avatar;
       }
 
-      return 'https://www.flaticon.es/svg/static/icons/svg/149/149071.svg';
+      return this.noAvatar;
     }
   },
   methods: {

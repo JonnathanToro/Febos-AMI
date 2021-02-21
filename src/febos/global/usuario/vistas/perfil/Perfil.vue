@@ -329,6 +329,7 @@ export default {
   },
   data() {
     return {
+      noAvatar: require('../../../../../assets/images/no-avatar.svg'),
       payload: {
         cerrarAnimacion: this.$vs.loading.close,
         notify: this.$vs.notify
@@ -408,7 +409,7 @@ export default {
         return this.currentUser.avatar;
       }
       // return `https://api.adorable.io/avatars/285/${this.correo}`;
-      return 'https://www.flaticon.es/svg/static/icons/svg/149/149071.svg';
+      return this.noAvatar;
     },
 
     /* listado empresas */

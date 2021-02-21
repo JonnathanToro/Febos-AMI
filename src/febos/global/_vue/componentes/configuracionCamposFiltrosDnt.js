@@ -7,8 +7,12 @@ export default {
     nombre: 'Destinatario/Responsable',
     tipo: 'texto'
   },
+  claseMercadoPublico: {
+    nombre: 'Tipo entrada',
+    tipo: 'multi'
+  },
   destinoParticipanteIds: {
-    nombre: 'Destinatario/Responsable',
+    nombre: 'Participante',
     tipo: 'texto'
   },
   fechaEmision: {

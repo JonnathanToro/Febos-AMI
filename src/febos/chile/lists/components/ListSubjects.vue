@@ -82,7 +82,6 @@ export default {
     } else {
       this.fetchSubjects(this.parentValue);
     }
-    console.log('this', this);
   }
 };
 

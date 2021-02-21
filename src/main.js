@@ -72,9 +72,12 @@ import spanish from 'vee-validate/dist/locale/es';
 
 import VueLogger from 'vuejs-logger';
 import './shame';
+import VTooltip from 'v-tooltip';
 
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
+
+Vue.use(VTooltip);
 
 Vue.moment.locale('es', {
   months: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],

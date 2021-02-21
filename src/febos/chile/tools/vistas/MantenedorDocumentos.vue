@@ -24,11 +24,10 @@
           <div class="add-new">
             <h4>Categorías</h4>
             <CheckPermission permission="ED028">
-              <vs-tooltip text="Agregar categoría">
-                <vs-button color="primary" class="margin-right" v-on:click="createOption()"
-                           type="border" icon="playlist_add" />
-              </vs-tooltip>
-              <span />
+              <vs-button
+                v-tooltip="'Agregar categoría'" color="primary"
+                class="margin-right" v-on:click="createOption()"
+                type="border" icon="playlist_add" />
             </CheckPermission>
           </div>
           <vs-list class="bg-white margin-top box-options">
@@ -53,16 +52,15 @@
           <div class="add-new">
             <h4>Documentos</h4>
             <CheckPermission permission="ED031">
-              <vs-tooltip text="Agregar documento a categoría">
-                <vs-button
-                  color="primary"
-                  class="margin-right"
-                  v-if="selectedCategory.opcionId"
-                  v-on:click="createOption(selectedCategory)"
-                  type="border"
-                  icon="playlist_add"
-                />
-              </vs-tooltip>
+              <vs-button
+                v-tooltip="'Agregar documento a categoría'"
+                color="primary"
+                class="margin-right"
+                v-if="selectedCategory.opcionId"
+                v-on:click="createOption(selectedCategory)"
+                type="border"
+                icon="playlist_add"
+              />
             </CheckPermission>
           </div>
           <vs-list
@@ -86,6 +84,7 @@
     >
       <div>
         <input
+          maxlength="10"
           class="input-option input-edit"
           placeholder="Abreviación"
           size="small"
@@ -94,6 +93,7 @@
       </div>
       <div>
         <input
+          maxlength="100"
           class="input-option input-edit"
           placeholder="Nombre de opción"
           size="small"
