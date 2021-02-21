@@ -63,5 +63,13 @@ export default {
   institutionsDocDigital: {
     list: [],
     loading: false
-  }
+  },
+  activities: {
+    list: [],
+    loading: false
+  },
+  activityStates: {
+    list: [],
+    loading: false
+  },
 };

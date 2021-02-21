@@ -22,6 +22,7 @@
     <PopUpCommentsFile :file="selectedFile" />
     <PopUpTicketFile :file="selectedFile" />
     <PopUpSendFile :file="selectedFile" />
+    <PopUpActivityFile :file="selectedFile" />
     <FilesPagination
       :show="files.length"
       v-model="page"
@@ -38,6 +39,7 @@ import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
 import PopUpAsignFile from '@/febos/chile/dnt/vistas/modals/PopUpAsignFile';
 import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
 import PopUpSendFile from '@/febos/chile/dnt/vistas/modals/PopUpSendFile';
+import PopUpActivityFile from '@/febos/chile/dnt/vistas/modals/PopUpActivityFile';
 import PopUpParticipantsFile from '@/febos/chile/dnt/vistas/modals/PopUpParticipantsFile';
 import PopUpCommentsFile from '@/febos/chile/dnt/vistas/modals/PopUpCommentsFile';
 import FilesHeader from '@/febos/chile/dnt/components/files/FilesHeader';
@@ -60,7 +62,8 @@ export default {
     PopUpParticipantsFile,
     PopUpCommentsFile,
     PopUpTicketFile,
-    PopUpSendFile
+    PopUpSendFile,
+    PopUpActivityFile
   },
   data() {
     const view = this.$route.params.vista;

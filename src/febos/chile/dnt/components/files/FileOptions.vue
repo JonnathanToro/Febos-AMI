@@ -13,7 +13,7 @@
       <vs-dropdown-menu style="width: fit-content">
         <CheckPermission permission="ED016">
           <vs-dropdown-item
-            v-if="isDraft && onPendingFiles && isResposible"
+            v-if="isDraft && onPendingFiles && isResponsible"
             v-on:click="openDraft()"
           >
             <vs-icon icon="query_builder"/>
@@ -48,7 +48,7 @@
           <vs-dropdown-item
             v-on:click="onOptionAssignFile(file)"
             v-if="!isDraft  && onPendingFiles && !isAssigned
-             && !isResposible && !isProcessed && !isCancelled"
+             && !isResponsible && !isProcessed && !isCancelled"
           >
             <vs-icon icon="how_to_reg"/>
             Asignarme expediente
@@ -58,7 +58,7 @@
           <vs-dropdown-item
             v-on:click="onOptionCancelFile(file)"
             v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled"
           >
             <vs-icon icon="clear"/>
             Anular expediente
@@ -83,24 +83,25 @@
           <vs-dropdown-item
             v-on:click="onOptionGetComments(file)"
             v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled"
           >
             <vs-icon icon="chat"/>
             Comentarios
           </vs-dropdown-item>
         </CheckPermission>
         <vs-dropdown-item
+          v-on:click="onUpdateActivity(file)"
           v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled"
         >
-          <vs-icon icon="chat"/>
-          Actualizar estado
+          <vs-icon icon="how_to_vote"/>
+          Act. Actividad
         </vs-dropdown-item>
         <CheckPermission permission="ED026">
           <vs-dropdown-item
             v-on:click="onOptionSendFile(file)"
             v-if="!isDraft && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled"
           >
             <vs-icon icon="chat"/>
             Enviar documento
@@ -135,7 +136,7 @@ export default {
     'isAssigned',
     'isProcessed',
     'isCancelled',
-    'isResposible',
+    'isResponsible',
     'selectFile'
   ],
   computed: {
@@ -228,6 +229,10 @@ export default {
         febosId: file.febosId
       });
       this.showModals('commentsFile');
+    },
+    onUpdateActivity(file) {
+      this.selectFile(file);
+      this.showModals('activitiesFile');
     },
     onOptionSendFile(file) {
       this.getUsersCompany({
