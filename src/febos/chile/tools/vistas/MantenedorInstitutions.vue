@@ -85,6 +85,7 @@
     >
       <div>
         <input
+          maxlength="10"
           class="input-option input-edit"
           placeholder="Abreviación"
           size="small"
@@ -93,6 +94,7 @@
       </div>
       <div>
         <input
+          maxlength="100"
           class="input-option input-edit"
           placeholder="Nombre de opción"
           size="small"

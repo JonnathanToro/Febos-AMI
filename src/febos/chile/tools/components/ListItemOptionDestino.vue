@@ -3,6 +3,7 @@
     <vs-col vs-lg="8" vs-sm="8" vs-xs="12">
       <div>
         <input
+          maxlength="10"
           class="input-option" v-bind:class="{
             'input-blocked': !editMood,
             'input-edit': editMood
@@ -12,6 +13,7 @@
       </div>
       <div>
         <input
+          maxlength="100"
           class="input-option" v-bind:class="{
             'input-blocked': !editMood,
             'input-edit': editMood
