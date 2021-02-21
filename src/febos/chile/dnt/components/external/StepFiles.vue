@@ -95,6 +95,32 @@
       </div>
       <div class="row mb-3">
         <div class="col-md-6">
+          <vs-input
+            class="w-100"
+            label="Contrato SAFI"
+            maxlength="6"
+            name="safiContract"
+            v-model="step.safiContract"
+          />
+        </div>
+        <div class="col-md-12">
+          <div class="con-text-validation span-text-validation-danger
+           vs-input--text-validation-span v-enter-to"
+           style="height: 32px;font-size:12px; color:#673ab7 !important;"
+          >
+          <span class="span-text-validation">
+            El número de Contrato SAFI en muchos casos es requerido, no lo olvides!
+          </span>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <vs-divider />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
           <vs-select
             class="w-100"
             autocomplete
@@ -108,10 +134,6 @@
             <vs-select-item
               value="expediente"
               text="Expediente"
-            />
-            <vs-select-item
-              value="SAFI"
-              text="Contrato SAFI"
             />
             <vs-select-item
               value="SSD"
@@ -186,6 +208,7 @@ export default {
       step: {
         mainFile: {},
         additionalFiles: [],
+        safiContract: '',
         relatedDocuments: [],
         relatedDocumentsSelected: [],
         ...this.draft
@@ -221,6 +244,16 @@ export default {
       this.step.additionalFiles = this.step.additionalFiles.filter((file) => file.id !== fileId);
     },
     async addRelatedDocument() {
+      if (this.step.safiContract === '') {
+        this.$vs.notify({
+          title: 'Oye!',
+          text: 'Te recordamos que no estas ingresando el número de Contrato SAFI',
+          color: 'warning',
+          time: 3000,
+          position: 'top-center'
+        });
+      }
+
       const isValid = await this.validateForm('step-3-part-2');
 
       if (!isValid) {
@@ -244,7 +277,7 @@ export default {
           title: 'Oops!',
           text: 'Ya agregaste esta referencia',
           color: 'warning',
-          time: 3000,
+          time: 9000,
           position: 'top-center'
         });
       }
@@ -254,6 +287,16 @@ export default {
       await this.$validator.reset();
     },
     isValid() {
+      if (this.step.safiContract === '') {
+        this.$vs.notify({
+          title: 'Oye!',
+          text: 'No estas ingresando el número de Contrato SAFI,'
+            + ' después no digas que no te lo advertimos',
+          color: 'warning',
+          time: 9000,
+          position: 'top-center'
+        });
+      }
       return this.validateForm('step-3-part-1');
     }
   }

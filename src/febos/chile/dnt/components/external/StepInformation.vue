@@ -341,8 +341,9 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <label for="observacion">Observación</label>
+          <label for="observation">Observación</label>
           <vs-textarea
+            id="observation"
             maxlength="5000"
             label="Observacion (5000 caracteres)"
             name="observacion"

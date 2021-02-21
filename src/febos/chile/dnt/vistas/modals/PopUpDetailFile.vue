@@ -110,16 +110,25 @@
 
           <template>
             <tbody>
-            <vs-tr
-              v-for="reference in (detailsFile.referencias || [])" :key="reference.dntReferenciaId"
-            >
-              <vs-td>
-                {{reference.tipoDocumento}}
-              </vs-td>
-              <vs-td>
-                {{reference.folio}}
-              </vs-td>
-            </vs-tr>
+              <vs-tr v-if="file.transportePuertoCodigo">
+                <vs-td>
+                  Contrato SAFI
+                </vs-td>
+                <vs-td>
+                  {{file.transportePuertoCodigo}}
+                </vs-td>
+              </vs-tr>
+              <vs-tr
+                v-for="reference in (detailsFile.referencias || [])"
+                :key="reference.dntReferenciaId"
+              >
+                <vs-td>
+                  {{reference.tipoDocumento}}
+                </vs-td>
+                <vs-td>
+                  {{reference.folio}}
+                </vs-td>
+              </vs-tr>
             </tbody>
           </template>
         </vs-table>

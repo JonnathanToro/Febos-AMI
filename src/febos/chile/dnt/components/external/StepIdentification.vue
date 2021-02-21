@@ -49,6 +49,7 @@
         <label for="matter">Materia</label>
         <vs-textarea
           type="text"
+          id="matter"
           label="Materia (Mínimo 2 palabras, máximo 5000 caracteres)"
           name="matter"
           width="100%"
@@ -72,6 +73,7 @@
       <div class="col-12">
         <label for="tags">Etiquetas</label>
         <vue-tags-input
+          id="tags"
           class="w-100 b-radius"
           v-model="tag"
           name="tags"
