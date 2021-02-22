@@ -1,5 +1,5 @@
 <template>
-  <vs-tooltip text="Desplegar acciones">
+  <div v-tooltip="'Desplegar acciones'">
     <vs-dropdown vs-custom-content vs-trigger-click>
       <a class="a-icon" href.prevent>
         <vs-icon
@@ -111,7 +111,7 @@
       </vs-dropdown-menu>
     </vs-dropdown>
     <span />
-  </vs-tooltip>
+  </div>
 </template>
 <script>
 
@@ -159,7 +159,9 @@ export default {
       // TODO: move this to another side, (why api doesn't save the full name? 😡😡)
       const types = {
         ext: 'externo',
-        int: 'interno'
+        int: 'interno',
+        numInt: 'numInt',
+        numOf: 'numOf'
       };
 
       this.$router.push(`/documentos/${types[this.file.claseMercadoPublico]}/${this.file.febosId}`);

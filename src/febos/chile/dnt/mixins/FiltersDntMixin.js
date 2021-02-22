@@ -274,7 +274,7 @@ const filterViews = {
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'destinoVisorIds', valor: '${idUsuario}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
-      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['numInt', 'numOp'] }
+      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['numInt', 'numOf'] }
     ],
     filtrosPorDefecto: [
       { campo: 'estado', tipo: 'multi', valor: ['1', '3'] }
@@ -354,14 +354,14 @@ const filterViews = {
       { campo: 'textoObservaciones', tipo: 'texto' }
     ]
   },
-  fializados: {
+  finalizados: {
     filtrosFijos: [
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'destinoVisorIds', valor: '${idUsuario}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
-      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['numInt', 'numOp'] }
+      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['numInt', 'numOf'] }
     ],
     filtrosPorDefecto: [
       { campo: 'estado', tipo: 'multi', valor: ['8', '9'] }
