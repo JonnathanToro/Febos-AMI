@@ -145,6 +145,8 @@ export default {
     },
     onEnd() {
       const { id } = this.$route.params;
+      const isFileOficial = this.$route.params.wizard.includes('externo')
+        || this.$route.params.wizard.includes('interno');
 
       this.saveDocument({
         id,
@@ -152,7 +154,9 @@ export default {
           this.wizardData,
           this.company.iut,
           this.company.razonSocial
-        )
+        ),
+        isDraft: false,
+        isFileOficial
       });
     },
     onBackup() {

@@ -332,7 +332,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <label for="observation">Etiquetas / Referencias del Documento</label>
+          <label for="observation">Observacion (5000 caracteres)</label>
           <vs-textarea
             id="observation"
             maxlength="5000"

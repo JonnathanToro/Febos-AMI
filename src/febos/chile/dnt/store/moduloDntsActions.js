@@ -22,6 +22,7 @@ import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
 export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
   try {
+    commit('SET_DNT_LIST', []);
     commit('SET_LOADING', true);
     const service = fromCS ? clDntCloudSearchList : clDntsList;
     const response = await service(data);
@@ -253,7 +254,9 @@ export const sendTicketHelp = async ({ commit }, payload) => {
   actualizar en lugar de crear, además si no tiene id y es
   modo draft redireccionar después de guardar al editar
 */
-export const saveDocument = async ({ commit }, { id, data, isDraft }) => {
+export const saveDocument = async ({ commit }, {
+  id, data, isDraft, isFileOficial
+}) => {
   commit('SET_LOADING', true);
   try {
     const response = !id
@@ -266,9 +269,11 @@ export const saveDocument = async ({ commit }, { id, data, isDraft }) => {
       return;
     }
 
+    const fileRoutes = isFileOficial ? '/expedientes/en-curso' : '/expedientes/entrada';
+
     const path = isDraft
       ? `/documentos/externo/${response.data.dnt.febosId}`
-      : '/expedientes/en-curso';
+      : fileRoutes;
 
     await router.push({ path });
   } catch (e) {
