@@ -71,7 +71,7 @@
     </div>
     <div class="row mb-3">
       <div class="col-12">
-        <label for="tags">Etiquetas</label>
+        <label for="tags">Etiquetas / Referencias del Documento</label>
         <vue-tags-input
           id="tags"
           class="w-100 b-radius"

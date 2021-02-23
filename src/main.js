@@ -154,7 +154,26 @@ require('./assets/css/iconfont.css');
 Vue.use(VeeValidate, {
   locale: 'es',
   dictionary: {
-    es: spanish
+    es: {
+      messages: spanish.messages,
+      attributes: {
+        documentType: 'tipo de documento',
+        matter: 'materia',
+        institutionType: 'tipo de institución',
+        subjectType: 'para el tipo de destino',
+        subject: 'destino',
+        subjectTypeDigitalDoc: 'lista de instituciones',
+        subjectEmail: 'correo',
+        copySubjectType: 'para el tipo dedistribución',
+        copySubject: 'distribución',
+        copySubjectTypeDigitalDoc: 'lista de instituciones',
+        copySubjectEmail: 'correo',
+        documentDetail: 'detalle',
+        mainFileName: 'documento principal',
+        relatedDocumentType: 'relacionado con',
+        relatedDocumentNumber: 'nº de documento'
+      }
+    }
   }
 });
 // Vue select css
