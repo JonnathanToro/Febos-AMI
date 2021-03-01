@@ -171,7 +171,11 @@ Vue.use(VeeValidate, {
         documentDetail: 'detalle',
         mainFileName: 'documento principal',
         relatedDocumentType: 'relacionado con',
-        relatedDocumentNumber: 'nº de documento'
+        relatedDocumentNumber: 'nº de documento',
+        stepType: 'tipo de paso',
+        rolType: 'tipo de rol',
+        userStep: 'usuario',
+        groupStep: 'grupo'
       }
     }
   }

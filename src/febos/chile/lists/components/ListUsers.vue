@@ -69,14 +69,16 @@ export default {
           if (oldValue !== '') {
             this.$emit('input', '');
           }
-          this.getUsersGroup(newValue);
+          if (newValue !== '') {
+            this.getUsersGroup(newValue);
+          }
         }
       });
 
-      if (this.parentValue) {
+      if (this.parentValue !== '') {
         this.getUsersGroup(this.parentValue);
       }
-    } else {
+    } else if (this.parentValue !== '') {
       this.getUsersGroup(this.parentValue);
     }
   }

@@ -18,6 +18,10 @@ export default () => ({
       component: StepFiles
     }
   ],
+  options: ['submit', 'draft'],
+  submitAction: 'saveDocument',
+  backupAction: 'saveDocument',
+  loadAllData: true,
   wizardMapper(
     {
       dnt,

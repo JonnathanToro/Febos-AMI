@@ -59,7 +59,6 @@ export default {
       'fetchSubjects'
     ]),
     getOption() {
-      console.log('ACA', this.value);
       return this.subjectsState.list.find((option) => option.value === this.value);
     }
   },

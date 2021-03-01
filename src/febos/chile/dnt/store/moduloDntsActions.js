@@ -156,22 +156,35 @@ export const getFileDnt = async ({ commit }, payload) => {
   }
 };
 
-export const loadWizardData = async ({ commit }, { id, mapper }) => {
+export const loadWizardData = async ({ commit }, { id, mapper, loadAllData }) => {
   try {
     commit('SET_LOADING', true);
+
+    const payload = loadAllData
+      ? {
+        destinatarios: 'si',
+        referencias: 'si',
+        etiquetas: 'si',
+        retornarDnt: 'si'
+      }
+      : {
+        imagen: 'si',
+        regenerar: 'no',
+        tipoImagen: 0
+      };
+
     const { data } = await getFile({
       febosId: id,
-      destinatarios: 'si',
-      referencias: 'si',
-      etiquetas: 'si',
-      retornarDnt: 'si'
+      ...payload
     });
 
-    const { data: { adjuntos } } = await attachmentsFiles(
-      { febosId: id }
-    );
+    if (loadAllData) {
+      const { data: { adjuntos } } = await attachmentsFiles(
+        { febosId: id }
+      );
+      data.adjuntos = adjuntos;
+    }
 
-    data.adjuntos = adjuntos;
     commit('CLEAR_WIZARD_DATA');
     commit(
       'SET_WIZARD_DATA',
@@ -249,14 +262,10 @@ export const sendTicketHelp = async ({ commit }, payload) => {
   }
 };
 
-/*
- TODO: hay que verificar si el dnt tiene ID y si tiene id,
-  actualizar en lugar de crear, además si no tiene id y es
-  modo draft redireccionar después de guardar al editar
-*/
 export const saveDocument = async ({ commit }, {
-  id, data, isDraft, isFileOficial
+  id, data, isDraft, isFileOfficial, redirectFlow
 }) => {
+  console.log('ACCION', id, data, isDraft, isFileOfficial, redirectFlow);
   commit('SET_LOADING', true);
   try {
     const response = !id
@@ -269,15 +278,26 @@ export const saveDocument = async ({ commit }, {
       return;
     }
 
-    const fileRoutes = isFileOficial ? '/expedientes/en-curso' : '/expedientes/entrada';
+    const fileRoutes = isFileOfficial ? '/expedientes/en-curso' : '/expedientes/entrada';
+    const routeFlow = `/documentos/flujo/${response.data.dnt.febosId}`;
+    const finalRoute = redirectFlow ? routeFlow : fileRoutes;
 
     const path = isDraft
       ? `/documentos/externo/${response.data.dnt.febosId}`
-      : fileRoutes;
+      : finalRoute;
 
     await router.push({ path });
   } catch (e) {
     commit('SET_ERROR_MESSAGE', e.context);
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const sendToFlow = async ({ commit }, { id, data }) => {
+  commit('SET_LOADING', true);
+  try {
+    console.log('ACCION', id, data);
   } finally {
     commit('SET_LOADING', false);
   }

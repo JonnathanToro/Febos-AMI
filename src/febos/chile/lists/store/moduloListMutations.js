@@ -125,7 +125,8 @@ export default {
       .map((option) => ({
         id: option.usuarioId,
         value: option.usuarioId,
-        label: option.nombre
+        label: option.nombre,
+        email: option.correo
       }));
   },
   SET_USERS_LOADING(state, payload) {
