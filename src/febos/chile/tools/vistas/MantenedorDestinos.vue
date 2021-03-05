@@ -11,15 +11,15 @@
         <h4 class="info-documents">
           Pulsa el botón
           <span style="padding: 0 4px;">
-              <vs-button
-                color="primary"
-                class="margin-right"
-                size="small"
-                disabled
-                type="border"
-                icon="search"
-              />
-            </span>
+            <vs-button
+              color="primary"
+              class="margin-right"
+              size="small"
+              disabled
+              type="border"
+              icon="search"
+            />
+          </span>
           para ver los destinos de la categoría
         </h4>
       </div>

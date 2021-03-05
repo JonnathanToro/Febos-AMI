@@ -7,7 +7,7 @@ const filterViews = {
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'destinoVisorIds', valor: '${idUsuario}' },
+      { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] }
     ],
     filtrosPorDefecto: [
@@ -97,7 +97,7 @@ const filterViews = {
       { campo: 'destinoParticipanteIds', valor: '${idUsuario}' }
     ],
     filtrosPorDefecto: [
-      { campo: 'estado', tipo: 'multi', valor: ['1', '3', '8', '9'] }
+      { campo: 'estado', tipo: 'multi', valor: ['1', '8', '9'] }
     ],
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },

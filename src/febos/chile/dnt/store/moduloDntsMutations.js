@@ -26,6 +26,10 @@ export default {
   UPDATE_ASIGNED_FILE(state, febosId) {
     state.list[febosId].enGrupo = 'NO';
   },
+  UPDATE_SENT_FILE(state, febosId) {
+    const { [febosId]: ignored, ...cleanStateDnt } = state.list;
+    state.list = cleanStateDnt;
+  },
   SET_WIZARD_DATA(state, payload) {
     state.wizardData = payload;
   },

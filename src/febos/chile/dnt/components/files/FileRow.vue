@@ -73,99 +73,81 @@
       </vs-row>
       <vs-row>
         <vs-col vs-offset="3" vs-lg="7" vs-type="flex">
-          <vs-tooltip text="Fecha de Actualización">
-            <vs-chip class="mr-4">
-              <vs-avatar icon="date_range" />
-              {{ file.fechaActualizacion | dateFormat }}
-            </vs-chip>
-            <span />
-          </vs-tooltip>
-          <vs-tooltip text="Fecha del documento">
-            <vs-chip class="mr-4">
-              <vs-avatar icon="event" />
-              {{ file.fechaEmision | dateFormat }}
-            </vs-chip>
-            <span />
-          </vs-tooltip>
-          <vs-tooltip text="Documento externo">
-            <vs-button
-              size="small"
-              type="border"
-              color="#3ca2d6"
-              v-if="file.claseMercadoPublico === 'ext'"
-              class="p-2 rounded-lg mr-4"
-              disabled
-            >
-              <span class="text-black">externo</span>
-            </vs-button>
-            <span />
-          </vs-tooltip>
-          <vs-tooltip text="Documento interno">
-            <vs-button
-              size="small"
-              type="border"
-              color="#3ca2d6"
-              title="Es un archivo interno"
-              v-if="file.claseMercadoPublico === 'int'"
-              class="p-2 rounded-lg mr-4"
-              disabled
-            >
-              <span class="text-black">interno</span>
-            </vs-button>
-            <span />
-          </vs-tooltip>
-          <vs-tooltip text="Estoy en copia">
-            <vs-button
-              size="small"
-              type="border"
-              color="#3ca2d6"
-              v-if="file.enCopia === 'SI'"
-              class="p-2 rounded-lg mr-4"
-              disabled
-            >
-              <span class="text-black">en copia</span>
-            </vs-button>
-            <span />
-          </vs-tooltip>
-          <vs-tooltip text="Soy destinatario/responsable">
-            <vs-button
-              size="small"
-              type="border"
-              color="#3ca2d6"
-              v-if="file.enResponsable === 'SI'"
-              class="p-2 rounded-lg mr-4"
-              disabled
-            >
-              <span class="text-black">responsable</span>
-            </vs-button>
-            <span />
-          </vs-tooltip>
-          <vs-tooltip text="Acompaña físico">
-            <vs-button
-              size="small"
-              type="border"
-              color="#3ca2d6"
-              icon="description"
-              v-if="file.transporteViaTransporteCodigoTransporte === 1"
-              class="p-2 rounded-lg mr-4"
-              disabled
-            >
-              <span class="text-black">acompaña físico</span>
-            </vs-button>
-            <span />
-          </vs-tooltip>
-          <vs-tooltip text="archivo privado">
-            <vs-button
-              size="small"
-              type="border"
-              color="danger"
-              icon="lock"
-              v-if="file.transportePuertoTipo === 1"
-              class="p-2 rounded-lg mr-4"
-              disabled
-            />
-            <span />
-          </vs-tooltip>
+          <vs-chip v-tooltip="'Fecha de Actualización'" class="mr-4">
+            <vs-avatar icon="date_range" />
+            {{ file.fechaActualizacion | dateFormat }}
+          </vs-chip>
+          <vs-chip v-tooltip="'Fecha de documento'" class="mr-4">
+            <vs-avatar icon="event" />
+            {{ file.fechaEmision | dateFormat }}
+          </vs-chip>
+          <vs-button
+            v-tooltip="'Documento externo'"
+            size="small"
+            type="border"
+            color="#3ca2d6"
+            v-if="file.claseMercadoPublico === 'ext'"
+            class="p-2 rounded-lg mr-4"
+            disabled
+          >
+            <span class="text-black">externo</span>
+          </vs-button>
+          <vs-button
+            v-tooltip="'Documento interno'"
+            size="small"
+            type="border"
+            color="#3ca2d6"
+            title="Es un archivo interno"
+            v-if="file.claseMercadoPublico === 'int'"
+            class="p-2 rounded-lg mr-4"
+            disabled
+          >
+            <span class="text-black">interno</span>
+          </vs-button>
+          <vs-button
+            v-tooltip="'Estoy en copia'"
+            size="small"
+            type="border"
+            color="#3ca2d6"
+            v-if="file.enCopia === 'SI'"
+            class="p-2 rounded-lg mr-4"
+            disabled
+          >
+            <span class="text-black">en copia</span>
+          </vs-button>
+          <vs-button
+            v-tooltip="'Soy destinatario/responsable'"
+            size="small"
+            type="border"
+            color="#3ca2d6"
+            v-if="file.enResponsable === 'SI'"
+            class="p-2 rounded-lg mr-4"
+            disabled
+          >
+            <span class="text-black">responsable</span>
+          </vs-button>
+          <vs-button
+            v-tooltip="'Acompaña físico'"
+            size="small"
+            type="border"
+            color="#3ca2d6"
+            icon="description"
+            v-if="file.transporteViaTransporteCodigoTransporte === 1"
+            class="p-2 rounded-lg mr-4"
+            disabled
+          >
+            <span class="text-black">acompaña físico</span>
+          </vs-button>
+          <vs-button
+            v-tooltip="'archivo privado'"
+            size="small"
+            type="border"
+            color="danger"
+            icon="lock"
+            v-if="file.transportePuertoTipo === 1"
+            class="p-2 rounded-lg mr-4"
+            disabled
+          />
         </vs-col>
       </vs-row>
     </vs-col>

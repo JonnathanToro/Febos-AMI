@@ -229,6 +229,7 @@ export const sendDntFile = async ({ commit }, payload) => {
     commit('SET_LOADING', true);
     const response = await sendFile(payload);
     commit('SET_SUCCESS_MESSAGE', response.data);
+    commit('UPDATE_SENT_FILE', payload.febosId);
     store.commit('Modals/CLOSE_MODAL');
     return response.data;
   } finally {
