@@ -159,7 +159,7 @@
         >
           <div class="step-wrapper">
             <span class="step-number">{{step.stepNumber}}</span>
-            <span class="step-number">x</span>
+            <span class="step-number">{{step.stepNumber}}</span>
             <div class="text-center step-name">
               {{ step.responsibleName }}
               <span v-if="step.stepType === stepTypes.GROUP">

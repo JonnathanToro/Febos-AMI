@@ -42,6 +42,7 @@ import './assets/scss/vuexy/main.scss';
 import './assets/scss/bootstrap/main.scss';
 import './assets/scss/main.scss';
 import './assets/scss/multiSelect.scss';
+import './assets/scss/treeView.scss';
 
 // Tailwind
 import '@/assets/css/main.css';
@@ -61,6 +62,10 @@ import { VueHammer } from 'vue2-hammer';
 // idle
 import IdleVue from 'idle-vue';
 
+// treeView
+
+import TreeView from '@ll931217/vue-treeview';
+
 // PrismJS
 import 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -73,6 +78,8 @@ import spanish from 'vee-validate/dist/locale/es';
 import VueLogger from 'vuejs-logger';
 import './shame';
 import VTooltip from 'v-tooltip';
+
+Vue.use(TreeView);
 
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));

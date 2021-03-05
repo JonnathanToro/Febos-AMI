@@ -36,11 +36,16 @@
         />
       </div>
       <vs-dropdown-menu class="vx-navbar-dropdown">
-        <ul style="min-width: 9rem">
+        <ul style="min-width: 200px">
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
               @click="$router.push('/usuario/perfil')">
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4"></feather-icon>
             <span class="ml-2">Perfil</span>
+          </li>
+          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+              @click="$router.push('/administracion/usuarios')">
+            <feather-icon icon="UsersIcon" svgClasses="w-4 h-4" />
+            <span class="ml-2">Admin. Usuarios</span>
           </li>
           <!--
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">

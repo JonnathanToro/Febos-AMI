@@ -1,6 +1,7 @@
 import rutasFacturaElectronica from './rutasFacturaElectronica';
 import rutasHerramientas from './rutasHerramientas';
 import rutasDnts from './rutasDnts';
+import rutasOperaciones from './rutasOperaciones';
 import templateRoutes from './templateRoutes';
 
 export default [
@@ -47,6 +48,7 @@ export default [
       ...rutasFacturaElectronica,
       ...rutasHerramientas,
       ...rutasDnts,
+      ...rutasOperaciones,
       ...templateRoutes
     ],
   }
