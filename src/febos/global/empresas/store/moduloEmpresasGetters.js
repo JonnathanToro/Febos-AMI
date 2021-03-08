@@ -11,5 +11,7 @@ export const iut = (state) => state.empresa.iut;
 
 export const companies = (state) => state.empresas;
 
-export const usersCompany = (state) => state.usersCompany;
-export const groupsCompany = (state) => state.groupsCompany;
+export const usersCompany = (state) => (state.usersCompany || [])
+  .sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b));
+export const groupsCompany = (state) => (state.groupsCompany || [])
+  .sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b));
