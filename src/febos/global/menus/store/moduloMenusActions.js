@@ -5,6 +5,7 @@ import compras from '../../../../menu/cl/compras';
 import configuracion from '../../../../menu/cl/configuracion';
 import contratos from '../../../../menu/cl/contratos';
 import escritorioDigital from '../../../../menu/cl/escritorioDigital';
+import gestionDocumentos from '../../../../menu/cl/documentManagement';
 import gastos from '../../../../menu/cl/gastos';
 import partners from '../../../../menu/cl/partners';
 
@@ -22,6 +23,7 @@ export default {
       case 'contratos': commit('SET_MENU', contratos); break;
       case 'partners': commit('SET_MENU', partners); break;
       case 'escritorioDigital': commit('SET_MENU', escritorioDigital); break;
+      case 'gestionDocumentos': commit('SET_MENU', gestionDocumentos); break;
     }
   }
 };

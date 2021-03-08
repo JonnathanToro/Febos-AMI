@@ -20,7 +20,7 @@ export default [
         name: 'verificar-qr',
         meta: { requiereLogin: false },
         component: () => import('@/febos/chile/verificarQr/vistas/VerificacionQr.vue')
-      },
+      }
     ]
   }
 ];

@@ -45,6 +45,12 @@ export default [
         meta: { permiso: 'WB002', requiereLogin: true },
         component: () => import('@/views/Page2.vue')
       },
+      {
+        path: '/gestion-documentos',
+        name: 'Gestion Documentos',
+        meta: { permiso: '*', requiereLogin: true },
+        component: () => import('@/febos/global/documentManagement/vistas/DocumentManagement.vue')
+      },
       ...rutasFacturaElectronica,
       ...rutasHerramientas,
       ...rutasDnts,
