@@ -28,9 +28,23 @@ export default {
     state.empresa.estadoEmpresa = payload.estadoEmpresa;
   },
   SET_USERS_COMPANY(state, payload) {
-    state.usersCompany = payload;
+    state.usersCompany = payload.usuarios;
+    state.pagination = {
+      items: Number.parseInt(payload.totalElementos, 10),
+      pages: Number.parseInt(payload.totalPaginas, 10)
+    };
   },
   SET_GROUPS_COMPANY(state, payload) {
     state.groupsCompany = payload;
-  }
+  },
+  SET_USERS_GROUP(state, payload) {
+    state.usersGroup = payload.usuarios;
+    state.pagination = {
+      items: Number.parseInt(payload.totalElementos, 10),
+      pages: Number.parseInt(payload.totalPaginas, 10)
+    };
+  },
+  SET_LOADING(state, payload) {
+    state.loading = payload;
+  },
 };

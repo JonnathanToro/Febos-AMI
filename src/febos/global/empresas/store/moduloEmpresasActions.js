@@ -1,6 +1,7 @@
 import {
   ioCompanyList,
-  ioCompanyGroups
+  ioCompanyGroups,
+  getUsersByGroup
 } from '@/febos/servicios/api/empresas.api';
 import { getUsers } from '@/febos/servicios/api/usuarios.api';
 
@@ -28,11 +29,30 @@ export default {
     commit('SET_EMPRESA', payload);
   },
   async getUsersCompany({ commit }, payload) {
-    const response = await getUsers(payload);
-    commit('SET_USERS_COMPANY', response.data.usuarios);
+    try {
+      commit('SET_LOADING', true);
+      const response = await getUsers(payload);
+      commit('SET_USERS_COMPANY', response.data);
+    } finally {
+      commit('SET_LOADING', false);
+    }
   },
   async getGroupsCompany({ commit }, payload) {
     const response = await ioCompanyGroups(payload);
     commit('SET_GROUPS_COMPANY', response.data.grupos);
+  },
+  async getUsersGroup({ commit, rootState }, groupId) {
+    try {
+      commit('SET_LOADING', true);
+      const response = await getUsersByGroup({
+        empresaId: rootState.Empresas.empresa.id,
+        pagina: 1,
+        filas: 10,
+        groupId
+      });
+      commit('SET_USERS_GROUP', response.data);
+    } finally {
+      commit('SET_LOADING', false);
+    }
   }
 };

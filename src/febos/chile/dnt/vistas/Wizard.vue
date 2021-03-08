@@ -212,9 +212,6 @@ export default {
   },
   destroyed() {
     this.clearWizardData();
-  },
-  mounted() {
-    console.log('thisssss', this);
   }
 };
 </script>

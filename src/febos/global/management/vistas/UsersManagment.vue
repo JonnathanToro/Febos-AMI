@@ -1,7 +1,7 @@
 <template>
 <div>
   <vx-card title="Gestión de usuarios" title-color="primary">
-    <div style="display: flex; justify-content: end;">
+    <div style="display: flex;">
       <span v-if="treeView" class="pr-2">Cambiar a vista de árbol</span>
       <span v-if="!treeView" class="pr-2">Cambiar a vista de tabla</span>
       <vs-switch v-model="treeView"/>
@@ -9,7 +9,6 @@
     <div v-if="!treeView">
       <vs-table
         :data="usersCompany" :search="true"
-        :pagination="true" :maxItems="10"
         noDataText="Sin registros encontrados"
       >
         <template slot="header">
@@ -78,10 +77,99 @@
           </vs-tr>
         </template>
       </vs-table>
+      <div class="mt-5 mb-4">
+        <fb-paginacion
+          :total="pagination.pages"
+          :max="10"
+          v-model="page"
+        />
+      </div>
     </div>
     <div v-if="treeView">
-      <div>
-        <tree-view :tree="tree"></tree-view>
+      <div class="row bg-white shadow-sm">
+        <div class="col-md-4">
+          <div class="mt-3">
+            <tree-item
+              class="item"
+              :item="tree"
+              @make-folder="makeFolder"
+              @add-item="addItem"
+              @get-children="getChildren"
+            ></tree-item>
+          </div>
+        </div>
+        <div class="col-md-8" id="list-users">
+          <div class="wrap-actions">
+            <vs-button
+              v-if="selectedGroup.name"
+              class="action mr-2"
+              color="primary"
+              type="border"
+              @click="editGroup()"
+              size="small"
+              icon="edit">
+              Editar
+            </vs-button>
+            <vs-button
+              v-if="selectedGroup.name"
+              class="action mr-2"
+              color="primary"
+              type="border"
+              @click="addSubGroup()"
+              size="small"
+              icon="add_circle_outline">
+              Agregar SubGrupo
+            </vs-button>
+            <vs-button
+              class="action"
+              color="primary"
+              type="border"
+              @click="addGroup()"
+              size="small"
+              icon="add_circle_outline">
+              Agregar
+            </vs-button>
+          </div>
+          <div>
+            <h5 class="mb-4" v-if="selectedGroup.name">
+              Usuarios del grupo {{selectedGroup.name}}
+            </h5>
+            <ul v-if="usersTree.length" >
+              <li v-for="user in usersTree" :key="user.id">
+                <div class="user-wrap">
+                  <div class="con-img mr-3">
+                    <img
+                      v-if="user.avatar"
+                      key="onlineImg"
+                      :src="user.avatar"
+                      alt="user-img"
+                      width="40"
+                      height="40"
+                      class="rounded-full shadow-md cursor-pointer block"
+                    />
+                    <img
+                      v-if="!user.avatar"
+                      key="onlineImg"
+                      :src="noAvatar"
+                      alt="user-img"
+                      width="40"
+                      height="40"
+                      class="rounded-full shadow-md cursor-pointer block"
+                    />
+                  </div>
+                  <span style="line-height: 38px;">{{user.nombre}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 mb-4">
+            <fb-paginacion
+              :total="pagination.pages"
+              :max="10"
+              v-model="page"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </vx-card>
@@ -91,7 +179,7 @@
     :usuario="usuario"
     @cerrarEdicionUsuario="cancelarEdicion"
   />
-
+  <PopUpGroup :group="selectedGroup" />
 </div>
 </template>
 
@@ -99,114 +187,139 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 import modalUsuario from '@/febos/global/empresas/componentes/gestUsuarios/modalUsuario';
+import TreeItem from '@/febos/global/management/vistas/components/TreeItem';
+import FbPaginacion from '@/febos/chile/_vue/componentes/FbPaginacion';
+import PopUpGroup from '@/febos/global/management/vistas/components/PopUpGroup';
 
 export default {
   name: 'gestUsuarios',
   components: {
-    modalUsuario
+    modalUsuario,
+    TreeItem,
+    FbPaginacion,
+    PopUpGroup
   },
   data() {
     return {
+      page: 1,
+      paginate: 10,
       treeView: true,
       editar: false,
       usuario: null,
       editarEmpresa: false,
       empresas: null,
-      tree: [
-        {
-          text: 'Dogs',
-          nodes: [{
-            text: 'Germany',
-            nodes: [{
-              text: 'American Eskimo Dog',
-              nodes: [{
-                text: 'Fluffy',
-                link: {
-                  type: 'link', // Type `link` will create an `Anchor` tag
-                  value: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/American_Eskimo_Dog_1.jpg/1920px-American_Eskimo_Dog_1.jpg' // URL of the link
-                }
-              }]
-            }, {
-              text: 'Bavarian Mountain Hound'
-            }, {
-              text: 'Boxer',
-              nodes: [{
-                text: 'Rip (Router-link)',
-                link: {
-                  type: 'router-link', // Type `router-link` will create a router-link, duh.
-                  key: 'path', // key to use when giving it the value, router-link(:to="{ path: '/d-ger-boxer-rip' }")
-                  value: '/d-ger-boxer-rip'
-                }
-              }, {
-                text: 'Mackenzie (Router-link)',
-                link: {
-                  type: 'router-link',
-                  key: 'name',
-                  value: 'd-ger-boxer-machenzie'
-                }
-              }]
-            }, {
-              text: 'Bullenbeisser'
-            }, {
-              text: 'Deutsche Bracke',
-              nodes: [{
-                text: 'Mini',
-                link: {
-                  type: 'link',
-                  value: 'https://animalsbreeds.com/wp-content/uploads/2015/07/Deutsche-Bracke.jpg'
-                }
-              }]
-            }]
-          }, {
-            text: 'France',
-            nodes: [{
-              text: 'Ariegeois'
-            }, {
-              text: 'Artois Hound'
-            }]
-          }]
-        },
-        { // >= v0.3.0
-          text: 'Standing Up',
-          link: {
-            type: 'router-link',
-            key: 'path',
-            value: 'templink'
-          },
-          icon: 'cube',
-          nodes: [
-            {
-              text: 'mixamo.com',
-              link: {
-                type: 'router-link',
-                key: 'path',
-                value: 'templink'
-              },
-              icon: 'running'
-            }
-          ]
-        }
-      ],
-      icons: {
-        closed: 'angle-up',
-        opened: 'angle-down'
-      }
+      noAvatar: require('../../../../assets/images/no-avatar.svg'),
+      tree: {
+        name: '',
+        children: []
+      },
+      usersTree: [],
+      selectedGroup: {},
+      group: {}
     };
+  },
+  watch: {
+    page(newValue) {
+      this.getUsersCompany({
+        empresaId: this.company.id,
+        pagina: newValue,
+        filas: 10,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
+      });
+    },
+    usersByGroup(newValue) {
+      this.usersTree = newValue;
+    },
+    loading(value) {
+      if (!value) {
+        this.$vs.loading.close('#list-users > .con-vs-loading');
+        return;
+      }
+
+      this.$vs.loading({
+        container: '#list-users',
+        scale: 0.6
+      });
+    },
   },
   computed: {
     ...mapGetters('Empresas', [
       'company',
       'usersCompany',
-      'groupsCompany'
+      'groupsCompany',
+      'firstGroupsCompany',
+      'pagination',
+      'usersByGroup',
+      'loading'
     ]),
   },
   methods: {
     ...mapActions('Empresas', [
       'getUsersCompany',
-      'getGroupsCompany'
+      'getGroupsCompany',
+      'getUsersGroup'
     ]),
+    ...mapActions('Modals', [
+      'showModals',
+      'closeModal'
+    ]),
+    makeFolder(item) {
+      // Vue.set(item, 'children', []);
+      this.addItem(item);
+      console.log('MAKE FOLDER', item);
+    },
+    addItem(item) {
+      item.children.push({
+        name: 'new stuff'
+      });
+    },
+    editGroup() {
+      this.selectedGroup = this.group;
+      this.showModals('modalGroup');
+    },
+    addGroup() {
+      this.selectedGroup = {
+        nombre: '',
+        descripcion: '',
+        codigo: '',
+        isOffice: false
+      };
+      this.showModals('modalGroup');
+    },
+    addSubGroup() {
+      const parentId = this.selectedGroup.padreId;
+      const parentName = this.selectedGroup.nombre;
+      this.selectedGroup = {
+        ...this.selectedGroup,
+        nombre: '',
+        descripcion: '',
+        codigo: '',
+        isOffice: false,
+        padreId: parentId,
+        padreNombre: parentName
+      };
+      this.showModals('modalGroup');
+      console.log('ACA', this.selectedGroup);
+    },
+    getChildren(item) {
+      this.selectedGroup = item;
+      this.group = item;
+      if (item.name !== this.company.razonSocial) {
+        this.getUsersGroup(item.id);
+        this.usersTree = this.usersByGroup;
+      } else {
+        this.getUsersCompany({
+          empresaId: this.company.id,
+          pagina: 1,
+          filas: 10,
+          buscarInfoExtra: 'si',
+          filtroInfoExtra: 'CARGO'
+        });
+        this.usersTree = this.usersCompany;
+      }
+    },
     agregarUsuario() {
       this.usuario = {
         id: null, iut: null, nombre: null, alias: null, correo: null
@@ -234,45 +347,38 @@ export default {
       this.editarEmpresa = false;
       this.usuario = null;
     },
-
-    cargarEmpresas() {
-      this.empresas = null;
-      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
-      clienteFebosAPI.get('/empresas?busquedaSimple=si&filas=9000&pagina=1').then((response) => {
-        this.$vs.loading.close();
-
-        if (response.data.codigo == 10) {
-          this.empresas = response.data.empresas;
-          this.empresas.forEach((elemento) => elemento.seleccionado = false);
-          // this.obtenerActuales();
-        } else {
-          this.$vs.loading.close();
-          this.$vs.notify({
-            color: 'danger', title: 'Empresas del usuario', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
-          });
-        }
-      }).catch(() => {
-        this.$vs.loading.close();
-        this.$vs.notify({
-          color: 'danger', title: 'Empresas del usuario', text: 'Error de plataforma', time: 10000
-        });
-      });
+    checkParent(groupNode) {
+      return this.groupsCompany.filter((group) => group.padreId === groupNode.id).map((group) => ({
+        ...group,
+        children: this.checkParent(group),
+        name: group.nombre
+      }));
+    },
+    makeTree() {
+      return this.firstGroupsCompany.map((group) => ({
+        ...group,
+        children: this.checkParent(group),
+        name: group.nombre
+      }));
     }
   },
-  mounted() {
-    this.cargarEmpresas();
+  created() {
+    this.closeModal();
     this.getUsersCompany({
       empresaId: this.company.id,
       pagina: 1,
-      filas: 9999,
+      filas: 10,
       buscarInfoExtra: 'si',
       filtroInfoExtra: 'CARGO'
     });
     this.getGroupsCompany({
       empresaId: this.company.id
     });
-    console.log('ACA', this);
-  },
+    this.tree.name = this.company.razonSocial;
+    this.tree.children = this.makeTree();
+    this.tree.isOpen = true;
+    this.usersTree = this.usersCompany;
+  }
 };
 </script>
 
@@ -358,5 +464,18 @@ tbody tr:last-child td:last-child {
 
 .fila:hover {
   background-color: #efefef;
+}
+
+.user-wrap {
+  padding: 2px;
+  display: flex;
+}
+
+.wrap-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.action {
+  cursor: pointer;
 }
 </style>

@@ -29,5 +29,11 @@ export default {
     estadoEmpresa: false
   },
   usersCompany: [],
-  groupsCompany: []
+  groupsCompany: [],
+  pagination: {
+    items: 0,
+    pages: 0
+  },
+  loading: false,
+  usersGroup: []
 };

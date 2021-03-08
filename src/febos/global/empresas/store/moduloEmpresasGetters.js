@@ -12,4 +12,21 @@ export const iut = (state) => state.empresa.iut;
 export const companies = (state) => state.empresas;
 
 export const usersCompany = (state) => state.usersCompany;
-export const groupsCompany = (state) => state.groupsCompany;
+export const groupsCompany = (state) => state.groupsCompany
+  .map((group) => ({
+    ...group,
+    name: group.nombre,
+    isDivision: group.esDivision === 'Y',
+    isOffice: group.esOficina === 'Y'
+  }));
+export const firstGroupsCompany = (state) => (state.groupsCompany || [])
+  .filter((group) => !group.padreId)
+  .map((group) => ({
+    ...group,
+    name: group.nombre,
+    isDivision: group.esDivision === 'Y',
+    isOffice: group.esOficina === 'Y'
+  }));
+export const pagination = (state) => state.pagination;
+export const usersByGroup = (state) => state.usersGroup;
+export const loading = (state) => state.loading;
