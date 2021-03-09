@@ -30,11 +30,12 @@ if [ $(contains "${available_portals[@]}" "$PORTAL") == "n" ]; then
   exit 0
 fi
 
-COMMAND="vue-cli-service build --mode ed.$ENVIRONMENT.$PORTAL"
-$COMMAND
+BUILD_COMMAND="vue-cli-service build --mode ed.$ENVIRONMENT.$PORTAL"
+$BUILD_COMMAND
 
 echo "* Subiendo Portal"
-aws s3 cp dist/ "s3://portal.escritoriodigital.cl/$ENVIRONMENT/$PORTAL/" --only-show-errors --recursive
+UPLOAD_COMMAND="aws s3 cp dist/ s3://portal.escritoriodigital.cl/$ENVIRONMENT/$PORTAL/ --only-show-errors --recursive"
+$UPLOAD_COMMAND
 
 case $ENVIRONMENT in
     desarrollo)
@@ -50,7 +51,7 @@ esac
 
 if [ -n "$DISTRIBUTION_ID" ]; then
   echo "* Borrando Cache"
-  CLEAR_COMMAND="aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths /$ENVIRONMENT/* > /dev/null 2>&1"
+  aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/$ENVIRONMENT/*" > /dev/null 2>&1
   $CLEAR_COMMAND
 else
   echo "No se tiene id de distribución para este ambiente, no se puede borrar el cache"
