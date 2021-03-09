@@ -6,7 +6,8 @@ export default {
   list: {}, // TODO: <-
   details: {
     comentarios: [],
-    cuerpo: ''
+    cuerpo: '',
+    adjuntos: []
   },
   comments: [],
   binnacle: [],
