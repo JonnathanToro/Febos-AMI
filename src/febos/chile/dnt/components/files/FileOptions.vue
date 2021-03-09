@@ -1,118 +1,132 @@
 <template>
-  <vs-tooltip text="Desplegar acciones">
-    <vs-dropdown vs-custom-content vs-trigger-click>
-      <a class="a-icon" href.prevent>
-        <vs-icon
-          icon="settings"
-          size="medium"
-          bg="#E4E4E4"
-          round
-          color="gray"
-        />
-      </a>
-      <vs-dropdown-menu style="width: fit-content">
-        <CheckPermission permission="ED016">
-          <vs-dropdown-item
-            v-if="isDraft && onPendingFiles && isResposible"
-            v-on:click="openDraft()"
-          >
-            <vs-icon icon="query_builder"/>
-            Continuar borrador
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED017">
-          <vs-dropdown-item v-on:click="onOptionBinnacleFile(file)">
-            <vs-icon icon="list"/>
-            Bitácora
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED018">
-          <vs-dropdown-item v-on:click="onOptionGetDetailsFile(file)">
-            <vs-icon icon="search"/>
-            Ver detalles
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED019">
-          <vs-dropdown-item v-on:click="onOptionDownloadFile(file)">
-            <vs-icon icon="save_alt"/>
-            Descargar informe
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED020">
-          <vs-dropdown-item v-on:click="onOptionDownloadAttachments(file)">
-            <vs-icon icon="save_alt"/>
-            Descargar expediente
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED021">
-          <vs-dropdown-item
-            v-on:click="onOptionAssignFile(file)"
-            v-if="!isDraft  && onPendingFiles && !isAssigned
+  <div class="d-flex justify-content-center">
+    <div
+      class="mr-1"
+      style="cursor: pointer;"
+      v-on:click="onOptionGetGeneralDetailsFile(file)">
+      <vs-icon
+        icon="find_in_page"
+        size="medium"
+        bg="#E4E4E4"
+        round
+        color="gray"
+      />
+    </div>
+    <vs-tooltip text="Desplegar acciones">
+      <vs-dropdown vs-custom-content vs-trigger-click>
+        <a class="a-icon" href.prevent>
+          <vs-icon
+            icon="settings"
+            size="medium"
+            bg="#E4E4E4"
+            round
+            color="gray"
+          />
+        </a>
+        <vs-dropdown-menu style="width: fit-content">
+          <CheckPermission permission="ED016">
+            <vs-dropdown-item
+              v-if="isDraft && onPendingFiles && isResposible"
+              v-on:click="openDraft()"
+            >
+              <vs-icon icon="query_builder"/>
+              Continuar borrador
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED017">
+            <vs-dropdown-item v-on:click="onOptionBinnacleFile(file)">
+              <vs-icon icon="list"/>
+              Bitácora
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED018">
+            <vs-dropdown-item v-on:click="onOptionGetDetailsFile(file)">
+              <vs-icon icon="search"/>
+              Ver detalles
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED019">
+            <vs-dropdown-item v-on:click="onOptionDownloadFile(file)">
+              <vs-icon icon="save_alt"/>
+              Descargar informe
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED020">
+            <vs-dropdown-item v-on:click="onOptionDownloadAttachments(file)">
+              <vs-icon icon="save_alt"/>
+              Descargar expediente
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED021">
+            <vs-dropdown-item
+              v-on:click="onOptionAssignFile(file)"
+              v-if="!isDraft  && onPendingFiles && !isAssigned
              && !isResposible && !isProcessed && !isCancelled"
-          >
-            <vs-icon icon="how_to_reg"/>
-            Asignarme expediente
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED022">
-          <vs-dropdown-item
-            v-on:click="onOptionCancelFile(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned
+            >
+              <vs-icon icon="how_to_reg"/>
+              Asignarme expediente
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED022">
+            <vs-dropdown-item
+              v-on:click="onOptionCancelFile(file)"
+              v-if="!isDraft  && onPendingFiles && isAssigned
              && isResposible && !isProcessed && !isCancelled"
-          >
-            <vs-icon icon="clear"/>
-            Anular expediente
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED023">
-          <vs-dropdown-item
-            v-on:click="onOptionProcessFile(file)"
-            v-if="!isDraft  && (onGeneralFiles || onPendingFiles)
+            >
+              <vs-icon icon="clear"/>
+              Anular expediente
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED023">
+            <vs-dropdown-item
+              v-on:click="onOptionProcessFile(file)"
+              v-if="!isDraft  && (onGeneralFiles || onPendingFiles)
             && isAssigned && !isProcessed && !isCancelled"
-          >
-            <vs-icon icon="move_to_inbox"/>
-            Finalizar documento
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED024">
-          <vs-dropdown-item v-on:click="onOptionGetParticipants(file)">
-            <vs-icon icon="group"/>
-            Participantes
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED025">
-          <vs-dropdown-item
-            v-on:click="onOptionGetComments(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned
+            >
+              <vs-icon icon="move_to_inbox"/>
+              Finalizar documento
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED024">
+            <vs-dropdown-item v-on:click="onOptionGetParticipants(file)">
+              <vs-icon icon="group"/>
+              Participantes
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED025">
+            <vs-dropdown-item
+              v-on:click="onOptionGetComments(file)"
+              v-if="!isDraft  && onPendingFiles && isAssigned
              && isResposible && !isProcessed && !isCancelled"
-          >
-            <vs-icon icon="chat"/>
-            Comentarios
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED026">
-          <vs-dropdown-item
-            v-on:click="onOptionSendFile(file)"
-            v-if="!isDraft && onPendingFiles && isAssigned
+            >
+              <vs-icon icon="chat"/>
+              Comentarios
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED026">
+            <vs-dropdown-item
+              v-on:click="onOptionSendFile(file)"
+              v-if="!isDraft && onPendingFiles && isAssigned
              && isResposible && !isProcessed && !isCancelled"
-          >
-            <vs-icon icon="chat"/>
-            Enviar documento
-          </vs-dropdown-item>
-        </CheckPermission>
-        <CheckPermission permission="ED027">
-          <vs-dropdown-item
-            v-on:click="onTicketFile(file)"
-            v-if="!isDraft"
-          >
-            <vs-icon icon="help"/>
-            Ticket de ayuda
-          </vs-dropdown-item>
-        </CheckPermission>
-      </vs-dropdown-menu>
-    </vs-dropdown>
-    <span />
-  </vs-tooltip>
+            >
+              <vs-icon icon="chat"/>
+              Enviar documento
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED027">
+            <vs-dropdown-item
+              v-on:click="onTicketFile(file)"
+              v-if="!isDraft"
+            >
+              <vs-icon icon="help"/>
+              Ticket de ayuda
+            </vs-dropdown-item>
+          </CheckPermission>
+        </vs-dropdown-menu>
+      </vs-dropdown>
+      <span />
+    </vs-tooltip>
+  </div>
 </template>
 <script>
 
@@ -178,6 +192,16 @@ export default {
         adjuntos: 'si'
       });
       this.showModals('detailsFile');
+    },
+    onOptionGetGeneralDetailsFile(file) {
+      this.selectFile(file);
+      this.getFileDnt({
+        febosId: file.febosId,
+        destinatarios: 'si',
+        referencias: 'si',
+        adjuntos: 'si'
+      });
+      this.showModals('generalDetailsFile');
     },
     onOptionBinnacleFile(file) {
       this.getFileBinnacle({

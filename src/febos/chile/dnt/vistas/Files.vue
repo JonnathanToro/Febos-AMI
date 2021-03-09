@@ -16,6 +16,7 @@
     </div>
     <PopUpBinnacleFile />
     <PopUpDetailFile :file="selectedFile" />
+    <PopUpGeneralDetailFile :file="selectedFile" />
     <PopUpCancelFile :canceledFile="selectedFile" />
     <PopUpProcessFile :processedFile="selectedFile" />
     <PopUpAsignFile :file="selectedFile" />
@@ -35,6 +36,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
 import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
+import PopUpGeneralDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpGeneralDetailFile';
 import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
 import PopUpAsignFile from '@/febos/chile/dnt/vistas/modals/PopUpAsignFile';
 import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
@@ -55,6 +57,7 @@ export default {
     FileRow,
     FilesHeader,
     PopUpDetailFile,
+    PopUpGeneralDetailFile,
     PopUpCancelFile,
     PopUpAsignFile,
     PopUpProcessFile,
