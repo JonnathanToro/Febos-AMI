@@ -20,3 +20,4 @@ coverage
 coverage/*
 .DS_Store
 certs/
+environments/**.local

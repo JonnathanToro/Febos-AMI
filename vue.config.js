@@ -1,3 +1,8 @@
+// eslint-disable-next-line import/order,no-unused-vars
+const dotenv = require('dotenv');
+// eslint-disable-next-line import/order,no-unused-vars
+const path = require('path');
+
 /*= ========================================================================================
   File Name: vue.config.js
   Description: configuration file of vue
@@ -6,15 +11,36 @@
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== */
-function loadExtraEnviroment(producto) {
-  // eslint-disable-next-line import/no-dynamic-require
-  const extras = require(`./config/${producto}.json`);
-  process.env.VUE_APP_FAV_ICON = extras.general.favicon;
-  process.env.VUE_APP_FOOTER = extras.general.footer;
-  process.env.VUE_APP_TITULO = extras.general.titulo;
-  process.env.VUE_APP_COLOR_PRIMARIO = extras.colores.primario;
-  process.env.VUE_APP_COLOR_NAV_VAR = extras.colores.navbar;
+function cargarConfiguracion(producto, envFile, global = false) {
+  try {
+    dotenv.config({
+      path: path.resolve(global ? 'environments/' : `environments/${producto}`, envFile)
+    });
+  } catch (e) {
+    console.error(`No se encontro la configuracion en environments/${producto}/${envFile}`);
+  }
 }
+
+function loadExtraEnviroment() {
+  const mode = process.env.npm_lifecycle_script.replace(/(vue-)(.*)(--mode )/g, '').trim();
+  const producto = mode.split('.')[0];
+  const ambiente = mode.split('.')[1];
+  const portal = mode.split('.')[2];
+  const envFile = '.env';
+  cargarConfiguracion(producto, `${ambiente}${envFile}`, true);
+  cargarConfiguracion(producto, `${ambiente}${envFile}.local`, true);
+  cargarConfiguracion(producto, envFile);
+  cargarConfiguracion(producto, `${envFile}.local`);
+  cargarConfiguracion(producto, `${ambiente}${envFile}`);
+  cargarConfiguracion(producto, `${ambiente}${envFile}.local`);
+  cargarConfiguracion(producto, `${portal}${envFile}`);
+  cargarConfiguracion(producto, `${portal}${envFile}.local`);
+  console.log('CARGADO process.env.VUE_APP_PRODUCTO ', process.env.VUE_APP_AMBIENTE);
+  console.log('CARGADO process.env.VUE_APP_PRODUCTO ', process.env.VUE_APP_DOMINIO_DEFAULT);
+  console.log('CARGADO process.env.VUE_APP_PRODUCTO ', process.env.VUE_APP_PORTAL);
+}
+
+loadExtraEnviroment();
 
 // eslint-disable-next-line consistent-return
 function getHost() {
@@ -54,4 +80,3 @@ module.exports = {
     }
   }
 };
-loadExtraEnviroment(process.env.VUE_APP_PRODUCTO);
