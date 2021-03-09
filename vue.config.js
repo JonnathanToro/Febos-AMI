@@ -1,7 +1,7 @@
-// eslint-disable-next-line import/order,no-unused-vars
-const dotenv = require('dotenv');
-// eslint-disable-next-line import/order,no-unused-vars
+const fs = require('fs');
 const path = require('path');
+
+const dotenv = require('dotenv');
 
 /*= ========================================================================================
   File Name: vue.config.js
@@ -11,13 +11,18 @@ const path = require('path');
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== */
-function cargarConfiguracion(producto, envFile, global = false) {
+function cargarConfiguracion(producto, envFile, global = false, local = false) {
   try {
-    dotenv.config({
-      path: path.resolve(global ? 'environments/' : `environments/${producto}`, envFile)
-    });
+    // eslint-disable-next-line no-use-before-define
+    const envConfig = dotenv.parse(fs.readFileSync(path.resolve(global ? 'environments/' : `environments/${producto}`, local ? `${envFile}.local` : `${envFile}`)));
+    // eslint-disable-next-line guard-for-in,no-restricted-syntax
+    for (const k in envConfig) {
+      process.env[k] = envConfig[k];
+    }
   } catch (e) {
-    console.error(`No se encontro la configuracion en environments/${producto}/${envFile}`);
+    if (!local) {
+      console.error(`No se encontro la configuracion en environments/${producto}/${envFile}`);
+    }
   }
 }
 
@@ -28,16 +33,16 @@ function loadExtraEnviroment() {
   const portal = mode.split('.')[2];
   const envFile = '.env';
   cargarConfiguracion(producto, `${ambiente}${envFile}`, true);
-  cargarConfiguracion(producto, `${ambiente}${envFile}.local`, true);
+  cargarConfiguracion(producto, `${ambiente}${envFile}`, true, true);
   cargarConfiguracion(producto, envFile);
-  cargarConfiguracion(producto, `${envFile}.local`);
+  cargarConfiguracion(producto, `${envFile}`, false, true);
   cargarConfiguracion(producto, `${ambiente}${envFile}`);
-  cargarConfiguracion(producto, `${ambiente}${envFile}.local`);
+  cargarConfiguracion(producto, `${ambiente}${envFile}`, false, true);
   cargarConfiguracion(producto, `${portal}${envFile}`);
-  cargarConfiguracion(producto, `${portal}${envFile}.local`);
+  cargarConfiguracion(producto, `${portal}${envFile}`, false, true);
   console.log('CARGADO process.env.VUE_APP_PRODUCTO ', process.env.VUE_APP_AMBIENTE);
-  console.log('CARGADO process.env.VUE_APP_PRODUCTO ', process.env.VUE_APP_DOMINIO_DEFAULT);
-  console.log('CARGADO process.env.VUE_APP_PRODUCTO ', process.env.VUE_APP_PORTAL);
+  console.log('CARGADO process.env.VUE_APP_DOMINIO_DEFAULT ', process.env.VUE_APP_DOMINIO_DEFAULT);
+  console.log('CARGADO process.env.VUE_APP_PORTAL ', process.env.VUE_APP_PORTAL);
 }
 
 loadExtraEnviroment();
@@ -54,8 +59,6 @@ function getHost() {
       return 'vue.portal.febos.cl';
   }
 }
-
-const fs = require('fs');
 
 module.exports = {
   lintOnSave: false,
