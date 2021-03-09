@@ -8,7 +8,7 @@ para esto, podemos tener variables que son *globales* por ambiente que van en la
 * produccion.env
 
 
-
+------------
 #Modos
 Los modos se reconoceran para utilizar las variables de entorno,
 para esto la estructura de los modos debe ser 
@@ -18,6 +18,8 @@ para esto la estructura de los modos debe ser
 ``` 
 
 este se descompondra y cargaran las variables asociadas en el siguiente orden:
+
+------------
 
 ## Variables de entorno por ambiente que son globales y comunes para cada producto
 aqui se debe configurar el stage de la api, y cualquier cosa que sea comun entre todos los productos y que cambia por ambiente 
@@ -61,4 +63,8 @@ Si el portal del producto tiene alguna configuracion especifica como imagen de i
  ./environments/ed/cloud.env
 ```
 
-Las variables de entorno terminadas en .local no deben agregarse en el .git
+#### Las variables de entorno terminadas en .local no deben agregarse en el .git
+
+------------
+
+
