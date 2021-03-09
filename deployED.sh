@@ -51,7 +51,7 @@ esac
 
 if [ -n "$DISTRIBUTION_ID" ]; then
   echo "* Borrando Cache"
-  aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/$ENVIRONMENT/*" > /dev/null 2>&1
+  aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/$PORTAL/*" > /dev/null 2>&1
   $CLEAR_COMMAND
 else
   echo "No se tiene id de distribución para este ambiente, no se puede borrar el cache"
