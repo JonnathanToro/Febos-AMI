@@ -40,9 +40,6 @@ function loadExtraEnviroment() {
   cargarConfiguracion(producto, `${ambiente}${envFile}`, false, true);
   cargarConfiguracion(producto, `${portal}${envFile}`);
   cargarConfiguracion(producto, `${portal}${envFile}`, false, true);
-  console.log('CARGADO process.env.VUE_APP_PRODUCTO ', process.env.VUE_APP_AMBIENTE);
-  console.log('CARGADO process.env.VUE_APP_DOMINIO_DEFAULT ', process.env.VUE_APP_DOMINIO_DEFAULT);
-  console.log('CARGADO process.env.VUE_APP_PORTAL ', process.env.VUE_APP_PORTAL);
 }
 
 loadExtraEnviroment();
