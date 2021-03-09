@@ -6,6 +6,15 @@
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== */
+function loadExtraEnviroment(producto) {
+  // eslint-disable-next-line import/no-dynamic-require
+  const extras = require(`./config/${producto}.json`);
+  process.env.VUE_APP_FAV_ICON = extras.general.favicon;
+  process.env.VUE_APP_FOOTER = extras.general.footer;
+  process.env.VUE_APP_TITULO = extras.general.titulo;
+  process.env.VUE_APP_COLOR_PRIMARIO = extras.colores.primario;
+  process.env.VUE_APP_COLOR_NAV_VAR = extras.colores.navbar;
+}
 
 // eslint-disable-next-line consistent-return
 function getHost() {
@@ -19,6 +28,7 @@ function getHost() {
       return 'vue.portal.febos.cl';
   }
 }
+
 const fs = require('fs');
 
 module.exports = {
@@ -44,3 +54,4 @@ module.exports = {
     }
   }
 };
+loadExtraEnviroment(process.env.VUE_APP_PRODUCTO);
