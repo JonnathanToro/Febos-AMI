@@ -171,7 +171,8 @@ Vue.use(VeeValidate, {
         documentDetail: 'detalle',
         mainFileName: 'documento principal',
         relatedDocumentType: 'relacionado con',
-        relatedDocumentNumber: 'nº de documento'
+        relatedDocumentNumber: 'nº de documento',
+        personEmail: 'correo de persona'
       }
     }
   }

@@ -45,6 +45,7 @@ export default () => ({
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
       data.personPosition = dnt.emisorContactoCargo;
+      data.personEmail = dnt.emisorContactoEmail;
       data.withAttachment = dnt.transporteViaTransporteCodigoTransporte;
       data.documentDetail = dnt.transporteNotas;
       data.safiContract = dnt.transportePuertoCodigo;
@@ -182,6 +183,7 @@ export default () => ({
         emisorContactoArea: input.institutionName,
         emisorContactoNombre: input.personName,
         emisorContactoCargo: input.personPosition,
+        emisorContactoEmail: input.personEmail,
         transporteViaTransporteCodigoTransporte: input.withAttachment,
         transporteNotas: input.documentDetail,
         transportePuertoCodigo: input.safiContract

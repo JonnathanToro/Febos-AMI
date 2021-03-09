@@ -10,6 +10,7 @@
         v-for="file in files"
         :file="file"
         :on-pending-files="onPendingFiles"
+        :on-general-files="onGeneralFiles"
         :select-file="selectFile"
       />
     </div>
@@ -67,6 +68,7 @@ export default {
 
     return {
       onPendingFiles: view === 'en-curso',
+      onGeneralFiles: view === 'general',
       fromCS: false,
       selectedFile: {},
       filters: '',

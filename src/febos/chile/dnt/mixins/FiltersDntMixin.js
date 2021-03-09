@@ -93,8 +93,6 @@ const filterViews = {
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
-      // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'destinoParticipanteIds', valor: '${idUsuario}' }
     ],
     filtrosPorDefecto: [
       { campo: 'estado', tipo: 'multi', valor: ['1', '8', '9'] }
@@ -263,10 +261,7 @@ const filterViews = {
       { campo: 'codigosEtiqueta', tipo: 'texto' },
       { campo: 'textoObservaciones', tipo: 'texto' }
     ]
-  },
-  entrada: [
-    { field: 'tipo', value: 'DDD' }
-  ]
+  }
 };
 
 export default {
