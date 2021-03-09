@@ -36,6 +36,11 @@
             style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
             :title="file.emisorContactoCargo" subtitle="Cargo persona"
           />
+          <vs-list-item
+            icon="assignment_ind"
+            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
+            :title="file.emisorContactoEmail" subtitle="Correo persona"
+          />
         </vs-list>
       </vs-tab>
       <vs-tab label="Adjuntos">
