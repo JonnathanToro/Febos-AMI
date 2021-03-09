@@ -172,6 +172,7 @@ Vue.use(VeeValidate, {
         documentDetail: 'detalle',
         mainFileName: 'documento principal',
         relatedDocumentType: 'relacionado con',
+        personEmail: 'correo de persona',
         relatedDocumentNumber: 'nº de documento',
         stepType: 'tipo de paso',
         rolType: 'tipo de rol',

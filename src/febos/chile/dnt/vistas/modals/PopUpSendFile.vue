@@ -1,5 +1,5 @@
 <template>
-  <vs-popup title="Enviar Expediente" :active.sync="showModal">
+  <vs-popup :title="`Enviar Expediente ${file.numero}`" :active.sync="showModal">
     <div>
       <h5>
         Para:

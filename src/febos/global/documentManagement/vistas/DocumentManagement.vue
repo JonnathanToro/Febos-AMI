@@ -2,8 +2,8 @@
 <div>
   <vx-card title="Gestión de Documentos" title-color="primary">
     <div>
-      <div class="row">
-        <div class="col-md-4">
+      <div class="row mb-5">
+        <div class="col-md-4 wrap-tree">
           <div class="mt-3">
             <tree-documents
               class="item"
@@ -11,13 +11,34 @@
               @make-folder="makeFolder"
               @add-item="addItem"
               @get-children="getChildren"
+              @get-detail="getDetail"
             ></tree-documents>
           </div>
         </div>
         <div class="col-md-8" id="list-documents">
+          <div>
+            <h5 class="mt-1">
+              Detalles
+              <span v-if="detailItem.type === 'folder'">
+                de la carpeta
+              </span>
+              <span v-if="detailItem.type === 'document'">
+                del documento
+              </span>
+              <span class="text-primary">{{detailItem.nombre}}</span>
+            </h5>
+          </div>
           <div class="row">
             <div class="col-md-12">
               <div class="actions">
+                <vs-button
+                  radius
+                  v-tooltip="'Agregar carpeta'"
+                  class="action mr-2"
+                  color="primary"
+                  icon="create_new_folder"
+                  @click="makeFolder"
+                />
                 <vs-button
                   radius
                   v-tooltip="'Editar data documento'"
@@ -30,14 +51,7 @@
                   v-tooltip="'Agregar documento'"
                   class="action mr-2"
                   color="primary"
-                  icon="add_circle_outline"
-                />
-                <vs-button
-                  radius
-                  v-tooltip="'Agregar carpeta'"
-                  class="action mr-2"
-                  color="primary"
-                  icon="add_circle_outline"
+                  icon="note_add"
                 />
                 <vs-button
                   radius
@@ -77,7 +91,7 @@
               </div>
             </div>
             <div class="col-md-12">
-              <div class="mt-4" v-if="selectedFolder.children">
+              <div class="mt-4 wrap-table" v-show="selectedFolder.children">
                 <table class="w-100">
                   <thead style="background: #671e85; color:white;">
                     <tr>
@@ -134,25 +148,143 @@
                   </tbody>
                 </table>
               </div>
+              <vs-divider />
+              <div class="mt-4 wrap-detail">
+                <div style="display: none">
+                  <h5 class="mt-4">
+                    Detalles
+                    <span v-if="detailItem.type === 'folder'">
+                       de la carpeta
+                    </span>
+                    <span v-if="detailItem.type === 'document'">
+                       del documento
+                    </span>
+                    <span class="text-primary">{{detailItem.nombre}}</span>
+                  </h5>
+                </div>
+                <vs-tabs alignment="center">
+                  <vs-tab label="Detalles">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <vs-list>
+                          <vs-list-item
+                            :title="detailItem.fechaCreacion"
+                            subtitle="Fecha de creación"
+                          />
+                          <vs-list-item
+                            :title="detailItem.fechaPublicacion"
+                            subtitle="Fecha de publicación"
+                          />
+                          <vs-list-item
+                            v-if="detailItem.type === 'folder'"
+                            title="Carpeta"
+                            subtitle="Tipo de elemento"
+                          />
+                          <vs-list-item
+                            v-if="detailItem.type === 'document'"
+                            title="Documento"
+                            subtitle="Tipo de elemento"
+                          />
+                          <div>
+                            <span v-if="detailItem.estado === '1'">
+                              <vs-icon
+                                class="mt-2 ml-1"
+                                v-tooltip="'Documento No publicado'"
+                                icon="error_outline"
+                                color="gray"
+                              />
+                              No publicado
+                            </span>
+                            <span v-if="detailItem.estado === '2'">
+                               <vs-icon
+                                 class="mt-2 ml-1"
+                                 v-tooltip="'Documento publicado'"
+                                 icon="check_circle"
+                                 color="#77cc77"
+                               />
+                              Publicado
+                            </span>
+                            <div class="vs-list--subtitle subtitle">Estado del elemento</div>
+                          </div>
+                        </vs-list>
+                      </div>
+                      <div class="col-md-6">
+                        <vs-list>
+                          <vs-list-item
+                            :title="detailItem.nombre"
+                            subtitle="Nombre de elemento"
+                          />
+                          <vs-list-item
+                            :title="detailItem.febosId"
+                            subtitle="ID de elemento"
+                          />
+                          <vs-list-item
+                            :title="detailItem.size"
+                            subtitle="Tamaño de elemento"
+                          />
+                          <vs-list-item
+                            :title="detailItem.responsable"
+                            subtitle="Creado por"
+                          />
+                        </vs-list>
+                      </div>
+                    </div>
+                  </vs-tab>
+                  <vs-tab label="Permisos">
+                    <vs-list class="row">
+                      <vs-list-item
+                        class="col-md-6"
+                        v-for="permission in detailItem.permisos"
+                        :key="permission.codigo"
+                        :title="permission.nombre"
+                        :subtitle="permission.codigo"
+                      />
+                    </vs-list>
+                  </vs-tab>
+                  <vs-tab label="Suscripciones">
+                    <vs-list class="row" v-if="detailItem.suscriptores">
+                      <div
+                        class="col-md-6 border-bottom"
+                        v-for="subscriber in detailItem.suscriptores"
+                        :key="subscriber.id"
+                      >
+                        <vs-list-item
+                          :title="subscriber.nombre"
+                          :subtitle="subscriber.correo"
+                        >
+                          <vs-chip color="primary">
+                            {{ subscriber.rango }}
+                          </vs-chip>
+                        </vs-list-item>
+                      </div>
+                    </vs-list>
+                    <div v-if="!detailItem.suscriptores">
+                      <h5 class="mt-3">No hay suscripciones para este elemento</h5>
+                    </div>
+                  </vs-tab>
+                </vs-tabs>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </vx-card>
-  <!--<PopUpGroup :group="selectedGroup" />-->
+  <PopUpAddElement :element="this.detailItem" :type="typeOfElement" />
 </div>
 </template>
 
 <script>
 
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
+import PopUpAddElement from '@/febos/global/documentManagement/vistas/modals/PopUpAddElement';
 import TreeDocuments from '@/febos/global/documentManagement/components/TreeDocuments';
 
 export default {
   components: {
-    TreeDocuments
+    TreeDocuments,
+    PopUpAddElement
   },
   data() {
     return {
@@ -160,7 +292,9 @@ export default {
       paginate: 10,
       treeView: true,
       selectedFolder: {},
-      selectedDocument: {}
+      selectedDocument: {},
+      detailItem: {},
+      typeOfElement: ''
     };
   },
   watch: {
@@ -183,10 +317,13 @@ export default {
     ]),
   },
   methods: {
-    makeFolder(item) {
-      // Vue.set(item, 'children', []);
-      this.addItem(item);
-      console.log('MAKE FOLDER', item);
+    ...mapActions('Modals', [
+      'showModals',
+      'closeModal'
+    ]),
+    makeFolder() {
+      this.typeOfElement = 'folder';
+      this.showModals('addElement');
     },
     getChildren(item) {
       if (item.type === 'folder') {
@@ -194,7 +331,9 @@ export default {
       } else {
         this.selectedDocument = item;
       }
-      console.log('getting info', item);
+    },
+    getDetail(item) {
+      this.detailItem = item;
     },
     addItem(item) {
       item.children.push({
@@ -220,7 +359,10 @@ export default {
     }
   },
   mounted() {
-    console.log('HOLA MUNDO', this.personalRepository);
+    this.closeModal();
+    this.selectedFolder = this.personalRepository;
+    this.detailItem = this.personalRepository;
+    this.selectedItem = this.personalRepository;
   }
 };
 </script>
@@ -239,5 +381,25 @@ export default {
 .actions {
   display: flex;
   justify-content: flex-end;
+}
+.wrap-table {
+  height: 300px;
+  overflow: scroll;
+}
+
+.wrap-detail {
+  height: 300px;
+  overflow: scroll;
+}
+.subtitle {
+  font-size: 0.85rem;
+  padding-left: 4px;
+}
+.text-primary {
+  color: #671e85 !important;
+}
+.wrap-tree {
+  background: #323e4836;
+  border-radius: 6px;
 }
 </style>

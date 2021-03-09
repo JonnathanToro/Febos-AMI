@@ -63,6 +63,9 @@
             </vs-col>
             <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
               {{ file.emisorContactoNombre | capitalize }}
+              <small class="d-block" v-if="file.emisorContactoEmail">
+                {{ file.emisorContactoEmail }}
+              </small>
             </vs-col>
             <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
               {{ file.solicitanteNombre }}
@@ -130,6 +133,13 @@
             en copia
           </vs-chip>
           <vs-chip
+            v-tooltip="'Estoy en grupo'"
+            v-if="file.enGrupo === 'SI'"
+            color="success" transparent
+          >
+            en grupo
+          </vs-chip>
+          <vs-chip
             v-tooltip="'Soy destinatario/responsable'"
             v-if="file.enResponsable === 'SI'"
             color="danger" transparent
@@ -164,6 +174,7 @@
         :is-cancelled="isCancelled"
         :is-resposible="isResposible"
         :on-pending-files="onPendingFiles"
+        :on-general-files="onGeneralFiles"
         :select-file="selectFile"
       />
     </vs-col>
@@ -179,6 +190,7 @@ export default {
   props: [
     'file',
     'onPendingFiles',
+    'onGeneralFiles',
     'selectFile'
   ],
   computed: {

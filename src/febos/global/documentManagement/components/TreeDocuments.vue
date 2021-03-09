@@ -2,7 +2,7 @@
   <li>
     <div
       class="parent"
-      :class="{bold: isFolder}"
+      :class="{bold: true}"
       @dblclick="makeFolder"
     >
       <span v-if="isFolder" @click="toggle">
@@ -31,7 +31,7 @@
       </span>
       <span
         style="font-size: 14px;padding-left: 4px;"
-        @click="getChildren"
+        @click="getChildren();getDetail()"
       >
         {{ item.nombre }}
       </span>
@@ -45,6 +45,7 @@
         @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
         @get-children="$emit('get-children', $event)"
+        @get-detail="$emit('get-detail', $event)"
       ></tree-documents>
       <!--
       <li class="add" @click="$emit('add-item', item)">
@@ -65,7 +66,9 @@ export default {
   },
   data() {
     return {
-      isOpen: true
+      isOpen: true,
+      selected: false,
+      itemSelect: {}
     };
   },
   computed: {
@@ -84,6 +87,9 @@ export default {
     },
     getChildren() {
       this.$emit('get-children', this.item);
+    },
+    getDetail() {
+      this.$emit('get-detail', this.item);
     },
     makeFolder() {
       if (!this.isFolder) {
@@ -109,5 +115,8 @@ ul {
   padding-left: 1em;
   line-height: 1.5em;
   list-style-type: dot;
+}
+.selected {
+  color: red ;
 }
 </style>

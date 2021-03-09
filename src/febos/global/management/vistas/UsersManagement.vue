@@ -232,6 +232,9 @@ export default {
     usersByGroup(newValue) {
       this.usersTree = newValue;
     },
+    usersCompany(newValue) {
+      this.usersTree = newValue;
+    },
     loading(value) {
       if (!value) {
         this.$vs.loading.close('#list-users > .con-vs-loading');
@@ -378,6 +381,7 @@ export default {
     this.tree.children = this.makeTree();
     this.tree.isOpen = true;
     this.usersTree = this.usersCompany;
+    console.log('ACA', this.usersCompany);
   }
 };
 </script>

@@ -67,7 +67,8 @@
         <CheckPermission permission="ED023">
           <vs-dropdown-item
             v-on:click="onOptionProcessFile(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned && !isProcessed && !isCancelled"
+            v-if="!isDraft  && (onGeneralFiles || onPendingFiles)
+            && isAssigned && !isProcessed && !isCancelled"
           >
             <vs-icon icon="move_to_inbox"/>
             Finalizar documento
@@ -124,6 +125,7 @@ export default {
   props: [
     'file',
     'onPendingFiles',
+    'onGeneralFiles',
     'isDraft',
     'isAssigned',
     'isProcessed',

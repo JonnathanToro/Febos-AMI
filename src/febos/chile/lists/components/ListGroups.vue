@@ -55,9 +55,7 @@ export default {
     }
   },
   created() {
-    if (this.value.length) {
-      this.fetchGroups();
-    }
+    this.fetchGroups();
   }
 };
 
