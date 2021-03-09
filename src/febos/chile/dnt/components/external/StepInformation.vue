@@ -56,6 +56,20 @@
       </div>
       <div class="row mb-3">
         <div class="col-12">
+          <vs-input
+            class="w-100"
+            label="Correo Persona"
+            maxlength="70"
+            name="personEmail"
+            v-validate="'email'"
+            :danger="errors.has('step-2-part-1.personEmail')"
+            :danger-text="errors.first('step-2-part-1.personEmail')"
+            v-model="step.personEmail"
+          />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
           <vs-divider />
         </div>
       </div>
@@ -366,6 +380,8 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
 import ListInstitutions from '@/febos/chile/lists/components/ListInstitutions';
 import ListInstitutionTypes from '@/febos/chile/lists/components/ListInstitutionTypes';
@@ -406,6 +422,7 @@ export default {
         institution: '',
         personName: '',
         personPosition: '',
+        personEmail: '',
         withAttachment: 0,
         documentDetail: '',
         observation: '',
@@ -416,6 +433,11 @@ export default {
         ...this.draft
       }
     };
+  },
+  computed: {
+    ...mapGetters('Usuario', [
+      'currentUserId'
+    ]),
   },
   methods: {
     async addSubject() {
@@ -448,9 +470,21 @@ export default {
       const isSelected = this.step.subjectsSelected
         .some((subjectRow) => subjectRow.subject.id === row.subject.id);
 
+      const itsMe = row.subject.id === this.currentUserId;
+
       if (!isSelected) {
-        this.step.subjects.push(row);
-        this.step.subjectsSelected.push(row);
+        if (!itsMe) {
+          this.step.subjects.push(row);
+          this.step.subjectsSelected.push(row);
+        } else {
+          this.$vs.notify({
+            title: 'Oops!',
+            text: 'No te puedes agregar como destinatario',
+            color: 'warning',
+            time: 3000,
+            position: 'top-center'
+          });
+        }
       } else {
         this.$vs.notify({
           title: 'Oops!',
@@ -497,9 +531,21 @@ export default {
       const isSelected = this.step.copiesSelected
         .some((copyRow) => copyRow.copySubject.id === row.copySubject.id);
 
+      const itsMe = row.copySubject.id === this.currentUserId;
+
       if (!isSelected) {
-        this.step.copies.push(row);
-        this.step.copiesSelected.push(row);
+        if (!itsMe) {
+          this.step.copies.push(row);
+          this.step.copiesSelected.push(row);
+        } else {
+          this.$vs.notify({
+            title: 'Oops!',
+            text: 'No te puedes agregar como copia',
+            color: 'warning',
+            time: 3000,
+            position: 'top-center'
+          });
+        }
       } else {
         this.$vs.notify({
           title: 'Oops!',
