@@ -8,14 +8,14 @@ export default [{
       name: 'Expedientes',
       slug: 'files',
       icon: 'FolderIcon',
-      permiso: 'ED008',
+      permiso: 'ED034',
       submenu: [
         {
           url: '/documentos/numOf',
           name: 'Cargar Doc. Trámite',
           slug: 'uploads',
           icon: 'files',
-          permiso: '*', // TODO set permission
+          permiso: 'ED035',
           i18n: 'uploads'
         },
         {
@@ -23,7 +23,7 @@ export default [{
           name: 'Cargar Doc. Interno',
           slug: 'uploads',
           icon: 'files',
-          permiso: '*', // TODO set permission
+          permiso: 'ED0036',
           i18n: 'uploads'
         },
         {
@@ -31,7 +31,7 @@ export default [{
           name: 'Bandeja Entrada',
           slug: '/expedientes/entrada',
           icon: 'files',
-          permiso: '*', // TODO set permission
+          permiso: 'ED037',
           i18n: 'entrada'
         },
         {
@@ -39,7 +39,7 @@ export default [{
           name: 'Bandeja Finalizados',
           slug: '/expedientes/finalizados',
           icon: 'files',
-          permiso: '*', // TODO set permission
+          permiso: 'ED038',
           i18n: 'finalizados'
         }
       ]

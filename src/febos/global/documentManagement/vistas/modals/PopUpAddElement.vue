@@ -4,26 +4,27 @@
     :active.sync="showModal"
   >
     <div class="row">
-      <div class="col-md-6">
-        <vs-input
-          class="w-100"
-          v-if="type === 'document'"
-          label="Nombre para documento"
-          name="documentNumber"
-          v-model="newElement.name"
-        />
-        <vs-input
-          class="w-100"
-          v-if="type === 'folder'"
-          label="Nombre para carpeta"
-          name="documentNumber"
-          v-model="newElement.name"
+      <div class="col-md-12 text-right mt-3" v-if="typeElement === 'document'">
+        <UploadFile
+          permission="*"
+          text="Seleccionar"
+          v-model="newElement.url"
+          upload-to="saval"
+          container-class="w-100"
         />
       </div>
-      <div class="col-md-12" v-if="type === 'document'">
+      <div class="col-md-12">
         <vs-input
           class="w-100"
-          label="Nº Documento"
+          v-if="typeElement === 'document'"
+          label="Nombre para documento"
+          name="documentNumber"
+          v-model="newElement.url.name"
+        />
+        <vs-input
+          class="w-100"
+          v-if="typeElement === 'folder'"
+          label="Nombre para carpeta"
           name="documentNumber"
           v-model="newElement.name"
         />
@@ -31,6 +32,7 @@
     </div>
     <div class="m-top-20" style="display: flex;justify-content: flex-end;">
       <vs-button
+        class="mt-5"
         v-on:click="addElementRepo()"
         color="primary"
         style="margin-left: 12px;"
@@ -43,10 +45,16 @@
 </template>
 <script>
 
+import Vue from 'vue';
 import { mapActions, mapGetters } from 'vuex';
+
+import UploadFile from '@/febos/global/_vue/componentes/UploadFile';
 
 export default {
   name: 'PopUpAddElement',
+  components: {
+    UploadFile
+  },
   mixins: [],
   props: {
     element: {
@@ -54,7 +62,7 @@ export default {
       required: true,
       default: () => {}
     },
-    type: {
+    typeElement: {
       type: String,
       required: true,
       default: () => ''
@@ -64,10 +72,13 @@ export default {
     return {
       newElement: {
         name: '',
-        type: this.type,
-        typeName: this.type === 'folder' ? 'Carpeta' : 'Documento',
-        url: '',
-        parent: this.item.febosId
+        type: '',
+        typeName: '',
+        url: {
+          name: '',
+          path: ''
+        },
+        parent: ''
       }
     };
   },
@@ -86,17 +97,58 @@ export default {
   },
   methods: {
     ...mapActions('DocManagement', [
-      'addEelement'
+      'addElement'
     ]),
     ...mapActions('Modals', [
       'closeModal'
     ]),
     async addElementRepo() {
-      await this.addEelement(this.newElement);
+      const element = {
+        nombre: this.typeElement === 'folder' ? this.newElement.name : this.newElement.url.name,
+        responsable: 'Letty Villamizar',
+        correoResponsable: 'letty@febos.cl',
+        type: this.typeElement,
+        size: this.typeElement === 'folder' ? '0' : '4 MB',
+        febosId: this.newElement.name[0] + Math.ceil(Math.random() * 10),
+        estado: '1',
+        fechaCreacion: Vue.moment().format('YYYY-MM-DD'),
+        permisos: [
+          {
+            codigo: 'PER1',
+            nombre: 'Revisión'
+          },
+          {
+            codigo: 'PER2',
+            nombre: 'Edición'
+          },
+          {
+            codigo: 'PER3',
+            nombre: 'Visor'
+          },
+          {
+            codigo: 'PER4',
+            nombre: 'Descargas'
+          },
+          {
+            codigo: 'PER5',
+            nombre: 'Suscripción'
+          },
+          {
+            codigo: 'PER7',
+            nombre: 'Copiar'
+          },
+          {
+            codigo: 'PER8',
+            nombre: 'DesPublicar'
+          }
+        ],
+        padreId: this.element.febosId
+      };
+      element.url = element.type === 'document' ? this.newElement.url.path : '';
+      element.size = `${ Math.ceil(Math.random() * 10) } MB`;
+      console.log('ELEMENT', element);
+      await this.addElement(element);
     }
-  },
-  mounted() {
-    console.log('ELEMENT', this.element, this.type);
   }
 };
 </script>

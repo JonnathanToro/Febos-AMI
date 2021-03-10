@@ -351,11 +351,14 @@ export default {
       this.usuario = null;
     },
     checkParent(groupNode) {
-      return this.groupsCompany.filter((group) => group.padreId === groupNode.id).map((group) => ({
-        ...group,
-        children: this.checkParent(group),
-        name: group.nombre
-      }));
+      return this.groupsCompany.filter((group) => group.padreId === groupNode.id).map((group) => {
+        console.log('jola==', group.padreId, groupNode.id);
+        return {
+          ...group,
+          children: this.checkParent(group),
+          name: group.nombre
+        };
+      });
     },
     makeTree() {
       return this.firstGroupsCompany.map((group) => ({
@@ -381,7 +384,7 @@ export default {
     this.tree.children = this.makeTree();
     this.tree.isOpen = true;
     this.usersTree = this.usersCompany;
-    console.log('ACA', this.usersCompany);
+    console.log('ACA', this.groupsCompany);
   }
 };
 </script>

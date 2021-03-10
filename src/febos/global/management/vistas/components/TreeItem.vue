@@ -105,6 +105,9 @@ export default {
         this.isOpen = true;
       }
     }
+  },
+  mounted() {
+    console.log('this', this.item);
   }
 };
 </script>

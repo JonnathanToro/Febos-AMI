@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     isFolder() {
-      return this.item.children && this.item.children.length && this.item.type === 'folder';
+      return (this.item.children && this.item.children.length) || this.item.type === 'folder';
     },
     isDocument() {
       return this.item.type === 'document';
@@ -97,9 +97,6 @@ export default {
         this.isOpen = true;
       }
     }
-  },
-  created() {
-    // console.log('ITEM', this.item);
   }
 };
 </script>

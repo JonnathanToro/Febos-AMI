@@ -3,11 +3,11 @@
   <vx-card title="Gestión de Documentos" title-color="primary">
     <div>
       <div class="row mb-5">
-        <div class="col-md-4 wrap-tree">
+        <div class="col-md-4 shadow bg-white rounded">
           <div class="mt-3">
             <tree-documents
               class="item"
-              :item="personalRepository"
+              :item="tree"
               @make-folder="makeFolder"
               @add-item="addItem"
               @get-children="getChildren"
@@ -52,6 +52,7 @@
                   class="action mr-2"
                   color="primary"
                   icon="note_add"
+                  @click="addItem"
                 />
                 <vs-button
                   radius
@@ -68,11 +69,22 @@
                   icon="save_alt"
                 />
                 <vs-button
+                  v-if="detailItem.estado === '2'"
                   radius
                   v-tooltip="'Deshabilitar documento'"
                   class="action mr-2"
                   color="primary"
+                  icon="toggle_on"
+                  @click="disableItem"
+                />
+                <vs-button
+                  v-if="detailItem.estado === '1'"
+                  radius
+                  v-tooltip="'Publicar documento'"
+                  class="action mr-2"
+                  color="primary"
                   icon="toggle_off"
+                  @click="publishItem"
                 />
                 <vs-button
                   radius
@@ -91,8 +103,8 @@
               </div>
             </div>
             <div class="col-md-12">
-              <div class="mt-4 wrap-table" v-show="selectedFolder.children">
-                <table class="w-100">
+              <div class="mt-4 wrap-table shadow bg-white rounded" v-show="selectedFolder.children">
+                <table class="w-100 rounded">
                   <thead style="background: #671e85; color:white;">
                     <tr>
                       <th>
@@ -149,7 +161,7 @@
                 </table>
               </div>
               <vs-divider />
-              <div class="mt-4 wrap-detail">
+              <div class="mt-4 wrap-detail shadow bg-white rounded">
                 <div style="display: none">
                   <h5 class="mt-4">
                     Detalles
@@ -270,7 +282,7 @@
       </div>
     </div>
   </vx-card>
-  <PopUpAddElement :element="this.detailItem" :type="typeOfElement" />
+  <PopUpAddElement :element="this.detailItem" :typeElement="typeOfElement" />
 </div>
 </template>
 
@@ -291,6 +303,7 @@ export default {
       page: 1,
       paginate: 10,
       treeView: true,
+      tree: {},
       selectedFolder: {},
       selectedDocument: {},
       detailItem: {},
@@ -298,6 +311,9 @@ export default {
     };
   },
   watch: {
+    personalRepository() {
+      this.tree.children = this.makeTree();
+    },
     loading(value) {
       if (!value) {
         this.$vs.loading.close('#list-documents > .con-vs-loading');
@@ -313,6 +329,7 @@ export default {
   computed: {
     ...mapGetters('DocManagement', [
       'personalRepository',
+      'personalRepositoryParent',
       'loading'
     ]),
   },
@@ -320,6 +337,10 @@ export default {
     ...mapActions('Modals', [
       'showModals',
       'closeModal'
+    ]),
+    ...mapActions('DocManagement', [
+      'publishElement',
+      'disableElement'
     ]),
     makeFolder() {
       this.typeOfElement = 'folder';
@@ -335,34 +356,40 @@ export default {
     getDetail(item) {
       this.detailItem = item;
     },
-    addItem(item) {
-      item.children.push({
-        name: 'new stuff'
-      });
+    publishItem() {
+      this.publishElement(this.detailItem);
     },
-    editGroup() {
-      this.selectedGroup = this.group;
-      this.showModals('modalGroup');
+    disableItem() {
+      console.log('disableee');
+      this.disableElement(this.detailItem);
     },
-    addGroup() {
-      this.selectedGroup = {
-        nombre: '',
-        descripcion: '',
-        codigo: '',
-        isOffice: false
-      };
-      // this.showModals('modalGroup');
-      console.log('ADD', this.selectedGroup);
+    addItem() {
+      this.typeOfElement = 'document';
+      this.showModals('addElement');
     },
-    addSubGroup() {
-      console.log('ADD SUB', this.selectedGroup);
+    checkParent(groupNode) {
+      return this.personalRepository
+        .filter((group) => group.padreId === groupNode.febosId).map((group) => ({
+          ...group,
+          children: this.checkParent(group)
+        }));
+    },
+    makeTree() {
+      return this.personalRepositoryParent.map((group) => ({
+        ...group,
+        children: this.checkParent(group)
+      }));
     }
   },
-  mounted() {
+  created() {
     this.closeModal();
-    this.selectedFolder = this.personalRepository;
-    this.detailItem = this.personalRepository;
-    this.selectedItem = this.personalRepository;
+    this.tree = {
+      ...this.personalRepositoryParent[0],
+      children: this.makeTree()
+    };
+    this.selectedFolder = this.tree;
+    this.detailItem = this.tree;
+    this.selectedItem = this.tree;
   }
 };
 </script>
