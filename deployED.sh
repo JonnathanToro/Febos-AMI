@@ -33,6 +33,7 @@ fi
 BUILD_COMMAND="vue-cli-service build --mode ed.$ENVIRONMENT.$PORTAL"
 $BUILD_COMMAND
 
+
 echo "* Subiendo Portal"
 UPLOAD_COMMAND="aws s3 cp dist/ s3://portal.escritoriodigital.cl/$ENVIRONMENT/$PORTAL/ --only-show-errors --recursive"
 $UPLOAD_COMMAND

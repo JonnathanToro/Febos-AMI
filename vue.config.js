@@ -27,7 +27,7 @@ function cargarConfiguracion(producto, envFile, global = false, local = false) {
 }
 
 function loadExtraEnviroment() {
-  const mode = process.env.npm_lifecycle_script.replace(/(vue-)(.*)(--mode )/g, '').trim();
+  const mode = process.VUE_CLI_SERVICE.mode||process.env.npm_lifecycle_script.replace(/(vue-)(.*)(--mode )/g, '').trim();
   const producto = mode.split('.')[0];
   const ambiente = mode.split('.')[1];
   const portal = mode.split('.')[2];
