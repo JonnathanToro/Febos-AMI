@@ -20,7 +20,7 @@ export default [{
         },
         {
           url: '/documentos/numInt',
-          name: 'Cargar Doc. Interno',
+          name: 'Cargar Doc. Trámite Int.',
           slug: 'uploads',
           icon: 'files',
           permiso: '*', // TODO set permission
