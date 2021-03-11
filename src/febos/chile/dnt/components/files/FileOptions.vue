@@ -1,17 +1,19 @@
 <template>
   <div class="d-flex justify-content-center">
-    <div
-      class="mr-1"
-      style="cursor: pointer;"
-      v-on:click="onOptionGetGeneralDetailsFile(file)">
-      <vs-icon
-        icon="find_in_page"
-        size="medium"
-        bg="#E4E4E4"
-        round
-        color="gray"
-      />
-    </div>
+    <CheckPermission permission="ED018">
+      <div
+        class="mr-1"
+        style="cursor: pointer;"
+        v-on:click="onOptionGetGeneralDetailsFile(file)">
+        <vs-icon
+          icon="find_in_page"
+          size="medium"
+          bg="#E4E4E4"
+          round
+          color="gray"
+        />
+      </div>
+    </CheckPermission>
     <vs-tooltip text="Desplegar acciones">
       <vs-dropdown vs-custom-content vs-trigger-click>
         <a class="a-icon" href.prevent>
@@ -37,12 +39,6 @@
             <vs-dropdown-item v-on:click="onOptionBinnacleFile(file)">
               <vs-icon icon="list"/>
               Bitácora
-            </vs-dropdown-item>
-          </CheckPermission>
-          <CheckPermission permission="ED018">
-            <vs-dropdown-item v-on:click="onOptionGetDetailsFile(file)">
-              <vs-icon icon="search"/>
-              Ver detalles
             </vs-dropdown-item>
           </CheckPermission>
           <CheckPermission permission="ED019">
@@ -193,11 +189,12 @@ export default {
       });
       this.showModals('detailsFile');
     },
-    onOptionGetGeneralDetailsFile(file) {
+    async onOptionGetGeneralDetailsFile(file) {
       this.selectFile(file);
-      this.getFileDnt({
+      await this.getFileDnt({
         febosId: file.febosId,
         destinatarios: 'si',
+        etiquetas: 'si',
         referencias: 'si',
         adjuntos: 'si'
       });
