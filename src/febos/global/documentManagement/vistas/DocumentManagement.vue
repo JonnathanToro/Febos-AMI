@@ -12,7 +12,7 @@
               @add-item="addItem"
               @get-children="getChildren"
               @get-detail="getDetail"
-            ></tree-documents>
+            />
           </div>
         </div>
         <div class="col-md-8" id="list-documents">
@@ -40,11 +40,24 @@
                   @click="makeFolder"
                 />
                 <vs-button
+                  v-if="!editMood
+                   && detailItem.permisos && detailItem.permisosCodigo.includes('PER2')"
                   radius
-                  v-tooltip="'Editar data documento'"
+                  v-tooltip="'Editar documento'"
                   class="action mr-2"
                   color="primary"
                   icon="edit"
+                  @click="enableEditMood"
+                />
+                <vs-button
+                  v-if="editMood
+                   && detailItem.permisos && detailItem.permisosCodigo.includes('PER2')"
+                  radius
+                  v-tooltip="'Editar documento'"
+                  class="action mr-2"
+                  color="primary"
+                  icon="save"
+                  @click="saveModification"
                 />
                 <vs-button
                   radius
@@ -55,21 +68,18 @@
                   @click="addItem"
                 />
                 <vs-button
-                  radius
-                  v-tooltip="'Copiar documento'"
-                  class="action mr-2"
-                  color="primary"
-                  icon="content_copy"
-                />
-                <vs-button
+                  v-if="!editMood
+                   && detailItem.permisos && detailItem.permisosCodigo.includes('PER4')"
                   radius
                   v-tooltip="'Descargar documento'"
                   class="action mr-2"
                   color="primary"
                   icon="save_alt"
+                  @click="downloadDocument"
                 />
                 <vs-button
-                  v-if="detailItem.estado === '2'"
+                  v-if="detailItem.estado === '2'
+                    && detailItem.permisos && detailItem.permisosCodigo.includes('PER8')"
                   radius
                   v-tooltip="'Deshabilitar documento'"
                   class="action mr-2"
@@ -78,7 +88,8 @@
                   @click="disableItem"
                 />
                 <vs-button
-                  v-if="detailItem.estado === '1'"
+                  v-if="detailItem.estado === '1'
+                    && detailItem.permisos && detailItem.permisosCodigo.includes('PER8')"
                   radius
                   v-tooltip="'Publicar documento'"
                   class="action mr-2"
@@ -87,23 +98,27 @@
                   @click="publishItem"
                 />
                 <vs-button
+                  v-if="detailItem.responsable !== 'Letty Villamizar'"
                   radius
-                  v-tooltip="'Suscribirme'"
+                  v-tooltip="'Subscrito'"
                   class="action mr-2"
                   color="primary"
                   icon="notifications_active"
+                  @click="unSubscribe"
                 />
                 <vs-button
+                  v-if="detailItem.permisos && detailItem.permisosCodigo.includes('PER6')"
                   radius
                   v-tooltip="'Enviar a flujo'"
                   class="action mr-2"
                   color="primary"
                   icon="sync_alt"
+                  @click="sendToFlow"
                 />
               </div>
             </div>
             <div class="col-md-12">
-              <div class="mt-4 wrap-table shadow bg-white rounded" v-show="selectedFolder.children">
+              <div class="mt-4 wrap-table shadow bg-white rounded">
                 <table class="w-100 rounded">
                   <thead style="background: #671e85; color:white;">
                     <tr>
@@ -125,15 +140,65 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="document in selectedFolder.children" :key="document.febosId">
-                      <td class="text-center">
+                    <tr v-if="detailItem.type === 'document'">
+                      <td class="text-center d-flex justify-content-lg-around">
+                        <span v-if="detailItem.estado === '1'">
+                          <vs-icon
+                            v-tooltip="'Documento No publicado'"
+                            size="small"
+                            icon="error_outline"
+                            color="gray"
+                          />
+                        </span>
+                        <span v-if="detailItem.estado === '2'">
+                          <vs-icon
+                            v-tooltip="'Documento publicado'"
+                            size="small"
+                            icon="check_circle"
+                            color="#77cc77"
+                          />
+                        </span>
+                        <span>
+                          <vs-icon
+                            v-if="detailItem.type === 'folder'"
+                            size="small"
+                            icon="folder"
+                            color="gray"
+                          />
+                          <vs-icon
+                            v-if="detailItem.type === 'document'"
+                            size="small"
+                            icon="file_present"
+                            color="gray"
+                          />
+                        </span>
+                      </td>
+                      <td>
+                        {{detailItem.nombre}}
+                      </td>
+                      <td>
+                        {{detailItem.size}}
+                      </td>
+                      <td>
+                        {{detailItem.fechaPublicacion}}
+                      </td>
+                      <td>
+                        {{detailItem.responsable}}
+                      </td>
+                    </tr>
+                    <tr
+                      v-for="document in detailItem.children"
+                      :key="document.febosId"
+                      v-show="detailItem.children.length"
+                    >
+                      <td class="text-center d-flex justify-content-lg-around">
                         <span v-if="document.estado === '1'">
-                           <vs-icon
-                             v-tooltip="'Documento No publicado'"
-                             size="small"
-                             icon="error_outline"
-                             color="gray"
-                           />
+                          <vs-icon
+                            v-tooltip="'Documento No publicado'"
+                            size="small"
+                            icon="error_outline"
+                            color="gray"
+                          />
                         </span>
                         <span v-if="document.estado === '2'">
                           <vs-icon
@@ -143,9 +208,28 @@
                             color="#77cc77"
                           />
                         </span>
+                        <span>
+                          <vs-icon
+                            v-if="document.type === 'folder'"
+                            size="small"
+                            icon="folder"
+                            color="gray"
+                          />
+                          <vs-icon
+                            v-if="document.type === 'document'"
+                            size="small"
+                            icon="file_present"
+                            color="gray"
+                          />
+                        </span>
                       </td>
                       <td>
-                        {{document.nombre}}
+                        <span
+                          v-on:click="getDetail(document)"
+                          style="cursor:pointer;"
+                        >
+                          {{document.nombre}}
+                        </span>
                       </td>
                       <td>
                         {{document.size}}
@@ -222,7 +306,7 @@
                       </div>
                       <div class="col-md-6">
                         <vs-list>
-                          <vs-list-item
+                         <vs-list-item
                             :title="detailItem.nombre"
                             subtitle="Nombre de elemento"
                           />
@@ -307,7 +391,9 @@ export default {
       selectedFolder: {},
       selectedDocument: {},
       detailItem: {},
-      typeOfElement: ''
+      typeOfElement: '',
+      editMood: false,
+      editElement: {}
     };
   },
   watch: {
@@ -340,8 +426,29 @@ export default {
     ]),
     ...mapActions('DocManagement', [
       'publishElement',
-      'disableElement'
+      'disableElement',
+      'unSubscribeTo',
+      'goToFlow',
+      'downloadFilePDF'
     ]),
+    unSubscribe() {
+      this.unSubscribeTo(this.detailItem);
+    },
+    enableEditMood() {
+      this.typeOfElement = this.detailItem.type;
+      this.showModals('addElement');
+    },
+    saveModification() {
+      console.log('SAVE', this.editElement);
+    },
+    downloadDocument() {
+      this.downloadFilePDF({
+        febosId: '68483ee2201b324e08295632f39fb0458e66',
+        imagen: 'si',
+        regenerar: 'si',
+        tipoImagen: 0
+      });
+    },
     makeFolder() {
       this.typeOfElement = 'folder';
       this.showModals('addElement');
@@ -360,18 +467,20 @@ export default {
       this.publishElement(this.detailItem);
     },
     disableItem() {
-      console.log('disableee');
       this.disableElement(this.detailItem);
     },
     addItem() {
       this.typeOfElement = 'document';
       this.showModals('addElement');
     },
-    checkParent(groupNode) {
+    sendToFlow() {
+      this.goToFlow();
+    },
+    checkParent(group) {
       return this.personalRepository
-        .filter((group) => group.padreId === groupNode.febosId).map((group) => ({
-          ...group,
-          children: this.checkParent(group)
+        .filter((groupNode) => groupNode.padreId === group.febosId).map((groupMap) => ({
+          ...groupMap,
+          children: this.checkParent(groupMap)
         }));
     },
     makeTree() {
@@ -383,10 +492,8 @@ export default {
   },
   created() {
     this.closeModal();
-    this.tree = {
-      ...this.personalRepositoryParent[0],
-      children: this.makeTree()
-    };
+    // eslint-disable-next-line prefer-destructuring
+    this.tree = this.makeTree()[0];
     this.selectedFolder = this.tree;
     this.detailItem = this.tree;
     this.selectedItem = this.tree;
@@ -429,4 +536,35 @@ export default {
   background: #323e4836;
   border-radius: 6px;
 }
+.wrap-option {
+  background:  #f8f8f8;
+  margin-bottom: 6px;
+}
+
+.input-option {
+  color: inherit;
+  margin-top: 4px;
+  width: 80%;
+  background: transparent;
+}
+
+.input-blocked {
+  color: inherit;
+  pointer-events: none;
+  border: none !important;
+  padding: 4px 4px 6px 4px;
+  border-radius: 5px;
+}
+
+.input-edit {
+  color: inherit;
+  border: 1px solid #66258324;
+  padding: 4px 4px 6px 4px;
+  border-radius: 5px;
+}
+
+.label-details {
+  color: red;
+}
+
 </style>

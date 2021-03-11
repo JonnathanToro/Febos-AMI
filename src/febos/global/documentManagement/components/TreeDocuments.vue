@@ -30,6 +30,14 @@
          />
       </span>
       <span
+        v-if="item.nombre === 'Mis suscripciones'"
+        style="font-size: 14px;padding-left: 4px;color: #009bdb"
+        @click="getChildren();getDetail()"
+      >
+        {{ item.nombre }}
+      </span>
+      <span
+        v-if="item.nombre !== 'Mis suscripciones'"
         style="font-size: 14px;padding-left: 4px;"
         @click="getChildren();getDetail()"
       >
