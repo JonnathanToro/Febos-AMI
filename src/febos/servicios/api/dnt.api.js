@@ -78,7 +78,7 @@ export const sendComment = (payload) => {
 };
 
 export const sendFile = (payload) => {
-  console.log('ENVIANDOO', payload);
+  console.log('ENCIANDO', payload);
   return apiClient.post(`${RESOURCE}/${payload.febosId}/destinos`,
     { destinos: payload.destinos },
     { operacionId: 'io.dnt.send.file' });

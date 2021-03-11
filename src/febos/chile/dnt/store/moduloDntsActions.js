@@ -34,6 +34,7 @@ export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
 
 export const detailDnt = async ({ commit }, payload) => {
   try {
+    commit('SET_DETAIL_DNT', {});
     commit('SET_LOADING', true);
     const response = await getFile(payload);
     commit('SET_DETAIL_DNT', response.data);

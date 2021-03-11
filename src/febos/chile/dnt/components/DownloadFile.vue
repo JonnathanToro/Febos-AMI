@@ -1,11 +1,14 @@
 <template>
-  <div style="cursor: pointer;">
+  <div style="cursor: pointer;width: fit-content">
     <div v-on:click="getFile()" v-if="this.mood === 'normal'">
       {{name}}
     </div>
-    <div v-on:click="getFile()" v-if="this.mood === 'compact'" style="cursor:pointer">
+    <span
+      v-on:click="getFile()" v-if="this.mood === 'compact'"
+      style="cursor:pointer;width: fit-content;"
+    >
       <vs-icon icon="description" size="small" :title="name"/>
-    </div>
+    </span>
   </div>
 </template>
 
@@ -42,8 +45,6 @@ export default {
     getFile() {
       this.downloadPrivateFile({ path: this.path, nombre: this.name });
     }
-  },
-  mounted() {
   }
 };
 </script>
