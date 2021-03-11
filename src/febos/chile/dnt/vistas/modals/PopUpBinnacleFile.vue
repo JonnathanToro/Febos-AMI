@@ -17,7 +17,7 @@
           >
             <vs-chip
               v-tooltip="'Registro oculto'" title="Registro oculto"
-              v-if="binnacle.tipoVista == -1 || binnacle.tipo == -1" >
+              v-if="binnacle.tipoVista == -1 || binnacle.tipoVista == 0" >
               <vs-icon icon="remove_red_eye" size="small"></vs-icon>
               <span></span>
             </vs-chip>
@@ -43,7 +43,7 @@
           >
             <vs-chip
               v-tooltip="'Registro oculto'"  title="Registro oculto"
-              v-if="binnacle.tipoVista == -1 || binnacle.tipo == -1" >
+              v-if="binnacle.tipoVista == -1 || binnacle.tipoVista == 0" >
               <vs-icon icon="remove_red_eye" size="small"></vs-icon>
               <span></span>
             </vs-chip>
