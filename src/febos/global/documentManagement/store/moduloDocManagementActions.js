@@ -32,6 +32,12 @@ export const goToFlow = async ({ commit }) => {
   setTimeout(() => commit('SET_LOADING', false), 2000);
 };
 
+export const leaveComment = async ({ commit }, payload) => {
+  commit('SET_LOADING', true);
+  commit('ADD_COMMENT', payload);
+  setTimeout(() => commit('SET_LOADING', false), 2000);
+};
+
 export const downloadFilePDF = async ({ commit }, payload) => {
   try {
     commit('SET_LOADING', true);
@@ -41,4 +47,8 @@ export const downloadFilePDF = async ({ commit }, payload) => {
   } finally {
     commit('SET_LOADING', false);
   }
+};
+
+export const setElement = ({ commit }, payload) => {
+  commit('SET_ELEMENT', payload);
 };

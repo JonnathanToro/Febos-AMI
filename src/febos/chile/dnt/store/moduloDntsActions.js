@@ -266,7 +266,6 @@ export const sendTicketHelp = async ({ commit }, payload) => {
 export const saveDocument = async ({ commit }, {
   id, data, isDraft, isFileOfficial, redirectFlow
 }) => {
-  console.log('ACCION', id, data, isDraft, isFileOfficial, redirectFlow);
   commit('SET_LOADING', true);
   try {
     const response = !id
@@ -295,10 +294,11 @@ export const saveDocument = async ({ commit }, {
   }
 };
 
-export const sendToFlow = async ({ commit }, { id, data }) => {
+export const sendToFlow = async ({ commit }) => {
   commit('SET_LOADING', true);
   try {
-    console.log('ACCION', id, data);
+    const path = '/';
+    await router.push({ path });
   } finally {
     commit('SET_LOADING', false);
   }

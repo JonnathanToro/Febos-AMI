@@ -1,11 +1,11 @@
 <template>
   <li>
-    <div
-      class="parent"
-      :class="{bold: true}"
-      @dblclick="makeFolder"
+    <div class="parent"
+       v-bind:class="{
+        selected: element.febosId === item.febosId
+      }"
     >
-      <span v-if="isFolder" @click="toggle">
+      <span v-if="isFolder" @click="toggle" class="pt-1">
         <vs-icon
           size="small"
           icon="keyboard_arrow_right"
@@ -17,7 +17,7 @@
           v-if="isOpen"
         />
       </span>
-      <span>
+      <span class="pt-1">
          <vs-icon
            icon="folder_open"
            size="small"
@@ -30,6 +30,7 @@
          />
       </span>
       <span
+        class="pt-1"
         v-if="item.nombre === 'Mis suscripciones'"
         style="font-size: 14px;padding-left: 4px;color: #009bdb"
         @click="getChildren();getDetail()"
@@ -37,6 +38,7 @@
         {{ item.nombre }}
       </span>
       <span
+        class="pt-1"
         v-if="item.nombre !== 'Mis suscripciones'"
         style="font-size: 14px;padding-left: 4px;"
         @click="getChildren();getDetail()"
@@ -54,7 +56,7 @@
         @add-item="$emit('add-item', $event)"
         @get-children="$emit('get-children', $event)"
         @get-detail="$emit('get-detail', $event)"
-      ></tree-documents>
+      />
       <!--
       <li class="add" @click="$emit('add-item', item)">
         <vs-chip color="primary">
@@ -67,6 +69,8 @@
   </li>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'tree-documents',
   props: {
@@ -74,12 +78,13 @@ export default {
   },
   data() {
     return {
-      isOpen: true,
-      selected: false,
-      itemSelect: {}
+      isOpen: true
     };
   },
   computed: {
+    ...mapGetters('DocManagement', [
+      'element',
+    ]),
     isFolder() {
       return (this.item.children && this.item.children.length) || this.item.type === 'folder';
     },
@@ -113,7 +118,7 @@ export default {
   cursor: pointer;
   list-style: none;
 }
-.bold {
+.parent {
   font-weight: bold;
 }
 ul {
@@ -122,6 +127,10 @@ ul {
   list-style-type: dot;
 }
 .selected {
-  color: red ;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 2px 18px 0 10px;
+  color: #671e85;
+  background: #671e853d;
 }
 </style>

@@ -163,6 +163,12 @@ export default {
         isFileOfficial,
         redirectFlow: flow
       });
+      this.$vs.notify({
+        title: 'Genial!',
+        text: 'Se ha enviado el elemento al flujo de aprobaciones',
+        color: '#671e85',
+        position: 'top-center'
+      });
     },
     onBackup() {
       const { id } = this.$route.params;

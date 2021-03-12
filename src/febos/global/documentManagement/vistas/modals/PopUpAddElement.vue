@@ -109,7 +109,7 @@ export default {
         correoResponsable: 'letty@febos.cl',
         type: this.typeElement,
         size: this.typeElement === 'folder' ? '0' : '4 MB',
-        febosId: this.newElement.name[0] + Math.ceil(Math.random() * 10),
+        febosId: Math.ceil(Math.random() * 1234).toString(),
         estado: '1',
         fechaCreacion: Vue.moment().format('YYYY-MM-DD'),
         permisos: [
@@ -141,12 +141,36 @@ export default {
             codigo: 'PER8',
             nombre: 'DesPublicar'
           }
-        ],
-        padreId: this.element.febosId
+        ]
       };
       element.url = element.type === 'document' ? this.newElement.url.path : '';
       element.size = `${ Math.ceil(Math.random() * 10) } MB`;
-      console.log('ELEMENT', element);
+      element.padreId = this.element.type === 'document'
+        ? this.element.padreId : this.element.febosId;
+      element.permisosCodigo = ['PER1', 'PER3', 'PER4', 'PER7', 'PER8'];
+      element.permisos = [
+        {
+          codigo: 'PER1',
+          nombre: 'Revisión'
+        },
+        {
+          codigo: 'PER3',
+          nombre: 'Visor'
+        },
+        {
+          codigo: 'PER4',
+          nombre: 'Descargas'
+        },
+        {
+          codigo: 'PER7',
+          nombre: 'Copiar'
+        },
+        {
+          codigo: 'PER8',
+          nombre: 'DesPublicar'
+        }
+      ];
+      console.log('ACA', element);
       await this.addElement(element);
     }
   }

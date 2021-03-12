@@ -39,7 +39,36 @@ export default {
       return repo;
     });
   },
+  ADD_COMMENT(state, payload) {
+    state.myRepository = state.myRepository.map((repo) => {
+      if (repo.febosId === payload.element.febosId) {
+        return {
+          ...repo,
+          comentarios: [
+            ...repo.comentarios,
+            payload.comment
+          ]
+        };
+      }
+      return repo;
+    });
+    state.element = state.myRepository.find((repo) => {
+      if (repo.febosId === payload.element.febosId) {
+        return {
+          ...repo,
+          comentarios: [
+            ...repo.comentarios,
+            payload.comment
+          ]
+        };
+      }
+      return repo;
+    });
+  },
   SET_LOADING(state, payload) {
     state.loading = payload;
+  },
+  SET_ELEMENT(state, payload) {
+    state.element = payload;
   }
 };

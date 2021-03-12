@@ -48,6 +48,7 @@ export default {
       febosId: '1doc',
       nombre: 'Documentos Técnicos',
       type: 'folder',
+      isOpen: true,
       fechaCreacion: '2021-01-05',
       responsable: 'Letty Villamizar',
       correoResponsable: 'letty@febos.cl',
@@ -114,6 +115,7 @@ export default {
       nombre: 'Proyectos',
       size: '2 MB',
       type: 'folder',
+      isOpen: false,
       fechaCreacion: '2021-01-06',
       estado: '2',
       responsable: 'Letty Villamizar',
@@ -365,6 +367,7 @@ export default {
       febosId: '2int',
       nombre: 'Documentos internos',
       type: 'folder',
+      isOpen: false,
       fechaCreacion: '2021-03-05',
       responsable: 'Letty Villamizar',
       correoResponsable: 'letty@febos.cl',
@@ -625,6 +628,7 @@ export default {
       nombre: 'Mis suscripciones',
       size: '40 MB',
       type: 'folder',
+      isOpen: true,
       fechaCreacion: '2021-03-06',
       estado: '2',
       responsable: 'Letty Villamizar',
@@ -661,6 +665,7 @@ export default {
       nombre: 'Proyecto Claudio',
       size: '4 MB',
       type: 'folder',
+      isOpen: false,
       fechaCreacion: '2021-03-06',
       estado: '2',
       responsable: 'Claudio Miranda',
@@ -733,7 +738,7 @@ export default {
       correoResponsable: 'claudio@febos.cl',
       fechaPublicacion: '2021-03-06',
       url: 'https://api.febos.cl/desarrollo/herramientas/archivos/privados?path=febos-io/chile/escritorio-digital/desarrollo/archivos/expedientes/16139182846416807bd10-7452-11eb-be96-4de17b26b998.pdf&nombre=20-feb.pdf&dominioPortal=portal.escritoriodigital.cl',
-      permisosCodigo: ['PER1', 'PER3', 'PER4', 'PER5', 'PER6'],
+      permisosCodigo: ['PER1', 'PER3', 'PER4', 'PER5', 'PER6', 'PER10'],
       permisos: [
         {
           codigo: 'PER1',
@@ -754,6 +759,10 @@ export default {
         {
           codigo: 'PER6',
           nombre: 'Envío a flujo'
+        },
+        {
+          codigo: 'PER10',
+          nombre: 'Comentarios'
         }
       ],
       suscriptores: [
@@ -860,5 +869,6 @@ export default {
       comentarios: []
     }
   ],
-  loading: false
+  loading: false,
+  element: {}
 };
