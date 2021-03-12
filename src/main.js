@@ -92,8 +92,7 @@ require('@core/assets/fonts/feather/iconfont.css'); // For form-wizard
 
 // import core styles
 require('@core/scss/core.scss');
-
-// import assets styles
+// // import assets styles
 require('@/assets/scss/style.scss');
 
 Vue.use(Vuesax);
