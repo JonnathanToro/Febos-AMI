@@ -66,5 +66,8 @@ export default {
   },
   SET_BINNACLE(state, payload) {
     state.binnacle = payload;
+  },
+  SET_TIMELINE(state, payload) {
+    state.timeline = payload;
   }
 };

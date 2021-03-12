@@ -44,50 +44,72 @@
           />
         </vs-select>
       </div>
+      <div class="wrap-commentary">
+        <vs-textarea
+          maxlength="255"
+          label="Comentario"
+          v-model="subject.commentary"
+        />
+      </div>
     </div>
     <div>
-      <h5>
-        Con copia:
-      </h5>
-      <div class="wrap-option">
-        <vs-radio v-model="copy.typeCopy" vs-value="sendUser">Usuario</vs-radio>
-        <vs-radio v-model="copy.typeCopy" vs-value="sendGroup">Unidad</vs-radio>
-      </div>
-      <div
-        v-if="copy.typeCopy === 'sendUser' && usersCompany && usersCompany.length"
-        class="wrap-form">
-        <vs-select
-          autocomplete
-          class="selectExample"
-          label="Usuarios"
-          v-model="copy.user"
-        >
-          <vs-select-item
-            v-for="user in usersCompany"
-            :key="user.id"
-            :value="user.id"
-            :text="user.nombre"
-          />
-        </vs-select>
-      </div>
-      <div
-        v-if="copy.typeCopy === 'sendGroup' && groupsCompany && groupsCompany.length"
-        class="wrap-form"
-      >
-        <vs-select
-          autocomplete
-          class="selectExample"
-          label="Unidad"
-          v-model="copy.group"
-        >
-          <vs-select-item
-            v-for="group in groupsCompany"
-            :key="group.id"
-            :value="group.id"
-            :text="group.nombre"
-          />
-        </vs-select>
-      </div>
+      <vs-collapse>
+        <vs-collapse-item>
+          <div slot="header">
+            <h5>
+              Con copia:
+            </h5>
+          </div>
+          <div>
+            <div class="wrap-option">
+              <vs-radio v-model="copy.typeCopy" vs-value="sendUser">Usuario</vs-radio>
+              <vs-radio v-model="copy.typeCopy" vs-value="sendGroup">Unidad</vs-radio>
+            </div>
+            <div
+              v-if="copy.typeCopy === 'sendUser' && usersCompany && usersCompany.length"
+              class="wrap-form">
+              <vs-select
+                autocomplete
+                class="selectExample"
+                label="Usuarios"
+                v-model="copy.user"
+              >
+                <vs-select-item
+                  v-for="user in usersCompany"
+                  :key="user.id"
+                  :value="user.id"
+                  :text="user.nombre"
+                />
+              </vs-select>
+            </div>
+            <div
+              v-if="copy.typeCopy === 'sendGroup' && groupsCompany && groupsCompany.length"
+              class="wrap-form"
+            >
+              <vs-select
+                autocomplete
+                class="selectExample"
+                label="Unidad"
+                v-model="copy.group"
+              >
+                <vs-select-item
+                  v-for="group in groupsCompany"
+                  :key="group.id"
+                  :value="group.id"
+                  :text="group.nombre"
+                />
+              </vs-select>
+            </div>
+            <div class="m-top-20">
+              <vs-textarea
+                maxlength="255"
+                label="Comentario"
+                v-model="copy.commentary"
+              />
+            </div>
+          </div>
+        </vs-collapse-item>
+      </vs-collapse>
     </div>
     <div class="m-top-20 text-center">
       <vs-button
@@ -116,13 +138,15 @@ export default {
       subject: {
         typeSend: 'moodUser',
         group: '',
-        user: ''
+        user: '',
+        commentary: ''
       },
       copy: {
         typeCopy: 'sendGroup',
         group: '',
-        user: ''
-      }
+        user: '',
+        commentary: ''
+      },
     };
   },
   computed: {
@@ -157,7 +181,7 @@ export default {
     ...mapActions('Dnts', [
       'sendDntFile'
     ]),
-    converSubjectUser(data, type) {
+    convertSubjectUser(data, type) {
       return {
         tipoDestino: type,
         estado: 1,
@@ -166,9 +190,10 @@ export default {
         destinoListaCodigo: data.id,
         destinoListaNombre: data.nombre,
         destinoCorreo: '',
+        comentario: this.subject.commentary
       };
     },
-    converSubjectGroup(data, type) {
+    convertSubjectGroup(data, type) {
       return {
         tipoDestino: type,
         estado: 1,
@@ -177,6 +202,7 @@ export default {
         destinoListaCodigo: data.id,
         destinoListaNombre: data.nombre,
         destinoCorreo: '',
+        comentario: this.copy.commentary
       };
     },
     sendFileToSubjects() {
@@ -185,20 +211,20 @@ export default {
       let group;
       if (this.subject.user !== '') {
         user = this.usersCompany.find((userCompany) => userCompany.id === this.subject.user);
-        newSubjects.push(this.subjectSend = this.converSubjectUser(user, 1));
+        newSubjects.push(this.subjectSend = this.convertSubjectUser(user, 1));
       }
       if (this.subject.group !== '') {
         group = this.groupsCompany.find((groupCompany) => groupCompany.id === this.subject.group);
-        newSubjects.push(this.subjectSend = this.converSubjectGroup(group, 1));
+        newSubjects.push(this.subjectSend = this.convertSubjectGroup(group, 1));
       }
 
       if (this.copy.user !== '') {
         user = this.usersCompany.find((userCompany) => userCompany.id === this.copy.user);
-        newSubjects.push(this.copySend = this.converSubjectUser(user, 2));
+        newSubjects.push(this.copySend = this.convertSubjectUser(user, 2));
       }
       if (this.copy.group !== '') {
         group = this.groupsCompany.find((groupCompany) => groupCompany.id === this.copy.group);
-        newSubjects.push(this.copySend = this.converSubjectGroup(group, 2));
+        newSubjects.push(this.copySend = this.convertSubjectGroup(group, 2));
       }
 
       this.sendDntFile({
@@ -240,5 +266,10 @@ export default {
   border-radius: 25px;
   margin-bottom: 10px;
   float: right;
+}
+
+.wrap-commentary {
+  width: 90%;
+  margin: 20px auto;
 }
 </style>

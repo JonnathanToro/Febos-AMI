@@ -21,6 +21,7 @@ export const groupsCompany = (state) => (state.groupsCompany || [])
     isDivision: group.esDivision === 'Y',
     isOffice: group.esOficina === 'Y'
   }));
+
 export const firstGroupsCompany = (state) => (state.groupsCompany || [])
   .filter((group) => !group.padreId)
   .map((group) => ({
