@@ -5,6 +5,7 @@ Aplicación web de Febos mas moderna, y con VUE
 - [Ejecución](#ejecución)
 - [Configuración](#configuración)
 - [Deploy](#deploy)
+- [Template](https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/components/timeline)
 
 ## Ejecución
 
