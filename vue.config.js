@@ -71,12 +71,27 @@ module.exports = {
       cert: fs.readFileSync('./certs/cert.dev.pem'),
     },
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        sassOptions: {
+          includePaths: ['./node_modules', './src/assets'],
+        },
+      },
+    },
+  },
   configureWebpack: {
     devtool: 'cheap-module-source-map',
     optimization: {
       splitChunks: {
         chunks: 'all'
       }
-    }
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+        '@core': path.resolve(__dirname, 'src/@core')
+      },
+    },
   }
 };

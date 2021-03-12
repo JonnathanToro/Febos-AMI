@@ -6,74 +6,58 @@
     @close="closeModal"
   >
     <div>
-      <vs-list class="wrap-binnacle">
-        <div  v-for="binnacle in binnacleFile" :key="binnacle.bitacoraId">
-          <vs-list-header :title="binnacle.fecha | dateCompleteFormat"></vs-list-header>
-          <vs-list-item
-            v-if="binnacle.severidadNombre === 'ERROR'"
-            icon="warning"
-            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
-            :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
-          >
-            <vs-chip
-              v-tooltip="'Registro oculto'" title="Registro oculto"
-              v-if="binnacle.tipoVista == -1 || binnacle.tipoVista == 0" >
-              <vs-icon icon="remove_red_eye" size="small"></vs-icon>
-              <span></span>
-            </vs-chip>
-            <CheckPermission permission="FEB99">
-              <vs-chip
-                class="add-code"
-                @click.native="copyToClipboard(binnacle.seguimientoId)"
-                ref="toClipboardId"
-              >
-                <vs-icon icon="search" size="small"></vs-icon>
-                <span></span>
-              </vs-chip>
-            </CheckPermission>
-            <!--<vs-chip color="dark" v-if="binacle.externalId">
-              <vs-icon icon="pageview" size="small"></vs-icon>
-            </vs-chip>-->
-          </vs-list-item>
-          <vs-list-item
-            v-if="binnacle.severidadNombre === 'INFO'"
-            icon="info"
-            style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
-            :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
-          >
-            <vs-chip
-              v-tooltip="'Registro oculto'"  title="Registro oculto"
-              v-if="binnacle.tipoVista == -1 || binnacle.tipoVista == 0" >
-              <vs-icon icon="remove_red_eye" size="small"></vs-icon>
-              <span></span>
-            </vs-chip>
-            <CheckPermission permission="FEB99">
-              <vs-chip
-                class="add-code"
-                @click.native="copyToClipboard(binnacle.seguimientoId)"
-                ref="toClipboardId"
-              >
-                <vs-icon icon="search" size="small"></vs-icon>
-                <span></span>
-              </vs-chip>
-            </CheckPermission>
-            <!--<vs-chip color="dark" v-if="binacle.externalId">
-              <vs-icon icon="pageview" size="small"></vs-icon>
-            </vs-chip>-->
-          </vs-list-item>
-        </div>
-      </vs-list>
+      <app-timeline>
+        <app-timeline-item v-for="binnacle in binnacleFile" :key="binnacle.bitacoraId"
+          icon="InfoIcon"
+          variant="info"
+        >
+          <div
+            class="d-flex flex-sm-row flex-column flex-wrap justify-content-between mb-1 mb-sm-0">
+            <h6>{{binnacle.usuarioNombre}}</h6>
+            <small class="text-muted">{{binnacle.fecha | dateCompleteFormat}}</small>
+          </div>
+          <p>{{binnacle.mensaje}}</p>
+          <div class="d-flex flex-sm-row flex-column justify-content-between align-items-start">
+            <!-- 1st Col -->
+            <div class="mb-1 mb-sm-0">
+              <span class="text-muted mb-50">Developers</span>
+              <div>
+                <b-avatar
+                  text="A"
+                  class="mr-50"
+                  size="24"
+                  variant="light-primary"
+                />
+                <b-avatar
+                  text="B"
+                  class="mr-50"
+                  size="24"
+                  variant="light-success"
+                />
+                <b-avatar
+                  text="C"
+                  class="mr-50"
+                  size="24"
+                  variant="light-danger"
+                />
+              </div>
+            </div>
+          </div>
+        </app-timeline-item>
+      </app-timeline>
     </div>
   </vs-popup>
 </template>
 <script>
-
+import { BAvatar, BBadge} from 'bootstrap-vue';
 import { mapActions, mapGetters } from 'vuex';
+import AppTimeline from '@core/components/app-timeline/AppTimeline';
+import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem';
 
 import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 
 export default {
-  components: { CheckPermission },
+  components: { CheckPermission, AppTimeline, AppTimelineItem, BAvatar, BBadge },
   computed: {
     ...mapGetters('Dnts', [
       'binnacleFile'

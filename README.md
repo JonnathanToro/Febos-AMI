@@ -73,3 +73,13 @@ carpeta certs y renombrarlos a:
 ```
  key: fs.readFileSync('./certs/cert.dev.key.pem')
  cert: fs.readFileSync('./certs/cert.dev.pem')
+```
+#### Para que los productos de jetbrain reconoscan las rutas con alias @ se debe agregar el webpack config a la configuracion
+https://www.jetbrains.com/help/idea/using-webpack.html#ws_webpack_before_you_start
+
+
+ir a preferencias > lenguaje > javascript > webpack   y configurar 
+
+
+[ruta al proyecto]/node_modules/@vue/cli-service/webpack.config.js
+
