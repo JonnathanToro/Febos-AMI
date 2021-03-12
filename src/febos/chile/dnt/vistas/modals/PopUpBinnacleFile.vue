@@ -15,6 +15,12 @@
             style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
             :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
           >
+            <vs-chip
+              v-tooltip="'Registro oculto'" title="Registro oculto"
+              v-if="binnacle.tipoVista == -1 || binnacle.tipoVista == 0" >
+              <vs-icon icon="remove_red_eye" size="small"></vs-icon>
+              <span></span>
+            </vs-chip>
             <CheckPermission permission="FEB99">
               <vs-chip
                 class="add-code"
@@ -35,6 +41,12 @@
             style="border-bottom:1px solid #cdcdcd;padding-bottom:12px;"
             :title="binnacle.mensaje" :subtitle="binnacle.usuarioNombre"
           >
+            <vs-chip
+              v-tooltip="'Registro oculto'"  title="Registro oculto"
+              v-if="binnacle.tipoVista == -1 || binnacle.tipoVista == 0" >
+              <vs-icon icon="remove_red_eye" size="small"></vs-icon>
+              <span></span>
+            </vs-chip>
             <CheckPermission permission="FEB99">
               <vs-chip
                 class="add-code"

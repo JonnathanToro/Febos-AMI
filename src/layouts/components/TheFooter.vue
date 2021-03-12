@@ -8,15 +8,15 @@
     Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
 
-
 <template functional>
   <footer class="the-footer flex-wrap justify-between" :class="classes">
     <p v-html="props.footer"></p>
     <span class="md:flex hidden items-center">
       <span>Fabricado con amor</span>
       <feather-icon icon="HeartIcon" svgClasses="stroke-current text-danger w-6 h-6" class="ml-2"/>
-      <span class="ml-3">  Ambiente de <strong>{{ props.ambiente.replace('cion','ción') }}</strong> <span
-        style="font-size:70%">v.{{ props.version }}</span></span>
+      <span class="ml-3">  Ambiente de <strong>{{ props.ambiente.replace('cion','ción') }}</strong>
+        <span style="font-size:70%">v.{{ props.version }}</span>
+      </span>
     </span>
 
   </footer>
@@ -24,24 +24,24 @@
 
 <script>
 
-  // prueba
-  export default {
-    name: "the-footer",
-    props: {
-      classes: {
-        type: String,
-      },
-      ambiente: {
-        type: String,
-      },
-      version: {
-        type: String,
-      },
-      footer: {
-        type: String,
-      }
+// prueba
+export default {
+  name: 'the-footer',
+  props: {
+    classes: {
+      type: String,
+    },
+    ambiente: {
+      type: String,
+    },
+    version: {
+      type: String,
+    },
+    footer: {
+      type: String,
     }
   }
+};
 </script>
 <style>
   .letras-escritorio {
