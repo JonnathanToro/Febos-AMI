@@ -29,7 +29,7 @@ export const cancelFile = (payload) => {
   const params = apiClient.queryParams(payload);
 
   return apiClient.delete(`${RESOURCE}/${payload.febosId}?${params}`, {
-    operacionId: 'io.get.dnt'
+    operacionId: 'io.cancel.dnt'
   });
 };
 
@@ -77,12 +77,9 @@ export const sendComment = (payload) => {
     { operacionId: 'io.dnt.send.comment' });
 };
 
-export const sendFile = (payload) => {
-  console.log('ENCIANDO', payload);
-  return apiClient.post(`${RESOURCE}/${payload.febosId}/destinos`,
-    { destinos: payload.destinos },
-    { operacionId: 'io.dnt.send.file' });
-};
+export const sendFile = (payload) => apiClient.post(`${RESOURCE}/${payload.febosId}/destinos`,
+  { destinos: payload.destinos },
+  { operacionId: 'io.dnt.send.file' });
 
 export const createDnt = (payload) => {
   const params = apiClient.queryParams({
@@ -107,7 +104,6 @@ export const updateDnt = (id, payload) => {
     febosId: id,
     sobreEscribir: 'si'
   });
-  console.log('GUARDAR BORRADOR', payload, params);
   return apiClient.post(
     `${RESOURCE}/${id}/actualizar?${params}`,
     payload,
@@ -117,3 +113,12 @@ export const updateDnt = (id, payload) => {
 export const indicatorFilesED = () => apiClient.get(`${RESOURCE}/0/expedientes/indicadores`, {
   operacionId: 'io.dnts.ed.indicadores.inicio'
 });
+
+export const fileTimeline = (febosId) => apiClient.get(`${RESOURCE}/${febosId}/destinos/timeline`, {
+  operacionId: 'io.dnt.timeline'
+});
+
+export const clReturnFileED = (payload) => apiClient
+  .post(`${RESOURCE}/${payload.febosId}/destinos/devolver`,
+    { comentario: payload.comentario },
+    { operacionId: 'io.dnt.return.file' });

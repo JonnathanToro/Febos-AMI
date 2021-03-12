@@ -11,6 +11,7 @@ export default {
   },
   comments: [],
   binnacle: [],
+  timeline: [],
   wizardData: {},
   pagination: {
     items: 0,

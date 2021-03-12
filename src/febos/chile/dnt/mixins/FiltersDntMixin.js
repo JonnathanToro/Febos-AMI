@@ -8,6 +8,7 @@ const filterViews = {
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
+      // { campo: 'categoria', valor: 'pendiente' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] }
     ],
     filtrosPorDefecto: [

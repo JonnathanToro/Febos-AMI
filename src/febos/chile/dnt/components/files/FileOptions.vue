@@ -41,6 +41,12 @@
               Bitácora
             </vs-dropdown-item>
           </CheckPermission>
+          <CheckPermission permission="*">
+            <vs-dropdown-item v-on:click="onOptionTimelineFile(file)">
+              <vs-icon icon="all_inbox"/>
+              Proceso Destinos
+            </vs-dropdown-item>
+          </CheckPermission>
           <CheckPermission permission="ED019">
             <vs-dropdown-item v-on:click="onOptionDownloadFile(file)">
               <vs-icon icon="save_alt"/>
@@ -57,12 +63,20 @@
             <vs-dropdown-item
               v-on:click="onOptionAssignFile(file)"
               v-if="!isDraft  && onPendingFiles && !isAssigned
-             && !isResposible && !isProcessed && !isCancelled"
+              && !isProcessed && !isCancelled"
             >
               <vs-icon icon="how_to_reg"/>
               Asignarme expediente
             </vs-dropdown-item>
           </CheckPermission>
+          <vs-dropdown-item
+            v-on:click="onOptionReturnFile(file)"
+            v-if="!isDraft  && onPendingFiles && isAssigned
+              && !isProcessed && !isCancelled"
+          >
+            <vs-icon icon="keyboard_backspace"/>
+            Devolver expediente
+          </vs-dropdown-item>
           <CheckPermission permission="ED022">
             <vs-dropdown-item
               v-on:click="onOptionCancelFile(file)"
@@ -161,7 +175,8 @@ export default {
       'downloadAttachmentFiles',
       'getFileDetails',
       'getFileComments',
-      'getAttachmentsDnt'
+      'getAttachmentsDnt',
+      'getFileTimeline'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
@@ -200,7 +215,13 @@ export default {
       });
       this.showModals('generalDetailsFile');
     },
+    onOptionTimelineFile(file) {
+      this.selectFile(file);
+      this.getFileTimeline(file.febosId);
+      this.showModals('timeline');
+    },
     onOptionBinnacleFile(file) {
+      this.selectFile(file);
       this.getFileBinnacle({
         febosId: file.febosId,
         filas: 200,
@@ -229,6 +250,10 @@ export default {
     onOptionProcessFile(file) {
       this.selectFile(file);
       this.showModals('processFile');
+    },
+    onOptionReturnFile(file) {
+      this.selectFile(file);
+      this.showModals('returnFile');
     },
     onOptionGetParticipants(file) {
       this.selectFile(file);

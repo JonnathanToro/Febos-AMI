@@ -39,5 +39,6 @@ export default {
   binnacleFile: (state) => state.binnacle,
   wizardData: (state) => state.wizardData,
   // TODO: this is the same object.
-  pagination: (state) => state.pagination
+  pagination: (state) => state.pagination,
+  timelineFile: (state) => state.timeline,
 };

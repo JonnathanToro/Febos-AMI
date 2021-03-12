@@ -119,11 +119,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions('Modals', [
+      'closeModal'
+    ]),
     ...mapActions('Menus', { seleccionarModulo: 'seleccionarModulo' }),
     ...mapActions('Usuario', ['loadPermissions']),
     ...mapActions('Inicio', ['fetchIndicatorsTypes']),
   },
   created() {
+    this.closeModal();
     this.loadPermissions();
     if (this.product === 'ed') {
       this.fetchIndicatorsTypes();

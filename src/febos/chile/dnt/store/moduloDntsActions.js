@@ -13,7 +13,9 @@ import {
   downloadAttachments,
   attachmentsFiles,
   clAsignFile,
-  sendFile
+  sendFile,
+  fileTimeline,
+  clReturnFileED
 } from '@/febos/servicios/api/dnt.api';
 import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
@@ -275,6 +277,30 @@ export const saveDocument = async ({ commit }, { id, data, isDraft }) => {
     await router.push({ path });
   } catch (e) {
     commit('SET_ERROR_MESSAGE', e.context);
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const getFileTimeline = async ({ commit }, febosId) => {
+  try {
+    commit('SET_LOADING', true);
+    commit('SET_TIMELINE', {});
+    const response = await fileTimeline(febosId);
+    commit('SET_TIMELINE', response.data.destinatarios);
+    return response.data;
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const returnFileEd = async ({ commit }, payload) => {
+  try {
+    commit('SET_LOADING', true);
+    const response = await clReturnFileED(payload);
+    await commit('UPDATE_SENT_FILE', payload.febosId);
+    store.commit('Modals/CLOSE_MODAL');
+    return response.data;
   } finally {
     commit('SET_LOADING', false);
   }
