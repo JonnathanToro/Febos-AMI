@@ -14,7 +14,7 @@
         :select-file="selectFile"
       />
     </div>
-    <PopUpBinnacleFile />
+    <PopUpBinnacleFile/>
     <PopUpTimelineFile :file="selectedFile"/>
     <PopUpDetailFile :file="selectedFile" />
     <PopUpGeneralDetailFile :file="selectedFile" />

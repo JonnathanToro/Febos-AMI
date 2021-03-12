@@ -1,6 +1,6 @@
 <template>
   <vs-popup
-    title="Bitácora del Expediente"
+    :title="titulo"
     :active.sync="showModal"
     v-if="binnacleFile"
     @close="closeModal"
@@ -9,7 +9,7 @@
       <app-timeline>
         <app-timeline-item v-for="binnacle in binnacleFile" :key="binnacle.bitacoraId"
           icon="InfoIcon"
-          variant="info"
+          :variant="getSeveridadBitacoraVariant(binnacle.severidad)"
         >
           <div
             class="d-flex flex-sm-row flex-column flex-wrap justify-content-between mb-1 mb-sm-0">
@@ -57,6 +57,12 @@ import AppTimeline from '@core/components/app-timeline/AppTimeline';
 import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem';
 
 export default {
+  props: {
+    titulo: {
+      type: String,
+      required: true
+    }
+  },
   components: {
     AppTimeline, AppTimelineItem, BAvatar
   },
@@ -80,6 +86,18 @@ export default {
     ...mapActions('Modals', [
       'closeModal'
     ]),
+    getSeveridadBitacoraVariant(severidad) {
+      if (severidad === 1) {
+        return 'info';
+      } if (severidad === 2) {
+        return 'warning';
+      } if (severidad === 3) {
+        return 'danger';
+      } if (severidad === 4) {
+        return 'secondary';
+      }
+      return 'secondary';
+    },
     copyToClipboard(code) {
       const element = document.createElement('input');
       element.value = code;
