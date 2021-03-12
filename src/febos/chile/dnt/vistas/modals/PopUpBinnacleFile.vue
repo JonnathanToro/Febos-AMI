@@ -20,25 +20,24 @@
           <div class="d-flex flex-sm-row flex-column justify-content-between align-items-start">
             <!-- 1st Col -->
             <div class="mb-1 mb-sm-0">
-              <span class="text-muted mb-50">Developers</span>
               <div>
-                <b-avatar
-                  text="A"
-                  class="mr-50"
-                  size="24"
-                  variant="light-primary"
+                <b-avatar v-if="binnacle.tipoVista == -1 || binnacle.tipoVista == 0"
+                          v-b-tooltip.hover title="Registro Visible solo para Admin"
+                          text="O"
+                          class="mr-50"
+                          size="24"
+                          icon="eye-slash-fill"
+                          variant="secondary"
                 />
                 <b-avatar
-                  text="B"
-                  class="mr-50"
+                  v-b-tooltip.hover
+                  title="Copiar Seguimiento"
+                  text="S"
+                  class="mr-50 add-code"
                   size="24"
-                  variant="light-success"
-                />
-                <b-avatar
-                  text="C"
-                  class="mr-50"
-                  size="24"
-                  variant="light-danger"
+                  icon="bug"
+                  variant="success"
+                  @click.native="copyToClipboard(binnacle.seguimientoId)"
                 />
               </div>
             </div>
@@ -49,15 +48,17 @@
   </vs-popup>
 </template>
 <script>
-import { BAvatar, BBadge} from 'bootstrap-vue';
 import { mapActions, mapGetters } from 'vuex';
+import {BAvatar} from 'bootstrap-vue';
 import AppTimeline from '@core/components/app-timeline/AppTimeline';
 import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem';
 
 import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 
 export default {
-  components: { CheckPermission, AppTimeline, AppTimelineItem, BAvatar, BBadge },
+  components: {
+    CheckPermission, AppTimeline, AppTimelineItem, BAvatar
+  },
   computed: {
     ...mapGetters('Dnts', [
       'binnacleFile'
@@ -86,7 +87,7 @@ export default {
       document.execCommand('copy');
       document.body.removeChild(element);
     }
-  }
+  },
 };
 
 </script>
@@ -98,5 +99,8 @@ export default {
 
 .add-code {
   cursor: copy;
+}
+.crazy-zindex {
+  z-index: 10001;
 }
 </style>

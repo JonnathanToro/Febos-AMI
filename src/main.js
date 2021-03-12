@@ -24,6 +24,15 @@ import 'vuesax/dist/vuesax.css';
 // Febos Config
 // import febosConfig from './febos/servicios/febosConfig.js'
 
+import {
+  ToastPlugin, ModalPlugin, BootstrapVue, BootstrapVueIcons,
+} from 'bootstrap-vue';
+// BSV Plugin Registration
+Vue.use(ToastPlugin)
+Vue.use(ModalPlugin)
+Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
+
 // axios
 import clientApi from './febos/servicios/clienteFebosAPI';
 
@@ -42,7 +51,16 @@ import './assets/scss/vuexy/main.scss';
 import './assets/scss/bootstrap/main.scss';
 import './assets/scss/main.scss';
 import './assets/scss/multiSelect.scss';
+require('@/assets/scss/main.scss')
+// Feather font icon - For form-wizard
+// * Shall remove it if not using font-icons of feather-icons - For form-wizard
+require('@core/assets/fonts/feather/iconfont.css') // For form-wizard
 
+// import core styles
+require('@core/scss/core.scss')
+
+// import assets styles
+require('@/assets/scss/style.scss')
 // Tailwind
 import '@/assets/css/main.css';
 
