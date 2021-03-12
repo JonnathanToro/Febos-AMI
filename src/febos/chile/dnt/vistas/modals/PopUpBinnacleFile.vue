@@ -16,8 +16,9 @@
             <h6>{{binnacle.usuarioNombre}}</h6>
             <small class="text-muted">{{binnacle.fecha | dateCompleteFormat}}</small>
           </div>
+          <div
+            class="d-flex flex-sm-row flex-column flex-wrap justify-content-between mb-1 mb-sm-0">
           <p>{{binnacle.mensaje}}</p>
-          <div class="d-flex flex-sm-row flex-column justify-content-between align-items-start">
             <!-- 1st Col -->
             <div class="mb-1 mb-sm-0">
               <div>
@@ -30,6 +31,7 @@
                           variant="secondary"
                 />
                 <b-avatar
+                  v-has-permission="'FEB99'"
                   v-b-tooltip.hover
                   title="Copiar Seguimiento"
                   text="S"
@@ -49,15 +51,14 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import {BAvatar} from 'bootstrap-vue';
+import { BAvatar } from 'bootstrap-vue';
+
 import AppTimeline from '@core/components/app-timeline/AppTimeline';
 import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem';
 
-import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
-
 export default {
   components: {
-    CheckPermission, AppTimeline, AppTimelineItem, BAvatar
+    AppTimeline, AppTimelineItem, BAvatar
   },
   computed: {
     ...mapGetters('Dnts', [
