@@ -57,7 +57,7 @@ function getHost() {
 
 module.exports = () => {
   const mode = process.VUE_CLI_SERVICE.mode || (process.env.npm_lifecycle_script || '').replace(/(vue-)(.*)(--mode )/g, '').trim();
-  if (mode) loadExtraEnvironment();
+  if (mode) loadExtraEnvironment(mode);
 
   return {
     lintOnSave: false,
