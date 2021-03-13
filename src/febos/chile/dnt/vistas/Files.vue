@@ -10,13 +10,17 @@
         v-for="file in files"
         :file="file"
         :on-pending-files="onPendingFiles"
+        :on-general-files="onGeneralFiles"
         :select-file="selectFile"
       />
     </div>
     <PopUpBinnacleFile />
+    <PopUpTimelineFile :file="selectedFile"/>
     <PopUpDetailFile :file="selectedFile" />
+    <PopUpGeneralDetailFile :file="selectedFile" />
     <PopUpCancelFile :canceledFile="selectedFile" />
     <PopUpProcessFile :processedFile="selectedFile" />
+    <PopUpReturnFile :file="selectedFile" />
     <PopUpAsignFile :file="selectedFile" />
     <PopUpParticipantsFile :file="selectedFile" />
     <PopUpCommentsFile :file="selectedFile" />
@@ -34,7 +38,9 @@ import { mapActions, mapGetters } from 'vuex';
 
 import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
 import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
+import PopUpGeneralDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpGeneralDetailFile';
 import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
+import PopUpReturnFile from '@/febos/chile/dnt/vistas/modals/PopUpReturnFile';
 import PopUpAsignFile from '@/febos/chile/dnt/vistas/modals/PopUpAsignFile';
 import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
 import PopUpSendFile from '@/febos/chile/dnt/vistas/modals/PopUpSendFile';
@@ -42,6 +48,7 @@ import PopUpParticipantsFile from '@/febos/chile/dnt/vistas/modals/PopUpParticip
 import PopUpCommentsFile from '@/febos/chile/dnt/vistas/modals/PopUpCommentsFile';
 import FilesHeader from '@/febos/chile/dnt/components/files/FilesHeader';
 import FileRow from '@/febos/chile/dnt/components/files/FileRow';
+import PopUpTimelineFile from '@/febos/chile/dnt/vistas/modals/PopUpTimelineFile';
 import PopUpBinnacleFile from '@/febos/chile/dnt/vistas/modals/PopUpBinnacleFile';
 import FilesFilters from '@/febos/chile/dnt/components/files/FilesFilters';
 import FilesPagination from '@/febos/chile/dnt/components/files/FilesPagination';
@@ -51,12 +58,15 @@ export default {
     FilesPagination,
     FilesFilters,
     PopUpBinnacleFile,
+    PopUpTimelineFile,
     FileRow,
     FilesHeader,
     PopUpDetailFile,
+    PopUpGeneralDetailFile,
     PopUpCancelFile,
     PopUpAsignFile,
     PopUpProcessFile,
+    PopUpReturnFile,
     PopUpParticipantsFile,
     PopUpCommentsFile,
     PopUpTicketFile,
@@ -67,6 +77,7 @@ export default {
 
     return {
       onPendingFiles: view === 'en-curso',
+      onGeneralFiles: view === 'general',
       fromCS: false,
       selectedFile: {},
       filters: '',

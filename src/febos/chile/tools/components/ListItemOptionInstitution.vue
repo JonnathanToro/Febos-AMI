@@ -26,7 +26,7 @@
     <vs-col vs-type="flex" vs-justify="flex-end" vs-align="center" vs-lg="4" vs-sm="4" vs-xs="12">
       <vs-button
         v-tooltip="'Ver instituciones'"
-        v-if="type === 'category'"
+        v-if="type === 'category' && option.descripcion !== 'Persona'"
         color="primary"
         class="margin-right"
         size="small"
@@ -41,6 +41,7 @@
           class="margin-right"
           size="small"
           type="border"
+          v-if="option.descripcion !== 'Persona'"
           v-on:click="editOption(option)"
           icon="edit"
         />

@@ -7,7 +7,8 @@ const filterViews = {
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'destinoVisorIds', valor: '${idUsuario}' },
+      { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
+      // { campo: 'categoria', valor: 'pendiente' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
       { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext'] }
     ],
@@ -95,11 +96,10 @@ const filterViews = {
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
       // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'destinoParticipanteIds', valor: '${idUsuario}' },
       { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext'] }
     ],
     filtrosPorDefecto: [
-      { campo: 'estado', tipo: 'multi', valor: ['1', '3', '8', '9'] }
+      { campo: 'estado', tipo: 'multi', valor: ['1', '8', '9'] }
     ],
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
@@ -358,9 +358,9 @@ const filterViews = {
     filtrosFijos: [
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
-      // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'destinoVisorIds', valor: '${idUsuario}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
+      // eslint-disable-next-line no-template-curly-in-string
+      { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
       { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['numInt', 'numOf'] }
     ],
     filtrosPorDefecto: [

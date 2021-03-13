@@ -2,14 +2,13 @@
   <vs-select
     v-bind="$props"
     :value="value"
-    :disabled="disabled"
     @input="$emit('input', $event)"
   >
     <vs-select-item
       :key="item.id"
       :value="item.value"
       :text="item.label"
-      v-for="item in subjectTypesState.list"
+      v-for="item in subjects"
     />
   </vs-select>
 </template>
@@ -19,6 +18,11 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  data() {
+    return {
+      subjects: []
+    };
+  },
   props: {
     autocomplete: {
       type: Boolean,
@@ -41,14 +45,21 @@ export default {
   computed: {
     ...mapGetters('List', [
       'subjectTypesState'
-    ]),
-    disabled() {
-      return !this.subjectTypesState.list.length || this.subjectTypesState.loading;
-    }
+    ])
   },
   methods: {
     getOption() {
       return this.subjectTypesState.list.find((option) => option.value === this.value);
+    }
+  },
+  created() {
+    const { wizard } = this.$route.params;
+    const internSubjects = ['usuarios', 'unidades', 'oficinas'];
+    if (wizard.includes('externo')) {
+      this.subjects = this.subjectTypesState.list
+        .filter((subject) => internSubjects.includes(subject.value));
+    } else {
+      this.subjects = this.subjectTypesState.list;
     }
   }
 };

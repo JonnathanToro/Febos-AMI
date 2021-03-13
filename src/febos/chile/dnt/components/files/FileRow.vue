@@ -63,6 +63,9 @@
             </vs-col>
             <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
               {{ file.emisorContactoNombre | capitalize }}
+              <small class="d-block" v-if="file.emisorContactoEmail">
+                {{ file.emisorContactoEmail }}
+              </small>
             </vs-col>
             <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
               {{ file.solicitanteNombre }}
@@ -164,6 +167,7 @@
         :is-cancelled="isCancelled"
         :is-resposible="isResposible"
         :on-pending-files="onPendingFiles"
+        :on-general-files="onGeneralFiles"
         :select-file="selectFile"
       />
     </vs-col>
@@ -179,6 +183,7 @@ export default {
   props: [
     'file',
     'onPendingFiles',
+    'onGeneralFiles',
     'selectFile'
   ],
   computed: {
