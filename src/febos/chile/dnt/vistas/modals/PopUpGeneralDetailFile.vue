@@ -237,7 +237,7 @@
             class="wrap-table"
             stripe
             :data="(detailsFile.referencias || [])"
-            noDataText="No hay documentos relacionados"
+            noDataText="No hay otros documentos relacionados"
           >
             <template slot="header">
             </template>
