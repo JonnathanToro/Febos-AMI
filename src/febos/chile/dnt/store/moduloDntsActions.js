@@ -315,6 +315,7 @@ export const returnFileEd = async ({ commit }, payload) => {
     const response = await clReturnFileED(payload);
     await commit('UPDATE_SENT_FILE', payload.febosId);
     store.commit('Modals/CLOSE_MODAL');
+    commit('SET_SUCCESS_MESSAGE', response.data);
     return response.data;
   } finally {
     commit('SET_LOADING', false);
