@@ -4,33 +4,45 @@
     :active.sync="showModal"
     @close="closeModal"
   >
-    <vs-collapse v-for="(node, index) in timelineFile" :key="index">
-      <vs-collapse-item>
+    <vs-collapse
+      v-for="(node, index) in timelineFile" :key="index"
+    >
+      <vs-collapse-item open>
         <div slot="header">
-          {{node.fechaCreacion | dateFormatTime}} - {{node.usuarioEnvioNombre}}
+          {{node.usuarioEnvioNombre}} - <small>{{node.fechaCreacion | dateFormatTime}}</small>
         </div>
         <vs-list>
           <vs-list-item
             class="wrap-item"
             v-for="(subject, index) in node.destinatarios"
             :key="index"
-            icon="inbox"
-            :title="subject.destinoListaNombre" :subtitle="subject.destinoNombre"
+            :icon="getIcon(subject)"
+            :title="subject.destinoListaNombre" :subtitle="subject.comentario"
           >
-            <vs-chip
-              transparent
-              color="success"
+            <span
+              title="Activo"
+              class="active-subject"
               v-if="subject.estado === 1"
             >
-             Activo
-            </vs-chip>
-            <vs-chip
-              transparent
-              color="warning"
+              <vs-icon
+                style="padding: 4px;"
+                icon="radio_button_checked"
+                color="green"
+                round
+                bg="#92de9266" />
+            </span>
+            <span
+              title="Inactivo"
               v-if="subject.estado === 2"
             >
-              Inactivo
-            </vs-chip>
+              <vs-icon
+                style="padding: 4px;"
+                icon="radio_button_unchecked"
+                color="orange"
+                round
+                bg="#ffb1004f"
+              />
+            </span>
             <vs-chip
               transparent
               color="primary"
@@ -39,10 +51,14 @@
               Destino
             </vs-chip>
             <vs-chip
+              transparent
               color="#43C3B9"
               v-if="subject.tipoDestino === 2"
             >
               Copia
+            </vs-chip>
+            <vs-chip>
+              {{subject.destinoNombre}}
             </vs-chip>
           </vs-list-item>
         </vs-list>
@@ -81,7 +97,13 @@ export default {
   methods: {
     ...mapActions('Modals', [
       'closeModal'
-    ])
+    ]),
+    getIcon(subject) {
+      if (subject.estado === 1) {
+        return 'assignment_ind';
+      }
+      return 'assignment_late';
+    }
   }
 };
 
@@ -98,5 +120,13 @@ export default {
 
 .wrap-item {
   border-left: 3px solid rebeccapurple;
+}
+
+.con-content--item {
+  padding: 0 !important;
+}
+
+.vs-collapse-item--header {
+  padding: 4px !important;
 }
 </style>
