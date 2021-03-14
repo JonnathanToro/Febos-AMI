@@ -17,18 +17,18 @@ export const groupsCompany = (state) => (state.groupsCompany || [])
   .sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b))
   .map((group) => ({
     ...group,
-    name: group.nombre,
     isDivision: group.esDivision === 'Y',
-    isOffice: group.esOficina === 'Y'
+    isOffice: group.esOficina === 'Y',
+    isOpen: true
   }));
 
 export const firstGroupsCompany = (state) => (state.groupsCompany || [])
   .filter((group) => !group.padreId)
   .map((group) => ({
     ...group,
-    name: group.nombre,
     isDivision: group.esDivision === 'Y',
-    isOffice: group.esOficina === 'Y'
+    isOffice: group.esOficina === 'Y',
+    isOpen: true
   }));
 export const pagination = (state) => state.pagination;
 export const usersByGroup = (state) => state.usersGroup;

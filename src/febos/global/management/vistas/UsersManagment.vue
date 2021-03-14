@@ -92,16 +92,14 @@
             <tree-item
               class="item"
               :item="tree"
-              @make-folder="makeFolder"
-              @add-item="addItem"
               @get-children="getChildren"
-            ></tree-item>
+            />
           </div>
         </div>
         <div class="col-md-8" id="list-users">
           <div class="wrap-actions">
             <vs-button
-              v-if="selectedGroup.name"
+              v-if="selectedGroup.nombre"
               class="action mr-2"
               color="primary"
               type="border"
@@ -111,7 +109,7 @@
               Editar
             </vs-button>
             <vs-button
-              v-if="selectedGroup.name"
+              v-if="selectedGroup.nombre"
               class="action mr-2"
               color="primary"
               type="border"
@@ -129,10 +127,19 @@
               icon="add_circle_outline">
               Agregar
             </vs-button>
+            <vs-button
+              class="action"
+              color="primary"
+              type="border"
+              @click="viewUsers()"
+              size="small"
+              icon="groups">
+              Usuarios
+            </vs-button>
           </div>
           <div>
-            <h5 class="mb-4" v-if="selectedGroup.name">
-              Usuarios del grupo {{selectedGroup.name}}
+            <h5 class="mb-4" v-if="selectedGroup.nombre">
+              Usuarios del grupo {{selectedGroup.nombre}}
             </h5>
             <ul v-if="usersTree.length" >
               <li v-for="user in usersTree" :key="user.id">
@@ -179,7 +186,15 @@
     :usuario="usuario"
     @cerrarEdicionUsuario="cancelarEdicion"
   />
-  <PopUpGroup :group="selectedGroup" />
+  <PopUpEditGroup
+    v-if="selectedGroup && action"
+    :group="selectedGroup"
+    :name="selectedGroup.nombre"
+    :action="action"
+  />
+  <PopUpUsersGroup
+    :group="selectedGroup"
+  />
 </div>
 </template>
 
@@ -190,15 +205,17 @@ import { mapActions, mapGetters } from 'vuex';
 import modalUsuario from '@/febos/global/empresas/componentes/gestUsuarios/modalUsuario';
 import TreeItem from '@/febos/global/management/vistas/components/TreeItem';
 import FbPaginacion from '@/febos/chile/_vue/componentes/FbPaginacion';
-import PopUpGroup from '@/febos/global/management/vistas/components/PopUpGroup';
+import PopUpEditGroup from '@/febos/global/management/vistas/components/PopUpEditGroup';
+import PopUpUsersGroup from '@/febos/global/management/vistas/components/PopUpUsersGroup';
 
 export default {
-  name: 'gestUsuarios',
+  name: 'UsersManagement',
   components: {
     modalUsuario,
     TreeItem,
     FbPaginacion,
-    PopUpGroup
+    PopUpEditGroup,
+    PopUpUsersGroup
   },
   data() {
     return {
@@ -216,7 +233,7 @@ export default {
       },
       usersTree: [],
       selectedGroup: {},
-      group: {}
+      action: ''
     };
   },
   watch: {
@@ -243,6 +260,12 @@ export default {
         scale: 0.6
       });
     },
+    groupsCompany(newValue, oldValue) {
+      console.log('WAT', newValue, oldValue);
+      if (newValue !== oldValue) {
+        this.tree.children = this.makeTree();
+      }
+    }
   },
   computed: {
     ...mapGetters('Empresas', [
@@ -254,6 +277,9 @@ export default {
       'usersByGroup',
       'loading'
     ]),
+    ...mapGetters('Management', [
+      'element'
+    ])
   },
   methods: {
     ...mapActions('Empresas', [
@@ -265,47 +291,43 @@ export default {
       'showModals',
       'closeModal'
     ]),
-    makeFolder(item) {
-      // Vue.set(item, 'children', []);
-      this.addItem(item);
-      console.log('MAKE FOLDER', item);
-    },
-    addItem(item) {
-      item.children.push({
-        name: 'new stuff'
-      });
+    ...mapActions('Management', [
+      'setElement'
+    ]),
+    viewUsers() {
+      this.showModals('modalUsersGroup');
     },
     editGroup() {
-      this.selectedGroup = this.group;
-      this.showModals('modalGroup');
+      this.action = 'edit';
+      this.showModals('modalEditGroup');
     },
     addGroup() {
+      this.action = 'add';
       this.selectedGroup = {
         nombre: '',
         descripcion: '',
         codigo: '',
         isOffice: false
       };
-      this.showModals('modalGroup');
+      this.showModals('modalEditGroup');
     },
     addSubGroup() {
-      const parentId = this.selectedGroup.padreId;
-      const parentName = this.selectedGroup.nombre;
+      this.action = 'add';
+      const padreId = this.element.id;
+      const parentName = this.element.nombre;
       this.selectedGroup = {
-        ...this.selectedGroup,
         nombre: '',
         descripcion: '',
         codigo: '',
         isOffice: false,
-        padreId: parentId,
+        padreId,
         padreNombre: parentName
       };
-      this.showModals('modalGroup');
-      console.log('ACA', this.selectedGroup);
+      this.showModals('modalEditGroup');
     },
     getChildren(item) {
-      this.selectedGroup = item;
-      this.group = item;
+      this.setElement(item);
+      this.selectedGroup = { ...item };
       if (item.name !== this.company.razonSocial) {
         this.getUsersGroup(item.id);
         this.usersTree = this.usersByGroup;
@@ -350,34 +372,33 @@ export default {
     checkParent(groupNode) {
       return this.groupsCompany.filter((group) => group.padreId === groupNode.id).map((group) => ({
         ...group,
-        children: this.checkParent(group),
-        name: group.nombre
+        children: this.checkParent(group)
       }));
     },
     makeTree() {
       return this.firstGroupsCompany.map((group) => ({
         ...group,
-        children: this.checkParent(group),
-        name: group.nombre
+        children: this.checkParent(group)
       }));
     }
   },
-  created() {
+  async created() {
+    this.setElement({});
     this.closeModal();
-    this.getUsersCompany({
+    await this.getUsersCompany({
       empresaId: this.company.id,
       pagina: 1,
       filas: 10,
       buscarInfoExtra: 'si',
       filtroInfoExtra: 'CARGO'
     });
-    this.getGroupsCompany({
+    await this.getGroupsCompany({
       empresaId: this.company.id
     });
     this.tree.name = this.company.razonSocial;
     this.tree.children = this.makeTree();
-    this.tree.isOpen = true;
     this.usersTree = this.usersCompany;
+    console.log('rbol', this);
   }
 };
 </script>

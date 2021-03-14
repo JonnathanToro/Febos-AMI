@@ -1,9 +1,12 @@
 import {
   ioCompanyList,
   ioCompanyGroups,
-  getUsersByGroup
+  getUsersByGroup,
+  ioCompanyUpdateGroup,
+  ioCompanyCreateGroup
 } from '@/febos/servicios/api/empresas.api';
 import { getUsers } from '@/febos/servicios/api/usuarios.api';
+import store from '@/store/store';
 
 export default {
   async loadCompanies({ commit }, payload) {
@@ -51,6 +54,28 @@ export default {
         groupId
       });
       commit('SET_USERS_GROUP', response.data);
+    } finally {
+      commit('SET_LOADING', false);
+    }
+  },
+  async updateGroup({ commit }, { empresaId, group }) {
+    try {
+      commit('SET_LOADING', true);
+      const response = await ioCompanyUpdateGroup(empresaId, group);
+      commit('UPDATE_GROUP', group);
+      store.commit('Modals/CLOSE_MODAL');
+      return response.data;
+    } finally {
+      commit('SET_LOADING', false);
+    }
+  },
+  async createGroup({ commit }, { empresaId, group }) {
+    try {
+      commit('SET_LOADING', true);
+      const response = await ioCompanyCreateGroup(empresaId, group);
+      commit('ADD_GROUP', group);
+      store.commit('Modals/CLOSE_MODAL');
+      return response.data;
     } finally {
       commit('SET_LOADING', false);
     }

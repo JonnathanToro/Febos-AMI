@@ -47,4 +47,20 @@ export default {
   SET_LOADING(state, payload) {
     state.loading = payload;
   },
+  UPDATE_GROUP(state, payload) {
+    state.groupsCompany = state.groupsCompany.map((group) => {
+      if (group.id === payload.id) {
+        return {
+          ...payload
+        };
+      }
+      return group;
+    });
+  },
+  ADD_GROUP(state, payload) {
+    const group = payload;
+    group.isDivision = payload.esDivision === 'Y';
+    group.isOffice = payload.esOficina === 'Y';
+    state.groupsCompany = [...state.groupsCompany, group];
+  }
 };

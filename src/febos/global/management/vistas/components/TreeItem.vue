@@ -3,7 +3,6 @@
     <div
       class="parent"
       :class="{bold: isFolder}"
-      @dblclick="makeFolder"
     >
       <span v-if="isFolder" @click="toggle">
         <vs-icon
@@ -41,7 +40,7 @@
         style="font-size: 14px;padding-left: 4px;"
         @click="getChildren"
       >
-        {{ item.name }}
+        {{ item.nombre }}
       </span>
     </div>
     <ul v-show="isOpen" v-if="isFolder">
@@ -50,7 +49,6 @@
         v-for="(child, index) in item.children"
         :key="index"
         :item="child"
-        @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
         @get-children="$emit('get-children', $event)"
       ></tree-item>
@@ -73,7 +71,7 @@ export default {
   },
   data() {
     return {
-      isOpen: false
+      isOpen: true
     };
   },
   computed: {
@@ -98,12 +96,6 @@ export default {
     },
     getChildren() {
       this.$emit('get-children', this.item);
-    },
-    makeFolder() {
-      if (!this.isFolder) {
-        this.$emit('make-folder', this.item);
-        this.isOpen = true;
-      }
     }
   }
 };
