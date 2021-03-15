@@ -11,38 +11,36 @@ const dotenv = require('dotenv');
   Author: Pixinvent
   Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== */
-function cargarConfiguracion(producto, envFile, global = false, local = false) {
+function loadConfiguration(product, envFile, global = false, local = false) {
   try {
-    // eslint-disable-next-line no-use-before-define
-    const envConfig = dotenv.parse(fs.readFileSync(path.resolve(global ? 'environments/' : `environments/${producto}`, local ? `${envFile}.local` : `${envFile}`)));
+    const globalEnvironmentPath = global ? 'environments/' : `environments/${product}`;
+    const localEnvironmentPath = local ? `${envFile}.local` : `${envFile}`;
+    const environmentPath = path.resolve(globalEnvironmentPath, localEnvironmentPath);
+    const envConfig = dotenv.parse(fs.readFileSync(environmentPath));
+
     // eslint-disable-next-line guard-for-in,no-restricted-syntax
-    for (const k in envConfig) {
-      process.env[k] = envConfig[k];
+    for (const key in envConfig) {
+      process.env[key] = envConfig[key];
     }
   } catch (e) {
     if (!local) {
-      console.error(`No se encontro la configuracion en environments/${producto}/${envFile}`);
+      console.error(`No se encontro la configuracion en environments/${product}/${envFile}`);
     }
   }
 }
 
-function loadExtraEnviroment() {
-  const mode = process.VUE_CLI_SERVICE.mode||process.env.npm_lifecycle_script.replace(/(vue-)(.*)(--mode )/g, '').trim();
-  const producto = mode.split('.')[0];
-  const ambiente = mode.split('.')[1];
-  const portal = mode.split('.')[2];
+function loadExtraEnvironment(mode) {
+  const [product, environment, portal] = mode.split('.');
   const envFile = '.env';
-  cargarConfiguracion(producto, `${ambiente}${envFile}`, true);
-  cargarConfiguracion(producto, `${ambiente}${envFile}`, true, true);
-  cargarConfiguracion(producto, envFile);
-  cargarConfiguracion(producto, `${envFile}`, false, true);
-  cargarConfiguracion(producto, `${ambiente}${envFile}`);
-  cargarConfiguracion(producto, `${ambiente}${envFile}`, false, true);
-  cargarConfiguracion(producto, `${portal}${envFile}`);
-  cargarConfiguracion(producto, `${portal}${envFile}`, false, true);
+  loadConfiguration(product, `${environment}${envFile}`, true);
+  loadConfiguration(product, `${environment}${envFile}`, true, true);
+  loadConfiguration(product, envFile);
+  loadConfiguration(product, envFile, false, true);
+  loadConfiguration(product, `${environment}${envFile}`);
+  loadConfiguration(product, `${environment}${envFile}`, false, true);
+  loadConfiguration(product, `${portal}${envFile}`);
+  loadConfiguration(product, `${portal}${envFile}`, false, true);
 }
-
-loadExtraEnviroment();
 
 // eslint-disable-next-line consistent-return
 function getHost() {
@@ -56,6 +54,8 @@ function getHost() {
       return 'vue.portal.febos.cl';
   }
 }
+const mode = process.VUE_CLI_SERVICE && process.VUE_CLI_SERVICE.mode ? process.VUE_CLI_SERVICE.mode : (process.env.npm_lifecycle_script || '').replace(/(vue-)(.*)(--mode )/g, '').trim();
+if (mode) loadExtraEnvironment(mode);
 
 module.exports = {
   lintOnSave: false,

@@ -288,13 +288,13 @@
       id="prompt-avatar"
     >
       <div class="con-exemple-prompt">
-<!--        <cropper-->
-<!--          classname="cropper"-->
-<!--          :src="imagenPreviaCropper"-->
-<!--          :stencilProps="{previewClassname: 'preview'}"-->
-<!--          :stencilComponent="$options.components.CircleStencil"-->
-<!--          ref="cropper"-->
-<!--        />-->
+        <cropper
+          classname="cropper"
+          :src="imagenPreviaCropper"
+          :stencilProps="{previewClassname: 'preview'}"
+          :stencilComponent="$options.components.CircleStencil"
+          ref="cropper"
+        />
         <div class="button-wrapper">
           <span
             class="button-imagen vs-button-primary vs-button-border"
@@ -317,15 +317,15 @@ import { mapActions, mapGetters } from 'vuex';
 
 // import FiltroPerfil from './FiltroPerfil';
 // import EmpresaItem from './EmpresaItem';
-// import { Cropper, CircleStencil } from 'vue-advanced-cropper';
+import { Cropper, CircleStencil } from 'vue-advanced-cropper';
 
 export default {
   components: {
     // FiltroPerfil,
     // EmpresaItem,
     // VuePerfectScrollbar
-    // Cropper,
-    // CircleStencil,
+    Cropper,
+    CircleStencil,
   },
   data() {
     return {
