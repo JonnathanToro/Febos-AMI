@@ -17,6 +17,7 @@ const filterViews = {
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
+      { campo: 'numeroInt', tipo: 'texto' },
       /*
       {
         campo: 'tipo',
@@ -51,6 +52,7 @@ const filterViews = {
       // { campo: 'emisorContactoArea', tipo: 'institucion' }, // nombre institucion
       { campo: 'emisorContactoNombre', tipo: 'texto' }, // nombre remitente
       { campo: 'emisorContactoCargo', tipo: 'texto' }, // cargo remitente
+      { campo: 'emisorContactoEmail', tipo: 'texto' }, // correo remitente
       {
         campo: 'transporteViaTransporteCodigoTransporte', // acompaña fisico
         tipo: 'multi',
@@ -101,6 +103,7 @@ const filterViews = {
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
+      { campo: 'numeroInt', tipo: 'texto' },
       /*
       {
         campo: 'tipo',
@@ -135,6 +138,7 @@ const filterViews = {
       // { campo: 'emisorContactoArea', tipo: 'institucion' }, // nombre institucion
       { campo: 'emisorContactoNombre', tipo: 'texto' }, // nombre remitente
       { campo: 'emisorContactoCargo', tipo: 'texto' }, // cargo remitente
+      { campo: 'emisorContactoEmail', tipo: 'texto' }, // correo remitente
       {
         campo: 'transporteViaTransporteCodigoTransporte', // acompaña fisico
         tipo: 'multi',
@@ -191,6 +195,7 @@ const filterViews = {
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
+      { campo: 'numeroInt', tipo: 'texto' },
       /*
       {
         campo: 'tipo',
@@ -225,6 +230,7 @@ const filterViews = {
       // { campo: 'emisorContactoArea', tipo: 'institucion' }, // nombre institucion
       { campo: 'emisorContactoNombre', tipo: 'texto' }, // nombre remitente
       { campo: 'emisorContactoCargo', tipo: 'texto' }, // cargo remitente
+      { campo: 'emisorContactoEmail', tipo: 'texto' }, // correo remitente
       {
         campo: 'transporteViaTransporteCodigoTransporte', // acompaña fisico
         tipo: 'multi',
