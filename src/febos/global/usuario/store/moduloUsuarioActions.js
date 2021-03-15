@@ -39,7 +39,8 @@ export default {
       payload.iut,
       payload.nombre,
       payload.alias,
-      payload.correo
+      payload.correo,
+      payload.avatar,
     );
     commit('SET_USUARIO', payload);
     return response.data;

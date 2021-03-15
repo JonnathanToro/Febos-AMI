@@ -14,6 +14,12 @@
                   size="100px"
                   @click="abrirPrompAvatar"
                 ></vs-avatar>
+                <vs-progress
+                  v-if="progressAvatar.enabled"
+                  :percent="progressAvatar.percent"
+                  :indeterminate="progressAvatar.indeterminate"
+                  :color="color"
+                />
               </div>
               <div class="text-center">
                 <h4 id="alias-usuario-actual">{{ currentUser.alias }}</h4>
@@ -319,6 +325,8 @@ import { mapActions, mapGetters } from 'vuex';
 // import EmpresaItem from './EmpresaItem';
 import { Cropper, CircleStencil } from 'vue-advanced-cropper';
 
+import { ioGetPrivateUploadUrl, ioUploadFileToPrivateUrl } from '@/febos/servicios/api/herramientas.api';
+
 export default {
   components: {
     // FiltroPerfil,
@@ -333,6 +341,11 @@ export default {
       payload: {
         cerrarAnimacion: this.$vs.loading.close,
         notify: this.$vs.notify
+      },
+      progressAvatar: {
+        enabled: false,
+        percent: 0,
+        indeterminate: true
       },
       claveActual: '',
       nuevaClave: '',
@@ -483,8 +496,33 @@ export default {
       this.imagenPreviaCropper = canvas.toDataURL();
       this.transformaImagenFile(this.imagenPreviaCropper, 'perfil.jpg')
         .then((imagen) => {
+          this.$vs.notify({
+            title: 'Su imagen se esta subiendo.',
+            text: 'En breves instantes se actualizara tu imagen..',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+            color: 'success'
+          });
           this.imagenASubir = imagen;
-          console.log('Imagen a subir', imagen);
+          const baseUrl = `febos-io/publicar/archivos.febos.io/${process.env.VUE_APP_CODIGO_PAIS_S3}/${process.env.VUE_APP_AMBIENTE}/usuario/${this.currentUser.iut}/${Date.now()}.jpg`;
+          ioGetPrivateUploadUrl(baseUrl, imagen.type)
+            .then((response) => {
+              this.progressAvatar.percent = 0;
+              this.progressAvatar.enabled = true;
+              ioUploadFileToPrivateUrl(
+                  response.data?.url,
+                  imagen,
+                  (percent) => {
+                    this.progressAvatar.percent = percent;
+                  }
+              ).then((cargado) => {
+                this.progressAvatar.enabled = false;
+                console.log('cagado', cargado);
+              });
+            });
+        })
+        .catch((err) => {
+          console.error('Error: ', err);
         });
     },
     cerrarPromptAvatar() {
