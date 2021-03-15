@@ -870,5 +870,5 @@ export default {
     }
   ],
   loading: false,
-  element: {}
+  element: ''
 };

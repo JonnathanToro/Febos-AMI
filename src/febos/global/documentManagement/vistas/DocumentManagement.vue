@@ -196,9 +196,9 @@
                       </td>
                     </tr>
                     <tr
-                      v-for="document in detailItem.children"
+                      v-for="document in elementChildren"
                       :key="document.febosId"
-                      v-show="detailItem.children.length"
+                      v-show="elementChildren"
                     >
                       <td class="text-center d-flex justify-content-lg-around">
                         <span v-if="document.estado === '1'">
@@ -447,7 +447,8 @@ export default {
       editElement: {},
       comment: '',
       commentMood: false,
-      name: ''
+      name: '',
+      elements: []
     };
   },
   watch: {
@@ -480,6 +481,7 @@ export default {
     ]),
     ...mapGetters('DocManagement', [
       'element',
+      'elementChildren'
     ])
   },
   methods: {
@@ -562,7 +564,7 @@ export default {
       }
     },
     getDetail(item) {
-      this.setElement(item);
+      this.setElement(item.febosId);
       this.detailItem = item;
     },
     publishItem() {
@@ -611,6 +613,7 @@ export default {
     this.tree.isOpen = true;
     this.selectedFolder = this.tree;
     this.getDetail(this.tree);
+    this.setElement(this.tree.febosId);
     this.selectedItem = this.tree;
   }
 };
