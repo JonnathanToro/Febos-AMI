@@ -18,7 +18,6 @@
                   v-if="progressAvatar.enabled"
                   :percent="progressAvatar.percent"
                   :indeterminate="progressAvatar.indeterminate"
-                  :color="color"
                 />
               </div>
               <div class="text-center">
@@ -469,7 +468,7 @@ export default {
 
   methods: {
     ...mapActions('Usuario', [
-      'actualizarMiPerfil',
+      'updateProfile',
       'changePassword'
     ]),
     /* Metodos para el tratado del avatar */
@@ -504,20 +503,24 @@ export default {
             color: 'success'
           });
           this.imagenASubir = imagen;
-          const baseUrl = `febos-io/publicar/archivos.febos.io/${process.env.VUE_APP_CODIGO_PAIS_S3}/${process.env.VUE_APP_AMBIENTE}/usuario/${this.currentUser.iut}/${Date.now()}.jpg`;
-          ioGetPrivateUploadUrl(baseUrl, imagen.type)
+          const baseUrl = `archivos.febos.io/${process.env.VUE_APP_CODIGO_PAIS_S3}/${process.env.VUE_APP_AMBIENTE}/usuario/${this.currentUser.iut}/${Date.now()}.jpg`;
+          const url = `febos-io/publicar/${baseUrl}`;
+          this.progressAvatar.percent = 0;
+          this.progressAvatar.enabled = true;
+          ioGetPrivateUploadUrl(url, imagen.type)
             .then((response) => {
-              this.progressAvatar.percent = 0;
-              this.progressAvatar.enabled = true;
               ioUploadFileToPrivateUrl(
                   response.data?.url,
                   imagen,
                   (percent) => {
                     this.progressAvatar.percent = percent;
                   }
-              ).then((cargado) => {
-                this.progressAvatar.enabled = false;
-                console.log('cagado', cargado);
+              ).then(() => {
+                this.actualiza('avatar', `https://${baseUrl}`);
+                this.modificarPerfil(() => {
+                  this.actualiza('avatar', `https://s3.amazonaws.com/${baseUrl}`);
+                  this.progressAvatar.enabled = false;
+                });
               });
             });
         })
@@ -538,15 +541,17 @@ export default {
     actualiza(key, value) {
       this.currentUser[key] = value;
     },
-    modificarPerfil() {
+    modificarPerfil(onEnd) {
       this.$vs.loading();
       const payload = {
-        ...this.payload,
-        currentUser: this.currentUser
+        ...this.payload
       };
-      this.actualizarMiPerfil(payload).then((modificado) => {
-        console.log('modificado', modificado);
+      console.log('modificando', payload);
+      this.updateProfile(this.currentUser).then((modificado) => {
         payload.cerrarAnimacion();
+        if (onEnd) {
+          onEnd(modificado);
+        }
       }).catch((error) => {
         console.log('error', error);
         payload.cerrarAnimacion();
