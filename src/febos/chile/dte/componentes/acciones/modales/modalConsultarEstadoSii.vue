@@ -11,10 +11,10 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
+import modalStore from '@/store/modals/acciones';
 
 export default {
-  name: "modalConsultarEstadoSii",
+  name: 'modalConsultarEstadoSii',
   computed: {
     getData: {
       get() {
@@ -27,9 +27,9 @@ export default {
     };
   },
   mounted() {
-    if (this.getData.codigo != 10)  {
+    if (this.getData.codigo != 10) {
       this.$vs.notify({
-        color: "danger", title: "Estado SII", text: this.getData.mensaje + "<br/><b>Seguimiento: </b>" + this.getData.seguimientoId, time: 10000
+        color: 'danger', title: 'Estado SII', text: `${this.getData.mensaje }<br/><b>Seguimiento: </b>${ this.getData.seguimientoId}`, time: 10000
       });
     }
   }

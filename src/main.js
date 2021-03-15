@@ -78,7 +78,8 @@ import './shame';
 import VTooltip from 'v-tooltip';
 
 import HasPermission from './directives/HasPermission.vue';
-Vue.directive('has-permission', HasPermission)
+
+Vue.directive('has-permission', HasPermission);
 
 // BSV Plugin Registration
 Vue.use(ToastPlugin);

@@ -14,11 +14,11 @@
 </template>
 
 <script>
-  import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-  import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionCopiarDocumento",
+  name: 'AccionCopiarDocumento',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -27,19 +27,19 @@ export default {
   },
   data() {
     return {
-      icono: "library_add",
-      nombre: "Copiar Documento",
-      permiso: "DTE09"
+      icono: 'library_add',
+      nombre: 'Copiar Documento',
+      permiso: 'DTE09'
     };
   },
   methods: {
-      ejecutarAccion(){
-        console.log("EJECUTANDO COPIAR DOCUMENTO ",this.documento);
-        const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCopiarDocumento.vue`);
-          modalStore.commit("setTitulo", "Copiar Documento");
-          modalStore.commit("mostrarBitacora", modalComponente);
-          modalStore.commit("setData", this.documento);
-      },
+    ejecutarAccion() {
+      console.log('EJECUTANDO COPIAR DOCUMENTO ', this.documento);
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalCopiarDocumento.vue');
+      modalStore.commit('setTitulo', 'Copiar Documento');
+      modalStore.commit('mostrarBitacora', modalComponente);
+      modalStore.commit('setData', this.documento);
+    },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);
     },

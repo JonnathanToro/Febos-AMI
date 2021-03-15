@@ -14,13 +14,13 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import modalStore from "../../../../../store/modals/acciones";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import modalStore from '../../../../../store/modals/acciones';
 
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "AccionAsociarDocumento",
+  name: 'AccionAsociarDocumento',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -29,20 +29,20 @@ export default {
   },
   data() {
     return {
-      icono: "class",
-      nombre: "Asociar Documento",
-      permiso: "DTE26"
+      icono: 'class',
+      nombre: 'Asociar Documento',
+      permiso: 'DTE26'
     };
   },
   methods: {
     ejecutarAccion() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
       clienteFebosAPI.get('/documentos/dnt').then((response) => {
-        const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalAsociarDocumento.vue`);
-        modalStore.commit("setTitulo", "Asociar Documento");
-        modalStore.commit("mostrarBitacoraFull", modalComponente);
+        const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalAsociarDocumento.vue');
+        modalStore.commit('setTitulo', 'Asociar Documento');
+        modalStore.commit('mostrarBitacoraFull', modalComponente);
         this.documento.datas = response.data;
-        modalStore.commit("setData", this.documento);
+        modalStore.commit('setData', this.documento);
         this.$vs.loading.close();
       });
       this.$vs.loading.close();

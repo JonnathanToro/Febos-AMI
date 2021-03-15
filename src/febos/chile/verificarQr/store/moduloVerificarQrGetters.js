@@ -1,5 +1,3 @@
 export default {
-  infoQr: state => {
-    return state.infoQr;
-  }
-}
+  infoQr: (state) => state.infoQr
+};

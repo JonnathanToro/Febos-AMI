@@ -14,10 +14,11 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import modalStore from '../../../../../store/modals/acciones';
+
 export default {
-  name: "AccionModificarTipoVenta",
+  name: 'AccionModificarTipoVenta',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -26,19 +27,19 @@ export default {
   },
   data() {
     return {
-      icono: "edit",
-      nombre: "Modificar Tipo Compra",
-      permiso: "DTE28"
+      icono: 'edit',
+      nombre: 'Modificar Tipo Compra',
+      permiso: 'DTE28'
     };
   },
   methods: {
     ejecutarAccion() {
-      modalStore.commit("mostrarLoading");
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalModificarTipoCompra.vue`);
-        modalStore.commit("setTitulo", "Modificar Tipo de Compra");
-        modalStore.commit("febosId", this.documento.febosId);
-        modalStore.commit("setData", this.documento);
-        modalStore.commit("mostrarBitacora", modalComponente);
+      modalStore.commit('mostrarLoading');
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalModificarTipoCompra.vue');
+      modalStore.commit('setTitulo', 'Modificar Tipo de Compra');
+      modalStore.commit('febosId', this.documento.febosId);
+      modalStore.commit('setData', this.documento);
+      modalStore.commit('mostrarBitacora', modalComponente);
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

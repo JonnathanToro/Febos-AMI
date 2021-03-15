@@ -12,10 +12,10 @@ export default [{
     },
     {
       url: null,
-      name: "Bandeja de Entrada",
-      slug: "page2",
-      icon: "FileIcon",
-      /*submenu: [
+      name: 'Bandeja de Entrada',
+      slug: 'page2',
+      icon: 'FileIcon',
+      /* submenu: [
         {
           url: '/dashboard/analytics',
           name: 'Analytics',
@@ -23,7 +23,7 @@ export default [{
           icon: 'HomeIcon',
           i18n: 'Analytics'
         },
-      ]*/
+      ] */
     },
   ]
-}]
+}];

@@ -8,20 +8,21 @@
 </template>
 
 <script>
-import useAppConfig from '@core/app-config/useAppConfig'
-import { computed } from '@vue/composition-api'
-import { BNavItem } from 'bootstrap-vue'
+import { computed } from '@vue/composition-api';
+import { BNavItem } from 'bootstrap-vue';
+
+import useAppConfig from '@core/app-config/useAppConfig';
 
 export default {
   components: {
     BNavItem,
   },
   setup() {
-    const { skin } = useAppConfig()
+    const { skin } = useAppConfig();
 
-    const isDark = computed(() => skin.value === 'dark')
+    const isDark = computed(() => skin.value === 'dark');
 
-    return { skin, isDark }
+    return { skin, isDark };
   },
-}
+};
 </script>

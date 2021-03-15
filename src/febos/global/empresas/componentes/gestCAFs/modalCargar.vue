@@ -50,24 +50,24 @@
     </div>
   </vs-modal>
 
-
 </template>
 
 <script>
-import VsModal from "vs-modal";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import VsModal from 'vs-modal';
+
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalCargar",
-  props: ["editar"],
+  name: 'modalCargar',
+  props: ['editar'],
   components: {
     VsModal
   },
-  data()  {
+  data() {
     return {
-      url_base: "/empresas/{rut}/caf",
+      url_base: '/empresas/{rut}/caf',
       show: false,
-      fileCAF: "caf",
+      fileCAF: 'caf',
       precarga: true,
       caf: {
         selectedFile: null,
@@ -77,13 +77,13 @@ export default {
       },
       sending: false
 
-    }
+    };
   },
   computed: {
     disabledCargar: {
       get() {
-        if (this.caf.selectedFile == null || !this.caf.inicial == null || !this.caf.final == null)  return true;
-        if (this.caf.inicial == "" || this.caf.final == "") return true;
+        if (this.caf.selectedFile == null || !this.caf.inicial == null || !this.caf.final == null) return true;
+        if (this.caf.inicial == '' || this.caf.final == '') return true;
       }
     },
     stored: {
@@ -96,39 +96,39 @@ export default {
       }
     }
   },
-  watch:  {
-    editar: function(val) {
+  watch: {
+    editar(val) {
       this.show = false;
       if (val) {
         this.show = true;
-        this.$refs["modalEdicion"].open();
+        this.$refs.modalEdicion.open();
       } else {
-        this.$refs["modalEdicion"].close();
+        this.$refs.modalEdicion.close();
       }
     },
   },
   methods: {
     cerrarModal() {
       this.show = false;
-      this.$emit("cerrarModalCargarCAF", false);
+      this.$emit('cerrarModalCargarCAF', false);
     },
 
-    procesarCAF(event)  {
+    procesarCAF(event) {
       this.caf.dataCaf = btoa(event.currentTarget.result);
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.put("/empresas/" + this.stored.Empresas.empresa.iut + "/caf?folioInicio=" + this.caf.inicial + "&folioFin=" + this.caf.final + "&tipoCAF=1",
-                        { dataCaf: this.caf.dataCaf }).then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.put(`/empresas/${ this.stored.Empresas.empresa.iut }/caf?folioInicio=${ this.caf.inicial }&folioFin=${ this.caf.final }&tipoCAF=1`,
+        { dataCaf: this.caf.dataCaf }).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
             color: 'success', title: 'CAF', text: 'Documento cargado'
           });
           this.cerrarModal();
         } else {
           this.$vs.notify({
-            color: "danger",
-            title: "Usuario",
-            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId,
+            color: 'danger',
+            title: 'Usuario',
+            text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`,
             time: 10000
           });
         }
@@ -136,33 +136,31 @@ export default {
         console.log(error);
       });
     },
-    enviarCAF()  {
+    enviarCAF() {
       const reader = new FileReader();
-      reader.onload = e => this.procesarCAF(e);
+      reader.onload = (e) => this.procesarCAF(e);
       reader.readAsText(this.caf.selectedFile);
     },
-    leerCAF(event)  {
-      let xml = event.currentTarget.result;
-      let rango = xml.substr(xml.indexOf("<RNG>")+5);
-      rango = rango.substr(0, rango.indexOf("</RNG>"));
-      let desde = rango.substr(rango.indexOf("<D>")+3);
-      desde = desde.substr(0, desde.indexOf("</D>"));
-      let hasta = rango.substr(rango.indexOf("<H>")+3);
-      hasta = hasta.substr(0, hasta.indexOf("</H>"));
+    leerCAF(event) {
+      const xml = event.currentTarget.result;
+      let rango = xml.substr(xml.indexOf('<RNG>') + 5);
+      rango = rango.substr(0, rango.indexOf('</RNG>'));
+      let desde = rango.substr(rango.indexOf('<D>') + 3);
+      desde = desde.substr(0, desde.indexOf('</D>'));
+      let hasta = rango.substr(rango.indexOf('<H>') + 3);
+      hasta = hasta.substr(0, hasta.indexOf('</H>'));
 
       this.caf.inicial = desde;
       this.caf.final = hasta;
-
     },
     caf_onChange(event) {
       this.caf.selectedFile = event.target.files[0];
       const reader = new FileReader();
-      reader.onload = e => this.leerCAF(e);
+      reader.onload = (e) => this.leerCAF(e);
       reader.readAsText(this.caf.selectedFile);
     },
   }
-}
-
+};
 
 </script>
 

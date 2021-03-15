@@ -82,29 +82,29 @@
     </form>
   </div>
 
-
 </template>
 
 <script>
-import { Validator } from "vee-validate";
-import es from "vee-validate/dist/locale/es";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import { Validator } from 'vee-validate';
+import es from 'vee-validate/dist/locale/es';
 
-Validator.localize("es", es);
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
+
+Validator.localize('es', es);
 
 export default {
-  name: "editCasaMatriz",
-  props: ["iut", "sucursales"],
-  data()  {
+  name: 'editCasaMatriz',
+  props: ['iut', 'sucursales'],
+  data() {
     return {
       datos: null,
       cambioClave: false,
-    }
+    };
   },
   computed: {
     idEmpresa: {
       get() {
-        var data = JSON.parse(
+        const data = JSON.parse(
           localStorage.getItem(
             `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
           )
@@ -118,18 +118,26 @@ export default {
   },
   methods: {
     obtenerCasaMatriz() {
-      this.datos = this.sucursales.find(element => element.casaMatriz);
-      if (!this.datos === undefined)  {
+      this.datos = this.sucursales.find((element) => element.casaMatriz);
+      if (!this.datos === undefined) {
         this.datos = {
-          casaMatriz: true, id: null, rutEmpresa: null, sucursalActiva: true,
-          direccion: null, ciudad: null, comuna: null, telefono: null, correoElectronico: null, codigoSii: null,
+          casaMatriz: true,
+          id: null,
+          rutEmpresa: null,
+          sucursalActiva: true,
+          direccion: null,
+          ciudad: null,
+          comuna: null,
+          telefono: null,
+          correoElectronico: null,
+          codigoSii: null,
         };
       }
     },
-    validarCasaMatriz()  {
-      this.$validator.validateAll("formCasaMatriz").then((result) => {
+    validarCasaMatriz() {
+      this.$validator.validateAll('formCasaMatriz').then((result) => {
         if (result) {
-          if (this.datos.id)  {
+          if (this.datos.id) {
             this.actualizarCasaMatriz();
           } else {
             this.crearCasaMatriz();
@@ -144,51 +152,51 @@ export default {
         this.$vs.notify({
           color: 'danger', title: 'Casas Matriz', text: 'Error de plataforma'
         });
-      })
+      });
     },
     crearCasaMatriz() {
       this.$vs.loading({ type: 'default' });
-      let datos = this.__mapPostCasaMatriz();
-      clienteFebosAPI.post("/empresas/" + this.idEmpresa + "/sucursales", datos).then((response) => {
+      const datos = this.__mapPostCasaMatriz();
+      clienteFebosAPI.post(`/empresas/${ this.idEmpresa }/sucursales`, datos).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: "success", title: "Casa Matriz", text: "Casa matriz definida"
-          })
+            color: 'success', title: 'Casa Matriz', text: 'Casa matriz definida'
+          });
         } else {
           this.$vs.notify({
-            color: "danger", title: "Casa Matriz", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
-          })
+            color: 'danger', title: 'Casa Matriz', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
+          });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Casa Matriz", text: "No fue posible actualizar la casa matriz"
+          color: 'danger', title: 'Casa Matriz', text: 'No fue posible actualizar la casa matriz'
         });
         window.console.log(error);
-      })
+      });
     },
-    actualizarCasaMatriz()  {
+    actualizarCasaMatriz() {
       this.$vs.loading({ type: 'default' });
-      let datos = this.__mapPostCasaMatriz();
-      clienteFebosAPI.put("/empresas/" + this.idEmpresa + "/sucursales/" + this.datos.id, datos).then((response) => {
+      const datos = this.__mapPostCasaMatriz();
+      clienteFebosAPI.put(`/empresas/${ this.idEmpresa }/sucursales/${ this.datos.id}`, datos).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: "success", title: "Casa Matriz", text: "Casa matriz actualizada"
-          })
+            color: 'success', title: 'Casa Matriz', text: 'Casa matriz actualizada'
+          });
         } else {
           this.$vs.notify({
-            color: "danger", title: "Casa Matriz", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
-          })
+            color: 'danger', title: 'Casa Matriz', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
+          });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Casa Matriz", text: "No fue posible actualizar la casa matriz"
+          color: 'danger', title: 'Casa Matriz', text: 'No fue posible actualizar la casa matriz'
         });
         window.console.log(error);
-      })
+      });
     },
 
     __mapPostCasaMatriz() {
@@ -206,17 +214,17 @@ export default {
 
     /* Validación Encabezado */
     getError(par) {
-      let retorno = null;
-      const ret = this.errors.items.find(elemento => elemento.field == par);
-      if (ret !== undefined && retorno === null)  {
-        if (par == "iut" && ret.rule == "validaRut")  {
-          return "rut";
+      const retorno = null;
+      const ret = this.errors.items.find((elemento) => elemento.field == par);
+      if (ret !== undefined && retorno === null) {
+        if (par == 'iut' && ret.rule == 'validaRut') {
+          return 'rut';
         }
-        if (par == "email" && ret.rule == "email") {
-          return "email";
+        if (par == 'email' && ret.rule == 'email') {
+          return 'email';
         }
-        if (ret.rule == "required") {
-          return "required";
+        if (ret.rule == 'required') {
+          return 'required';
         }
         console.log(ret);
       }
@@ -224,7 +232,7 @@ export default {
     },
 
   }
-}
+};
 </script>
 
 <style scoped>

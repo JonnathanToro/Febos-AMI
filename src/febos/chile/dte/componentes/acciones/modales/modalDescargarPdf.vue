@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
+import modalStore from '@/store/modals/acciones';
 
 export default {
-  name: "modalDescargarPdf",
+  name: 'modalDescargarPdf',
   computed: {
     getData: {
       get() {
@@ -23,7 +23,7 @@ export default {
       types: [
         'default'
       ],
-    activeLoading:false,
+      activeLoading: false,
     };
   }
 };

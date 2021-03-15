@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionVerReferencias",
+  name: 'AccionVerReferencias',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -28,42 +28,40 @@ export default {
   },
   data() {
     return {
-      icono: "visibility",
-      nombre: "Ver Referencias",
-      permiso: "DTE44"
+      icono: 'visibility',
+      nombre: 'Ver Referencias',
+      permiso: 'DTE44'
     };
   },
   mount() {
   },
   methods: {
     ejecutarAccion() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalVerReferencias.vue`);
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalVerReferencias.vue');
 
-        clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/referencias").then((response) => {
-          this.$vs.loading.close();
+      clienteFebosAPI.get(`/documentos/${ this.documento.febosId }/referencias`).then((response) => {
+        this.$vs.loading.close();
 
-          // modalStore.commit("setTitulo", "Ver Referencias Documento N°"+this.documento.folio);
-          modalStore.commit("setTitulo", "Referencias del documento");
-          modalStore.commit("febosId", this.documento.febosId);
-          modalStore.commit("setData", { documento: this.documento, referencias: response.data});
+        // modalStore.commit("setTitulo", "Ver Referencias Documento N°"+this.documento.folio);
+        modalStore.commit('setTitulo', 'Referencias del documento');
+        modalStore.commit('febosId', this.documento.febosId);
+        modalStore.commit('setData', { documento: this.documento, referencias: response.data });
 
-          if (response.data.referenciadosTipoDnt.length == 0 &&
-              response.data.referenciadosTipoDte.length == 0 &&
-              response.data.referenciasTipoDnt.length == 0 &&
-              response.data.referenciasTipoDte.length == 0) {
-            modalStore.commit("mostrarBitacora", modalComponente);
-          } else {
-            modalStore.commit("mostrarBitacora", modalComponente);
-
-          }
-        }).catch(() => {
-          this.$vs.loading.close();
-          this.$vs.notify({
-            color: 'danger', title: 'Ver Referencias', text: 'No fue posible acceder a plataforma'
-          });
-        })
-
+        if (response.data.referenciadosTipoDnt.length == 0
+              && response.data.referenciadosTipoDte.length == 0
+              && response.data.referenciasTipoDnt.length == 0
+              && response.data.referenciasTipoDte.length == 0) {
+          modalStore.commit('mostrarBitacora', modalComponente);
+        } else {
+          modalStore.commit('mostrarBitacora', modalComponente);
+        }
+      }).catch(() => {
+        this.$vs.loading.close();
+        this.$vs.notify({
+          color: 'danger', title: 'Ver Referencias', text: 'No fue posible acceder a plataforma'
+        });
+      });
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

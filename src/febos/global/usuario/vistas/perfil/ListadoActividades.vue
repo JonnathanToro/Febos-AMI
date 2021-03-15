@@ -82,42 +82,42 @@
 
 <script>
 
-  import ActividadesItem from './ActividadesItem';
-  export default {
-    name: 'ListadoActividades',
-    components: {
-      ActividadesItem
-    },
-    props: {
-      data: {
-        type: Array,
-        required: true
-      },
-    },
-    data() {
-      return {
-        promptIdActividad: false,
-        idActividad: '',
-      }
-    },
-    computed: {},
-    created() {},
-    methods: {
-      cerrarPromptIdActividad() {
-        setTimeout(()=> {
-          this.promptIdActividad = false;
-        }, 500);
+import ActividadesItem from './ActividadesItem';
 
-      },
-      abrirPrompIdActividad(id) {
-        this.idActividad = id;
-        this.promptIdActividad = true;
-      }
+export default {
+  name: 'ListadoActividades',
+  components: {
+    ActividadesItem
+  },
+  props: {
+    data: {
+      type: Array,
+      required: true
     },
-    beforeDestroy() {
-      if(this.promptIdActividad) document.getElementById("prompt-id-actividad").remove();
+  },
+  data() {
+    return {
+      promptIdActividad: false,
+      idActividad: '',
+    };
+  },
+  computed: {},
+  created() {},
+  methods: {
+    cerrarPromptIdActividad() {
+      setTimeout(() => {
+        this.promptIdActividad = false;
+      }, 500);
+    },
+    abrirPrompIdActividad(id) {
+      this.idActividad = id;
+      this.promptIdActividad = true;
     }
+  },
+  beforeDestroy() {
+    if (this.promptIdActividad) document.getElementById('prompt-id-actividad').remove();
   }
+};
 
 </script>
 

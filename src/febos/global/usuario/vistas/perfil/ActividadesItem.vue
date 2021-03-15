@@ -56,18 +56,18 @@
 </template>
 <script>
 
-  export default {
-    name: 'actividades-item',
-    props: ['item'],
-    methods: {
-      labelAzul(texto) {
-        return texto.substr(1,5);
-      },
-      actividad(texto){
-        return texto.substr(8, texto.length);
-      },
+export default {
+  name: 'actividades-item',
+  props: ['item'],
+  methods: {
+    labelAzul(texto) {
+      return texto.substr(1, 5);
     },
-  }
+    actividad(texto) {
+      return texto.substr(8, texto.length);
+    },
+  },
+};
 </script>
 <style lang="scss">
 

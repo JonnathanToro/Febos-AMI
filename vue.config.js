@@ -54,7 +54,18 @@ function getHost() {
       return 'vue.portal.febos.cl';
   }
 }
-const mode = process.VUE_CLI_SERVICE && process.VUE_CLI_SERVICE.mode ? process.VUE_CLI_SERVICE.mode : (process.env.npm_lifecycle_script || '').replace(/(vue-)(.*)(--mode )/g, '').trim();
+
+function getMode() {
+  if (process.VUE_CLI_SERVICE && process.VUE_CLI_SERVICE.mode) {
+    return process.VUE_CLI_SERVICE.mode;
+  }
+  if (process.env && (process.env.npm_lifecycle_script || '').includes('mode')) {
+    return (process.env.npm_lifecycle_script || '').replace(/(vue-)(.*)(--mode )/g, '').trim();
+  }
+  return undefined;
+}
+
+const mode = getMode();
 if (mode) loadExtraEnvironment(mode);
 
 module.exports = {

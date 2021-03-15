@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -14,7 +14,7 @@ export default new Vuex.Store({
     data: null
   },
   mutations: {
-    mostrarLoading(state)  {
+    mostrarLoading(state) {
       state.loading = true;
     },
     ocultarLoading(state) {
@@ -23,35 +23,35 @@ export default new Vuex.Store({
     setTitulo(state, value) {
       state.tituloModal = value;
     },
-    mostrarBitacora(state, component)  {
+    mostrarBitacora(state, component) {
       state.loading = false;
       state.showModal = true;
       state.componente = component;
     },
-    ocultarBitacora(state)  {
+    ocultarBitacora(state) {
       state.showModal = false;
       state.componente = null;
       state.febosId = null;
     },
-    mostrarBitacoraFull(state, component)  {
+    mostrarBitacoraFull(state, component) {
       state.loading = false;
       state.showModalFull = true;
       state.componente = component;
     },
-    ocultarBitacoraFull(state)  {
+    ocultarBitacoraFull(state) {
       state.showModalFull = false;
       state.componente = null;
       state.febosId = null;
     },
-    mostrarVerReferencias(state,component)  {
+    mostrarVerReferencias(state, component) {
       state.loading = false;
       state.showModal = true;
       state.componente = component;
     },
-    ocultarVerReferencias(state)  {
+    ocultarVerReferencias(state) {
       state.showModal = false;
       state.componente = null;
-      state.febosId= null;
+      state.febosId = null;
     },
     febosId(state, value) {
       state.febosId = value;
@@ -60,4 +60,4 @@ export default new Vuex.Store({
       state.data = value;
     }
   }
-})
+});

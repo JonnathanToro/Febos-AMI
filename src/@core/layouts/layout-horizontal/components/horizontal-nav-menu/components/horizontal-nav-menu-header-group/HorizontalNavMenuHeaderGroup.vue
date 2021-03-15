@@ -28,15 +28,17 @@
 </template>
 
 <script>
-import { BLink } from 'bootstrap-vue'
-import { resolveHorizontalNavMenuItemComponent } from '@core/layouts/utils'
-import { useUtils as useAclUtils } from '@core/libs/acl'
-import { useUtils as useI18nUtils } from '@core/libs/i18n'
-import useHorizontalNavMenuHeaderGroup from './useHorizontalNavMenuHeaderGroup'
-import mixinHorizontalNavMenuHeaderGroup from './mixinHorizontalNavMenuHeaderGroup'
+import { BLink } from 'bootstrap-vue';
 
-import HorizontalNavMenuGroup from '../horizontal-nav-menu-group/HorizontalNavMenuGroup.vue'
-import HorizontalNavMenuLink from '../horizontal-nav-menu-link/HorizontalNavMenuLink.vue'
+import HorizontalNavMenuGroup from '../horizontal-nav-menu-group/HorizontalNavMenuGroup.vue';
+import HorizontalNavMenuLink from '../horizontal-nav-menu-link/HorizontalNavMenuLink.vue';
+
+import useHorizontalNavMenuHeaderGroup from './useHorizontalNavMenuHeaderGroup';
+import mixinHorizontalNavMenuHeaderGroup from './mixinHorizontalNavMenuHeaderGroup';
+
+import { resolveHorizontalNavMenuItemComponent } from '@core/layouts/utils';
+import { useUtils as useAclUtils } from '@core/libs/acl';
+import { useUtils as useI18nUtils } from '@core/libs/i18n';
 
 export default {
   components: {
@@ -57,10 +59,10 @@ export default {
       updateIsActive,
       isOpen,
       updateGroupOpen,
-    } = useHorizontalNavMenuHeaderGroup(props.item)
+    } = useHorizontalNavMenuHeaderGroup(props.item);
 
-    const { t } = useI18nUtils()
-    const { canViewHorizontalNavMenuHeaderGroup } = useAclUtils()
+    const { t } = useI18nUtils();
+    const { canViewHorizontalNavMenuHeaderGroup } = useAclUtils();
 
     return {
       isOpen,
@@ -74,7 +76,7 @@ export default {
 
       // i18n
       t,
-    }
+    };
   },
-}
+};
 </script>

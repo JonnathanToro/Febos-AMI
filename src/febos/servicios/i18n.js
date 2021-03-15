@@ -1,5 +1,5 @@
-import i18nCL from "../chile/_vue/i18nCL";
+import i18nCL from '../chile/_vue/i18nCL';
 
 export default {
-  "cl":i18nCL
-}
+  cl: i18nCL
+};

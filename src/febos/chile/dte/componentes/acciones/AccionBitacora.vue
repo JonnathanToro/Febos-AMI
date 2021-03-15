@@ -14,63 +14,62 @@
 </template>
 
 <script>
-  import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-  import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-  import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionBitacora",
+  name: 'AccionBitacora',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
       type: Object
     }
   },
-    data() {
-      return {
-        icono: 'list',
-        nombre: 'Bitácora',
-        permiso: 'DTE03',
-      };
-    },
-    mount() {
-    },
-    methods:{
-      ejecutarAccion(){
-        this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-        const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalBitacora.vue`);
-        clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/bitacora?pagina=1&filas=15").then(async (response) => {
+  data() {
+    return {
+      icono: 'list',
+      nombre: 'Bitácora',
+      permiso: 'DTE03',
+    };
+  },
+  mount() {
+  },
+  methods: {
+    ejecutarAccion() {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalBitacora.vue');
+      clienteFebosAPI.get(`/documentos/${ this.documento.febosId }/bitacora?pagina=1&filas=15`).then(async (response) => {
+        await clienteFebosAPI
+          .get(
+            `/documentos/${
+                 this.documento.febosId
+                 }?dominioPortal=portal.febos.cl&febosId=${
+                 this.documento.febosId
+                 }&imagen=si&incrustar=no&regenerar=no&tipoImagen=0`
+          )
+          .then((response1) => {
+            if (response1.data.imagenLink) {
+              response.data.imagenLink = response1.data.imagenLink;
+            } else {
+              response.data.imagenLink = 'no';
+            }
+          });
 
-          await clienteFebosAPI
-            .get(
-                "/documentos/" +
-                this.documento.febosId +
-                "?dominioPortal=portal.febos.cl&febosId=" +
-                this.documento.febosId +
-                "&imagen=si&incrustar=no&regenerar=no&tipoImagen=0"
-            )
-            .then( (response1) => {
-              if(response1.data.imagenLink) {
-                response.data.imagenLink = response1.data.imagenLink;
-              }else{
-                response.data.imagenLink = "no";
-              }
-            });
-
-          modalStore.commit("setTitulo", "Bitácora Documento N°"+this.documento.folio);
-          modalStore.commit("mostrarBitacoraFull", modalComponente);
-          modalStore.commit("febosId", this.documento.febosId);
-          modalStore.commit("setData", response.data);
-          this.$vs.loading.close();
-        })
-      },
-      desplegar(){
-        return this.esAccionAplicable() && this._tienePermiso(this.permiso);
-      },
-      esAccionAplicable(){
-        return true;
-      }
+        modalStore.commit('setTitulo', `Bitácora Documento N°${this.documento.folio}`);
+        modalStore.commit('mostrarBitacoraFull', modalComponente);
+        modalStore.commit('febosId', this.documento.febosId);
+        modalStore.commit('setData', response.data);
+        this.$vs.loading.close();
+      });
+    },
+    desplegar() {
+      return this.esAccionAplicable() && this._tienePermiso(this.permiso);
+    },
+    esAccionAplicable() {
+      return true;
     }
+  }
 };
 </script>
 

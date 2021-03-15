@@ -39,41 +39,41 @@
 </template>
 
 <script>
-  import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
-  export default {
-    props: {
-      activarBoton: Boolean
-    },
-    data() {
-      return {
-        active: false,
-        settings: { // perfectscrollbar settings
-          maxScrollbarLength: 60,
-          wheelSpeed: .60,
-        },
-        colorx: 'success',
-        saliendo:false
+export default {
+  props: {
+    activarBoton: Boolean
+  },
+  data() {
+    return {
+      active: false,
+      settings: { // perfectscrollbar settings
+        maxScrollbarLength: 60,
+        wheelSpeed: 0.60,
+      },
+      colorx: 'success',
+      saliendo: false
 
-      }
-    },
-    computed: {
-      activar:function(){
-        return this.activarBoton && !this.saliendo;
-      }
-    },
-    methods: {},
-    created() {
-      this.saliendo=false;
-    },
-    beforeDestroy(){
-      this.saliendo=true;
-      console.log("Entro a morir",this.activar);
-    },
-    components: {
-      VuePerfectScrollbar,
+    };
+  },
+  computed: {
+    activar() {
+      return this.activarBoton && !this.saliendo;
     }
+  },
+  methods: {},
+  created() {
+    this.saliendo = false;
+  },
+  beforeDestroy() {
+    this.saliendo = true;
+    console.log('Entro a morir', this.activar);
+  },
+  components: {
+    VuePerfectScrollbar,
   }
+};
 </script>
 
 <style lang="scss">

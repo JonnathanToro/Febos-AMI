@@ -8,7 +8,6 @@
     Author URL: http://www.themeforest.net/user/pixinvent
 ========================================================================================== -->
 
-
 <template>
     <ul class="list">
         <li class="list__item" v-for="(item, index) in list" :key="index">
@@ -19,27 +18,27 @@
 
 <script>
 export default {
-    name: "vx-list",
-    props: {
-        list: {
-            type: Array,
-            required: true,
-        },
-        icon: {
-            type: String,
-            default: "ChevronsRightIcon",
-        },
+  name: 'vx-list',
+  props: {
+    list: {
+      type: Array,
+      required: true,
     },
-    computed: {
-      rtlSpecificIcon() {
-        let i = this.icon
-        if(this.$vs.rtl) {
-          i.includes("Left") ? i=i.replace("Left", "Right") : i.includes("Right") ? i=i.replace("Right", "Left") : null
-        }
-        return i
+    icon: {
+      type: String,
+      default: 'ChevronsRightIcon',
+    },
+  },
+  computed: {
+    rtlSpecificIcon() {
+      let i = this.icon;
+      if (this.$vs.rtl) {
+        i.includes('Left') ? i = i.replace('Left', 'Right') : i.includes('Right') ? i = i.replace('Right', 'Left') : null;
       }
+      return i;
     }
-}
+  }
+};
 </script>
 
 <style lang="scss">

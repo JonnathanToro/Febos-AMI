@@ -2,7 +2,6 @@
 <div>
   <vx-card title="Gestión de usuarios" title-color="primary">
 
-
     <vs-table :data="usuarios" :search="true" :pagination="true" :maxItems="10" noDataText="Sin registros encontrados">
       <template slot="header">
         <vs-button size="small" style="margin-bottom: 10px;" @click="agregarUsuario">Agregar</vs-button>
@@ -65,23 +64,23 @@
 </template>
 
 <script>
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
-import modalUsuario from "@/febos/global/empresas/componentes/gestUsuarios/modalUsuario";
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
+import modalUsuario from '@/febos/global/empresas/componentes/gestUsuarios/modalUsuario';
 // import modalEmpresas from "@/febos/global/empresas/componentes/gestUsuarios/modalEmpresas";
 
 export default {
-  name: "gestUsuarios",
+  name: 'gestUsuarios',
   components: {
-    modalUsuario, /*modalEmpresas*/
+    modalUsuario, /* modalEmpresas */
   },
-  data()  {
+  data() {
     return {
       usuarios: [],
       editar: false,
       usuario: null,
       editarEmpresa: false,
       empresas: null
-    }
+    };
   },
   computed: {
 
@@ -90,41 +89,44 @@ export default {
     this.cargarEmpresas();
     this.obtenerUsuarios();
   },
-  methods:  {
+  methods: {
     obtenerUsuarios() {
       this.usuarios = [];
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.get("/usuarios?filas=10000&pagina=1").then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.get('/usuarios?filas=10000&pagina=1').then((response) => {
         this.$vs.loading.close();
         if (response.data.codigo == 10) {
           this.usuarios = response.data.usuarios;
           console.log(this.usuarios);
         } else {
           this.$vs.notify({
-            color: "danger", title: "Configuración de usuarios", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Configuración de usuarios', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Configuración de usuarios", text: "No fue posible procesar la cesión del documento", time: 10000
+          color: 'danger', title: 'Configuración de usuarios', text: 'No fue posible procesar la cesión del documento', time: 10000
         });
-      })
-
+      });
     },
-    agregarUsuario()  {
-      this.usuario = { id: null, iut: null, nombre: null, alias: null, correo: null };
+    agregarUsuario() {
+      this.usuario = {
+        id: null, iut: null, nombre: null, alias: null, correo: null
+      };
       this.editar = true;
     },
-    editarUsuario(val)  {
+    editarUsuario(val) {
       this.editar = true;
-      this.usuario = { id: val.id, iut: val.iut, nombre: val.nombre, alias: val.alias, correo: val.correo };
+      this.usuario = {
+        id: val.id, iut: val.iut, nombre: val.nombre, alias: val.alias, correo: val.correo
+      };
     },
-/*    editarEmpresas(val) {
+    /*    editarEmpresas(val) {
       this.editarEmpresa = true;
       this.usuario = val;
-    },*/
-    eliminarUsuario(val)  {
+    }, */
+    eliminarUsuario(val) {
       console.log(val);
     },
     cancelarEdicion(val) {
@@ -137,36 +139,32 @@ export default {
       this.usuario = null;
     },
 
-
-
-    cargarEmpresas()  {
+    cargarEmpresas() {
       this.empresas = null;
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.get("/empresas?busquedaSimple=si&filas=9000&pagina=1").then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.get('/empresas?busquedaSimple=si&filas=9000&pagina=1').then((response) => {
         this.$vs.loading.close();
 
         if (response.data.codigo == 10) {
           this.empresas = response.data.empresas;
-          this.empresas.forEach(elemento => elemento.seleccionado = false);
+          this.empresas.forEach((elemento) => elemento.seleccionado = false);
           // this.obtenerActuales();
         } else {
           this.$vs.loading.close();
           this.$vs.notify({
-            color: "danger", title: "Empresas del usuario", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Empresas del usuario', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Empresas del usuario", text: "Error de plataforma", time: 10000
+          color: 'danger', title: 'Empresas del usuario', text: 'Error de plataforma', time: 10000
         });
-      })
-
+      });
     },
 
-
   }
-}
+};
 </script>
 
 <style  lang="css">
@@ -179,7 +177,6 @@ export default {
   /*padding: 1rem 1.25rem !important;*/
   padding: 6px !important;
 }
-
 
 table {
   border-spacing: 0;
