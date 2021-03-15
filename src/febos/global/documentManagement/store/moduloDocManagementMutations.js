@@ -4,6 +4,7 @@ export default {
       ...state.myRepository,
       payload
     ];
+    state.element = payload;
   },
   ENABLE_ELEMENT_TREE(state, payload) {
     state.myRepository = state.myRepository.map((repo) => {

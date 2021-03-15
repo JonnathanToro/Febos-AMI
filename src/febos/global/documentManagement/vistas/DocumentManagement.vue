@@ -456,6 +456,7 @@ export default {
       this.getDetail(this.detailItem);
     },
     element(newValue) {
+      console.log('WATCH', newValue);
       this.getDetail(newValue);
       this.detailItem = newValue;
     },
