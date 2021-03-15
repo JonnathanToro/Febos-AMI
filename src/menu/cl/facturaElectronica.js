@@ -1,72 +1,74 @@
 export default [{
   header: 'Factura Electrónica',
   icon: 'PackageIcon',
-  permiso:'M01',
+  permiso: 'M01',
   items: [
-/*    {
+    /*
+    {
       url: '/factura-electronica/panel',
       name: 'Panel',
       icon: 'GridIcon',
       slug: 'panel',
       permiso: 'WB000'
-    },*/
+    },
+    */
     {
-      url: '/factura-electronica/emision/basica',
-      name: "Nuevo DTE",
+      url: { name: 'e-bill-basic-issue' },
+      name: 'Nuevo DTE',
       slug: 'fe-emision-basica',
-      icon: "FileIcon",
-      permiso:'WB000'
+      icon: 'FileIcon',
+      permiso: 'WB000'
     },
     {
       url: null,
-      name: "Emitidos",
-      icon: "ExternalLinkIcon",
-      slug: "emitidos",
-      permiso:'WB000',
+      name: 'Emitidos',
+      icon: 'ExternalLinkIcon',
+      slug: 'emitidos',
+      permiso: 'WB000',
       submenu: [
         {
-          url: '/factura-electronica/emitidos/todos',
+          url: { name: 'e-bull-files', params: { categoria: 'emitidos', vista: 'todos' } },
           name: 'Todos',
           slug: 'emitidos-todos',
           permiso: 'WB000',
-          descripcion:'Visualización de todos los documentos emitidos'
+          descripcion: 'Visualización de todos los documentos emitidos'
         },
       ]
     },
     {
       url: null,
-      name: "Recibidos",
-      icon: "InboxIcon",
-      permiso:'WB000',
+      name: 'Recibidos',
+      icon: 'InboxIcon',
+      permiso: 'WB000',
       submenu: [
         {
-          url: '/factura-electronica/recibidos/todos',
+          url: { name: 'e-bull-files', params: { categoria: 'recibidos', vista: 'todos' } },
           name: 'Todos',
           slug: 'fe-emision-afecta',
-          permiso:'WB000',
-          descripcion:'Visualización de todos los documentos recibidos'
+          permiso: 'WB000',
+          descripcion: 'Visualización de todos los documentos recibidos'
         },
       ]
     },
     {
       url: null,
-      name: "Operaciones",
-      icon: "SettingsIcon",
-      permiso:'WB000',
+      name: 'Operaciones',
+      icon: 'SettingsIcon',
+      permiso: 'WB000',
       submenu: [
         {
-          url: '/configuraciones/cafs',
+          url: { name: 'settings-cafs' },
           name: 'Listar CAFs',
           slug: 'cafs-listar',
           icon: 'HomeIcon',
-          permiso:'WB000',
+          permiso: 'WB000',
         },
         {
-          url: '/configuraciones/usuarios',
+          url: { name: 'settings-users' },
           name: 'Gestión de Usuarios',
           slug: 'configuracion-usuarios',
           icon: 'HomeIcon',
-          permiso:'WB000',
+          permiso: 'WB000',
         },
         // {
         //   url: '/configuraciones/certificado',
@@ -76,14 +78,15 @@ export default [{
         //   permiso:'WB000',
         // },
         {
-          url: '/configuraciones/empresa',
+          url: { name: 'settings-company' },
           name: 'Empresa',
           slug: 'configuracion-empresa',
           icon: 'HomeIcon',
-          permiso:'WB000',
+          permiso: 'WB000',
         },
       ]
-    },/*
+    },
+    /*
     {
       url: null,
       name: "Eventos",
@@ -98,6 +101,7 @@ export default [{
           permiso:'WB000',
         },
       ]
-    },*/
+    },
+    */
   ]
-}]
+}];

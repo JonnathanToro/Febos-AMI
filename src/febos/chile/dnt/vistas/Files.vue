@@ -73,7 +73,7 @@ export default {
     PopUpSendFile
   },
   data() {
-    const view = this.$route.params.vista;
+    const { view } = this.$route.params;
 
     return {
       onPendingFiles: view === 'en-curso',
