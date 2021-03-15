@@ -9,6 +9,9 @@
           <vs-chip color="warning" v-if="user.esAdministradorEmpresa === 'Y'">
             administrador
           </vs-chip>
+          <vs-chip color="warning" v-if="user.esLider === 'Y'">
+            lider
+          </vs-chip>
         </vs-list-item>
       </div>
     </vs-list>

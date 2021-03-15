@@ -165,6 +165,7 @@
                     />
                   </div>
                   <span style="line-height: 38px;">{{user.nombre}}</span>
+                  <vs-chip v-if="user.esLider === 'Y'">lider</vs-chip>
                 </div>
               </li>
             </ul>
@@ -261,7 +262,6 @@ export default {
       });
     },
     groupsCompany(newValue, oldValue) {
-      console.log('WAT', newValue, oldValue);
       if (newValue !== oldValue) {
         this.tree.children = this.makeTree();
       }
@@ -395,7 +395,7 @@ export default {
     await this.getGroupsCompany({
       empresaId: this.company.id
     });
-    this.tree.name = this.company.razonSocial;
+    this.tree.nombre = this.company.razonSocial;
     this.tree.children = this.makeTree();
     this.usersTree = this.usersCompany;
     console.log('rbol', this);

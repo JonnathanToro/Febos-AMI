@@ -32,13 +32,13 @@
         />
       </div>
       <div class="col-md-6 mt-3 ml-2">
-        <label for="ifOffice" v-if="editGroup.isOffice">
+        <label for="ifOffice" v-if="editGroup.tipo">
           Es Oficina Externa
         </label>
-        <label for="ifOffice" v-if="!editGroup.isOffice">
+        <label for="ifOffice" v-if="!editGroup.tipo">
           Es Oficina Interna
         </label>
-        <vs-switch id="ifOffice" v-model="editGroup.isOffice"/>
+        <vs-switch id="ifOffice" v-model="editGroup.tipo"/>
       </div>
       <div class="col-md-12 mt-3" v-if="this.action === 'add'">
         Este grupo será creado como subgrupo de {{editGroup.padreNombre}}
