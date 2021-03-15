@@ -75,14 +75,33 @@
         </vs-col>
       </vs-row>
       <vs-row>
-        <vs-col vs-offset="3" vs-lg="7" vs-type="flex">
-          <vs-chip v-tooltip="'Fecha de Actualización'" class="mr-4">
-            <vs-avatar icon="date_range" />
-            {{ file.fechaActualizacion | dateFormat }}
+        <vs-col vs-offset="2" vs-lg="8" vs-type="flex">
+          <vs-chip class="mr-3" v-tooltip="'Número de documento'">
+            <vs-avatar icon="description" />
+            {{file.numeroInt}}
           </vs-chip>
-          <vs-chip v-tooltip="'Fecha de documento'" class="mr-4">
+          <vs-chip class="mr-3">
+            <vs-avatar icon="description" />
+            <span
+              v-tooltip="`${file.emisorSucursalDireccion}`"
+              v-if="file.emisorSucursalDireccion"
+            >
+              {{file.emisorSucursalDireccion | truncate(20)}}
+            </span>
+            <span
+              v-tooltip="`${file.emisorCentroCostoNombre}`"
+              v-if="!file.emisorSucursalDireccion"
+            >
+              {{file.emisorCentroCostoNombre | truncate(20)}}
+            </span>
+          </vs-chip>
+          <vs-chip v-tooltip="'Fecha de documento'" class="mr-3">
             <vs-avatar icon="event" />
             {{ file.fechaEmision | dateFormat }}
+          </vs-chip>
+          <vs-chip v-tooltip="'Fecha de Actualización'" class="mr-3">
+            <vs-avatar icon="date_range" />
+            {{ file.fechaActualizacion | dateFormat }}
           </vs-chip>
           <vs-button
             v-tooltip="'Documento externo'"
