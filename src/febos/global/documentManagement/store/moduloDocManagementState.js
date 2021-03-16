@@ -665,6 +665,7 @@ export default {
       nombre: 'Proyecto Claudio',
       size: '4 MB',
       type: 'folder',
+      suscrito: 'si',
       isOpen: false,
       fechaCreacion: '2021-03-06',
       estado: '2',
@@ -732,6 +733,7 @@ export default {
       nombre: 'Requerimientos principales',
       size: '4 MB',
       type: 'document',
+      suscrito: 'si',
       fechaCreacion: '2021-03-06',
       estado: '2',
       responsable: 'Claudio Miranda',
@@ -803,6 +805,7 @@ export default {
       nombre: 'Funcionalidades y permisos',
       size: '4 MB',
       type: 'document',
+      suscrito: 'no',
       fechaCreacion: '2021-03-06',
       estado: '2',
       responsable: 'Claudio Miranda',
@@ -837,13 +840,6 @@ export default {
         }
       ],
       suscriptores: [
-        {
-          id: '1',
-          nombre: 'Letty Villamizar',
-          fechaSuscripcion: '2021-02-03',
-          rango: '2 meses',
-          correo: 'letty@febos.cl'
-        },
         {
           id: '2',
           nombre: 'Josefina Aguilar',

@@ -107,13 +107,22 @@
                   @click="publishItem"
                 />
                 <vs-button
-                  v-if="detailItem.responsable !== 'Letty Villamizar'"
+                  v-if="detailItem.suscrito === 'si'"
                   radius
                   v-tooltip="'Subscrito'"
                   class="action mr-2"
-                  color="primary"
+                  color="green"
                   icon="notifications_active"
                   @click="unSubscribe"
+                />
+                <vs-button
+                  v-if="detailItem.suscrito === 'no'"
+                  radius
+                  v-tooltip="'Suscribirme'"
+                  class="action mr-2"
+                  color="primary"
+                  icon="notifications_active"
+                  @click="subscribeMood"
                 />
                 <vs-button
                   v-if="detailItem.permisos && detailItem.permisosCodigo.includes('PER6')"
@@ -418,6 +427,45 @@
       <vs-input class="w-100" placeholder="Nombre de elemento" v-model="name"/>
     </div>
   </vs-prompt>
+  <vs-prompt
+    title="Suscribirme a Elemento"
+    @cancel="val=''"
+    @accept="subscribe"
+    @close="closeSub"
+    accept-text="Suscribirme"
+    cancel-text="Cancelar"
+    :active.sync="subMood">
+    <div class="con-exemple-prompt w-100">
+      <vs-select
+        class="w-100"
+        autocomplete
+        label="Elige un rango de suscripción"
+        name="subscription"
+        v-model="subTime"
+      >
+        <vs-select-item
+          :value="'1 semana'"
+          text="1 semana"
+        />
+        <vs-select-item
+          :value="'2 semanas'"
+          text="2 semanas"
+        />
+        <vs-select-item
+          :value="'1 mes'"
+          text="1 Mes"
+        />
+        <vs-select-item
+          :value="'libre'"
+          text="Libre"
+        />
+        <vs-select-item
+          :value="'4 ever'"
+          text="Por siempre"
+        />
+      </vs-select>
+    </div>
+  </vs-prompt>
 </div>
 </template>
 
@@ -444,6 +492,8 @@ export default {
       detailItem: {},
       typeOfElement: '',
       editMood: false,
+      subMood: false,
+      subTime: '',
       editElement: {},
       comment: '',
       commentMood: false,
@@ -493,6 +543,7 @@ export default {
       'publishElement',
       'disableElement',
       'unSubscribeTo',
+      'subscribeTo',
       'goToFlow',
       'leaveComment',
       'downloadFilePDF',
@@ -510,6 +561,31 @@ export default {
         comentario: this.comment
       };
       this.leaveComment({ element: this.detailItem, comment });
+    },
+    closeSub() {
+      this.subMood = false;
+    },
+    subscribeMood() {
+      this.subMood = true;
+    },
+    subscribe() {
+      setTimeout(() => {
+        this.$vs.notify({
+          title: 'Genial!',
+          text: 'Te has suscrito a este elemento',
+          color: '#671e85',
+          position: 'top-center'
+        });
+      }, 1000);
+      const subNew = {
+        id: '132',
+        nombre: 'Letty Villamizar',
+        fechaSuscripcion: '2021-02-03',
+        rango: this.subTime,
+        correo: 'letty@febos.cl'
+      };
+      this.subscribeTo({ element: this.detailItem, subNew });
+      this.subMood = false;
     },
     unSubscribe() {
       setTimeout(() => {

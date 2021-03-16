@@ -40,6 +40,21 @@ export default {
       return repo;
     });
   },
+  SUBSCRIBE_TO(state, payload) {
+    console.log('SUBSTCIWERW', payload);
+    state.myRepository = state.myRepository.map((repo) => {
+      if (repo.febosId === payload.element.febosId) {
+        return {
+          ...repo,
+          suscriptores: [
+            ...repo.suscriptores,
+            payload.subNew
+          ]
+        };
+      }
+      return repo;
+    });
+  },
   ADD_COMMENT(state, payload) {
     state.myRepository = state.myRepository.map((repo) => {
       if (repo.febosId === payload.element.febosId) {

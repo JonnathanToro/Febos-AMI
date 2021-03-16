@@ -25,6 +25,13 @@ export const unSubscribeTo = async ({ commit }, payload) => {
   setTimeout(() => commit('SET_LOADING', false), 2000);
 };
 
+export const subscribeTo = async ({ commit }, payload) => {
+  commit('SET_LOADING', true);
+  console.log('ACTopm', payload);
+  commit('SUBSCRIBE_TO', payload);
+  setTimeout(() => commit('SET_LOADING', false), 2000);
+};
+
 export const goToFlow = async ({ commit }) => {
   commit('SET_LOADING', true);
   const path = '/documentos/flujo/68483ee2201b324e08295632f39fb0458e66';
