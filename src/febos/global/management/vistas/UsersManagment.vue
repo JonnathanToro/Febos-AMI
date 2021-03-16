@@ -138,7 +138,7 @@
             </vs-button>
           </div>
           <div>
-            <h5 class="mb-4" v-if="selectedGroup.nombre">
+            <h5 class="mb-3 mt-3" v-if="selectedGroup.nombre">
               Usuarios del grupo {{selectedGroup.nombre}}
             </h5>
             <ul v-if="usersTree.length" >

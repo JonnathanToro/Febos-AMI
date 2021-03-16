@@ -31,14 +31,30 @@
           v-model="editGroup.descripcion"
         />
       </div>
-      <div class="col-md-6 mt-3 ml-2">
-        <label for="ifOffice" v-if="editGroup.tipo">
-          Es Oficina Externa
-        </label>
-        <label for="ifOffice" v-if="!editGroup.tipo">
-          Es Oficina Interna
-        </label>
-        <vs-switch id="ifOffice" v-model="editGroup.tipo"/>
+      <div class="col-md-12 mt-3">
+        <div class="row">
+          <div class="col-md-4">
+            <label>Es tipo de oficina</label>
+          </div>
+          <div class="col-md-4">
+            <vs-radio
+              vs-name="isPrivate"
+              :vs-value="'int'"
+              v-model="editGroup.tipo"
+            >
+              Interna
+            </vs-radio>
+          </div>
+          <div class="col-md-4">
+            <vs-radio
+              vs-name="isPrivate"
+              :vs-value="'ext'"
+              v-model="editGroup.tipo"
+            >
+              Externa
+            </vs-radio>
+          </div>
+        </div>
       </div>
       <div class="col-md-12 mt-3" v-if="this.action === 'add'">
         Este grupo será creado como subgrupo de {{editGroup.padreNombre}}
@@ -122,8 +138,9 @@ export default {
         esOficina: this.editGroup.isOffice ? 'si' : 'no',
         esDivision: this.editGroup.esDivision === 'Y' ? 'si' : 'no'
       };
-      if (this.action === 'add') {
-        console.log('ADDD', group);
+
+      console.log('GROUP', group);
+      /* if (this.action === 'add') {
         this.createGroup({
           empresaId: this.company.id,
           group
@@ -133,7 +150,7 @@ export default {
           empresaId: this.company.id,
           group
         });
-      }
+      } */
     },
     cancelEdit() {
       console.log('cancelar', this);
