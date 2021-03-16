@@ -46,6 +46,7 @@ export default {
       if (repo.febosId === payload.element.febosId) {
         return {
           ...repo,
+          suscrito: 'si',
           suscriptores: [
             ...repo.suscriptores,
             payload.subNew
