@@ -130,7 +130,7 @@ ul {
   border-radius: 5px;
   width: fit-content;
   padding: 2px 18px 0 10px;
-  color: #671e85;
+  color: #323e48;
   background: #671e853d;
 }
 </style>
