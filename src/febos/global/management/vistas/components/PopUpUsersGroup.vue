@@ -3,18 +3,31 @@
     :title="`Usuarios del grupo ${usersGroup.nombre}`"
     @close="cancelEdit"
     :active.sync="showModal">
-    <vs-list>
-      <div  v-for="user in usersByGroup" :key="user.id">
-        <vs-list-item :title="user.nombre" :subtitle="user.correo">
-          <vs-chip color="warning" v-if="user.esAdministradorEmpresa === 'Y'">
-            administrador
-          </vs-chip>
-          <vs-chip color="warning" v-if="user.esLider === 'Y'">
-            lider
-          </vs-chip>
-        </vs-list-item>
+    <div class="row">
+      <div class="col-md-6">
+        <vs-list>
+          <div  v-for="user in usersCompany" :key="user.id">
+            <vs-list-item :title="user.nombre" :subtitle="user.correo">
+            </vs-list-item>
+          </div>
+        </vs-list>
       </div>
-    </vs-list>
+      <div class="col-md-6">
+        <vs-list>
+          <div  v-for="user in usersByGroup" :key="user.id">
+            <vs-list-item :title="user.nombre" :subtitle="user.correo">
+              <vs-chip color="warning" v-if="user.esAdministradorEmpresa === 'Y'">
+                administrador
+              </vs-chip>
+              <vs-chip color="warning" v-if="user.esLider === 'Y'">
+                <vs-avatar icon="flag" />
+                lider
+              </vs-chip>
+            </vs-list-item>
+          </div>
+        </vs-list>
+      </div>
+    </div>
   </vs-popup>
 </template>
 <script>
@@ -45,7 +58,8 @@ export default {
   computed: {
     ...mapGetters('Empresas', [
       'company',
-      'usersByGroup'
+      'usersByGroup',
+      'usersCompany'
     ]),
     ...mapGetters('Modals', [
       'modalName'
@@ -80,4 +94,8 @@ export default {
 </script>
 <style scoped>
 
+.con-vs-popup .vs-popup {
+  width: 70% !important;
+
+}
 </style>

@@ -119,7 +119,7 @@
               Agregar SubGrupo
             </vs-button>
             <vs-button
-              class="action"
+              class="action mr-2"
               color="primary"
               type="border"
               @click="addGroup()"
@@ -143,29 +143,38 @@
             </h5>
             <ul v-if="usersTree.length" >
               <li v-for="user in usersTree" :key="user.id">
-                <div class="user-wrap">
-                  <div class="con-img mr-3">
-                    <img
-                      v-if="user.avatar"
-                      key="onlineImg"
-                      :src="user.avatar"
-                      alt="user-img"
-                      width="40"
-                      height="40"
-                      class="rounded-full shadow-md cursor-pointer block"
-                    />
-                    <img
-                      v-if="!user.avatar"
-                      key="onlineImg"
-                      :src="noAvatar"
-                      alt="user-img"
-                      width="40"
-                      height="40"
-                      class="rounded-full shadow-md cursor-pointer block"
-                    />
+                <div class="row mb-2">
+                  <div class="col-1">
+                    <div class="mr-3">
+                      <img
+                        v-if="user.avatar"
+                        key="onlineImg"
+                        :src="user.avatar"
+                        alt="user-img"
+                        width="40"
+                        height="40"
+                        class="rounded-full shadow-md cursor-pointer block"
+                      />
+                      <img
+                        v-if="!user.avatar"
+                        key="onlineImg"
+                        :src="noAvatar"
+                        alt="user-img"
+                        width="40"
+                        height="40"
+                        class="rounded-full shadow-md cursor-pointer block"
+                      />
+                    </div>
                   </div>
-                  <span style="line-height: 38px;">{{user.nombre}}</span>
-                  <vs-chip v-if="user.esLider === 'Y'">lider</vs-chip>
+                  <div class="col-6">
+                    <span style="line-height: 38px;">{{user.nombre}}</span>
+                  </div>
+                  <div class="col-4">
+                    <vs-chip v-if="user.esLider === 'Y'" color="warning">
+                      <vs-avatar icon="flag" />
+                      lider
+                    </vs-chip>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -187,7 +196,7 @@
     :usuario="usuario"
     @cerrarEdicionUsuario="cancelarEdicion"
   />
-  <PopUpEditGroup
+  <PopUpGroup
     v-if="selectedGroup && action"
     :group="selectedGroup"
     :name="selectedGroup.nombre"
@@ -206,7 +215,7 @@ import { mapActions, mapGetters } from 'vuex';
 import modalUsuario from '@/febos/global/empresas/componentes/gestUsuarios/modalUsuario';
 import TreeItem from '@/febos/global/management/vistas/components/TreeItem';
 import FbPaginacion from '@/febos/chile/_vue/componentes/FbPaginacion';
-import PopUpEditGroup from '@/febos/global/management/vistas/components/PopUpEditGroup';
+import PopUpGroup from '@/febos/global/management/vistas/components/PopUpGroup';
 import PopUpUsersGroup from '@/febos/global/management/vistas/components/PopUpUsersGroup';
 
 export default {
@@ -215,7 +224,7 @@ export default {
     modalUsuario,
     TreeItem,
     FbPaginacion,
-    PopUpEditGroup,
+    PopUpGroup,
     PopUpUsersGroup
   },
   data() {
@@ -302,12 +311,11 @@ export default {
       this.showModals('modalEditGroup');
     },
     addGroup() {
-      this.action = 'add';
+      this.action = 'addParent';
       this.selectedGroup = {
         nombre: '',
         descripcion: '',
-        codigo: '',
-        isOffice: false
+        codigo: ''
       };
       this.showModals('modalEditGroup');
     },

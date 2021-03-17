@@ -8,7 +8,7 @@
         <vs-input
           class="w-100"
           label="Código"
-          maxlength="150"
+          maxlength="40"
           name="groupName"
           v-model="editGroup.codigo"
         />
@@ -17,7 +17,7 @@
         <vs-input
           class="w-100"
           label="Nombre de Grupo"
-          maxlength="150"
+          maxlength="250"
           name="groupName"
           v-model="editGroup.nombre"
         />
@@ -26,12 +26,12 @@
         <vs-input
           class="w-100"
           label="Descripción de Grupo"
-          maxlength="150"
+          maxlength="250"
           name="groupDescription"
           v-model="editGroup.descripcion"
         />
       </div>
-      <div class="col-md-12 mt-3">
+      <div class="col-md-12 mt-3" v-if="this.action !== 'addParent'">
         <div class="row">
           <div class="col-md-4">
             <label>Es tipo de oficina</label>
@@ -56,7 +56,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 mt-3" v-if="this.action === 'add'">
+      <div class="col-md-12 mt-3 chip-custom" v-if="this.action === 'add'">
         Este grupo será creado como subgrupo de {{editGroup.padreNombre}}
       </div>
       <div class="col-md-12 mt-3">
@@ -68,7 +68,7 @@
             @click="saveChanges()"
             icon="save"
           >
-            Guardar edición
+            Guardar
           </vs-button>
         </div>
       </div>
@@ -80,7 +80,7 @@
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: 'PopUpEditGroup',
+  name: 'PopUpGroup',
   mixins: [],
   props: {
     group: {
@@ -134,10 +134,15 @@ export default {
     ]),
     saveChanges() {
       const group = {
-        ...this.editGroup,
-        esOficina: this.editGroup.isOffice ? 'si' : 'no',
-        esDivision: this.editGroup.esDivision === 'Y' ? 'si' : 'no'
+        ...this.editGroup
       };
+
+      if (this.action !== 'addParent') {
+        group.esOficina = this.editGroup.isOffice ? 'si' : 'no';
+        group.esDivision = this.editGroup.esDivision === 'Y' ? 'si' : 'no';
+        group.esOficina = (this.editGroup.tipo.includes('int') || this.editGroup.tipo.includes('ext'))
+          ? 'si' : 'no';
+      }
 
       console.log('GROUP', group);
       /* if (this.action === 'add') {
@@ -159,5 +164,12 @@ export default {
 };
 </script>
 <style scoped>
-
+.chip-custom {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #ffb300;
+  background: #fff5df;
+  border-radius: 10px;
+  padding: 4px 8px;
+}
 </style>
