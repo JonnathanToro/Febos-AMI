@@ -33,6 +33,7 @@ export default {
       if (repo.febosId === payload.febosId) {
         return {
           ...repo,
+          suscrito: 'no',
           suscriptores: repo.suscriptores
             .filter((subscriber) => subscriber.nombre !== 'Letty Villamizar')
         };
