@@ -14,12 +14,12 @@ import {
   ToastPlugin, ModalPlugin, BootstrapVue, BootstrapVueIcons,
 } from 'bootstrap-vue';
 
-import VxTooltip from './layouts/components/vx-tooltip/VxTooltip.vue';
-import VxCard from './components/vx-card/VxCard.vue';
-import VxList from './components/vx-list/VxList.vue';
-import VxBreadcrumb from './layouts/components/VxBreadcrumb.vue';
-import FeatherIcon from './components/FeatherIcon.vue';
-import VxInputGroup from './components/vx-input-group/VxInputGroup.vue';
+import VxTooltip from './layouts/components/vx-tooltip/VxTooltip';
+import VxCard from './components/vx-card/VxCard';
+import VxList from './components/vx-list/VxList';
+import VxBreadcrumb from './layouts/components/VxBreadcrumb';
+import FeatherIcon from './components/FeatherIcon';
+import VxInputGroup from './components/vx-input-group/VxInputGroup';
 import HasPermission from './directives/HasPermission';
 // v-select component
 

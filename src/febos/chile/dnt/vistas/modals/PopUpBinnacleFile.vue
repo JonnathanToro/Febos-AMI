@@ -1,6 +1,6 @@
 <template>
   <vs-popup
-    :title="titulo+' '+numero"
+    :title="titulo"
     :active.sync="showModal"
     v-if="binnacleFile"
     @close="closeModal"
@@ -58,14 +58,10 @@ import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem';
 
 export default {
   props: {
-      titulo: {
-          type: String,
-          required: false
-      },
-      numero: {
-          type: String,
-          required: false
-      }
+    titulo: {
+      type: String,
+      required: false
+    }
   },
   components: {
     AppTimeline, AppTimelineItem, BAvatar

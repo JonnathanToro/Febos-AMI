@@ -14,7 +14,7 @@
         :select-file="selectFile"
       />
     </div>
-    <PopUpBinnacleFile titulo="Bitácora del Expediente" :numero="selectedFile.numero"/>
+    <PopUpBinnacleFile :titulo="'Bitácora del Expediente #'+selectedFile.numero"/>
     <PopUpTimelineFile :file="selectedFile"/>
     <PopUpDetailFile :file="selectedFile" />
     <PopUpGeneralDetailFile :file="selectedFile" />

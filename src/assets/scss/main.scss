@@ -21,6 +21,10 @@
   overflow-x: hidden !important;
 }
 
+.tooltip {
+  display: block !important;
+  z-index: 100001;
+}
 [dir=ltr] .v-nav-menu .feather-icon {
   margin-right: 14px;
   margin-left: 14px;
