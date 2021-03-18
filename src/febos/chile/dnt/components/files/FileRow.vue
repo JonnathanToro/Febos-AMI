@@ -92,7 +92,7 @@
               v-tooltip="`${file.emisorCentroCostoNombre}`"
               v-if="!file.emisorSucursalDireccion"
             >
-              {{file.emisorCentroCostoNombre | truncate(20)}}
+              {{(file.emisorCentroCostoNombre ||'')| truncate(20)}}
             </span>
           </vs-chip>
           <vs-chip v-tooltip="'Fecha de documento'" class="mr-3">
