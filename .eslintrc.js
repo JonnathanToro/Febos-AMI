@@ -53,6 +53,8 @@ module.exports = {
     'import/resolver': {
       alias: {
         map: [
+          ['./', './'],
+          ['@core', './src/@core'],
           ['@', './src'],
         ],
         extensions: ['.js', '.vue', '.json']

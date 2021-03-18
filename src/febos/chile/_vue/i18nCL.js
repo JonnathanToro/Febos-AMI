@@ -1,3 +1,3 @@
 export default {
-  "PAIS":"Chile"
-}
+  PAIS: 'Chile'
+};

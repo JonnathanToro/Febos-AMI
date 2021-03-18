@@ -31,14 +31,15 @@
 </template>
 
 <script>
-import draggable     from 'vuedraggable'
-import VxAutoSuggest from '@/components/vx-auto-suggest/VxAutoSuggest.vue'
+import draggable from 'vuedraggable';
+
+import VxAutoSuggest from '@/components/vx-auto-suggest/VxAutoSuggest.vue';
 
 export default {
   props: {
     navbarColor: {
       type: String,
-      default: "#fff",
+      default: '#fff',
     },
   },
   components: {
@@ -47,79 +48,78 @@ export default {
   },
   data() {
     return {
-      showBookmarkPagesDropdown : false,
-    }
+      showBookmarkPagesDropdown: false,
+    };
   },
   watch: {
-    '$route'() {
-      if (this.showBookmarkPagesDropdown) this.showBookmarkPagesDropdown = false
+    $route() {
+      if (this.showBookmarkPagesDropdown) this.showBookmarkPagesDropdown = false;
     }
   },
   computed: {
     navbarSearchAndPinList() {
-      return {pages: this.$store.state.navbarSearchAndPinList["pages"]}
+      return { pages: this.$store.state.navbarSearchAndPinList.pages };
     },
     starredPages() {
-      return this.$store.state.starredPages
+      return this.$store.state.starredPages;
     },
     starredPagesLimited: {
       get() {
-        return this.starredPages.slice(0, 10)
+        return this.starredPages.slice(0, 10);
       },
       set(list) {
-        this.$store.dispatch('arrangeStarredPagesLimited', list)
+        this.$store.dispatch('arrangeStarredPagesLimited', list);
       }
     },
     starredPagesMore: {
       get() {
-        return this.starredPages.slice(10)
+        return this.starredPages.slice(10);
       },
       set(list) {
-        this.$store.dispatch('arrangeStarredPagesMore', list)
+        this.$store.dispatch('arrangeStarredPagesMore', list);
       }
     },
     textColor() {
-      return {'text-white': this.$store.state.mainLayoutType === 'vertical' && this.navbarColor != (this.$store.state.theme === 'dark' ? "#10163a" : "#fff") }
+      return { 'text-white': this.$store.state.mainLayoutType === 'vertical' && this.navbarColor != (this.$store.state.theme === 'dark' ? '#10163a' : '#fff') };
     }
   },
   methods: {
     selected(obj) {
-      this.$store.commit('TOGGLE_CONTENT_OVERLAY', false)
-      this.showBookmarkPagesDropdown = false
-      this.$router.push(obj.pages.url).catch(() => {})
+      this.$store.commit('TOGGLE_CONTENT_OVERLAY', false);
+      this.showBookmarkPagesDropdown = false;
+      this.$router.push(obj.pages.url).catch(() => {});
     },
     actionClicked(item) {
-      this.$store.dispatch('updateStarredPage', { url: item.url, val: !item.is_bookmarked })
+      this.$store.dispatch('updateStarredPage', { url: item.url, val: !item.is_bookmarked });
       // this.$refs.bookmarkAutoSuggest.filterData()
     },
-    outside: function() {
-      this.showBookmarkPagesDropdown = false
+    outside() {
+      this.showBookmarkPagesDropdown = false;
     },
     hnd_search_query_update(query) {
       // Show overlay if any character is entered
-      this.$store.commit('TOGGLE_CONTENT_OVERLAY', query ? true : false)
+      this.$store.commit('TOGGLE_CONTENT_OVERLAY', !!query);
     }
   },
   directives: {
     'click-outside': {
-      bind: function(el, binding) {
-        const bubble = binding.modifiers.bubble
+      bind(el, binding) {
+        const { bubble } = binding.modifiers;
         const handler = (e) => {
           if (bubble || (!el.contains(e.target) && el !== e.target)) {
-            binding.value(e)
+            binding.value(e);
           }
-        }
-        el.__vueClickOutside__ = handler
-        document.addEventListener('click', handler)
+        };
+        el.__vueClickOutside__ = handler;
+        document.addEventListener('click', handler);
       },
 
-      unbind: function(el) {
-        document.removeEventListener('click', el.__vueClickOutside__)
-        el.__vueClickOutside__ = null
-
+      unbind(el) {
+        document.removeEventListener('click', el.__vueClickOutside__);
+        el.__vueClickOutside__ = null;
       }
     }
   }
-}
+};
 
 </script>

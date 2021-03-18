@@ -5,17 +5,17 @@
 </template>
 
 <script>
-  export default {
-    name: "CampoRazonSocialReceptor",
-    props: {
-      documento: {
-        type: Object,
-      },
+export default {
+  name: 'CampoRazonSocialReceptor',
+  props: {
+    documento: {
+      type: Object,
     },
-    data() {
-      return {}
-    },
-  }
+  },
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>

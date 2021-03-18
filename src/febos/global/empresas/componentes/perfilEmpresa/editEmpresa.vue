@@ -124,37 +124,50 @@
 </template>
 
 <script>
-import { Validator } from "vee-validate";
-import es from "vee-validate/dist/locale/es";
-import Datepicker from "vuejs-datepicker";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import { Validator } from 'vee-validate';
+import es from 'vee-validate/dist/locale/es';
+import Datepicker from 'vuejs-datepicker';
 
-Validator.localize("es", es);
-Validator.extend("validaRut", {
-  getMessage: (field) => field + " incorrecto",
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
+
+Validator.localize('es', es);
+Validator.extend('validaRut', {
+  getMessage: (field) => `${field } incorrecto`,
   validate: (value) => {
-    var esCorrecto = validaRUT(value);
+    const esCorrecto = validaRUT(value);
     return esCorrecto;
   },
 });
 
 export default {
-  name: "editEmpresa",
-  props: ["empresa"],
+  name: 'editEmpresa',
+  props: ['empresa'],
   components: {
     Datepicker
   },
-  data()  {
+  data() {
     return {
       datos: {
-        acteco: null, ciudad: null, comuna: null, correo: null,
-        direccion: null, fantasia: null, iut: null, razon: null,
-        telefono: null, fechaResolucion: null, numeroResolucion: null, giro: null, nombreRepLegal: null,
-        rutRepLegal: null, esPyme: null,
+        acteco: null,
+        ciudad: null,
+        comuna: null,
+        correo: null,
+        direccion: null,
+        fantasia: null,
+        iut: null,
+        razon: null,
+        telefono: null,
+        fechaResolucion: null,
+        numeroResolucion: null,
+        giro: null,
+        nombreRepLegal: null,
+        rutRepLegal: null,
+        esPyme: null,
         codigoSII: null
       },
-      cambioClave: false, claveSii: null,
-    }
+      cambioClave: false,
+      claveSii: null,
+    };
   },
   computed: {},
   mounted() {
@@ -163,8 +176,8 @@ export default {
   },
   methods: {
 
-    validarEmpresa()  {
-      this.$validator.validateAll("perfilEmpresa").then((result) => {
+    validarEmpresa() {
+      this.$validator.validateAll('perfilEmpresa').then((result) => {
         if (result) {
           this.actualizarEmpresa();
         } else {
@@ -177,37 +190,37 @@ export default {
         this.$vs.notify({
           color: 'danger', title: 'Empresa', text: 'Error de plataforma'
         });
-      })
+      });
     },
     actualizarEmpresa() {
       this.$vs.loading({ type: 'default' });
-      var data = JSON.parse(
+      const data = JSON.parse(
         localStorage.getItem(
           `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
         )
       );
-      let datos = this.__mapPostEmpresa();
-      clienteFebosAPI.put("/empresas/" + data.Empresas.empresa.id, datos).then((response) => {
+      const datos = this.__mapPostEmpresa();
+      clienteFebosAPI.put(`/empresas/${ data.Empresas.empresa.id}`, datos).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: "success", title: "Empresa", text: "Empresa actualizada"
-          })
+            color: 'success', title: 'Empresa', text: 'Empresa actualizada'
+          });
         } else {
           this.$vs.notify({
-            color: "danger", title: "Empresa", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
-          })
+            color: 'danger', title: 'Empresa', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
+          });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Empresa", text: "No fue posible actualizar la empresa"
+          color: 'danger', title: 'Empresa', text: 'No fue posible actualizar la empresa'
         });
         window.console.log(error);
-      })
+      });
     },
-    __mapPostEmpresa()  {
-      let retorno = {
+    __mapPostEmpresa() {
+      const retorno = {
         razonSocial: this.datos.razon,
         fantasia: this.datos.fantasia,
         giro: this.datos.giro,
@@ -216,54 +229,51 @@ export default {
         fechaResolucion: this.datos.fechaResolucion,
         numeroResolucion: this.datos.numeroResolucion,
         // esPyme: (this.datos.esPyme) ? "si" : "no",
-        esPyme: "si",
-      }
-      if (this.claveSii)      retorno.claveSii = btoa(this.claveSii);
-      if (this.datos.acteco)  retorno.acteco = this.datos.acteco;
+        esPyme: 'si',
+      };
+      if (this.claveSii) retorno.claveSii = btoa(this.claveSii);
+      if (this.datos.acteco) retorno.acteco = this.datos.acteco;
       return retorno;
     },
 
     /* Validación Encabezado */
     getError(par) {
-      let retorno = null;
-      const ret = this.errors.items.find(elemento => elemento.field == par);
-      if (ret !== undefined && retorno === null)  {
-        if (par == "iut" && ret.rule == "validaRut")  {
-          return "rut";
+      const retorno = null;
+      const ret = this.errors.items.find((elemento) => elemento.field == par);
+      if (ret !== undefined && retorno === null) {
+        if (par == 'iut' && ret.rule == 'validaRut') {
+          return 'rut';
         }
-        if (par == "email" && ret.rule == "email") {
-          return "email";
+        if (par == 'email' && ret.rule == 'email') {
+          return 'email';
         }
-        if (ret.rule == "required") {
-          return "required";
+        if (ret.rule == 'required') {
+          return 'required';
         }
         console.log(ret);
       }
       return null;
     },
 
-
-
   }
-}
-
+};
 
 function validaRUT(rutCompleto) {
-  rutCompleto = rutCompleto.replace("‐", "-");
+  rutCompleto = rutCompleto.replace('‐', '-');
   if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
-  var tmp = rutCompleto.split("-");
-  var digv = tmp[1];
-  var rut = tmp[0];
-  if (digv == "K") digv = "k";
+  const tmp = rutCompleto.split('-');
+  let digv = tmp[1];
+  const rut = tmp[0];
+  if (digv == 'K') digv = 'k';
 
   return dv(rut) == digv;
 }
 
 function dv(T) {
-  var M = 0,
-    S = 1;
+  let M = 0;
+  let S = 1;
   for (; T; T = Math.floor(T / 10)) S = (S + (T % 10) * (9 - (M++ % 6))) % 11;
-  return S ? S - 1 : "k";
+  return S ? S - 1 : 'k';
 }
 </script>
 

@@ -105,24 +105,19 @@
       </vs-tab>
     </vs-tabs>
 
-
-
-
-
-
-
   </div>
 </div>
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
+import vSelect from 'vue-select';
+
+import modalStore from '@/store/modals/acciones';
+import TiposDteMixin from '@/febos/chile/dte/mixins/TiposDteMixin';
 
 export default {
-  name: "modalVerReferencias",
-  mixins: [ TiposDteMixin ],
+  name: 'modalVerReferencias',
+  mixins: [TiposDteMixin],
   computed: {
     getData: {
       get() {
@@ -136,21 +131,21 @@ export default {
     },
     conRegistros: {
       get() {
-        return (modalStore.state.data.referencias.referenciadosTipoDnt.length > 0 ||
-                modalStore.state.data.referencias.referenciadosTipoDte.length > 0 ||
-                modalStore.state.data.referencias.referenciasTipoDnt.length > 0 ||
-                modalStore.state.data.referencias.referenciasTipoDte.length > 0);
+        return (modalStore.state.data.referencias.referenciadosTipoDnt.length > 0
+                || modalStore.state.data.referencias.referenciadosTipoDte.length > 0
+                || modalStore.state.data.referencias.referenciasTipoDnt.length > 0
+                || modalStore.state.data.referencias.referenciasTipoDte.length > 0);
       }
     },
     subtitulo: {
       get() {
         console.log(this.getDocumento);
-        return "Emitida a " + this.getDocumento.razonSocialReceptor + ", RUT " + this.getDocumento.rutReceptor;
+        return `Emitida a ${ this.getDocumento.razonSocialReceptor }, RUT ${ this.getDocumento.rutReceptor}`;
       }
     },
     titulo: {
       get() {
-        return this.traducitTipoDocumentoEnPalabras(this.getDocumento.tipoDocumento) + " Nº " + this.getDocumento.folio;
+        return `${this.traducitTipoDocumentoEnPalabras(this.getDocumento.tipoDocumento) } Nº ${ this.getDocumento.folio}`;
       }
     },
   },
@@ -167,11 +162,11 @@ export default {
   },
   methods: {
     cancelarCierre() {
-      modalStore.commit("ocultarBitacoraFull");
+      modalStore.commit('ocultarBitacoraFull');
     },
   },
   components: {
-    "v-select": vSelect,
+    'v-select': vSelect,
   },
 };
 </script>

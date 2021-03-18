@@ -5,18 +5,18 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'PermisosItem',
-    props:{
-      permiso:{
-        type: Object,
-        required: true,
-      }
-    },
-    data() {
-      return {}
-    },
-  }
+export default {
+  name: 'PermisosItem',
+  props: {
+    permiso: {
+      type: Object,
+      required: true,
+    }
+  },
+  data() {
+    return {};
+  },
+};
 
 </script>
 <style scoped>

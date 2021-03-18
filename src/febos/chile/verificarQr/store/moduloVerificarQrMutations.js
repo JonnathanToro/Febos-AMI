@@ -6,4 +6,4 @@ export default {
     state.infoQr.privado = payload.privado;
     state.infoQr.url = payload.url;
   }
-}
+};
