@@ -65,44 +65,46 @@ function getMode() {
   return undefined;
 }
 
-const mode = getMode();
-if (mode) loadExtraEnvironment(mode);
+module.exports = () => {
+  const mode = getMode();
+  if (mode) loadExtraEnvironment(mode);
 
-module.exports = {
-  lintOnSave: false,
-  publicPath: `/${process.env.VUE_APP_PORTAL}/`,
-  transpileDependencies: ['vue-echarts', 'resize-detector', 'vuex-persist'],
-  devServer: {
-    disableHostCheck: true,
-    host: '127.0.0.1',
-    port: 8081,
-    public: `${getHost()}:8081/${process.env.VUE_APP_PORTAL}/`,
-    https: {
-      key: fs.readFileSync('./certs/cert.dev.key.pem'),
-      cert: fs.readFileSync('./certs/cert.dev.pem'),
+  return {
+    lintOnSave: false,
+    publicPath: `/${process.env.VUE_APP_PORTAL}/`,
+    transpileDependencies: ['vue-echarts', 'resize-detector', 'vuex-persist'],
+    devServer: {
+      disableHostCheck: true,
+      host: '127.0.0.1',
+      port: 8081,
+      public: `${getHost()}:8081/${process.env.VUE_APP_PORTAL}/`,
+      https: {
+        key: fs.readFileSync('./certs/cert.dev.key.pem'),
+        cert: fs.readFileSync('./certs/cert.dev.pem'),
+      },
     },
-  },
-  css: {
-    loaderOptions: {
-      sass: {
-        sassOptions: {
-          includePaths: ['./node_modules', './src/assets'],
+    css: {
+      loaderOptions: {
+        sass: {
+          sassOptions: {
+            includePaths: ['./node_modules', './src/assets'],
+          },
         },
       },
     },
-  },
-  configureWebpack: {
-    devtool: 'cheap-module-source-map',
-    optimization: {
-      splitChunks: {
-        chunks: 'all'
-      }
-    },
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, 'src'),
-        '@core': path.resolve(__dirname, 'src/@core')
+    configureWebpack: {
+      devtool: 'cheap-module-source-map',
+      optimization: {
+        splitChunks: {
+          chunks: 'all'
+        }
       },
-    },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, 'src'),
+          '@core': path.resolve(__dirname, 'src/@core')
+        },
+      },
+    }
   }
 };

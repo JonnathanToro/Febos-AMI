@@ -20,14 +20,8 @@ import './filters/filters';
 import Vuesax from 'vuesax';
 import 'material-icons/iconfont/material-icons.css';
 import 'vuesax/dist/vuesax.css';
-
 // Febos Config
 // import febosConfig from './febos/servicios/febosConfig.js'
-
-import {
-  ToastPlugin, ModalPlugin, BootstrapVue, BootstrapVueIcons,
-} from 'bootstrap-vue';
-
 // axios
 import clientApi from './febos/servicios/clienteFebosAPI';
 
@@ -46,7 +40,9 @@ import './assets/scss/vuexy/main.scss';
 import './assets/scss/bootstrap/main.scss';
 import './assets/scss/main.scss';
 import './assets/scss/multiSelect.scss';
-// Tailwind
+import '@core/assets/fonts/feather/iconfont.css'; // For form-wizard
+import '@core/scss/core.scss';
+import '@/assets/scss/style.scss';
 import '@/assets/css/main.css';
 
 // Vue Router
@@ -75,31 +71,11 @@ import spanish from 'vee-validate/dist/locale/es';
 
 import VueLogger from 'vuejs-logger';
 import './shame';
-import VTooltip from 'v-tooltip';
 
-import HasPermission from './directives/HasPermission.vue';
 
-Vue.directive('has-permission', HasPermission);
-
-// BSV Plugin Registration
-Vue.use(ToastPlugin);
-Vue.use(ModalPlugin);
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
-require('@/assets/scss/main.scss');
-// Feather font icon - For form-wizard
-// * Shall remove it if not using font-icons of feather-icons - For form-wizard
-require('@core/assets/fonts/feather/iconfont.css'); // For form-wizard
-
-// import core styles
-require('@core/scss/core.scss');
-// // import assets styles
-require('@/assets/scss/style.scss');
 
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
-
-Vue.use(VTooltip);
 
 Vue.moment.locale('es', {
   months: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],

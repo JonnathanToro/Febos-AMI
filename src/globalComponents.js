@@ -9,6 +9,10 @@
 
 import Vue from 'vue';
 import vSelect from 'vue-select';
+import VTooltip from 'v-tooltip';
+import {
+  ToastPlugin, ModalPlugin, BootstrapVue, BootstrapVueIcons,
+} from 'bootstrap-vue';
 
 import VxTooltip from './layouts/components/vx-tooltip/VxTooltip.vue';
 import VxCard from './components/vx-card/VxCard.vue';
@@ -16,7 +20,7 @@ import VxList from './components/vx-list/VxList.vue';
 import VxBreadcrumb from './layouts/components/VxBreadcrumb.vue';
 import FeatherIcon from './components/FeatherIcon.vue';
 import VxInputGroup from './components/vx-input-group/VxInputGroup.vue';
-
+import HasPermission from './directives/HasPermission';
 // v-select component
 
 Vue.component(VxTooltip.name, VxTooltip);
@@ -25,6 +29,13 @@ Vue.component(VxList.name, VxList);
 Vue.component(VxBreadcrumb.name, VxBreadcrumb);
 Vue.component(FeatherIcon.name, FeatherIcon);
 Vue.component(VxInputGroup.name, VxInputGroup);
+Vue.directive('has-permission', HasPermission);
+// BSV Plugin Registration
+Vue.use(VTooltip);
+Vue.use(ToastPlugin);
+Vue.use(ModalPlugin);
+Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
 
 // Set the components prop default to return our fresh components
 vSelect.props.components.default = () => ({

@@ -1,6 +1,6 @@
 <template>
   <vs-popup
-    :title="titulo"
+    :title="titulo+' '+numero"
     :active.sync="showModal"
     v-if="binnacleFile"
     @close="closeModal"
@@ -58,10 +58,14 @@ import AppTimelineItem from '@core/components/app-timeline/AppTimelineItem';
 
 export default {
   props: {
-    titulo: {
-      type: String,
-      required: true
-    }
+      titulo: {
+          type: String,
+          required: false
+      },
+      numero: {
+          type: String,
+          required: false
+      }
   },
   components: {
     AppTimeline, AppTimelineItem, BAvatar
@@ -87,16 +91,12 @@ export default {
       'closeModal'
     ]),
     getSeveridadBitacoraVariant(severidad) {
-      if (severidad === 1) {
-        return 'info';
-      } if (severidad === 2) {
-        return 'warning';
-      } if (severidad === 3) {
-        return 'danger';
-      } if (severidad === 4) {
-        return 'secondary';
+      switch (severidad) {
+        case 1: return 'info';
+        case 2: return 'warning';
+        case 3: return 'danger';
+        default: return 'secondary';
       }
-      return 'secondary';
     },
     copyToClipboard(code) {
       const element = document.createElement('input');
