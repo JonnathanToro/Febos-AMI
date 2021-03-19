@@ -1,61 +1,61 @@
 export default {
-  data(){
+  data() {
     return {
-      definicionCampos:{
-        EstadosEmision:{
-          ancho:'100',
-          nombre:'Estados',
-          camposApi:['estadoSii','estadoComercial']
+      definicionCampos: {
+        EstadosEmision: {
+          ancho: '100',
+          nombre: 'Estados',
+          camposApi: ['estadoSii', 'estadoComercial']
         },
-        MontoTotal:{
-          ancho:'140',
-          nombre:'Monto Total',
-          camposApi:['montoTotal']
+        MontoTotal: {
+          ancho: '140',
+          nombre: 'Monto Total',
+          camposApi: ['montoTotal']
         },
-        Documento:{
-          ancho:'',
-          nombre:'Documento',
-          camposApi:['razonSocialEmisor','razonSocialReceptor','folio']
+        Documento: {
+          ancho: '',
+          nombre: 'Documento',
+          camposApi: ['razonSocialEmisor', 'razonSocialReceptor', 'folio']
         },
-        TrackId:{
-          ancho:'40',
-          nombre:'Track ID',
-          camposApi:['trackId']
+        TrackId: {
+          ancho: '40',
+          nombre: 'Track ID',
+          camposApi: ['trackId']
         },
-        FechaEmision:{
-          ancho:'130',
-          nombre:'Fch. Emisión',
-          camposApi:['fechaEmision']
+        FechaEmision: {
+          ancho: '130',
+          nombre: 'Fch. Emisión',
+          camposApi: ['fechaEmision']
         },
-        FechaEnvioSii:{
-          ancho:'130',
-          nombre:'Envío al SII',
-          camposApi:['fechaEnvioSii']
+        FechaEnvioSii: {
+          ancho: '130',
+          nombre: 'Envío al SII',
+          camposApi: ['fechaEnvioSii']
         },
-        NCND:{
-          ancho:'100',
-          nombre:'NC/ND',
-          camposApi:['tieneNc', 'tieneNd']
+        NCND: {
+          ancho: '100',
+          nombre: 'NC/ND',
+          camposApi: ['tieneNc', 'tieneNd']
         },
-        EstadoPago:{
-          ancho:'100',
-          nombre:'Estado Pago',
-          camposApi:['estadoComercial']
+        EstadoPago: {
+          ancho: '100',
+          nombre: 'Estado Pago',
+          camposApi: ['estadoComercial']
         },
-        Plazo:{
-          ancho:'100',
-          nombre:'Plazo',
-          camposApi:['plazo']
+        Plazo: {
+          ancho: '100',
+          nombre: 'Plazo',
+          camposApi: ['plazo']
         },
-        RecepcionSii:{
-          ancho:'100',
-          nombre:'Recepción SII',
-          camposApi:['fechaRecepcionSii']
+        RecepcionSii: {
+          ancho: '100',
+          nombre: 'Recepción SII',
+          camposApi: ['fechaRecepcionSii']
         },
-        RecepcionFebos:{
-          ancho:'100',
-          nombre:'Recepción Narvi',
-          camposApi:['fechaRecepcion']
+        RecepcionFebos: {
+          ancho: '100',
+          nombre: 'Recepción Narvi',
+          camposApi: ['fechaRecepcion']
         },
         IndicadorEstadoComercial: {
           ancho: '140',
@@ -63,13 +63,13 @@ export default {
           camposApi: ['estadoComercial']
         }
       }
-    }
+    };
   },
-  methods:{
-    obtenerCampoTabla(nombreCampo){
-      let campo=this.definicionCampos[nombreCampo];
-      campo.campo=nombreCampo;
+  methods: {
+    obtenerCampoTabla(nombreCampo) {
+      const campo = this.definicionCampos[nombreCampo];
+      campo.campo = nombreCampo;
       return campo;
     }
   }
-}
+};

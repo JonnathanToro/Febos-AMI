@@ -6,17 +6,17 @@
 
 <script>
 
-  export default {
-    name: "CampoTrackId",
-    props: {
-      documento: {
-        type: Object,
-      },
+export default {
+  name: 'CampoTrackId',
+  props: {
+    documento: {
+      type: Object,
     },
-    data() {
-      return {}
-    },
-  }
+  },
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>

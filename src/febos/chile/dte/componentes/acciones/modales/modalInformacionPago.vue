@@ -82,39 +82,39 @@
   </div>
 </template>
 
-
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import Datepicker from "vuejs-datepicker";
-import { es } from 'vuejs-datepicker/dist/locale'
+import vSelect from 'vue-select';
+import Datepicker from 'vuejs-datepicker';
+import { es } from 'vuejs-datepicker/dist/locale';
 import moment from 'moment';
-import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+
+import modalStore from '@/store/modals/acciones';
+import TiposDteMixin from '@/febos/chile/dte/mixins/TiposDteMixin';
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalInformacionPago",
+  name: 'modalInformacionPago',
   components: {
-    "vs-select": vSelect,
+    'vs-select': vSelect,
     Datepicker,
   },
-  mixins: [ TiposDteMixin ],
+  mixins: [TiposDteMixin],
   props: {},
   computed: {
     subtitulo: {
       get() {
-        var retorno = "";
+        let retorno = '';
         if (this.getDocumento.tpoTraVenta == 0) {
-          retorno = "Recebida desde " + this.getDocumento.razonSocialEmisor + ", RUT " + this.getDocumento.rutEmisor;
+          retorno = `Recebida desde ${ this.getDocumento.razonSocialEmisor }, RUT ${ this.getDocumento.rutEmisor}`;
         } else {
-          retorno = "Emitida a " + this.getDocumento.razonSocialReceptor + ", RUT " + this.getDocumento.rutReceptor;
+          retorno = `Emitida a ${ this.getDocumento.razonSocialReceptor }, RUT ${ this.getDocumento.rutReceptor}`;
         }
         return retorno;
       }
     },
     titulo: {
       get() {
-        return this.traducitTipoDocumentoEnPalabras(this.getDocumento.tipoDocumento) + " Nº " + this.getDocumento.folio;
+        return `${this.traducitTipoDocumentoEnPalabras(this.getDocumento.tipoDocumento) } Nº ${ this.getDocumento.folio}`;
       }
     },
     getDocumento: {
@@ -122,18 +122,19 @@ export default {
         return this.getData.documento;
       }
     },
-    getPago:  {
+    getPago: {
       get() {
         if (this.getData.pago.length > 0) {
-          return {  id: this.getData.pago[0].id,
-                    fecha: this.getData.pago[0].fecha,
-                    updated: this.getData.pago[0].updated,
-                    lugar: this.getData.pago[0].lugar,
-                    medio: this.getData.pago[0].medio,
-                    monto: this.getData.pago[0].monto,
-                    tipo: this.getData.pago[0].tipo,
-                    comentario: this.getData.pago[0].comentario
-          }
+          return {
+            id: this.getData.pago[0].id,
+            fecha: this.getData.pago[0].fecha,
+            updated: this.getData.pago[0].updated,
+            lugar: this.getData.pago[0].lugar,
+            medio: this.getData.pago[0].medio,
+            monto: this.getData.pago[0].monto,
+            tipo: this.getData.pago[0].tipo,
+            comentario: this.getData.pago[0].comentario
+          };
         }
         return this.pago;
       },
@@ -148,15 +149,15 @@ export default {
     },
     tipo: {
       get() {
-        return this.estadosPago.find(element => element.code == this.pago.tipo);
+        return this.estadosPago.find((element) => element.code == this.pago.tipo);
       },
       set(val) {
         this.pago.tipo = val.code;
       }
     },
     medio: {
-      get(){
-        return this.mediosPago.find(element => element.code == this.pago.medio);
+      get() {
+        return this.mediosPago.find((element) => element.code == this.pago.medio);
       },
       set(val) {
         this.pago.medio = val.code;
@@ -165,89 +166,88 @@ export default {
   },
   data() {
     return {
-      format: "dd/MM/yyyy",
+      format: 'dd/MM/yyyy',
       estadosPago: [
-        { code: 0, label: "Sin Información" },
-        { code: 1, label: "Contabilizado" },
-        { code: 2, label: "Enviado a Pago" },
-        { code: 3, label: "Pagado" },
-        { code: 4, label: "Cobrado" },
-        { code: 5, label: "Pago no Efectuado" },
-        { code: 6, label: "Documento compensado" },
-        { code: 7, label: "Documento anulado" },
-        { code: 8, label: "En preparación de pago" },
-        { code: 9, label: "En nómina de pago" },
+        { code: 0, label: 'Sin Información' },
+        { code: 1, label: 'Contabilizado' },
+        { code: 2, label: 'Enviado a Pago' },
+        { code: 3, label: 'Pagado' },
+        { code: 4, label: 'Cobrado' },
+        { code: 5, label: 'Pago no Efectuado' },
+        { code: 6, label: 'Documento compensado' },
+        { code: 7, label: 'Documento anulado' },
+        { code: 8, label: 'En preparación de pago' },
+        { code: 9, label: 'En nómina de pago' },
       ],
       mediosPago: [
-        { code: '', label: "Sin gestión" },
-        { code: 'CH', label: "Cheque" },
-        { code: 'CF', label: "Cheque a Fecha" },
-        { code: 'LT', label: "Letra" },
-        { code: 'EF', label: "Efectivo" },
-        { code: 'PE', label: "Pago a Cta. Cte." },
-        { code: 'TC', label: "Tarjeta de crédito" },
-        { code: 'VV', label: "Vale Vista" },
-        { code: 'CO', label: "Confirming" },
-        { code: 'OT', label: "Otro" },
+        { code: '', label: 'Sin gestión' },
+        { code: 'CH', label: 'Cheque' },
+        { code: 'CF', label: 'Cheque a Fecha' },
+        { code: 'LT', label: 'Letra' },
+        { code: 'EF', label: 'Efectivo' },
+        { code: 'PE', label: 'Pago a Cta. Cte.' },
+        { code: 'TC', label: 'Tarjeta de crédito' },
+        { code: 'VV', label: 'Vale Vista' },
+        { code: 'CO', label: 'Confirming' },
+        { code: 'OT', label: 'Otro' },
       ],
-      pago: { id: null, fecha: null, updated: null, lugar: null, medio: null, monto: null, tipo: null, comentario: null },
+      pago: {
+        id: null, fecha: null, updated: null, lugar: null, medio: null, monto: null, tipo: null, comentario: null
+      },
       fecha: moment().format('YYYY-MM-DD'),
       modificar: false,
-      es: es
+      es
     };
   },
-  mounted()  {
+  mounted() {
     this.pago = modalStore.state.data.pago[0];
     this.fecha = this.pago.fecha;
   },
   methods: {
     validarPago() {
-        this.$validator.validateAll("informacionPago").then((result) => {
-          if (result) {
+      this.$validator.validateAll('informacionPago').then((result) => {
+        if (result) {
+          this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+          this.pago.fecha = moment(this.fecha).format('YYYY-MM-DD');
+          this.pago.updated = this.pago.fecha;
 
-            this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-            this.pago.fecha = moment(this.fecha).format('YYYY-MM-DD');
-            this.pago.updated = this.pago.fecha;
-
-
-            clienteFebosAPI.post("/documentos/" + this.getDocumento.febosId + "/pagos", this.pago).then((response) => {
-              this.$vs.loading.close();
-              if(response.data.codigo == 10) {
-                this.$vs.notify({
-                  color: 'success', title: 'Información de pago', text: 'Información de pago actualizada.'
-                });
-                this.cerrarVentana();
-              } else {
-                this.$vs.notify({
-                  color: "danger", title: "Información de pago", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
-                });
-              }
-            }).catch((error) => {
-              console.log(error);
+          clienteFebosAPI.post(`/documentos/${ this.getDocumento.febosId }/pagos`, this.pago).then((response) => {
+            this.$vs.loading.close();
+            if (response.data.codigo == 10) {
               this.$vs.notify({
-                color: "danger", title: "Información de pago", text: "No fue posible procesar la información de pago", time: 10000
+                color: 'success', title: 'Información de pago', text: 'Información de pago actualizada.'
               });
-              this.$vs.loading.close();
+              this.cerrarVentana();
+            } else {
+              this.$vs.notify({
+                color: 'danger', title: 'Información de pago', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
+              });
+            }
+          }).catch((error) => {
+            console.log(error);
+            this.$vs.notify({
+              color: 'danger', title: 'Información de pago', text: 'No fue posible procesar la información de pago', time: 10000
             });
-
-          }
-        });
+            this.$vs.loading.close();
+          });
+        }
+      });
     },
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
+    cerrarVentana() {
+      modalStore.commit('ocultarBitacora');
       // this.confirmaCierre();
     },
     cierrame() {
-      modalStore.commit("ocultarBitacora");
+      modalStore.commit('ocultarBitacora');
     },
 
     /* Validación Encabezado */
     getError(par) {
-      let retorno = null;
-      const ret = this.errors.items.find(elemento => elemento.field == par);
-      if (ret !== undefined && retorno === null)  {
-        if (ret.rule == "required") {
-          return "required";
+      const retorno = null;
+      const ret = this.errors.items.find((elemento) => elemento.field == par);
+      if (ret !== undefined && retorno === null) {
+        if (ret.rule == 'required') {
+          return 'required';
         }
       }
       return null;

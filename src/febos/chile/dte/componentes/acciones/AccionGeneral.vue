@@ -14,11 +14,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import ConfiguracionAcciones from "./ConfiguracionAcciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+
+import ConfiguracionAcciones from './ConfiguracionAcciones';
 
 export default {
-  name: "AccionDescargarPdf",
+  name: 'AccionDescargarPdf',
   mixins: [PermisoAccionMixin, ConfiguracionAcciones],
   props: {
     accion: {
@@ -34,7 +35,7 @@ export default {
   computed: {
     localAccion: {
       get() {
-        return this.acciones.find(acc => acc.accion == this.accion);
+        return this.acciones.find((acc) => acc.accion == this.accion);
       },
       set() {}
     }
@@ -45,8 +46,8 @@ export default {
     },
     desplegar() {
       return (
-        this.localAccion.esAplicable &&
-        this._tienePermiso(this.localAccion.permiso)
+        this.localAccion.esAplicable
+        && this._tienePermiso(this.localAccion.permiso)
       );
     }
   }

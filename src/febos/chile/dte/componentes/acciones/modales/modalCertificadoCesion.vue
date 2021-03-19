@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
+import modalStore from '@/store/modals/acciones';
 
 export default {
-  name: "modalDescargarCertificadoCesion",
+  name: 'modalDescargarCertificadoCesion',
   computed: {
     getData: {
       get() {

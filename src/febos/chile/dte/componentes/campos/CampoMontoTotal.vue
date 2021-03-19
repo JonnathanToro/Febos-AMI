@@ -5,17 +5,17 @@
 </template>
 
 <script>
-  import NumerosMixin from "../../../../global/_vue/mixins/NumerosMixin";
+import NumerosMixin from '../../../../global/_vue/mixins/NumerosMixin';
 
-  export default {
-    name: "CampoMontoTotal",
-    mixins: [NumerosMixin],
-    props: {
-      documento: {
-        type: Object,
-      },
-    }
+export default {
+  name: 'CampoMontoTotal',
+  mixins: [NumerosMixin],
+  props: {
+    documento: {
+      type: Object,
+    },
   }
+};
 </script>
 
 <style scoped>

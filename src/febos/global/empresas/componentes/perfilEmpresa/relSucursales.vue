@@ -132,20 +132,19 @@
 
       </form>
 
-
-
     </vs-modal>
 
   </div>
 </template>
 
 <script>
-import VsModal from "vs-modal";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import VsModal from 'vs-modal';
+
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "relSucursales",
-  props: ["iut", "codigoSii", "sucursales"],
+  name: 'relSucursales',
+  props: ['iut', 'codigoSii', 'sucursales'],
   components: {
     VsModal
   },
@@ -154,12 +153,12 @@ export default {
       registros: [],
       registro: null,
       toDelete: null,
-    }
+    };
   },
   computed: {
     idEmpresa: {
       get() {
-        var data = JSON.parse(
+        const data = JSON.parse(
           localStorage.getItem(
             `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
           )
@@ -173,43 +172,49 @@ export default {
   },
   methods: {
     filtrarSucursales() {
-      this.registros = this.sucursales.filter(element => !element.casaMatriz);
+      this.registros = this.sucursales.filter((element) => !element.casaMatriz);
     },
     agregarSucursal() {
       this.registro = {
-        id: null, rutEmpresa: this.idEmpresa,
-        direccion: null, correoElectronico: null, telefono: null, comuna: null, ciudad: null, codigoSii: null, casaMatriz: "no"
-      }
-      this.$refs['modalSucursal'].open();
+        id: null,
+        rutEmpresa: this.idEmpresa,
+        direccion: null,
+        correoElectronico: null,
+        telefono: null,
+        comuna: null,
+        ciudad: null,
+        codigoSii: null,
+        casaMatriz: 'no'
+      };
+      this.$refs.modalSucursal.open();
     },
-    editarSucursal(sucursal)  {
+    editarSucursal(sucursal) {
       this.registro = sucursal;
-      this.$refs["modalSucursal"].open();
+      this.$refs.modalSucursal.open();
     },
-    eliminarSucursal(sucursal)  {
+    eliminarSucursal(sucursal) {
       this.toDelete = sucursal;
       this.$vs.dialog({
-        type: "confirm",
-        color: "danger",
-        title: "Eliminar Sucursal",
-        text: "Está seguro de eliminar la Sucursal ubicada en  " + sucursal.direccion + ", " + sucursal.ciudad,
+        type: 'confirm',
+        color: 'danger',
+        title: 'Eliminar Sucursal',
+        text: `Está seguro de eliminar la Sucursal ubicada en  ${ sucursal.direccion }, ${ sucursal.ciudad}`,
         accept: this.__eliminarSucursal
-      })
-
+      });
     },
-    __eliminarSucursal()  {
-      this.$vs.loading({ type: "default" });
-      clienteFebosAPI.delete("/empresas/" + this.idEmpresa + "/sucursales/" + this.toDelete.id).then((response) => {
+    __eliminarSucursal() {
+      this.$vs.loading({ type: 'default' });
+      clienteFebosAPI.delete(`/empresas/${ this.idEmpresa }/sucursales/${ this.toDelete.id}`).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == "10") {
+        if (response.data.codigo == '10') {
           this.$vs.notify({
-            color: "success", title: "Sucursal", text: "La sucursal fue actualizda correctamente."
+            color: 'success', title: 'Sucursal', text: 'La sucursal fue actualizda correctamente.'
           });
           this.cargarSucursales();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Sucursal", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
-          })
+            color: 'danger', title: 'Sucursal', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, fixed: true
+          });
         }
       }).catch((error) => {
         this.$vs.loading.close();
@@ -217,12 +222,12 @@ export default {
         this.$vs.notify({
           color: 'danger', title: 'Sucursal', text: 'No fue posible eliminar la sucursal'
         });
-      })
+      });
     },
     validarSucursal() {
-      this.$validator.validateAll("formSucursal").then((result) => {
+      this.$validator.validateAll('formSucursal').then((result) => {
         if (result) {
-          if (this.registro.id)  {
+          if (this.registro.id) {
             this.actualizarSucursal();
           } else {
             this.crearSucursal();
@@ -237,99 +242,103 @@ export default {
         this.$vs.notify({
           color: 'danger', title: 'Sucursal', text: 'Error de plataforma'
         });
-      })
-
+      });
     },
-    actualizarSucursal()  {
+    actualizarSucursal() {
       this.$vs.loading({ type: 'default' });
-      clienteFebosAPI.put("/empresas/" + this.idEmpresa + "/sucursales/" + this.registro.id, this.__mapPostSucursal()).then((response) => {
+      clienteFebosAPI.put(`/empresas/${ this.idEmpresa }/sucursales/${ this.registro.id}`, this.__mapPostSucursal()).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: "success", title: "Sucursal", text: "La sucursal fue actualizda correctamente."
+            color: 'success', title: 'Sucursal', text: 'La sucursal fue actualizda correctamente.'
           });
-          this.$refs['modalSucursal'].close();
+          this.$refs.modalSucursal.close();
           this.cargarSucursales();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Sucursal", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
-          })
+            color: 'danger', title: 'Sucursal', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, fixed: true
+          });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Sucursal", text: "No fue posible actualizar la sucursal"
+          color: 'danger', title: 'Sucursal', text: 'No fue posible actualizar la sucursal'
         });
         window.console.log(error);
-      })
+      });
     },
     crearSucursal() {
       this.$vs.loading({ type: 'default' });
-      clienteFebosAPI.post("/empresas/" + this.idEmpresa + "/sucursales", this.__mapPostSucursal()).then((response) => {
+      clienteFebosAPI.post(`/empresas/${ this.idEmpresa }/sucursales`, this.__mapPostSucursal()).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
-            color: "success", title: "Sucursal", text: "Los registros fueron actualizados correctamente"
+            color: 'success', title: 'Sucursal', text: 'Los registros fueron actualizados correctamente'
           });
-          this.$refs['modalSucursal'].close();
+          this.$refs.modalSucursal.close();
           this.cargarSucursales();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Sucursal", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
-          })
+            color: 'danger', title: 'Sucursal', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, fixed: true
+          });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Sucursal", text: "No fue posible actualizar la sucursal"
+          color: 'danger', title: 'Sucursal', text: 'No fue posible actualizar la sucursal'
         });
         window.console.log(error);
-      })
+      });
     },
     __mapPostSucursal() {
       return {
-        id: this.registro.id, rutEmpresa: this.iut, sucursalActiva: true,
-        direccion: this.registro.direccion, correoElectronico: this.registro.correoElectronico,
-        telefono: this.registro.telefono, comuna: this.registro.comuna, ciudad: this.registro.ciudad, codigoSii: this.codigoSii, casaMatriz: "no"
-      }
+        id: this.registro.id,
+        rutEmpresa: this.iut,
+        sucursalActiva: true,
+        direccion: this.registro.direccion,
+        correoElectronico: this.registro.correoElectronico,
+        telefono: this.registro.telefono,
+        comuna: this.registro.comuna,
+        ciudad: this.registro.ciudad,
+        codigoSii: this.codigoSii,
+        casaMatriz: 'no'
+      };
     },
 
-    cargarSucursales()  {
-      this.$vs.loading({ type: "default" });
-      clienteFebosAPI.get("/empresas/" + this.idEmpresa + "/sucursales").then((response) => {
+    cargarSucursales() {
+      this.$vs.loading({ type: 'default' });
+      clienteFebosAPI.get(`/empresas/${ this.idEmpresa }/sucursales`).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == "10") {
-            this.registros = response.data.sucursales;
-            this.filtrarSucursales();
+        if (response.data.codigo == '10') {
+          this.registros = response.data.sucursales;
+          this.filtrarSucursales();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Sucursal", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, fixed: true
-          })
+            color: 'danger', title: 'Sucursal', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, fixed: true
+          });
         }
-
       }).catch((error) => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Sucursales", text: "No fue posible otener las sucursales"
+          color: 'danger', title: 'Sucursales', text: 'No fue posible otener las sucursales'
         });
         window.console.log(error);
-      })
+      });
     },
-
 
     /* Validación Encabezado */
     getError(par) {
-      let retorno = null;
-      const ret = this.errors.items.find(elemento => elemento.field == par);
-      if (ret !== undefined && retorno === null)  {
-        if (par == "iut" && ret.rule == "validaRut")  {
-          return "rut";
+      const retorno = null;
+      const ret = this.errors.items.find((elemento) => elemento.field == par);
+      if (ret !== undefined && retorno === null) {
+        if (par == 'iut' && ret.rule == 'validaRut') {
+          return 'rut';
         }
-        if (par == "email" && ret.rule == "email") {
-          return "email";
+        if (par == 'email' && ret.rule == 'email') {
+          return 'email';
         }
-        if (ret.rule == "required") {
-          return "required";
+        if (ret.rule == 'required') {
+          return 'required';
         }
         console.log(ret);
       }
@@ -337,8 +346,7 @@ export default {
     },
 
   }
-}
-
+};
 
 </script>
 
@@ -352,7 +360,6 @@ export default {
   /*padding: 1rem 1.25rem !important;*/
   padding: 6px !important;
 }
-
 
 table {
   border-spacing: 0;

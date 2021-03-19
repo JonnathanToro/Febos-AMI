@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionDescargarAmbosPdf",
+  name: 'AccionDescargarAmbosPdf',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -22,34 +22,33 @@ export default {
   },
   data() {
     return {
-      icono: "picture_as_pdf",
-      nombre: "Descargar PDF",
-      permiso: "DTE15",
+      icono: 'picture_as_pdf',
+      nombre: 'Descargar PDF',
+      permiso: 'DTE15',
     };
   },
   methods: {
     ejecutarAccion() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      const modalComponente = () =>
-        import(
-          `@/febos/chile/dte/componentes/acciones/modales/modalDescargarPdf.vue`
-        );
-      //cambiar lo de bitacora
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      const modalComponente = () => import(
+        '@/febos/chile/dte/componentes/acciones/modales/modalDescargarPdf.vue'
+      );
+      // cambiar lo de bitacora
       clienteFebosAPI
         .get(
-          "/documentos/" +
-            this.documento.febosId +
-            "?dominioPortal=portal.febos.cl&febosId=" +
-            this.documento.febosId +
-            "&imagen=si&incrustar=no&regenerar=no&tipoImagen=0"
+          `/documentos/${
+            this.documento.febosId
+             }?dominioPortal=portal.febos.cl&febosId=${
+             this.documento.febosId
+             }&imagen=si&incrustar=no&regenerar=no&tipoImagen=0`
         )
         .then((response) => {
-          if(response.data.imagenLink) {
+          if (response.data.imagenLink) {
             window.open(response.data.imagenLink);
-          }else{
-            modalStore.commit("setTitulo", "Descargar PDF");
-            modalStore.commit("mostrarBitacora", modalComponente);
-            modalStore.commit("setData", response.data);
+          } else {
+            modalStore.commit('setTitulo', 'Descargar PDF');
+            modalStore.commit('mostrarBitacora', modalComponente);
+            modalStore.commit('setData', response.data);
           }
           this.$vs.loading.close();
         })

@@ -7,14 +7,14 @@
   </div>
 </template>
 
-
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import vSelect from 'vue-select';
+
+import modalStore from '@/store/modals/acciones';
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalReenviarSii",
+  name: 'modalReenviarSii',
   computed: {
     getData: {
       get() {
@@ -35,36 +35,35 @@ export default {
     this.documento = this.getData;
   },
   methods: {
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
+    cerrarVentana() {
+      modalStore.commit('ocultarBitacora');
     },
 
     reenviarDocumento() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      clienteFebosAPI.get("/sii/dte/reenviodocumento?febosId=" + this.getData.febosId).then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.get(`/sii/dte/reenviodocumento?febosId=${ this.getData.febosId}`).then((response) => {
         this.$vs.loading.close();
-        if(response.data.codigo == 10) {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
             color: 'success', title: 'Reenvío documento', text: 'Documento reenviado a Sii'
           });
           this.cerrarVentana();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Reenvío documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Reenvío documento', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Reenvío documento", text: "No fue posible procesar el reenvío del documento", time: 10000
+          color: 'danger', title: 'Reenvío documento', text: 'No fue posible procesar el reenvío del documento', time: 10000
         });
-      })
-
+      });
     }
   },
   components: {
-    "v-select": vSelect,
+    'v-select': vSelect,
   },
 };
 </script>
