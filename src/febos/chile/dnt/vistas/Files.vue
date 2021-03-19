@@ -3,7 +3,7 @@
     <FilesFilters
       v-model="filters"
     />
-    <FilesHeader />
+    <FilesHeader :on-pending-files="onPendingFiles" />
     <div class="force-render" :key="forceRender">
       <FileRow
         :key="file.febosId"

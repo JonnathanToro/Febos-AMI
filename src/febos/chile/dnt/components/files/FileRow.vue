@@ -58,18 +58,26 @@
         </vs-col>
         <vs-col vs-lg="9">
           <vs-row>
-            <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+            <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
               {{file.compradorArea | capitalize }}
             </vs-col>
-            <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+            <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
               {{ file.emisorContactoNombre | capitalize }}
-              <small class="d-block" v-if="file.emisorContactoEmail">
-                {{ file.emisorContactoEmail }}
+              <small
+                class="d-block" v-if="file.emisorContactoEmail"
+                v-tooltip="`${file.emisorContactoEmail}`"
+              >
+                {{ file.emisorContactoEmail | truncate(20) }}
               </small>
             </vs-col>
-            <vs-col vs-lg="4" vs-sm="4" vs-xs="12">
+            <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
               {{ file.solicitanteNombre }}
-              <small class="d-block">{{ file.solicitanteEmail }}</small>
+              <small class="d-block" v-tooltip="`${file.solicitanteEmail}`">
+                {{ file.solicitanteEmail | truncate(20) }}
+              </small>
+            </vs-col>
+            <vs-col vs-lg="3" vs-sm="3" vs-xs="12" v-if="onPendingFiles">
+              {{ file.derivadoPor }}
             </vs-col>
           </vs-row>
         </vs-col>
