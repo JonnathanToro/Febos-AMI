@@ -4,22 +4,22 @@
   </div>
 </template>
 <script>
-  export default {
-    name: "InfoTablaBasica",
-    props: {
-      pagina: Number,
-      itemsPorPagina: Number,
-      itemsDeEstaPagina: Number,
-      registrosTotales: Number
+export default {
+  name: 'InfoTablaBasica',
+  props: {
+    pagina: Number,
+    itemsPorPagina: Number,
+    itemsDeEstaPagina: Number,
+    registrosTotales: Number
+  },
+  computed: {
+    inicio() {
+      return 1 + (this.pagina - 1) * this.itemsPorPagina;
     },
-    computed: {
-      inicio() {
-        return 1 + (this.pagina - 1) * this.itemsPorPagina;
-      },
-      fin() {
-        return (this.pagina - 1) * this.itemsPorPagina + this.itemsDeEstaPagina;
-      }
-
+    fin() {
+      return (this.pagina - 1) * this.itemsPorPagina + this.itemsDeEstaPagina;
     }
+
   }
+};
 </script>

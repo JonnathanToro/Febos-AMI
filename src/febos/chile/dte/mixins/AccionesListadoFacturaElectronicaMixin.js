@@ -78,13 +78,13 @@ export default {
           permiso: 'WB001'
         }
       }
-    }
+    };
   },
   methods: {
     obtenerAccion(nombreAccion) {
-      let accion = this.definicionAcciones[nombreAccion];
+      const accion = this.definicionAcciones[nombreAccion];
       accion.accion = nombreAccion;
       return accion;
     }
   }
-}
+};

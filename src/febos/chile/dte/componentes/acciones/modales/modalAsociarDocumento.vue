@@ -54,14 +54,15 @@
   </div>
 </template>
 
-
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import TiposDteMixin from "../../../mixins/TiposDteMixin";
+import vSelect from 'vue-select';
+
+import TiposDteMixin from '../../../mixins/TiposDteMixin';
+
+import modalStore from '@/store/modals/acciones';
 
 export default {
-  name: "modalAsociarDocumento",
+  name: 'modalAsociarDocumento',
   mixins: [TiposDteMixin],
   computed: {
     getData: {
@@ -80,11 +81,11 @@ export default {
   },
   methods: {
     cerrarVentana() {
-      modalStore.commit("ocultarBitacoraFull");
+      modalStore.commit('ocultarBitacoraFull');
     }
   },
   components: {
-    "v-select": vSelect,
+    'v-select': vSelect,
   },
 };
 </script>

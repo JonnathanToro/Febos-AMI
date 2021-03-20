@@ -14,13 +14,13 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import TiposDteMixin from "../../mixins/TiposDteMixin";
-import modalStore from "../../../../../store/modals/acciones";
-import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import TiposDteMixin from '../../mixins/TiposDteMixin';
+import modalStore from '../../../../../store/modals/acciones';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
 
 export default {
-  name: "AccionInformacionPago",
+  name: 'AccionInformacionPago',
   mixins: [PermisoAccionMixin, TiposDteMixin],
   props: {
     documento: {
@@ -29,26 +29,26 @@ export default {
   },
   data() {
     return {
-      icono: "attach_money",
-      nombre: "Información de Pago",
-      permiso: "DTE18"
+      icono: 'attach_money',
+      nombre: 'Información de Pago',
+      permiso: 'DTE18'
     };
   },
   mounted() {
   },
   methods: {
     ejecutarAccion() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalInformacionPago.vue`);
-      clienteFebosAPI.get("/documentos/" + this.documento.febosId + "/pagos").then((response) => {
-        modalStore.commit("setTitulo", "Información de pago");
-        modalStore.commit("mostrarBitacora", modalComponente);
-        modalStore.commit("febosId", this.documento.febosId);
-        const datos = { documento: this.documento, pago: response.data.infoPago};
-        modalStore.commit("setData", datos);
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalInformacionPago.vue');
+      clienteFebosAPI.get(`/documentos/${ this.documento.febosId }/pagos`).then((response) => {
+        modalStore.commit('setTitulo', 'Información de pago');
+        modalStore.commit('mostrarBitacora', modalComponente);
+        modalStore.commit('febosId', this.documento.febosId);
+        const datos = { documento: this.documento, pago: response.data.infoPago };
+        modalStore.commit('setData', datos);
         this.$vs.loading.close();
-        }).catch(() => {
-       })
+      }).catch(() => {
+      });
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

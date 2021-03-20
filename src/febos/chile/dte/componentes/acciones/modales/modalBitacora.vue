@@ -103,7 +103,6 @@
                 </div>
                 <small class="text-grey activity-e-time">{{elemento.fecha | moment("DD-MM-YYYY, hh:mm")}}</small>
 
-
             </li>
             </div>
             <div v-else>
@@ -140,10 +139,10 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
+import modalStore from '@/store/modals/acciones';
 
 export default {
-  name: "modalBitacora",
+  name: 'modalBitacora',
   computed: {
     getData: {
       get() {
@@ -152,16 +151,15 @@ export default {
     },
   },
   mounted() {
-    this.getData.bitacora.forEach(element => {
+    this.getData.bitacora.forEach((element) => {
       if (element.tipo == 29 || element.tipo == 30) {
-        //this.importantes.push(element);
+        // this.importantes.push(element);
         this.todos.push(element);
-      }else{
+      } else {
         this.importantes.push(element);
-        //this.todos.push(element);
+        // this.todos.push(element);
       }
     });
-
   },
   data() {
     return {

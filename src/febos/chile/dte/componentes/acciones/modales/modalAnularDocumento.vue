@@ -10,14 +10,14 @@
   </div>
 </template>
 
-
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import vSelect from 'vue-select';
+
+import modalStore from '@/store/modals/acciones';
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalAnularGuia",
+  name: 'modalAnularGuia',
   computed: {
     getData: {
       get() {
@@ -35,36 +35,35 @@ export default {
     this.documento = this.getData;
   },
   methods: {
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
+    cerrarVentana() {
+      modalStore.commit('ocultarBitacora');
     },
 
     anular() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      clienteFebosAPI.put("/documentos/datos/" + this.documento.febosId + "/estado=10").then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.put(`/documentos/datos/${ this.documento.febosId }/estado=10`).then((response) => {
         this.$vs.loading.close();
-        if(response.data.codigo == 10) {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
             color: 'success', title: 'Anulación Documento', text: 'Documento anulado correctamente'
           });
           this.cerrarVentana();
-        }else{
+        } else {
           this.$vs.notify({
-            color: "danger", title: "Anulación Documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Anulación Documento', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Anulación Documento", text: "No fue posible procesar la anulación del documento", time: 10000
+          color: 'danger', title: 'Anulación Documento', text: 'No fue posible procesar la anulación del documento', time: 10000
         });
-      })
-
+      });
     }
   },
   components: {
-    "v-select": vSelect,
+    'v-select': vSelect,
   },
 };
 </script>

@@ -20,8 +20,12 @@ export default {
     tipo: 'fecha'
   },
   numero: {
-    nombre: 'Numero',
+    nombre: 'Numero Expediente',
     tipo: 'numero'
+  },
+  numeroInt: {
+    nombre: 'Número doc.',
+    tipo: 'texto'
   },
   estado: {
     nombre: 'Estado de expedientes',
@@ -65,6 +69,10 @@ export default {
   },
   emisorContactoCargo: { // nombre de persona remitente
     nombre: 'Cargo persona remitente',
+    tipo: 'texto'
+  },
+  emisorContactoEmail: { // tipos de destinos
+    nombre: 'Correo remitente',
     tipo: 'texto'
   },
   transporteViaTransporteCodigoTransporte: { // acompaña fisico

@@ -3,7 +3,7 @@
     <FilesFilters
       v-model="filters"
     />
-    <FilesHeader />
+    <FilesHeader :on-pending-files="onPendingFiles" />
     <div class="force-render" :key="forceRender">
       <FileRow
         :key="file.febosId"
@@ -14,7 +14,7 @@
         :select-file="selectFile"
       />
     </div>
-    <PopUpBinnacleFile />
+    <PopUpBinnacleFile :titulo="'Bitácora del Expediente #'+selectedFile.numero"/>
     <PopUpTimelineFile :file="selectedFile"/>
     <PopUpDetailFile :file="selectedFile" />
     <PopUpGeneralDetailFile :file="selectedFile" />

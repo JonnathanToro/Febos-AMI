@@ -28,15 +28,15 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import vSelect from 'vue-select';
 
+import modalStore from '@/store/modals/acciones';
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalModificarTipoCompra",
+  name: 'modalModificarTipoCompra',
   components: {
-    "vs-select": vSelect,
+    'vs-select': vSelect,
   },
   computed: {
     getData: {
@@ -44,24 +44,24 @@ export default {
         return modalStore.state.data;
       },
     },
-    selectedCompra:  {
+    selectedCompra: {
       get() {
-        const selected = this.codigos.find(elemento => elemento.code == this.compra.tipoTransaccionCompra);
+        const selected = this.codigos.find((elemento) => elemento.code == this.compra.tipoTransaccionCompra);
         if (selected === undefined) return null;
         return selected;
       },
-      set(val)  {
+      set(val) {
         this.compra.tipoTransaccionCompraCodIva = null;
         this.compra.tipoTransaccionCompra = val.code;
       }
     },
-    selectedCodigoIVA:  {
+    selectedCodigoIVA: {
       get() {
-        const selected = this.codigoIVA.find(elemento => elemento.code == this.compra.tipoTransaccionCompraCodIva);
+        const selected = this.codigoIVA.find((elemento) => elemento.code == this.compra.tipoTransaccionCompraCodIva);
         if (selected === undefined) return null;
         return selected;
       },
-      set(val)  {
+      set(val) {
         this.compra.tipoTransaccionCompraCodIva = val.code;
       }
     },
@@ -87,7 +87,7 @@ export default {
       }
     }
   },
-  data: function () {
+  data() {
     return {
       codigos: [
         { code: 1, label: 'Del Giro' },
@@ -98,11 +98,11 @@ export default {
         { code: 6, label: 'Sin derecho' },
         { code: 7, label: 'No Inculir' }
       ],
-      code1: [{code: 1, label: '1. Del giro'}],
-      code2: [{code: 1, label: '1. Del giro'}, {code: 2, label: '2. Uso Común'}],
-      code3: [{code: 1, label: '1. Del giro'}, {code: 2, label: '2. Uso Común'}],
-      code4: [{code: 1, label: '1. Del giro'}, {code: 2, label: 'Uso Común'}],
-      code5: [{code: 2, label: '2. Uso Común'}],
+      code1: [{ code: 1, label: '1. Del giro' }],
+      code2: [{ code: 1, label: '1. Del giro' }, { code: 2, label: '2. Uso Común' }],
+      code3: [{ code: 1, label: '1. Del giro' }, { code: 2, label: '2. Uso Común' }],
+      code4: [{ code: 1, label: '1. Del giro' }, { code: 2, label: 'Uso Común' }],
+      code5: [{ code: 2, label: '2. Uso Común' }],
       code6: [
         { code: 1, label: '1. Compras destinadas a IVA a generar operaciones no gravados o exentas' },
         { code: 2, label: '2. Facturas de proveedores registradas   fuera de plazo' },
@@ -110,7 +110,7 @@ export default {
         { code: 4, label: '4. Entregas gratuitas recibidas' },
         { code: 9, label: '9. Otros' }
       ],
-      code7: [{code: 9, label: '9. Otros'}],
+      code7: [{ code: 9, label: '9. Otros' }],
       compra: {
         febosId: null,
         tipoTransaccionVenta: 0,
@@ -118,14 +118,12 @@ export default {
         tipoTransaccionCompraCodIva: null
       },
 
-
     };
   },
   mounted() {
     this.compra.febosId = this.getData.febosId;
     this.compra.tipoTransaccionCompra = this.getData.tpoTranCompra;
     this.compra.tipoTransaccionCompraCodIva = this.getData.tpoTranCompraCodIva;
-
   },
   methods: {
     modificarTipoCompra() {
@@ -135,38 +133,38 @@ export default {
         });
         return false;
       }
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.compra).then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.put('/documentos/datos/transaccioncompraventa', this.compra).then((response) => {
         this.$vs.loading.close();
-        if(response.data.codigo == 10) {
+        if (response.data.codigo == 10) {
           this.updateDTEs();
           this.$vs.notify({
             color: 'success', title: 'Modificar Tipo Compra', text: 'Tipo de compra actualizada'
           });
           this.cerrarVentana();
-        }else{
+        } else {
           this.$vs.notify({
-            color: "danger", title: "Modificar Tipo Compra", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Modificar Tipo Compra', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
         this.$vs.loading.close();
       }).catch(() => {
         this.$vs.notify({
-          color: "danger", title: "Modificar Tipo Compra", text: "No fue posible modificar el tipo de compra"
+          color: 'danger', title: 'Modificar Tipo Compra', text: 'No fue posible modificar el tipo de compra'
         });
         this.$vs.loading.close();
       });
     },
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
+    cerrarVentana() {
+      modalStore.commit('ocultarBitacora');
     },
-    updateDTEs()  {
-      var data = JSON.parse(
+    updateDTEs() {
+      const data = JSON.parse(
         localStorage.getItem(
           `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
         )
       );
-      data.Dtes.documentos.forEach(element => {
+      data.Dtes.documentos.forEach((element) => {
         if (element.febosId == this.compra.febosId) {
           element.tpoTranCompra = this.compra.tipoTransaccionCompra;
           element.tpoTranCompraCodIva = this.compra.tipoTransaccionCompraCodIva;

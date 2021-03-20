@@ -57,11 +57,11 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import modalStore from '@/store/modals/acciones';
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalEnviarDte",
+  name: 'modalEnviarDte',
   computed: {
     getData: {
       get() {
@@ -75,9 +75,9 @@ export default {
         adjuntarXml: false,
         adjuntarPdf: true,
         recibirCopia: true,
-        mensaje: "",
-        destinatario: "",
-        copias:"",
+        mensaje: '',
+        destinatario: '',
+        copias: '',
       },
       respuesta: null
     };
@@ -86,42 +86,41 @@ export default {
   },
   methods: {
     getError(par) {
-      let retorno = null;
-      const ret = this.errors.items.find(elemento => elemento.field == par);
-      if (ret !== undefined && retorno === null)  {
-        if (par == "email" && ret.rule == "email") {
-          return "email";
+      const retorno = null;
+      const ret = this.errors.items.find((elemento) => elemento.field == par);
+      if (ret !== undefined && retorno === null) {
+        if (par == 'email' && ret.rule == 'email') {
+          return 'email';
         }
-        if (ret.rule == "required") {
-          return "required";
+        if (ret.rule == 'required') {
+          return 'required';
         }
       }
       return null;
     },
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
+    cerrarVentana() {
+      modalStore.commit('ocultarBitacora');
     },
     enviarDte() {
-      this.$validator.validateAll("envioDTE").then((result) => {
+      this.$validator.validateAll('envioDTE').then((result) => {
         if (result) {
           this.__enviarDte();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Envío DTE", text: "Debe ingresar todos los datos requeridos"
+            color: 'danger', title: 'Envío DTE', text: 'Debe ingresar todos los datos requeridos'
           });
         }
       }).catch((error) => {
         console.log(error);
-      })
+      });
     },
 
     __enviarDte() {
-
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      this.envio.adjuntarXml = (this.envio.adjuntarXml == true) ? "si" : "no";
-      this.envio.adjuntarPdf = (this.envio.adjuntarPdf == true) ? "si" : "no";
-      this.envio.recibirCopia = (this.envio.recibirCopia == true) ? "si" : "no";
-      clienteFebosAPI.post("/documentos/" + this.getData.febosId + "/envio", this.envio).then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      this.envio.adjuntarXml = (this.envio.adjuntarXml == true) ? 'si' : 'no';
+      this.envio.adjuntarPdf = (this.envio.adjuntarPdf == true) ? 'si' : 'no';
+      this.envio.recibirCopia = (this.envio.recibirCopia == true) ? 'si' : 'no';
+      clienteFebosAPI.post(`/documentos/${ this.getData.febosId }/envio`, this.envio).then((response) => {
         this.$vs.loading.close();
         if (response.data.codigo == 10) {
           this.$vs.notify({
@@ -130,20 +129,17 @@ export default {
           this.cerrarVentana();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Envío DTE", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Envío DTE', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
-
         }
       }).catch((error) => {
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Envío DTE", text: "No fue posible enviar el documento", time: 10000
+          color: 'danger', title: 'Envío DTE', text: 'No fue posible enviar el documento', time: 10000
         });
         this.$vs.loading.close();
       });
-
     }
-
 
   },
 };

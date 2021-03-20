@@ -14,11 +14,11 @@
 </template>
 
 <script>
-  import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-  import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionVerAnotacionesSii",
+  name: 'AccionVerAnotacionesSii',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -27,19 +27,19 @@ export default {
   },
   data() {
     return {
-      icono: "account_balance",
-      nombre: "Ver Anotaciones SII",
-      permiso: ""
+      icono: 'account_balance',
+      nombre: 'Ver Anotaciones SII',
+      permiso: ''
     };
   },
   methods: {
-    ejecutarAccion(){
-        const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalVerAnotacionSii.vue`);
-        modalStore.commit("setTitulo", "Consultando anotaciones en el Sii");
-        modalStore.commit("mostrarBitacora", modalComponente);
-        modalStore.commit("febosId", this.documento.febosId);
-        modalStore.commit("setData", this.documento);
-      },
+    ejecutarAccion() {
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalVerAnotacionSii.vue');
+      modalStore.commit('setTitulo', 'Consultando anotaciones en el Sii');
+      modalStore.commit('mostrarBitacora', modalComponente);
+      modalStore.commit('febosId', this.documento.febosId);
+      modalStore.commit('setData', this.documento);
+    },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);
     },

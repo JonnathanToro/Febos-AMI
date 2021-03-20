@@ -39,9 +39,10 @@ export default {
       payload.iut,
       payload.nombre,
       payload.alias,
-      payload.correo
+      payload.correo,
+      payload.avatar,
     );
-    commit('SET_USUARIO', payload);
+    commit('SET_USUARIO', { usuario: payload });
     return response.data;
   },
   async getVerificationCode({ commit }, payload) {
