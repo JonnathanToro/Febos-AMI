@@ -18,6 +18,12 @@ export default {
     layout() {
       return this.$route.meta.layout || 'main-page';
     }
+  },
+  created() {
+    const availablePortals = (process.env.VUE_APP_AVAILABLE_PORTALS || '').split(',');
+    if (!availablePortals.includes(this.$route.params.portal)) {
+      this.$router.push({ name: 'root' });
+    }
   }
 };
 
