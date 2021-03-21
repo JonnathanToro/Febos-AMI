@@ -33,3 +33,6 @@ export const firstGroupsCompany = (state) => (state.groupsCompany || [])
 export const pagination = (state) => state.pagination;
 export const usersByGroup = (state) => state.usersGroup;
 export const loading = (state) => state.loading;
+export const groupSelected = (state) => (
+  state.groupsCompany.find((group) => group.id === state.selectedElement)
+);

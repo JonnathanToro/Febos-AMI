@@ -32,7 +32,7 @@ export default {
     tipo: 'texto'
   },
   estado: {
-    nombre: 'Estado de expedientes',
+    nombre: 'Estado',
     tipo: 'multi'
   },
   destinoCopiaIds: {

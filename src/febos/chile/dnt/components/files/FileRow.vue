@@ -83,7 +83,7 @@
         </vs-col>
       </vs-row>
       <vs-row>
-        <vs-col vs-offset="3" vs-lg="7" vs-type="flex">
+        <vs-col vs-offset="2" vs-lg="8" vs-type="flex">
           <vs-chip class="mr-4" v-tooltip="'Fecha de Actualización'">
             <vs-avatar icon="date_range" />
             {{ file.fechaActualizacion | dateFormat }}
@@ -92,7 +92,11 @@
             <vs-avatar icon="event" />
             {{ file.fechaEmision | dateFormat }}
           </vs-chip>
-          <vs-chip class="mr-3" v-tooltip="'Número de documento'">
+          <vs-chip
+            class="mr-3"
+            v-tooltip="'Número de documento'"
+            v-if="file.numeroInt"
+          >
             <vs-avatar icon="description" />
             {{file.numeroInt}}
           </vs-chip>
@@ -110,6 +114,7 @@
             >
               {{(file.emisorCentroCostoNombre ||'')| truncate(20)}}
             </span>
+          </vs-chip>
           <vs-chip
             v-tooltip="'Documento externo'"
             v-if="file.claseMercadoPublico === 'ext'"

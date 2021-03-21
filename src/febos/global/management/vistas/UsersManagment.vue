@@ -203,6 +203,7 @@
     :action="action"
   />
   <PopUpUsersGroup
+    :usersGeneral="usersGeneral"
     :group="selectedGroup"
   />
 </div>
@@ -241,6 +242,7 @@ export default {
         name: '',
         children: []
       },
+      usersGeneral: [],
       usersTree: [],
       selectedGroup: {},
       action: ''
@@ -285,26 +287,29 @@ export default {
       'pagination',
       'usersByGroup',
       'loading'
-    ]),
-    ...mapGetters('Management', [
-      'element'
     ])
   },
   methods: {
     ...mapActions('Empresas', [
       'getUsersCompany',
       'getGroupsCompany',
-      'getUsersGroup'
+      'getUsersGroup',
+      'setElement'
     ]),
     ...mapActions('Modals', [
       'showModals',
       'closeModal'
     ]),
-    ...mapActions('Management', [
-      'setElement'
-    ]),
-    viewUsers() {
+    async viewUsers() {
       this.showModals('modalUsersGroup');
+      await this.getUsersCompany({
+        empresaId: this.company.id,
+        pagina: 1,
+        filas: 100000,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
+      });
+      this.usersGeneral = this.usersCompany;
     },
     editGroup() {
       this.action = 'edit';
@@ -334,7 +339,7 @@ export default {
       this.showModals('modalEditGroup');
     },
     getChildren(item) {
-      this.setElement(item);
+      this.setElement(item.id);
       this.selectedGroup = { ...item };
       if (item.name !== this.company.razonSocial) {
         this.getUsersGroup(item.id);
@@ -406,7 +411,6 @@ export default {
     this.tree.nombre = this.company.razonSocial;
     this.tree.children = this.makeTree();
     this.usersTree = this.usersCompany;
-    console.log('rbol', this);
   }
 };
 </script>

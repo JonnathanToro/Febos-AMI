@@ -30,7 +30,7 @@
            v-if="isDivision"
          />
          <vs-icon
-           icon="groups"
+           icon="group"
            size="small"
            v-tooltip="'Es grupo'"
            v-if="checkGroup"

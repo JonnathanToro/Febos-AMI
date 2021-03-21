@@ -1,6 +1,7 @@
 import rutasFacturaElectronica from './rutasFacturaElectronica';
 import rutasHerramientas from './rutasHerramientas';
 import rutasDnts from './rutasDnts';
+import approvalRoutes from './approvalRoutes';
 import rutasOperaciones from './rutasOperaciones';
 import templateRoutes from './templateRoutes';
 
@@ -48,6 +49,7 @@ export default [
       ...rutasFacturaElectronica,
       ...rutasHerramientas,
       ...rutasDnts,
+      ...approvalRoutes,
       ...rutasOperaciones,
       ...templateRoutes
     ],

@@ -27,7 +27,7 @@
           format="yyyy-MM-dd"
         />
       </span>
-      <vs-dropdown style="margin-left: 15px">
+      <vs-dropdown style="margin-left: 15px" vs-trigger-click>
         <a class="a-icon" href="#">
           Cambiar
           <vs-icon class="" icon="expand_more"></vs-icon>
@@ -45,11 +45,9 @@
       </vs-dropdown>
     </div>
     <filtros
-      :dntType="'files'"
+      :dntType="'approvalFiles'"
       :users="usersCompany"
       :groups="groupsCompany"
-      :documents="documentTypesState.list"
-      :institutions="institutionTypesState.list"
       :configuracion-vista="configuracion"
       :periodos="periodos"
       v-on:filtros-aplicados="changeFilters"
@@ -61,17 +59,15 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import Filtros from '@/febos/global/_vue/componentes/FiltrosDnt';
-import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
-import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
+import FiltersApprovalsMixin from '@/febos/chile/approvals/mixins/FiltersApprovalsMixin';
 
 export default {
   components: { Filtros },
   props: ['value'],
-  mixins: [FiltersDntMixin, FindTypeDocumentMixin],
+  mixins: [FiltersApprovalsMixin],
   data() {
     const view = this.$route.params.vista;
     const filters = this.getFilterView(view);
-
     return {
       periodos: [
         { nombre: 'las últimas 4 semanas', valor: 'ultimas4semanas' },
@@ -91,7 +87,6 @@ export default {
   created() {
     this.periodoDesde = this.$moment().subtract(6, 'month').format('YYYY-MM-DD');
     this.periodoHasta = this.$moment().format('YYYY-MM-DD');
-
     if (!this.usersCompany.length) {
       this.getUsersCompany({
         empresaId: this.empresa.id,
@@ -106,32 +101,18 @@ export default {
         empresaId: this.empresa.id
       });
     }
-    if (!this.documentTypesState.length) {
-      this.fetchDocumentTypes();
-    }
-    if (!this.institutionTypesState.length) {
-      this.fetchInstitutionTypes();
-    }
   },
   computed: {
     ...mapGetters('Empresas', [
       'empresa',
       'usersCompany',
       'groupsCompany'
-    ]),
-    ...mapGetters('List', [
-      'documentTypesState',
-      'institutionTypesState'
     ])
   },
   methods: {
     ...mapActions('Empresas', [
       'getUsersCompany',
       'getGroupsCompany'
-    ]),
-    ...mapActions('List', [
-      'fetchDocumentTypes',
-      'fetchInstitutionTypes'
     ]),
     changeFilters(filters) {
       const defaultFilters = `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;

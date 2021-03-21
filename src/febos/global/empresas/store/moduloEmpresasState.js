@@ -35,5 +35,6 @@ export default {
     pages: 0
   },
   loading: false,
-  usersGroup: []
+  usersGroup: [],
+  selectedElement: ''
 };

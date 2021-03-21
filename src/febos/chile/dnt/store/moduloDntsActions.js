@@ -19,7 +19,7 @@ import {
 } from '@/febos/servicios/api/dnt.api';
 import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
-import { fileDetails } from '@/febos/servicios/api/aprobaciones.api';
+import { fileDetails, sendToFlowFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 
 export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
@@ -323,10 +323,23 @@ export const returnFileEd = async ({ commit }, payload) => {
   }
 };
 
-export const sendToFlow = async ({ commit }, { id, data }) => {
+export const sendToFlow = async ({ commit }, { data }) => {
   commit('SET_LOADING', true);
   try {
-    console.log('ACCION', id, data);
+    commit('SET_LOADING', true);
+    const payload = {
+      params: {
+        aprobacionId: 0,
+        temporal: true,
+        privado: 'N'
+      },
+      body: data
+    };
+    const response = await sendToFlowFile(payload);
+    await router.push({
+      path: '/expedientes/entrada'
+    });
+    commit('SET_SUCCESS_MESSAGE', response.data);
   } finally {
     commit('SET_LOADING', false);
   }

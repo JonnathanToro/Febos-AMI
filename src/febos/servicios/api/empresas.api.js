@@ -39,3 +39,10 @@ export const ioCompanyCreateGroup = (empresaId, group) => {
   return apiClient.post(`${RESOURCE}/${empresaId}/grupos?${params}`,
     group, { operacionId: 'io.empresas.create.group' });
 };
+// url: "'/empresas/' + query.empresaId + '/grupos/' + query.grupoId"
+
+export const ioCompanyUpdateUsersGroup = (empresaId, body) => {
+  const params = apiClient.queryParams(body);
+  return apiClient.post(`${RESOURCE}/${empresaId}/grupos/${body.grupoId}?${params}`,
+    body.usuarios, { operacionId: 'io.empresas.update.users.group' });
+};

@@ -39,7 +39,7 @@
             <div class="col-md-1">
               <vs-radio
                 vs-name="pdfStamp"
-                :vs-value="1"
+                :vs-value="true"
                 v-model="step.pdfStamp"
               >
                 Si
@@ -48,7 +48,7 @@
             <div class="col-md-1">
               <vs-radio
                 vs-name="pdfStamp"
-                :vs-value="0"
+                :vs-value="false"
                 v-model="step.pdfStamp"
               >
                 No
@@ -217,7 +217,7 @@ export default {
         fileId: this.$route.params.id,
         name: '',
         description: '',
-        pdfStamp: 1,
+        pdfStamp: true,
         steps: [],
         file: ''
       },
@@ -301,6 +301,7 @@ export default {
         typeFlowId: this.wizardData.fileType,
         typeFlowText: `${ this.wizardData.fileType } - `,
         fileType: this.wizardData.fileType,
+        privado: 'N',
         ...this.step
       };
     }

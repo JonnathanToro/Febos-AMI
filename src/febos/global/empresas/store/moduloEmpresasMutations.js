@@ -62,5 +62,15 @@ export default {
     group.isDivision = payload.esDivision === 'Y';
     group.isOffice = payload.esOficina === 'Y';
     state.groupsCompany = [...state.groupsCompany, group];
+  },
+  SET_ELEMENT(state, payload) {
+    state.selectedElement = payload;
+  },
+  ADD_USER_GROUP(state, payload) {
+    // TODO agregar al grupo el id del usuario?
+    state.usersGroup = [
+      ...state.usersGroup,
+      payload
+    ];
   }
 };

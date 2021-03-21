@@ -26,6 +26,8 @@ export default () => ({
         nombre: input.name,
         plantilla: {
           aprobaciones: {
+            nombre: '',
+            descripcion: '',
             estampar: input.pdfStamp,
             foliacion: true,
             tipoejecucion: 'N',
