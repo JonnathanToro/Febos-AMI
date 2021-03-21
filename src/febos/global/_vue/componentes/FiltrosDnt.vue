@@ -58,7 +58,11 @@
       </vs-tooltip>
     </vs-chip>
 
-    <vs-modal ref="configFiltro" v-on:close="verificarFiltrosAlCerrar">
+    <vs-modal
+      ref="configFiltro"
+      v-on:close="verificarFiltrosAlCerrar"
+      dismiss-on="close-button esc"
+    >
       <div slot="header" v-html="tituloConfiguracion" class="titulo-modal"></div>
       <div v-if="filtroActual.tipo == 'multi'">
         <div v-if="filtroActual.valor.length==1" class="alerta">
@@ -312,6 +316,11 @@
           />
         </div>
       </div>
+      <div class="text-center mt-2">
+        <vs-button size="small" v-on:click="verificarFiltrosAlCerrar" >
+          Confirmar
+        </vs-button>
+      </div>
     </vs-modal>
 
   </div>
@@ -554,7 +563,6 @@ export default {
   methods: {
     verificarFiltrosAlCerrar() {
       if (this.filtroActual.tipo === 'rangoFecha' && this.tipoRangoFechaAvanzado) {
-        console.log('aca 1', this.filtroActual);
         let rango = this.rangoAvanzado.desde.split('T')[0];
         rango += '--';
         rango += this.rangoAvanzado.hasta.split('T')[0];
@@ -570,6 +578,7 @@ export default {
           return;
         }
       }
+      this.$refs.configFiltro.close();
     },
     aplicarFiltros() {
       const query = [];

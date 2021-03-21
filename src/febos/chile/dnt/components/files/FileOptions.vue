@@ -41,7 +41,7 @@
               Bitácora
             </vs-dropdown-item>
           </CheckPermission>
-          <CheckPermission permission="*">
+          <CheckPermission permission="ED018">
             <vs-dropdown-item v-on:click="onOptionTimelineFile(file)">
               <vs-icon icon="all_inbox"/>
               Proceso Destinos

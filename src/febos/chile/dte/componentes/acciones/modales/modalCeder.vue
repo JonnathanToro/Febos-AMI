@@ -125,28 +125,30 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
-import clienteFebosAPI from "../../../../../servicios/clienteFebosAPI";
-import vSelect from "vue-select";
-import Datepicker from "vuejs-datepicker";
-import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
-import { Validator } from "vee-validate";
-import es from "vee-validate/dist/locale/es";
+import vSelect from 'vue-select';
+import Datepicker from 'vuejs-datepicker';
+import { Validator } from 'vee-validate';
+import es from 'vee-validate/dist/locale/es';
 
-Validator.localize("es", es);
-Validator.extend("validaRut", {
-  getMessage: (field) => field + " incorrecto",
+import clienteFebosAPI from '../../../../../servicios/clienteFebosAPI';
+
+import TiposDteMixin from '@/febos/chile/dte/mixins/TiposDteMixin';
+import modalStore from '@/store/modals/acciones';
+
+Validator.localize('es', es);
+Validator.extend('validaRut', {
+  getMessage: (field) => `${field } incorrecto`,
   validate: (value) => {
-    var esCorrecto = validaRUT(value);
+    const esCorrecto = validaRUT(value);
     return esCorrecto;
   },
 });
 
 export default {
-  name: "modalCeder",
-  mixins: [ TiposDteMixin ],
+  name: 'modalCeder',
+  mixins: [TiposDteMixin],
   components: {
-    "vs-select": vSelect,
+    'vs-select': vSelect,
     Datepicker,
   },
   data() {
@@ -163,7 +165,7 @@ export default {
       },
       respuesta: null,
       error: null
-    }
+    };
   },
   computed: {
     getData: {
@@ -173,24 +175,24 @@ export default {
     },
     subtitulo: {
       get() {
-        return "Emitida a " + this.getData.razonSocialReceptor + ", RUT " + this.getData.rutReceptor;
+        return `Emitida a ${ this.getData.razonSocialReceptor }, RUT ${ this.getData.rutReceptor}`;
       }
     },
     titulo: {
       get() {
-        return this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento) + " Nº " + this.getData.folio;
+        return `${this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento) } Nº ${ this.getData.folio}`;
       }
     },
   },
   mounted() {
-    this.ceder.febosId = this.getData.febosId
+    this.ceder.febosId = this.getData.febosId;
   },
   methods: {
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
+    cerrarVentana() {
+      modalStore.commit('ocultarBitacora');
     },
     enviarCeder() {
-      this.$validator.validateAll("formularioCeder").then((result) => {
+      this.$validator.validateAll('formularioCeder').then((result) => {
         if (result) {
           this.__enviarCeder();
         } else {
@@ -201,65 +203,64 @@ export default {
       });
     },
     __enviarCeder() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      clienteFebosAPI.post("/sii/dte/cesion", this.ceder).then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.post('/sii/dte/cesion', this.ceder).then((response) => {
         this.$vs.loading.close();
-        if(response.data.codigo == 10) {
+        if (response.data.codigo == 10) {
           this.$vs.notify({
             color: 'success', title: 'Cesión de documento', text: 'Documento cedido'
           });
           this.cerrarVentana();
         } else {
           this.$vs.notify({
-            color: "danger", title: "Cesión de documento", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Cesión de documento', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch((error) => {
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Cesión de documento", text: "No fue posible procesar la cesión del documento", time: 10000
+          color: 'danger', title: 'Cesión de documento', text: 'No fue posible procesar la cesión del documento', time: 10000
         });
         this.$vs.loading.close();
       });
     },
     /* Validación Encabezado */
     getError(par) {
-      let retorno = null;
-      const ret = this.errors.items.find(elemento => elemento.field == par);
-      if (ret !== undefined && retorno === null)  {
-        if (par == "cesionarioRut" && ret.rule == "validaRut")  {
-          return "rut";
+      const retorno = null;
+      const ret = this.errors.items.find((elemento) => elemento.field == par);
+      if (ret !== undefined && retorno === null) {
+        if (par == 'cesionarioRut' && ret.rule == 'validaRut') {
+          return 'rut';
         }
-        if (par == "email" && ret.rule == "email") {
-          return "email";
+        if (par == 'email' && ret.rule == 'email') {
+          return 'email';
         }
-        if (ret.rule == "required") {
-          return "required";
+        if (ret.rule == 'required') {
+          return 'required';
         }
       }
       return null;
     },
   },
 
-
 };
 
 function validaRUT(rutCompleto) {
-  rutCompleto = rutCompleto.replace("‐", "-");
+  rutCompleto = rutCompleto.replace('‐', '-');
   if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) return false;
-  var tmp = rutCompleto.split("-");
-  var digv = tmp[1];
-  var rut = tmp[0];
-  if (digv == "K") digv = "k";
+  const tmp = rutCompleto.split('-');
+  let digv = tmp[1];
+  const rut = tmp[0];
+  if (digv == 'K') digv = 'k';
 
   return dv(rut) == digv;
 }
 
 function dv(T) {
-  var M = 0,
-    S = 1;
+  let M = 0;
+  let S = 1;
   for (; T; T = Math.floor(T / 10)) S = (S + (T % 10) * (9 - (M++ % 6))) % 11;
-  return S ? S - 1 : "k";
+  return S ? S - 1 : 'k';
 }
 
 </script>

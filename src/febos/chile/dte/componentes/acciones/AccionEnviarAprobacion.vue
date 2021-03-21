@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionEnviarAprobacion",
+  name: 'AccionEnviarAprobacion',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -27,17 +27,17 @@ export default {
   },
   data() {
     return {
-      icono: "call_split",
-      nombre: "Enviar a aprobación",
-      permiso: "DTE21"
+      icono: 'call_split',
+      nombre: 'Enviar a aprobación',
+      permiso: 'DTE21'
     };
   },
   methods: {
     ejecutarAccion() {
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarAprobacion.vue`);
-      modalStore.commit("setTitulo", "Información del flujo");
-      modalStore.commit("mostrarBitacora", modalComponente);
-      modalStore.commit("setData", this.documento);
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalEnviarAprobacion.vue');
+      modalStore.commit('setTitulo', 'Información del flujo');
+      modalStore.commit('mostrarBitacora', modalComponente);
+      modalStore.commit('setData', this.documento);
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

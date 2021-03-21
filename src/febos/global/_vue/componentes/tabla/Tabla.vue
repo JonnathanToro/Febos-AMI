@@ -25,55 +25,55 @@
 </template>
 
 <script>
-  import CamposListadoFacturaElectronicaMixin from "@/febos/chile/dte/mixins/CamposListadoFacturaElectronicaMixin";
+import CamposListadoFacturaElectronicaMixin from '@/febos/chile/dte/mixins/CamposListadoFacturaElectronicaMixin';
 
-  export default {
-    name: "Tabla",
-    mixins: [CamposListadoFacturaElectronicaMixin],
-    props: {
-      respuestaApi: Object,
-      config: Object
+export default {
+  name: 'Tabla',
+  mixins: [CamposListadoFacturaElectronicaMixin],
+  props: {
+    respuestaApi: Object,
+    config: Object
+  },
+  data() {
+    return {
+      componentes: {},
+      documentosSeleccionados: []
+    };
+  },
+  computed: {
+    paginaActual() {
+      return this.respuestaApi.pagina;
     },
-    data() {
-      return {
-        componentes: {},
-        documentosSeleccionados: []
-      }
+    totalPaginas() {
+      return this.respuestaApi.paginas;
     },
-    computed: {
-      paginaActual() {
-        return this.respuestaApi.pagina;
-      },
-      totalPaginas() {
-        return this.respuestaApi.paginas;
-      },
-      documentos() {
-        return this.respuestaApi.documentos;
-      },
-      campos() {
-        let campos = [];
-        var self = this;
-        this.config.campos.forEach(function (obj) {
-          campos.push(self.obtenerCampoTabla(obj));
-        });
-        return campos;
-      }
+    documentos() {
+      return this.respuestaApi.documentos;
     },
-    created() {
-
-    },
-    methods: {
-      cargarComponenteCampo(nombreCampo) {
-        if (!this.componentes[nombreCampo]) {
-          this.componentes[nombreCampo] = () => import(`@/febos/chile/dte/componentes/campos/Campo${nombreCampo}.vue`);
-        }
-        return this.componentes[nombreCampo];
-      }
-    },
-    mounted() {
-
+    campos() {
+      const campos = [];
+      const self = this;
+      this.config.campos.forEach((obj) => {
+        campos.push(self.obtenerCampoTabla(obj));
+      });
+      return campos;
     }
+  },
+  created() {
+
+  },
+  methods: {
+    cargarComponenteCampo(nombreCampo) {
+      if (!this.componentes[nombreCampo]) {
+        this.componentes[nombreCampo] = () => import(`@/febos/chile/dte/componentes/campos/Campo${nombreCampo}.vue`);
+      }
+      return this.componentes[nombreCampo];
+    }
+  },
+  mounted() {
+
   }
+};
 </script>
 
 <style lang="css">

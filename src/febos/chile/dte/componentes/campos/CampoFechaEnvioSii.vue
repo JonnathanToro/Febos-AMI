@@ -7,14 +7,14 @@
 
 <script>
 
-  export default {
-    name: "CampoFechaEnvioSii",
-    props: {
-      documento: {
-        type: Object,
-      },
-    }
+export default {
+  name: 'CampoFechaEnvioSii',
+  props: {
+    documento: {
+      type: Object,
+    },
   }
+};
 </script>
 
 <style scoped>

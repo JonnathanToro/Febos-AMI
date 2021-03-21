@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionConsultarEstadoSii",
+  name: 'AccionConsultarEstadoSii',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -22,22 +22,22 @@ export default {
   },
   data() {
     return {
-      icono: "find_in_page",
-      nombre: "Consultar Estado Sii",
-      permiso: "SII08",
+      icono: 'find_in_page',
+      nombre: 'Consultar Estado Sii',
+      permiso: 'SII08',
     };
   },
   methods: {
     ejecutarAccion() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalConsultarEstadoSii.vue`);
-        clienteFebosAPI.get("/sii/dte/consulta?febosId=" + this.documento.febosId).then((response) => {
-          modalStore.commit("setTitulo","Consultar Estado Sii de la factura electronica #"+this.documento.folio);
-          modalStore.commit("mostrarBitacora", modalComponente);
-          modalStore.commit("febosId", this.documento.febosId);
-          modalStore.commit("setData", response.data);
-          this.$vs.loading.close();
-        });
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalConsultarEstadoSii.vue');
+      clienteFebosAPI.get(`/sii/dte/consulta?febosId=${ this.documento.febosId}`).then((response) => {
+        modalStore.commit('setTitulo', `Consultar Estado Sii de la factura electronica #${ this.documento.folio}`);
+        modalStore.commit('mostrarBitacora', modalComponente);
+        modalStore.commit('febosId', this.documento.febosId);
+        modalStore.commit('setData', response.data);
+        this.$vs.loading.close();
+      });
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

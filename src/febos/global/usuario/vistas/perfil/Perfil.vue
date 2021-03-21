@@ -14,6 +14,11 @@
                   size="100px"
                   @click="abrirPrompAvatar"
                 ></vs-avatar>
+                <vs-progress
+                  v-if="progressAvatar.enabled"
+                  :percent="progressAvatar.percent"
+                  :indeterminate="progressAvatar.indeterminate"
+                />
               </div>
               <div class="text-center">
                 <h4 id="alias-usuario-actual">{{ currentUser.alias }}</h4>
@@ -288,13 +293,13 @@
       id="prompt-avatar"
     >
       <div class="con-exemple-prompt">
-<!--        <cropper-->
-<!--          classname="cropper"-->
-<!--          :src="imagenPreviaCropper"-->
-<!--          :stencilProps="{previewClassname: 'preview'}"-->
-<!--          :stencilComponent="$options.components.CircleStencil"-->
-<!--          ref="cropper"-->
-<!--        />-->
+        <cropper
+          classname="cropper"
+          :src="imagenPreviaCropper"
+          :stencilProps="{previewClassname: 'preview'}"
+          :stencilComponent="$options.components.CircleStencil"
+          ref="cropper"
+        />
         <div class="button-wrapper">
           <span
             class="button-imagen vs-button-primary vs-button-border"
@@ -317,15 +322,17 @@ import { mapActions, mapGetters } from 'vuex';
 
 // import FiltroPerfil from './FiltroPerfil';
 // import EmpresaItem from './EmpresaItem';
-// import { Cropper, CircleStencil } from 'vue-advanced-cropper';
+import { Cropper, CircleStencil } from 'vue-advanced-cropper';
+
+import { ioGetPrivateUploadUrl, ioUploadFileToPrivateUrl } from '@/febos/servicios/api/herramientas.api';
 
 export default {
   components: {
     // FiltroPerfil,
     // EmpresaItem,
     // VuePerfectScrollbar
-    // Cropper,
-    // CircleStencil,
+    Cropper,
+    CircleStencil,
   },
   data() {
     return {
@@ -333,6 +340,11 @@ export default {
       payload: {
         cerrarAnimacion: this.$vs.loading.close,
         notify: this.$vs.notify
+      },
+      progressAvatar: {
+        enabled: false,
+        percent: 0,
+        indeterminate: true
       },
       claveActual: '',
       nuevaClave: '',
@@ -456,7 +468,7 @@ export default {
 
   methods: {
     ...mapActions('Usuario', [
-      'actualizarMiPerfil',
+      'updateProfile',
       'changePassword'
     ]),
     /* Metodos para el tratado del avatar */
@@ -483,8 +495,37 @@ export default {
       this.imagenPreviaCropper = canvas.toDataURL();
       this.transformaImagenFile(this.imagenPreviaCropper, 'perfil.jpg')
         .then((imagen) => {
+          this.$vs.notify({
+            title: 'Su imagen se esta subiendo.',
+            text: 'En breves instantes se actualizara tu imagen..',
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+            color: 'success'
+          });
           this.imagenASubir = imagen;
-          console.log('Imagen a subir', imagen);
+          const baseUrl = `archivos.febos.io/${process.env.VUE_APP_CODIGO_PAIS_S3}/${process.env.VUE_APP_AMBIENTE}/usuario/${this.currentUser.iut}/${Date.now()}.jpg`;
+          const url = `febos-io/publicar/${baseUrl}`;
+          this.progressAvatar.percent = 0;
+          this.progressAvatar.enabled = true;
+          ioGetPrivateUploadUrl(url, imagen.type)
+            .then((response) => {
+              ioUploadFileToPrivateUrl(
+                  response.data?.url,
+                  imagen,
+                  (percent) => {
+                    this.progressAvatar.percent = percent;
+                  }
+              ).then(() => {
+                this.actualiza('avatar', `https://${baseUrl}`);
+                this.modificarPerfil(() => {
+                  this.actualiza('avatar', `https://s3.amazonaws.com/${baseUrl}`);
+                  this.progressAvatar.enabled = false;
+                });
+              });
+            });
+        })
+        .catch((err) => {
+          console.error('Error: ', err);
         });
     },
     cerrarPromptAvatar() {
@@ -500,15 +541,17 @@ export default {
     actualiza(key, value) {
       this.currentUser[key] = value;
     },
-    modificarPerfil() {
+    modificarPerfil(onEnd) {
       this.$vs.loading();
       const payload = {
-        ...this.payload,
-        currentUser: this.currentUser
+        ...this.payload
       };
-      this.actualizarMiPerfil(payload).then((modificado) => {
-        console.log('modificado', modificado);
+      console.log('modificando', payload);
+      this.updateProfile(this.currentUser).then((modificado) => {
         payload.cerrarAnimacion();
+        if (onEnd) {
+          onEnd(modificado);
+        }
       }).catch((error) => {
         console.log('error', error);
         payload.cerrarAnimacion();

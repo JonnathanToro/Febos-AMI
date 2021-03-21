@@ -7,33 +7,32 @@
 </template>
 <script>
 
-
-  export default {
-    name: 'EmpresaItem',
-    props:{
-      empresa:{
-        type: Object,
-        required: true,
-      }
-    },
-    data() {
-      return {}
-    },
-    computed: {
-
-    },
-    created() {
-      //TODO: codigo antes de renderear
-    },
-    methods: {
-      formatear(rut) {
-        return (rut);
-      }
-    },
-    mounted() {
-      //TODO: codigo despues de renderear
+export default {
+  name: 'EmpresaItem',
+  props: {
+    empresa: {
+      type: Object,
+      required: true,
     }
+  },
+  data() {
+    return {};
+  },
+  computed: {
+
+  },
+  created() {
+    // TODO: codigo antes de renderear
+  },
+  methods: {
+    formatear(rut) {
+      return (rut);
+    }
+  },
+  mounted() {
+    // TODO: codigo despues de renderear
   }
+};
 
 </script>
 <style scoped>

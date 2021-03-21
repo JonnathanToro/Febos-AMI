@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionDescargarAec",
+  name: 'AccionDescargarAec',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -28,28 +28,26 @@ export default {
   },
   data() {
     return {
-      icono: "get_app",
-      nombre: "Descargar AEC",
-      permiso: "DTE01"
+      icono: 'get_app',
+      nombre: 'Descargar AEC',
+      permiso: 'DTE01'
     };
   },
   methods: {
     ejecutarAccion() {
-      modalStore.commit("mostrarLoading");
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalDescargarAec.vue`);
-      clienteFebosAPI.get("/sii/dte/cesion/" + this.documento.febosId + "/&incrustar=no").then((response) => {
-        modalStore.commit("setTitulo", " ");
-        modalStore.commit("mostrarBitacora", modalComponente);
-        modalStore.commit("setData", response.data);
+      modalStore.commit('mostrarLoading');
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalDescargarAec.vue');
+      clienteFebosAPI.get(`/sii/dte/cesion/${ this.documento.febosId }/&incrustar=no`).then((response) => {
+        modalStore.commit('setTitulo', ' ');
+        modalStore.commit('mostrarBitacora', modalComponente);
+        modalStore.commit('setData', response.data);
 
-        setTimeout(()=> {
-          modalStore.commit("ocultarBitacora");
+        setTimeout(() => {
+          modalStore.commit('ocultarBitacora');
           window.open(response.data.urlArchivoDescargado);
         }, 2000);
-
       }).catch(() => {
-      })
-
+      });
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

@@ -34,13 +34,13 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import vSelect from 'vue-select';
 
+import modalStore from '@/store/modals/acciones';
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalModificarTipoVenta",
+  name: 'modalModificarTipoVenta',
   computed: {
     getData: {
       get() {
@@ -49,25 +49,25 @@ export default {
     },
   },
   mounted() {
-    //this.tipo = parseInt(this.getData.tpoTraVenta);
-    this.tipo_de_venta.forEach(element => {
-      if(element.code == parseInt(this.getData.tpoTraVenta)){
+    // this.tipo = parseInt(this.getData.tpoTraVenta);
+    this.tipo_de_venta.forEach((element) => {
+      if (element.code == parseInt(this.getData.tpoTraVenta)) {
         this.tipo = element;
       }
     });
     this.datos.febosId = this.getData.febosId;
-    this.datos.tipoTransaccionVenta = ""+this.tipo.code+"";
+    this.datos.tipoTransaccionVenta = `${this.tipo.code }`;
   },
   data() {
     return {
-      tipo_de_venta:[
-        { code: 0, label: "Activo fijo" },
-        { code: 1, label: "Bien raíz" },
-        { code: 2, label: "Del giro" },
-        //{ code: 3, label: "Iva uso común" },
-        //{ code: 4, label: "No incluir" },
-        //{ code: 5, label: "Sin derecho" },
-        //{ code: 6, label: "Supermercado" },
+      tipo_de_venta: [
+        { code: 0, label: 'Activo fijo' },
+        { code: 1, label: 'Bien raíz' },
+        { code: 2, label: 'Del giro' },
+        // { code: 3, label: "Iva uso común" },
+        // { code: 4, label: "No incluir" },
+        // { code: 5, label: "Sin derecho" },
+        // { code: 6, label: "Supermercado" },
       ],
       tipo: null,
       datos: {
@@ -79,41 +79,41 @@ export default {
     };
   },
   methods: {
-    cerrarVentana: function () {
-      modalStore.commit("ocultarBitacora");
+    cerrarVentana() {
+      modalStore.commit('ocultarBitacora');
     },
     modificarTipoVenta() {
-      this.$vs.loading({ color: "#000000", text: "Espera un momento por favor" });
+      this.$vs.loading({ color: '#000000', text: 'Espera un momento por favor' });
       this.datos.febosId = this.getData.febosId;
       this.datos.tipoTransaccionVenta = this.tipo.code;
 
-      clienteFebosAPI.put("/documentos/datos/transaccioncompraventa", this.datos).then((response) => {
+      clienteFebosAPI.put('/documentos/datos/transaccioncompraventa', this.datos).then((response) => {
         this.$vs.loading.close();
-        if(response.data.codigo == 10) {
+        if (response.data.codigo == 10) {
           this.updateDTEs();
           this.$vs.notify({
             color: 'success', title: 'Modificar Tipo Venta', text: 'Tipo de venta actualizada'
           });
           this.cerrarVentana();
-        }else{
+        } else {
           this.$vs.notify({
-            color: "danger", title: "Modificar Tipo Venta", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Modificar Tipo Venta', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.notify({
-          color: "danger", title: "Modificar Tipo Venta", text: "No fue posible modificar el tipo de compra", time: 10000
+          color: 'danger', title: 'Modificar Tipo Venta', text: 'No fue posible modificar el tipo de compra', time: 10000
         });
         this.$vs.loading.close();
       });
     },
-    updateDTEs()  {
-      var data = JSON.parse(
+    updateDTEs() {
+      const data = JSON.parse(
         localStorage.getItem(
           `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
         )
       );
-      data.Dtes.documentos.forEach(element => {
+      data.Dtes.documentos.forEach((element) => {
         if (element.febosId == this.datos.febosId) {
           element.tpoTraVenta = this.datos.tipoTransaccionVenta;
         }
@@ -122,7 +122,7 @@ export default {
     }
   },
   components: {
-    "v-select": vSelect,
+    'v-select': vSelect,
   },
 };
 </script>

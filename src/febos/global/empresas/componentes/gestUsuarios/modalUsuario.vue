@@ -171,12 +171,11 @@ export default {
             + response.data.seguimientoId, time: 10000
           });
         }
-
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Usuario", text: "Error de plataforma", time: 10000
+          color: 'danger', title: 'Usuario', text: 'Error de plataforma', time: 10000
         });
       })
        */
