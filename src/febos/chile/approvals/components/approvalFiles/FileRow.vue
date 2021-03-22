@@ -134,13 +134,6 @@
     <vs-col vs-lg="1" vs-type="flex" vs-justify="center" vs-align="center">
       <FileOptions
         :file="file"
-        :is-draft="isDraft"
-        :is-assigned="isAssigned"
-        :is-processed="isProcessed"
-        :is-cancelled="isCancelled"
-        :is-resposible="isResposible"
-        :on-pending-files="onPendingFiles"
-        :on-general-files="onGeneralFiles"
         :select-file="selectFile"
       />
     </vs-col>
@@ -158,8 +151,6 @@ export default {
   mixins: [FileStates, FindTypeDocumentMixin],
   props: [
     'file',
-    'onPendingFiles',
-    'onGeneralFiles',
     'selectFile'
   ],
   data() {
@@ -168,21 +159,7 @@ export default {
     };
   },
   computed: {
-    isDraft() {
-      return this.file.estado === '3';
-    },
-    isAssigned() {
-      return this.file.enGrupo === 'NO';
-    },
-    isResposible() {
-      return this.file.enResponsable === 'SI';
-    },
-    isProcessed() {
-      return this.file.estado === '9';
-    },
-    isCancelled() {
-      return this.file.estado === '8';
-    }
+
   },
   methods: {
     translateTime: (time, abr) => { // ASCO

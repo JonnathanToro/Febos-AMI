@@ -5,5 +5,6 @@ export default {
   error: (state) => state.error,
   successAction: (state) => state.successAction,
   pagination: (state) => state.pagination,
-  trays: (state) => Object.values(state.trays || {})
+  trays: (state) => Object.values(state.trays || {}),
+  binnacleFile: (state) => state.binnacle
 };

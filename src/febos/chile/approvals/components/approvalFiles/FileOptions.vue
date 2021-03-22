@@ -26,101 +26,34 @@
           />
         </a>
         <vs-dropdown-menu style="width: fit-content">
-          <CheckPermission permission="ED016">
-            <vs-dropdown-item
-              v-if="isDraft && onPendingFiles && isResposible"
-              v-on:click="openDraft()"
-            >
-              <vs-icon icon="query_builder"/>
-              Continuar borrador
-            </vs-dropdown-item>
-          </CheckPermission>
           <CheckPermission permission="ED017">
             <vs-dropdown-item v-on:click="onOptionBinnacleFile(file)">
               <vs-icon icon="list"/>
               Bitácora
             </vs-dropdown-item>
           </CheckPermission>
-          <CheckPermission permission="*">
-            <vs-dropdown-item v-on:click="onOptionTimelineFile(file)">
-              <vs-icon icon="all_inbox"/>
-              Proceso Destinos
-            </vs-dropdown-item>
-          </CheckPermission>
           <CheckPermission permission="ED019">
             <vs-dropdown-item v-on:click="onOptionDownloadFile(file)">
               <vs-icon icon="save_alt"/>
-              Descargar informe
+              Descargar Acta
             </vs-dropdown-item>
           </CheckPermission>
           <CheckPermission permission="ED020">
             <vs-dropdown-item v-on:click="onOptionDownloadAttachments(file)">
               <vs-icon icon="save_alt"/>
-              Descargar expediente
+              Descargar adjuntos
             </vs-dropdown-item>
           </CheckPermission>
-          <CheckPermission permission="ED021">
-            <vs-dropdown-item
-              v-on:click="onOptionAssignFile(file)"
-              v-if="!isDraft  && onPendingFiles && !isAssigned
-              && !isProcessed && !isCancelled"
-            >
-              <vs-icon icon="how_to_reg"/>
-              Asignarme expediente
-            </vs-dropdown-item>
-          </CheckPermission>
-          <vs-dropdown-item
-            v-on:click="onOptionReturnFile(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned
-              && !isProcessed && !isCancelled"
-          >
-            <vs-icon icon="keyboard_backspace"/>
-            Devolver expediente
-          </vs-dropdown-item>
           <CheckPermission permission="ED022">
-            <vs-dropdown-item
-              v-on:click="onOptionCancelFile(file)"
-              v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
-            >
+            <vs-dropdown-item v-on:click="onOptionCancelFile(file)">
               <vs-icon icon="clear"/>
               Anular expediente
             </vs-dropdown-item>
           </CheckPermission>
-          <CheckPermission permission="ED023">
-            <vs-dropdown-item
-              v-on:click="onOptionProcessFile(file)"
-              v-if="!isDraft  && (onGeneralFiles || onPendingFiles)
-            && isAssigned && !isProcessed && !isCancelled"
-            >
-              <vs-icon icon="move_to_inbox"/>
-              Finalizar documento
-            </vs-dropdown-item>
-          </CheckPermission>
-          <CheckPermission permission="ED024">
-            <vs-dropdown-item v-on:click="onOptionGetParticipants(file)">
-              <vs-icon icon="group"/>
-              Participantes
-            </vs-dropdown-item>
-          </CheckPermission>
           <CheckPermission permission="ED025">
-            <vs-dropdown-item
-              v-on:click="onOptionGetComments(file)"
-              v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
-            >
+            <vs-dropdown-item v-on:click="onOptionGetComments(file)">
               <vs-icon icon="chat"/>
               Comentarios
-            </vs-dropdown-item>
-          </CheckPermission>
-          <CheckPermission permission="ED026">
-            <vs-dropdown-item
-              v-on:click="onOptionSendFile(file)"
-              v-if="!isDraft && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
-            >
-              <vs-icon icon="chat"/>
-              Enviar documento
             </vs-dropdown-item>
           </CheckPermission>
           <CheckPermission permission="ED027">
@@ -148,13 +81,7 @@ export default {
   components: { CheckPermission },
   props: [
     'file',
-    'onPendingFiles',
-    'onGeneralFiles',
     'isDraft',
-    'isAssigned',
-    'isProcessed',
-    'isCancelled',
-    'isResposible',
     'selectFile'
   ],
   computed: {
@@ -166,7 +93,7 @@ export default {
     ...mapActions('Modals', [
       'showModals'
     ]),
-    ...mapActions('Dnts', [
+    ...mapActions('Approvals', [
       'getFileDnt',
       'downloadFilePDF',
       'attemptCancelFile',
@@ -176,37 +103,12 @@ export default {
       'getFileDetails',
       'getFileComments',
       'getAttachmentsDnt',
-      'getFileTimeline'
+      'getApprovalFileDetails'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
       'getGroupsCompany'
     ]),
-    openDraft() {
-      // TODO: move this to another side, (why api doesn't save the full name? 😡😡)
-      const types = {
-        ext: 'externo',
-        int: 'interno',
-        numInt: 'numInt',
-        numOf: 'numOf'
-      };
-
-      this.$router.push(`/documentos/${types[this.file.claseMercadoPublico]}/${this.file.febosId}`);
-    },
-    onOptionAssignFile(file) {
-      this.selectFile(file);
-      this.showModals('asignFile');
-    },
-    onOptionGetDetailsFile(file) {
-      this.selectFile(file);
-      this.getFileDnt({
-        febosId: file.febosId,
-        destinatarios: 'si',
-        referencias: 'si',
-        adjuntos: 'si'
-      });
-      this.showModals('detailsFile');
-    },
     async onOptionGetGeneralDetailsFile(file) {
       this.selectFile(file);
       await this.getFileDnt({
@@ -218,11 +120,6 @@ export default {
       });
       this.showModals('generalDetailsFile');
     },
-    onOptionTimelineFile(file) {
-      this.selectFile(file);
-      this.getFileTimeline(file.febosId);
-      this.showModals('timeline');
-    },
     onOptionBinnacleFile(file) {
       this.selectFile(file);
       this.getFileBinnacle({
@@ -233,38 +130,21 @@ export default {
       this.showModals('binnacle');
     },
     onOptionDownloadFile(file) {
-      this.downloadFilePDF({
-        febosId: file.febosId,
-        imagen: 'si',
-        regenerar: 'si',
-        tipoImagen: 0
+      this.getApprovalFileDetails({
+        aprobacionId: file.solicitanteDocumentoId,
+        ejecucionId: file.febosId,
+        retornarPdf: 'si'
       });
     },
     onOptionDownloadAttachments(file) {
       this.downloadAttachmentFiles({
         febosId: file.febosId,
-        comprimir: 'si'
+        retornarComoZip: 'Y'
       });
     },
     onOptionCancelFile(file) {
       this.selectFile(file);
       this.showModals('cancelFile');
-    },
-    onOptionProcessFile(file) {
-      this.selectFile(file);
-      this.showModals('processFile');
-    },
-    onOptionReturnFile(file) {
-      this.selectFile(file);
-      this.showModals('returnFile');
-    },
-    onOptionGetParticipants(file) {
-      this.selectFile(file);
-      this.getFileDnt({
-        febosId: file.febosId,
-        destinatarios: 'si'
-      });
-      this.showModals('participantsFile');
     },
     onOptionGetComments(file) {
       this.selectFile(file);
@@ -272,20 +152,6 @@ export default {
         febosId: file.febosId
       });
       this.showModals('commentsFile');
-    },
-    onOptionSendFile(file) {
-      this.getUsersCompany({
-        empresaId: this.company.id,
-        pagina: 1,
-        filas: 9999,
-        buscarInfoExtra: 'si',
-        filtroInfoExtra: 'CARGO'
-      });
-      this.getGroupsCompany({
-        empresaId: this.company.id
-      });
-      this.selectFile(file);
-      this.showModals('sendFile');
     },
     onTicketFile(file) {
       this.selectFile(file);

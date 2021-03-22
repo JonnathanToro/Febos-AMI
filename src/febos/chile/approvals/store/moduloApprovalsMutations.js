@@ -33,5 +33,11 @@ export default {
       items: Number.parseInt(payload.totalElementos, 10),
       pages: Number.parseInt(payload.totalPaginas, 10)
     };
+  },
+  UPDATE_CANCELED_FILE(state, payload) {
+    state.list[payload.febosId].estado = 6;
+  },
+  SET_BINNACLE(state, payload) {
+    state.binnacle = payload;
   }
 };

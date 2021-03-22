@@ -110,18 +110,18 @@ export default {
       'addUserToGroup'
     ]),
     isUserInGroup(user) {
-      return this.usersByGroup.find((userGroup) => userGroup.usuarioId === user.id);
+      return this.usersByGroup.find((userGroup) => userGroup.id === user.id);
     },
     addUser(user) {
       console.log('ACC', user);
       const body = {
         grupoId: this.usersGroup.id,
-        usuarios: this.usersOnGroup.map((userMap) => userMap.usuarioId).join(),
+        usuarios: this.usersOnGroup.map((userMap) => userMap.id).join(),
         user
       };
 
       body.usuarios = body.usuarios.length
-        ? body.usuarios.concat(user.usuarioId) : body.usuarios = user.usuarioId;
+        ? body.usuarios.concat(user.id) : body.usuarios = user.id;
       this.addUserToGroup({ empresaId: this.company.id, body });
     },
     saveChanges() {

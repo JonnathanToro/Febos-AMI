@@ -8,5 +8,6 @@ export default {
     items: 0,
     pages: 0
   },
-  trays: {}
+  trays: {},
+  binnacle: []
 };

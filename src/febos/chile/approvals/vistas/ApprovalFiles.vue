@@ -12,6 +12,8 @@
         :select-file="selectFile"
       />
     </div>
+    <PopUpBinnacleFile :titulo="'Bitácora del Expediente #'+selectedFile.numero"/>
+    <PopUpCancelFile :canceledFile="selectedFile" />
     <FilesPagination
       :show="files.length"
       v-model="page"
@@ -26,13 +28,17 @@ import FilesHeader from '@/febos/chile/approvals/components/approvalFiles/FilesH
 import FileRow from '@/febos/chile/approvals/components/approvalFiles/FileRow';
 import ApprovalFilters from '@/febos/chile/approvals/components/ApprovalFilesFilters';
 import FilesPagination from '@/febos/chile/approvals/components/approvalFiles/FilesPagination';
+import PopUpCancelFile from '@/febos/chile/approvals/vistas/modals/PopUpCancelFile';
+import PopUpBinnacleFile from '@/febos/chile/approvals/vistas/modals/PopUpBinnacleFile';
 
 export default {
   components: {
     FilesPagination,
     ApprovalFilters,
     FileRow,
-    FilesHeader
+    FilesHeader,
+    PopUpCancelFile,
+    PopUpBinnacleFile
   },
   data() {
     return {
