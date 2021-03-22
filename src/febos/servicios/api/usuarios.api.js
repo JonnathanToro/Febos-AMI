@@ -24,11 +24,11 @@ export const isUserUpdate = (id, iut, name, alias, email) => (
   apiClient.post(
     `${RESOURCE}/${id}`,
     {
-      'id': id,
-      'iut': iut,
-      'alias': alias,
-      'nombre': name,
-      'correo': email
+      id,
+      iut,
+      alias,
+      nombre: name,
+      correo: email
     },
     { operacionId: 'io.usuario.actualizar' }
   )
