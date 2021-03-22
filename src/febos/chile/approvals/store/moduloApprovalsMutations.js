@@ -24,7 +24,7 @@ export default {
     state.showModal = payload;
   },
   SET_TRAY(state, payload) {
-    state.trays = (payload || [])
+    state.trays = (payload.bandejaEntradaList || [])
       .reduce((index, option) => ({
         ...index,
         [option.idAprobacion]: option

@@ -23,7 +23,54 @@
           {{ file.autor }}
         </vs-col>
         <vs-col vs-lg="2">
-          {{ file.pasoEjecucion.aprobacionesPasoEstadoId }}
+          <vs-chip
+            v-if="file.pasoEjecucion.aprobacionesPasoEstadoId.toString()
+             === ApprovalProcessStates.PROCESSING"
+            title="Procesando"
+          >
+            <vs-avatar icon="mail_outline" color="#43C3B9" />
+            Procesando
+          </vs-chip>
+          <vs-chip
+            title="Pendiente"
+            v-if="file.pasoEjecucion.aprobacionesPasoEstadoId.toString()
+             === ApprovalProcessStates.PENDING"
+          >
+            <vs-avatar icon="query_builder" color="#43C3B9" />
+            Pendiente
+          </vs-chip>
+          <vs-chip
+            title="Aprobado"
+            v-if="file.pasoEjecucion.aprobacionesPasoEstadoId.toString()
+             === ApprovalProcessStates.APPROVED"
+          >
+            <vs-avatar icon="query_builder" color="#28c76f" />
+            Aprobado
+          </vs-chip>
+          <vs-chip
+            title="Rechazado"
+            v-if="file.pasoEjecucion.aprobacionesPasoEstadoId.toString()
+             === ApprovalProcessStates.REJECTED"
+          >
+            <vs-avatar icon="query_builder" color="#ea5455" />
+            Rechazado
+          </vs-chip>
+          <vs-chip
+            title="Reenviado"
+            v-if="file.pasoEjecucion.aprobacionesPasoEstadoId.toString()
+             === ApprovalProcessStates.FORWARDED"
+          >
+            <vs-avatar icon="query_builder" color="#4e94e0" />
+            Reenviado
+          </vs-chip>
+          <vs-chip
+            title="Retornado"
+            v-if="file.pasoEjecucion.aprobacionesPasoEstadoId.toString()
+             === ApprovalProcessStates.RETURNED"
+          >
+            <vs-avatar icon="query_builder" color="#4e94e0" />
+            Retornado
+          </vs-chip>
         </vs-col>
       </vs-row>
       <vs-row>
@@ -46,20 +93,20 @@
 
 <script>
 
-import FileOptions from '@/febos/chile/dnt/components/files/FileOptions';
-import FileStates from '@/febos/chile/approvals/mixins/FileStates';
+import FileOptions from '@/febos/chile/approvals/components/trays/FileOptions';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
+import ApprovalProcessStates from '@/febos/chile/approvals/mixins/ApprovalProcessStates';
 
 export default {
   components: { FileOptions },
-  mixins: [FileStates, FindTypeDocumentMixin],
+  mixins: [ApprovalProcessStates, FindTypeDocumentMixin],
   props: [
     'file',
     'selectFile'
   ],
   data() {
     return {
-      FileStates
+      ApprovalProcessStates
     };
   },
   computed: {

@@ -5,5 +5,5 @@ export default {
   error: (state) => state.error,
   successAction: (state) => state.successAction,
   pagination: (state) => state.pagination,
-  trays: (state) => Object.values(state.list || {})
+  trays: (state) => Object.values(state.trays || {})
 };

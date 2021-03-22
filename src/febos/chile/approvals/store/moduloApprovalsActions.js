@@ -24,7 +24,7 @@ export const listTrays = async ({ commit }, { data }) => {
     commit('SET_LOADING', true);
     const service = clTraysList;
     const response = await service(data);
-    commit('SET_TRAY', response.data.bandejaEntradaList);
+    commit('SET_TRAY', response.data);
     return response.data;
   } finally {
     commit('SET_LOADING', false);

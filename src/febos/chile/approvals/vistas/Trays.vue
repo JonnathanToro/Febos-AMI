@@ -34,6 +34,7 @@ export default {
     FileRow,
     FilesHeader
   },
+  mixin: [],
   data() {
     return {
       selectedFile: {},
@@ -126,7 +127,7 @@ export default {
   created() {
     this.closeModal();
     const view = this.$route.params.vista;
-    console.log('TRAYS', this.files);
+    console.log('TRAYS', this.trays);
     this.listTrays({
       data: {
         filtros: '', // newValue

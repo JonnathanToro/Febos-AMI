@@ -17,42 +17,42 @@
             v-if="file.estado.toString() === FileStates.DISMISSED"
             title="Desestimado"
           >
-            <vs-avatar icon="mail_outline" color="#43C3B9" />
+            <vs-avatar icon="mail_outline" color="#4e94e0" />
             Desestimado
           </vs-chip>
           <vs-chip
             title="Preparado"
             v-if="file.estado.toString() === FileStates.PREPARED"
           >
-            <vs-avatar icon="query_builder" color="#87579e" />
+            <vs-avatar icon="query_builder" color="#4e94e0" />
             Preparado
           </vs-chip>
           <vs-chip
             title="Iniciado"
             v-if="file.estado.toString() === FileStates.INITIATED"
           >
-            <vs-avatar icon="thumb_up" color="#14AA59" />
+            <vs-avatar icon="access_time" color="#43C3B9" />
             Iniciado
           </vs-chip>
           <vs-chip
             title="Aprobado"
             v-if="file.estado.toString() === FileStates.APPROVED"
           >
-            <vs-avatar icon="thumb_down" color="#CE4B4B" />
+            <vs-avatar icon="thumb_up" color="#28c76f" />
             Aprobado
           </vs-chip>
           <vs-chip
             title="Rechazado"
             v-if="file.estado.toString() === FileStates.REJECTED"
           >
-            <vs-avatar icon="close" color="#A04E4E" />
+            <vs-avatar icon="thumb_down" color="#ea5455" />
             Rechazado
           </vs-chip>
           <vs-chip
             title="Anulado"
             v-if="file.estado.toString() === FileStates.CANCELED"
           >
-            <vs-avatar icon="move_to_inbox" color="#A04E4E" />
+            <vs-avatar icon="move_to_inbox" color="#ea5455" />
             Anulado
           </vs-chip>
         </vs-col>
@@ -149,7 +149,7 @@
 
 <script>
 
-import FileOptions from '@/febos/chile/dnt/components/files/FileOptions';
+import FileOptions from '@/febos/chile/approvals/components/approvalFiles/FileOptions';
 import FileStates from '@/febos/chile/approvals/mixins/FileStates';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
