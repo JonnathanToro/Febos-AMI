@@ -83,13 +83,13 @@
         </vs-col>
       </vs-row>
       <vs-row>
-        <vs-col vs-offset="2" vs-lg="8" vs-type="flex">
+        <vs-col vs-offset="1" vs-lg="9" vs-type="flex">
           <vs-chip class="mr-4" v-tooltip="'Fecha de Actualización'">
             <vs-avatar icon="date_range" />
             {{ file.fechaActualizacion | dateFormat }}
           </vs-chip>
           <vs-chip class="mr-4" v-tooltip="'Fecha del documento'">
-            <vs-avatar icon="event" />
+            <vs-avatar icon="event" color="#ff9f43"/>
             {{ file.fechaEmision | dateFormat }}
           </vs-chip>
           <vs-chip
@@ -97,11 +97,11 @@
             v-tooltip="'Número de documento'"
             v-if="file.numeroInt"
           >
-            <vs-avatar icon="description" />
+            <vs-avatar icon="description" color="#ff9f43" />
             {{file.numeroInt}}
           </vs-chip>
           <vs-chip class="mr-3">
-            <vs-avatar icon="description" />
+            <vs-avatar icon="description" color="#ff9f43" />
             <span
               v-tooltip="`${file.emisorSucursalDireccion}`"
               v-if="file.emisorSucursalDireccion"
@@ -165,10 +165,17 @@
           </vs-chip>
           <vs-chip
             v-tooltip="'Soy destinatario/responsable'"
-            v-if="file.enResponsable === 'SI'"
+            v-if="file.enResponsable === 'SI' && onGeneralFiles"
             color="danger" transparent
           >
             responsable
+          </vs-chip>
+          <vs-chip
+            v-tooltip="'Estoy en grupo'"
+            v-if="file.enGrupo === 'SI'"
+            color="danger" transparent
+          >
+            en grupo
           </vs-chip>
           <vs-chip
             v-tooltip="'Acompaña físico'"

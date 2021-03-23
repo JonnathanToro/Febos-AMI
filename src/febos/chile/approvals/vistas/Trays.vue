@@ -49,7 +49,7 @@ export default {
       this.forceRender = Date.now(); // TODO: remove this.
     },
     filters() {
-      const view = this.$route.params.vista;
+      const { view } = this.$route.params;
       this.listTrays({
         data: {
           filtros: '', // newValue
@@ -60,7 +60,7 @@ export default {
       });
     },
     page(newValue) {
-      const view = this.$route.params.vista;
+      const { view } = this.$route.params;
       this.listTrays({
         data: {
           filtros: '',
@@ -126,7 +126,7 @@ export default {
   },
   created() {
     this.closeModal();
-    const view = this.$route.params.vista;
+    const { view } = this.$route.params;
     console.log('TRAYS', this.trays);
     this.listTrays({
       data: {

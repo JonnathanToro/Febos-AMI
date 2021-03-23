@@ -616,11 +616,6 @@ export default {
           if (filtro.campo === 'solicitanteCorreo') {
             filtro.campo = 'solicitanteEmail';
           }
-          if (filtro.tipo === 'usuarioIds') {
-            if (filtro.campo === 'codigosDerivacionUsuario') {
-              filtro.campo = 'codigosDerivacionUsuario';
-            }
-          }
           query.push(`${filtro.campo }:${ filtro.valor}`);
         }
       });

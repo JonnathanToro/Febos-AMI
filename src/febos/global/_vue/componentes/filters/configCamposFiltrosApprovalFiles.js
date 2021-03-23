@@ -21,7 +21,7 @@ export default {
   },
   participante: {
     nombre: 'Participante',
-    tipo: 'usuarios'
+    tipo: 'usuarioIds'
   },
   tipo: {
     nombre: 'Tipo de expedientes',

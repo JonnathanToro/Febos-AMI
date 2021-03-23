@@ -11,33 +11,36 @@ export default [{
       permiso: 'ED008',
       submenu: [
         {
-          url: '/documentos/numOf',
-          name: 'Cargar Doc. Trámite',
-          slug: 'uploads',
+          url: { name: 'files-wizard', params: { wizard: 'numOf' } },
+          name: 'Iniciar Trámite',
           icon: 'files',
           permiso: '*', // TODO set permission
           i18n: 'uploads'
         },
         {
-          url: '/documentos/numInt',
-          name: 'Cargar Doc. Trámite Int.',
-          slug: 'uploads',
+          url: { name: 'files-wizard', params: { wizard: 'numInt' } },
+          name: 'Iniciar Trámite Interno.',
           icon: 'files',
           permiso: '*', // TODO set permission
           i18n: 'uploads'
         },
         {
-          url: '/expedientes/entrada',
+          url: { name: 'files', params: { view: 'entrada' } },
           name: 'Bandeja Entrada',
-          slug: '/expedientes/entrada',
           icon: 'files',
           permiso: '*', // TODO set permission
           i18n: 'entrada'
         },
         {
-          url: '/expedientes/finalizados',
+          url: { name: 'files', params: { view: 'general' } },
+          name: 'Bandeja General',
+          icon: 'files',
+          permiso: 'ED011',
+          i18n: 'general'
+        },
+        {
+          url: { name: 'files', params: { view: 'finalizados' } },
           name: 'Bandeja Finalizados',
-          slug: '/expedientes/finalizados',
           icon: 'files',
           permiso: '*', // TODO set permission
           i18n: 'finalizados'
@@ -56,6 +59,13 @@ export default [{
           name: 'Cargar Doc. Externo',
           icon: 'files',
           permiso: 'ED012',
+          i18n: 'uploads'
+        },
+        {
+          url: { name: 'files-wizard', params: { wizard: 'interno' } },
+          name: 'Cargar Doc. Interno',
+          icon: 'files',
+          permiso: '*', // TODO set permission
           i18n: 'uploads'
         },
         {

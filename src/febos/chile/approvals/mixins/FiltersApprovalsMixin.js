@@ -14,7 +14,7 @@ const filterViews = {
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
-      { campo: 'participante', tipo: 'usuarios' },
+      { campo: 'participante', tipo: 'usuarioIds' },
       { campo: 'solicitanteEmail', tipo: 'correo' },
       {
         campo: 'estado',

@@ -1,13 +1,13 @@
 export default [
   {
-    path: '/aprobaciones/:vista',
-    name: 'aprobaciones',
+    path: 'aprobaciones/:view',
+    name: 'approval-trays',
     meta: { permiso: '*', requiereLogin: true }, // TODO: SET PERMISSION
     component: () => import('@/febos/chile/approvals/vistas/Trays')
   },
   {
-    path: '/aprobaciones/expedientes/:vista',
-    name: 'aprobaciones-expedientes',
+    path: 'aprobaciones/expedientes/:view',
+    name: 'approval-files',
     meta: { permiso: '*', requiereLogin: true }, // TODO: SET PERMISSION
     component: () => import('@/febos/chile/approvals/vistas/ApprovalFiles')
   }

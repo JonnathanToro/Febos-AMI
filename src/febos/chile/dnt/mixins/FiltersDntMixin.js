@@ -99,7 +99,7 @@ const filterViews = {
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
       // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext'] }
+      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext', 'numInt', 'numOf'] }
     ],
     filtrosPorDefecto: [
       { campo: 'estado', tipo: 'multi', valor: ['1', '8', '9'] }
@@ -277,7 +277,7 @@ const filterViews = {
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'destinoVisorIds', valor: '${idUsuario}' },
+      { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
       { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['numInt', 'numOf'] }
     ],

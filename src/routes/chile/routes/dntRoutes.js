@@ -19,7 +19,7 @@ export default [
   },
   {
     path: '/documentos/:wizard/:id',
-    name: 'Enviar a flujo documento',
+    name: 'send-file-to-flow',
     meta: { requiereLogin: true }, // TODO: set permission
     component: () => import('@/febos/chile/dnt/vistas/Wizard')
   },
