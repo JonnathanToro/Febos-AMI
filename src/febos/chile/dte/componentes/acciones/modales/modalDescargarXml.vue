@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
+import modalStore from '@/store/modals/acciones';
 
 export default {
-  name: "modalDescargarXml",
+  name: 'modalDescargarXml',
   computed: {
     getData: {
       get() {

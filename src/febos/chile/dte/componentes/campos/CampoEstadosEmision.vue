@@ -6,18 +6,18 @@
 </template>
 
 <script>
-  import CampoIndicadorEstadoSii from "./CampoIndicadorEstadoSii";
-  import CampoIndicadorEstadoComercial from "./CampoIndicadorEstadoComercial";
+import CampoIndicadorEstadoSii from './CampoIndicadorEstadoSii';
+import CampoIndicadorEstadoComercial from './CampoIndicadorEstadoComercial';
 
-  export default {
-    name: "CampoEstadosEmision",
-    components: {CampoIndicadorEstadoSii,CampoIndicadorEstadoComercial},
-    props: {
-      documento: {
-        type: Object,
-      },
-    }
+export default {
+  name: 'CampoEstadosEmision',
+  components: { CampoIndicadorEstadoSii, CampoIndicadorEstadoComercial },
+  props: {
+    documento: {
+      type: Object,
+    },
   }
+};
 </script>
 
 <style scoped>

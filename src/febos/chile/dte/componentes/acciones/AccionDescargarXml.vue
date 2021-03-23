@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
+import modalStore from '../../../../../store/modals/acciones';
 
 export default {
-  name: "AccionDescargarXml",
+  name: 'AccionDescargarXml',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -28,30 +28,26 @@ export default {
   },
   data() {
     return {
-      icono: "picture_as_pdf",
-      nombre: "Descargar XML",
-      permiso: "DTE15"
+      icono: 'picture_as_pdf',
+      nombre: 'Descargar XML',
+      permiso: 'DTE15'
     };
   },
   methods: {
     ejecutarAccion() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalDescargarXml.vue`);
-      clienteFebosAPI.get("/documentos/" + this.documento.febosId + "?dominioPortal=portal.febos.cl&febosId="+ this.documento.febosId +"&incrustar=no&regenerar=no&tipoImagen=0&xml=si&xmlFirmado=si").then((response) => {
-
-        if(response.data.xmlLink) {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalDescargarXml.vue');
+      clienteFebosAPI.get(`/documentos/${ this.documento.febosId }?dominioPortal=portal.febos.cl&febosId=${ this.documento.febosId }&incrustar=no&regenerar=no&tipoImagen=0&xml=si&xmlFirmado=si`).then((response) => {
+        if (response.data.xmlLink) {
           window.open(response.data.xmlLink);
-        }else{
-          modalStore.commit("setTitulo", "Descargar XML");
-          modalStore.commit("mostrarBitacora", modalComponente);
-          modalStore.commit("setData", response.data);
+        } else {
+          modalStore.commit('setTitulo', 'Descargar XML');
+          modalStore.commit('mostrarBitacora', modalComponente);
+          modalStore.commit('setData', response.data);
         }
         this.$vs.loading.close();
-
-
       }).catch(() => {
-      })
-
+      });
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

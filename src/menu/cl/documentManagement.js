@@ -4,9 +4,8 @@ export default [{
   i18n: 'Documentos',
   items: [
     {
-      url: 'gestion-documentos',
-      name: 'Gestión Documentos',
-      slug: 'files',
+      url: { name: 'document-management' },
+      name: 'Gestión Documental',
       icon: 'FolderIcon',
       permiso: '*'
     }

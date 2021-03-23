@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
+import modalStore from '@/store/modals/acciones';
 
 export default {
-  name: "modalDescargarAec",
+  name: 'modalDescargarAec',
   computed: {
     getData: {
       get() {
@@ -31,17 +31,17 @@ export default {
       types: [
         'default'
       ],
-    activeLoading:false,
+      activeLoading: false,
     };
   },
-   mounted(){
-    this.types.forEach((type)=>{
+  mounted() {
+    this.types.forEach((type) => {
       this.$vs.loading({
         container: `#loading-${type}`,
         type,
-        text:''
-      })
-    })
+        text: ''
+      });
+    });
   }
 };
 </script>

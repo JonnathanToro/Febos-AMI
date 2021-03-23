@@ -1,6 +1,7 @@
 <template>
   <li>
     <div class="parent"
+       v-if="item.type === 'folder'"
        v-bind:class="{
         selected: element.febosId === item.febosId
       }"

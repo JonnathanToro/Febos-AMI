@@ -123,8 +123,8 @@ export default {
   SET_USERS(state, payload) {
     state.users.list = payload
       .map((option) => ({
-        id: option.usuarioId,
-        value: option.usuarioId,
+        id: option.id,
+        value: option.id,
         label: option.nombre,
         email: option.correo
       }));

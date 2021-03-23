@@ -72,12 +72,13 @@
 </template>
 
 <script>
-import modalStore from "@/store/modals/acciones";
-import clienteFebosAPI from "../../../../../servicios/clienteFebosAPI";
-import TiposDteMixin from "@/febos/chile/dte/mixins/TiposDteMixin";
+import clienteFebosAPI from '../../../../../servicios/clienteFebosAPI';
+
+import modalStore from '@/store/modals/acciones';
+import TiposDteMixin from '@/febos/chile/dte/mixins/TiposDteMixin';
 
 export default {
-  mixins: [ TiposDteMixin ],
+  mixins: [TiposDteMixin],
   computed: {
     getData: {
       get() {
@@ -86,12 +87,12 @@ export default {
     },
     subtitulo: {
       get() {
-        return "Emitida a " + this.getData.razonSocialReceptor + ", RUT " + this.getData.rutReceptor;
+        return `Emitida a ${ this.getData.razonSocialReceptor }, RUT ${ this.getData.rutReceptor}`;
       }
     },
     titulo: {
       get() {
-        return this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento) + " Nº " + this.getData.folio;
+        return `${this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento) } Nº ${ this.getData.folio}`;
       }
     },
   },
@@ -99,28 +100,28 @@ export default {
     return {
       error: false,
       datos: null,
-    }
+    };
   },
   methods: {
     cancelarCierre() {
-      modalStore.commit("ocultarBitacora");
+      modalStore.commit('ocultarBitacora');
     },
     consultarSii() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.get("/sii/dte/eventos?febosId=" + this.getData.febosId).then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.get(`/sii/dte/eventos?febosId=${ this.getData.febosId}`).then((response) => {
         this.$vs.loading.close();
-        if(response.data.codigo == 10) {
-          this.datos = response.data
+        if (response.data.codigo == 10) {
+          this.datos = response.data;
         } else {
           this.$vs.notify({
-            color: "danger", title: "Ver anotaciones SII", text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Ver anotaciones SII', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Ver anotaciones SII", text: "No fue posible realizar la consulta", time: 10000
+          color: 'danger', title: 'Ver anotaciones SII', text: 'No fue posible realizar la consulta', time: 10000
         });
       });
     }

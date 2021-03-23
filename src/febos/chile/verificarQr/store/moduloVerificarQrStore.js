@@ -1,7 +1,7 @@
-import state from './moduloVerificarQrState.js'
-import mutations from './moduloVerificarQrMutations.js'
-import actions from './moduloVerificarQrActions.js'
-import getters from './moduloVerificarQrGetters.js'
+import state from './moduloVerificarQrState.js';
+import mutations from './moduloVerificarQrMutations.js';
+import actions from './moduloVerificarQrActions.js';
+import getters from './moduloVerificarQrGetters.js';
 
 export default {
   namespaced: true,
@@ -9,4 +9,4 @@ export default {
   mutations,
   actions,
   getters
-}
+};

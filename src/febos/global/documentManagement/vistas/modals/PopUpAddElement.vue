@@ -172,6 +172,16 @@ export default {
       ];
       console.log('ACA', element);
       await this.addElement(element);
+      this.newElement = {
+        name: '',
+        type: '',
+        typeName: '',
+        url: {
+          name: '',
+          path: ''
+        },
+        parent: ''
+      };
     }
   }
 };

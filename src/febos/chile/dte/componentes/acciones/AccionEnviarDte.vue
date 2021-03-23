@@ -14,11 +14,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-//import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+// import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
+import modalStore from '../../../../../store/modals/acciones';
+
 export default {
-  name: "AccionEnviarDte",
+  name: 'AccionEnviarDte',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -27,18 +28,18 @@ export default {
   },
   data() {
     return {
-      icono: "email",
-      nombre: "Enviar DTE",
-      permiso: "DTE21"
+      icono: 'email',
+      nombre: 'Enviar DTE',
+      permiso: 'DTE21'
     };
   },
   methods: {
     ejecutarAccion() {
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalEnviarDte.vue`);
-      modalStore.commit("setTitulo", "Enviar DTE Documento N°"+this.documento.folio);
-      modalStore.commit("mostrarBitacora", modalComponente);
-      modalStore.commit("febosId", this.documento.febosId);
-      modalStore.commit("setData", this.documento);
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalEnviarDte.vue');
+      modalStore.commit('setTitulo', `Enviar DTE Documento N°${this.documento.folio}`);
+      modalStore.commit('mostrarBitacora', modalComponente);
+      modalStore.commit('febosId', this.documento.febosId);
+      modalStore.commit('setData', this.documento);
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

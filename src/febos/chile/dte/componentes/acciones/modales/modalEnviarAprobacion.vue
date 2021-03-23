@@ -74,15 +74,16 @@
   </div>
 </template>
 
-
 <script>
-import modalStore from "@/store/modals/acciones";
-import vSelect from "vue-select";
-import TiposDteMixin from "../../../mixins/TiposDteMixin";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import vSelect from 'vue-select';
+
+import TiposDteMixin from '../../../mixins/TiposDteMixin';
+
+import modalStore from '@/store/modals/acciones';
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalEnviarAprobacion",
+  name: 'modalEnviarAprobacion',
   mixins: [TiposDteMixin],
   computed: {
     getData: {
@@ -108,37 +109,37 @@ export default {
     };
   },
   async mounted() {
-    this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
+    this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
 
-    this.flujo.nombre                 = 'DTE: '+this.getData.rutEmisor+" "+this.getData.tipoDocumento+" # "+this.getData.folio;
-    this.flujo.descripcion            = 'DTE - '+this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento)+' # '+this.getData.folio+' E: '+this.getData.rutEmisor+' '+this.getData.razonSocialEmisor+' R: '+this.getData.rutReceptor+' '+this.getData.razonSocialReceptor
-    this.flujo.documento.nombre       = 'DTE: '+this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento)+' '+this.getData.rutEmisor+' # '+this.getData.folio;
-    this.flujo.documento.descripcion  = 'DTE - '+this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento)+' # '+this.getData.folio+' E: '+this.getData.rutEmisor+' '+this.getData.razonSocialEmisor+' R: '+this.getData.rutReceptor+' '+this.getData.razonSocialReceptor
+    this.flujo.nombre = `DTE: ${this.getData.rutEmisor} ${this.getData.tipoDocumento} # ${this.getData.folio}`;
+    this.flujo.descripcion = `DTE - ${this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento)} # ${this.getData.folio} E: ${this.getData.rutEmisor} ${this.getData.razonSocialEmisor} R: ${this.getData.rutReceptor} ${this.getData.razonSocialReceptor}`;
+    this.flujo.documento.nombre = `DTE: ${this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento)} ${this.getData.rutEmisor} # ${this.getData.folio}`;
+    this.flujo.documento.descripcion = `DTE - ${this.traducitTipoDocumentoEnPalabras(this.getData.tipoDocumento)} # ${this.getData.folio} E: ${this.getData.rutEmisor} ${this.getData.razonSocialEmisor} R: ${this.getData.rutReceptor} ${this.getData.razonSocialReceptor}`;
 
     await clienteFebosAPI.get('/aprobaciones').then((response) => {
       if (response.data.codigo == 10 && response.data.aprobaciones.length < 1) {
         this.habilitado = true;
         this.$vs.loading.close();
-      }else if(response.data.codigo == 10 && response.data.aprobaciones.length > 0) {
-        response.data.aprobaciones.forEach(element => {
+      } else if (response.data.codigo == 10 && response.data.aprobaciones.length > 0) {
+        response.data.aprobaciones.forEach((element) => {
           this.aprobaciones.push(element);
         });
         this.$vs.loading.close();
-      }else{
-          this.respuesta = false;
-          this.$vs.loading.close();
+      } else {
+        this.respuesta = false;
+        this.$vs.loading.close();
       }
     });
   },
   methods: {
     cerrarVentana() {
-      modalStore.commit("ocultarBitacora");
+      modalStore.commit('ocultarBitacora');
     },
     enviar() {
     }
   },
   components: {
-    "v-select": vSelect,
+    'v-select': vSelect,
   },
 };
 </script>

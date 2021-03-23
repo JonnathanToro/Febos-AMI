@@ -14,11 +14,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
 // import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
-import modalStore from "../../../../../store/modals/acciones";
+import modalStore from '../../../../../store/modals/acciones';
+
 export default {
-  name: "AccionCeder",
+  name: 'AccionCeder',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -27,18 +28,18 @@ export default {
   },
   data() {
     return {
-      icono: "autorenew",
-      nombre: "Ceder",
-      permiso: "CES01"
+      icono: 'autorenew',
+      nombre: 'Ceder',
+      permiso: 'CES01'
     };
   },
   methods: {
     ejecutarAccion() {
-      const modalComponente = () => import(`@/febos/chile/dte/componentes/acciones/modales/modalCeder.vue`);
-      modalStore.commit("setTitulo", "Ceder Documento");
-      modalStore.commit("mostrarBitacora", modalComponente);
-      modalStore.commit("febosId", this.documento.febosId);
-      modalStore.commit("setData", this.documento);
+      const modalComponente = () => import('@/febos/chile/dte/componentes/acciones/modales/modalCeder.vue');
+      modalStore.commit('setTitulo', 'Ceder Documento');
+      modalStore.commit('mostrarBitacora', modalComponente);
+      modalStore.commit('febosId', this.documento.febosId);
+      modalStore.commit('setData', this.documento);
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

@@ -55,22 +55,41 @@ function getHost() {
   }
 }
 
+function getMode() {
+  if (process.VUE_CLI_SERVICE && process.VUE_CLI_SERVICE.mode) {
+    return process.VUE_CLI_SERVICE.mode;
+  }
+  if (process.env && (process.env.npm_lifecycle_script || '').includes('mode')) {
+    return (process.env.npm_lifecycle_script || '').replace(/(vue-)(.*)(--mode )/g, '').trim();
+  }
+  return undefined;
+}
+
 module.exports = () => {
-  const mode = process.VUE_CLI_SERVICE.mode || (process.env.npm_lifecycle_script || '').replace(/(vue-)(.*)(--mode )/g, '').trim();
+  const mode = getMode();
   if (mode) loadExtraEnvironment(mode);
 
   return {
     lintOnSave: false,
-    publicPath: `/${process.env.VUE_APP_PORTAL}/`,
+    publicPath: '/',
     transpileDependencies: ['vue-echarts', 'resize-detector', 'vuex-persist'],
     devServer: {
       disableHostCheck: true,
       host: '127.0.0.1',
       port: 8081,
-      public: `${getHost()}:8081/${process.env.VUE_APP_PORTAL}/`,
+      public: `${getHost()}:8081/`,
       https: {
         key: fs.readFileSync('./certs/cert.dev.key.pem'),
         cert: fs.readFileSync('./certs/cert.dev.pem'),
+      },
+    },
+    css: {
+      loaderOptions: {
+        sass: {
+          sassOptions: {
+            includePaths: ['./node_modules', './src/assets'],
+          },
+        },
       },
     },
     configureWebpack: {
@@ -79,7 +98,13 @@ module.exports = () => {
         splitChunks: {
           chunks: 'all'
         }
-      }
+      },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, 'src'),
+          '@core': path.resolve(__dirname, 'src/@core')
+        },
+      },
     }
   };
 };

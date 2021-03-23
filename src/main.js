@@ -20,10 +20,8 @@ import './filters/filters';
 import Vuesax from 'vuesax';
 import 'material-icons/iconfont/material-icons.css';
 import 'vuesax/dist/vuesax.css';
-
 // Febos Config
 // import febosConfig from './febos/servicios/febosConfig.js'
-
 // axios
 import clientApi from './febos/servicios/clienteFebosAPI';
 
@@ -42,10 +40,11 @@ import './assets/scss/vuexy/main.scss';
 import './assets/scss/bootstrap/main.scss';
 import './assets/scss/main.scss';
 import './assets/scss/multiSelect.scss';
-import './assets/scss/treeView.scss';
-
-// Tailwind
+import '@core/assets/fonts/feather/iconfont.css'; // For form-wizard
+import '@core/scss/core.scss';
+import '@/assets/scss/style.scss';
 import '@/assets/css/main.css';
+import './assets/scss/treeView.scss';
 
 // Vue Router
 import router from './router';

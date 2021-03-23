@@ -5,88 +5,35 @@ export default [{
   items: [
     {
       url: null,
-      name: 'Expedientes',
-      slug: 'files',
-      icon: 'FolderIcon',
-      permiso: 'ED034',
-      submenu: [
-        {
-          url: '/documentos/numOf',
-          name: 'Cargar Doc. Trámite',
-          slug: 'uploads',
-          icon: 'files',
-          permiso: 'ED035',
-          i18n: 'uploads'
-        },
-        {
-          url: '/documentos/numInt',
-          name: 'Cargar Doc. Interno',
-          slug: 'uploads',
-          icon: 'files',
-          permiso: 'ED0036',
-          i18n: 'uploads'
-        },
-        {
-          url: '/expedientes/entrada',
-          name: 'Bandeja Entrada',
-          slug: '/expedientes/entrada',
-          icon: 'files',
-          permiso: 'ED037',
-          i18n: 'entrada'
-        },
-        {
-          url: '/expedientes/finalizados',
-          name: 'Bandeja Finalizados',
-          slug: '/expedientes/finalizados',
-          icon: 'files',
-          permiso: 'ED038',
-          i18n: 'finalizados'
-        }
-      ]
-    },
-    {
-      url: null,
       name: 'Oficina de partes',
       slug: 'files',
       icon: 'FolderIcon',
       permiso: 'ED008',
       submenu: [
         {
-          url: '/documentos/externo',
+          url: { name: 'files-wizard', params: { wizard: 'externo' } },
           name: 'Cargar Doc. Externo',
-          slug: 'uploads',
           icon: 'files',
           permiso: 'ED012',
           i18n: 'uploads'
         },
         {
-          url: '/documentos/interno',
-          name: 'Cargar Doc. Interno',
-          slug: 'uploads',
-          icon: 'files',
-          permiso: '*', // TODO set permission
-          i18n: 'uploads'
-        },
-        {
-          url: '/expedientes/en-curso',
+          url: { name: 'files', params: { view: 'en-curso' } },
           name: 'Bandeja Pendientes',
-          slug: '/expedientes/en-curso',
           icon: 'files',
           permiso: 'ED009',
           i18n: 'expedientes'
         },
         {
-          url: '/expedientes/general',
+          url: { name: 'files', params: { view: 'general' } },
           name: 'Bandeja General',
-          slug: '/expedientes/general',
           icon: 'files',
           permiso: 'ED011',
           i18n: 'expedientes'
         },
         {
-          url: '/expedientes/tramitados',
+          url: { name: 'files', params: { view: 'finalizados' } },
           name: 'Bandeja Tramitados',
-          slug: '/expedientes/tramitados',
           icon: 'files',
           permiso: 'ED010',
           i18n: 'expedientes'
@@ -101,25 +48,22 @@ export default [{
       permiso: 'ED004',
       submenu: [
         {
-          url: '/mantenedores/documentos',
+          url: { name: 'maintainer-files' },
           name: 'Documentos',
-          slug: '/herramientas/mantenedor-documentos',
           icon: 'library_books',
           i18n: 'Documents',
           permiso: 'ED005'
         },
         {
-          url: '/mantenedores/instituciones',
+          url: { name: 'maintainer-institutions' },
           name: 'Instituciones',
-          slug: '/herramientas/mantenedor-instituciones',
           icon: 'library_books',
           permiso: 'ED006',
           i18n: 'Instituciones'
         },
         {
-          url: '/mantenedores/destinos',
+          url: { name: 'maintainer-subjects' },
           name: 'Destinos',
-          slug: '/herramientas/mantenedor-destinos',
           icon: 'library_books',
           permiso: 'ED007',
           i18n: 'Destinos'

@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import PermisoAccionMixin from "../../mixins/PermisoAccionMixin";
-import clienteFebosAPI from "../../../../servicios/clienteFebosAPI";
+import PermisoAccionMixin from '../../mixins/PermisoAccionMixin';
+import clienteFebosAPI from '../../../../servicios/clienteFebosAPI';
 // import modalStore from "../../../../../store/modals/acciones";
 
 export default {
-  name: "AccionCertificadoCesion",
+  name: 'AccionCertificadoCesion',
   mixins: [PermisoAccionMixin],
   props: {
     documento: {
@@ -28,30 +28,29 @@ export default {
   },
   data() {
     return {
-      icono: "description",
-      nombre: "Certificado de Cesión",
-      permiso: "SII27"
+      icono: 'description',
+      nombre: 'Certificado de Cesión',
+      permiso: 'SII27'
     };
   },
   methods: {
     ejecutarAccion() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" })
-      clienteFebosAPI.get("/sii/dte/cesion/consulta?febosId=" + this.documento.febosId).then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.get(`/sii/dte/cesion/consulta?febosId=${ this.documento.febosId}`).then((response) => {
         this.$vs.loading.close();
-        if(response.data.imagenLink) {
+        if (response.data.imagenLink) {
           window.open(response.data.imagenLink);
-        }else{
+        } else {
           this.$vs.notify({
-            color: 'danger', title: 'Certificado de sesión', text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger', title: 'Certificado de sesión', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch(() => {
         this.$vs.notify({
-          color: 'danger', title: 'Certificado de sesión', text: "No fue posible realizar la consulta"
+          color: 'danger', title: 'Certificado de sesión', text: 'No fue posible realizar la consulta'
         });
         this.$vs.loading.close();
       });
-
     },
     desplegar() {
       return this.esAccionAplicable() && this._tienePermiso(this.permiso);

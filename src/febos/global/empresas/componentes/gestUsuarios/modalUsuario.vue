@@ -171,13 +171,13 @@ export default {
             + response.data.seguimientoId, time: 10000
           });
         }
-
       }).catch((error) => {
         this.$vs.loading.close();
         console.log(error);
         this.$vs.notify({
-          color: "danger", title: "Usuario", text: "Error de plataforma", time: 10000
+          color: 'danger', title: 'Usuario', text: 'Error de plataforma', time: 10000
         });
+      });
       })
        */
     },
@@ -187,7 +187,8 @@ export default {
       }
 
       console.log('ACREAr');
-      /* this.$vs.loading({ type: 'default' });
+      /*
+       this.$vs.loading({ type: 'default' });
       const datos = {
         accesoWeb: 'si',
         alias: this.user.alias,
@@ -210,7 +211,8 @@ export default {
           this.$vs.notify({
             color: 'danger',
             title: 'Usuario',
-            text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`,
+            text: `${response.data.mensaje }<br/><b>Seguimiento:
+             </b>${ response.data.seguimientoId}`,
             time: 10000
           });
         }
@@ -220,7 +222,8 @@ export default {
         this.$vs.notify({
           color: 'danger', title: 'Usuario', text: 'Error de plataforma', time: 10000
         });
-      }); */
+      });
+       */
     },
     async cerrarModal() {
       this.$emit('cerrarEdicionUsuario', false);

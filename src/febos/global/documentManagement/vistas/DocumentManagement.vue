@@ -160,7 +160,7 @@
                   <tbody>
                     <tr v-if="detailItem.type === 'document'">
                       <td class="text-center d-flex justify-content-lg-around">
-                        <span v-if="detailItem.estado === '1'">
+                        <span v-if="detailItem.estado === '1'" class="pt-3">
                           <vs-icon
                             v-tooltip="'Documento No publicado'"
                             size="small"
@@ -168,7 +168,7 @@
                             color="gray"
                           />
                         </span>
-                        <span v-if="detailItem.estado === '2'">
+                        <span v-if="detailItem.estado === '2'" class="pt-3">
                           <vs-icon
                             v-tooltip="'Documento publicado'"
                             size="small"
@@ -176,7 +176,7 @@
                             color="#77cc77"
                           />
                         </span>
-                        <span>
+                        <span class="pt-3">
                           <vs-icon
                             v-if="detailItem.type === 'folder'"
                             size="small"
@@ -210,7 +210,7 @@
                       v-show="elementChildren"
                     >
                       <td class="text-center d-flex justify-content-lg-around">
-                        <span v-if="document.estado === '1'">
+                        <span v-if="document.estado === '1'" class="pt-3">
                           <vs-icon
                             v-tooltip="'Documento No publicado'"
                             size="small"
@@ -218,7 +218,7 @@
                             color="gray"
                           />
                         </span>
-                        <span v-if="document.estado === '2'">
+                        <span v-if="document.estado === '2'" class="pt-3">
                           <vs-icon
                             v-tooltip="'Documento publicado'"
                             size="small"
@@ -226,7 +226,7 @@
                             color="#77cc77"
                           />
                         </span>
-                        <span>
+                        <span class="pt-3">
                           <vs-icon
                             v-if="document.type === 'folder'"
                             size="small"

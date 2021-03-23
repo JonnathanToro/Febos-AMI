@@ -26,65 +26,67 @@
 </template>
 
 <script>
-import VsModal from "vs-modal";
-import clienteFebosAPI from "@/febos/servicios/clienteFebosAPI";
+import VsModal from 'vs-modal';
+
+import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 export default {
-  name: "modalEmpresas",
-  props: ["editar", "usuario", "empresas"],
+  name: 'modalEmpresas',
+  props: ['editar', 'usuario', 'empresas'],
   components: {
     VsModal
   },
-  data()  {
+  data() {
     return {
       user: null,
       show: false
-    }
+    };
   },
   computed: {
   },
-  watch:  {
-    editar: function(val) {
-      this.user = { id: null, iut: null, nombre: null, alias: null, correo: null };
+  watch: {
+    editar(val) {
+      this.user = {
+        id: null, iut: null, nombre: null, alias: null, correo: null
+      };
       this.show = false;
       if (val) {
         this.obtenerActuales();
         this.show = true;
-        this.$refs["modalUsuarioEmpresa"].open();
+        this.$refs.modalUsuarioEmpresa.open();
       } else {
-        this.$refs["modalUsuarioEmpresa"].close();
+        this.$refs.modalUsuarioEmpresa.close();
       }
     },
-    usuario: function(val)  {
+    usuario(val) {
       this.user = val;
     }
   },
   mounted() {
     // this.cargarEmpresas();
   },
-  methods:  {
+  methods: {
     obtenerActuales() {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.get("/usuarios/" + this.usuario.id + "/empresas?busquedaSimple=si&filas=9000&pagina=1").then((response) => {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.get(`/usuarios/${ this.usuario.id }/empresas?busquedaSimple=si&filas=9000&pagina=1`).then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10)  {
+        if (response.data.codigo == 10) {
           const seleccionadas = response.data.empresas;
-          this.empresas.forEach(function(value, index, array) {
-            let encontrada = seleccionadas.find(element => element.id == value.id );
+          this.empresas.forEach((value, index, array) => {
+            const encontrada = seleccionadas.find((element) => element.id == value.id);
             if (encontrada === undefined) {
               array[index].seleccionado = false;
             } else {
               array[index].seleccionado = true;
               console.log(array[index].id);
             }
-          })
-
+          });
         }
-      })
+      });
     },
-    actualizarEmpresas()  {
-      this.$vs.loading({ color: "#FF2961", text: "Espera un momento por favor" });
-      clienteFebosAPI.post("/usuarios/" + this.usuario.id + "/empresas?usuarioId=" + this.usuario.id).then((response) => {
+    actualizarEmpresas() {
+      this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
+      clienteFebosAPI.post(`/usuarios/${ this.usuario.id }/empresas?usuarioId=${ this.usuario.id}`).then((response) => {
         this.$vs.loading.close();
         if (response.data.codigo == 10) {
           this.$vs.notify({
@@ -93,25 +95,25 @@ export default {
           this.cerrarModal();
         } else {
           this.$vs.notify({
-            color: "danger",
-            title: "Usuario",
-            text: response.data.mensaje + "<br/><b>Seguimiento: </b>" + response.data.seguimientoId, time: 10000
+            color: 'danger',
+            title: 'Usuario',
+            text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`,
+            time: 10000
           });
         }
       }).catch(() => {
         this.$vs.loading.close();
         this.$vs.notify({
-          color: "danger", title: "Usuario", text: "Error de plataforma", time: 10000
+          color: 'danger', title: 'Usuario', text: 'Error de plataforma', time: 10000
         });
-      })
-
+      });
     },
     cerrarModal() {
-      this.$emit("cerrarEdicionUsuarioEmpresas", false);
+      this.$emit('cerrarEdicionUsuarioEmpresas', false);
     },
 
   }
-}
+};
 </script>
 
 <style scoped>

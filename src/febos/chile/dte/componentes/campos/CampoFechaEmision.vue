@@ -6,14 +6,14 @@
 
 <script>
 
-  export default {
-    name: "CampoFechaEmision",
-    props: {
-      documento: {
-        type: Object,
-      },
-    }
+export default {
+  name: 'CampoFechaEmision',
+  props: {
+    documento: {
+      type: Object,
+    },
   }
+};
 </script>
 
 <style scoped>

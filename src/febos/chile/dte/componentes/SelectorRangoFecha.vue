@@ -18,37 +18,37 @@
 
 <script>
 
-  export default {
-    name: 'SelectorRangoFecha',
-    props: {
-      value: {
-        type: String,
-        required: false
-      }
-    },
-    data: () => ({
-      desde:'',
-      hasta:'',
-      opciones: [
-        {nombre: "10", valor: 10},
-        {nombre: "20", valor: 20},
-        {nombre: "50", valor: 50},
-        {nombre: "75", valor: 75},
-        {nombre: "100", valor: 100}
-      ],
-      valorActual: 10,
-    }),
-    watch: {
-      valorActual() {
-        this.$emit('input', this.valorActual)
-        this.$emit('change', this.valorActual)
-      }
-    },
-    mounted() {
+export default {
+  name: 'SelectorRangoFecha',
+  props: {
+    value: {
+      type: String,
+      required: false
+    }
+  },
+  data: () => ({
+    desde: '',
+    hasta: '',
+    opciones: [
+      { nombre: '10', valor: 10 },
+      { nombre: '20', valor: 20 },
+      { nombre: '50', valor: 50 },
+      { nombre: '75', valor: 75 },
+      { nombre: '100', valor: 100 }
+    ],
+    valorActual: 10,
+  }),
+  watch: {
+    valorActual() {
+      this.$emit('input', this.valorActual);
+      this.$emit('change', this.valorActual);
+    }
+  },
+  mounted() {
 
-    },
-    methods: {}
-  }
+  },
+  methods: {}
+};
 </script>
 
 <style scoped>
