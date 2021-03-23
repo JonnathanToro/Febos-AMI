@@ -159,7 +159,7 @@
                   </thead>
                   <tbody>
                     <tr v-if="detailItem.type === 'document'">
-                      <td class="text-center d-flex justify-content-lg-around">
+                      <td class="text-center">
                         <span v-if="detailItem.estado === '1'" class="pt-3">
                           <vs-icon
                             v-tooltip="'Documento No publicado'"
@@ -209,7 +209,7 @@
                       :key="document.febosId"
                       v-show="elementChildren"
                     >
-                      <td class="text-center d-flex justify-content-lg-around">
+                      <td class="text-center">
                         <span v-if="document.estado === '1'" class="pt-3">
                           <vs-icon
                             v-tooltip="'Documento No publicado'"
