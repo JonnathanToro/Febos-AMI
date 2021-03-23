@@ -131,6 +131,7 @@ export default {
           correo: this.correo,
           clave: this.clave
         });
+
         await this.$router.push({ name: 'iniciando' });
       } catch (error) {
         this.$vs.dialog({

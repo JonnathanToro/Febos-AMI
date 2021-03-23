@@ -3,15 +3,17 @@ export default [{
   icon: 'PackageIcon',
   permiso: 'M01',
   items: [
-    /*    {
+    /*
+    {
       url: '/factura-electronica/panel',
       name: 'Panel',
       icon: 'GridIcon',
       slug: 'panel',
       permiso: 'WB000'
-    }, */
+    },
+    */
     {
-      url: '/factura-electronica/emision/basica',
+      url: { name: 'e-bill-basic-issue' },
       name: 'Nuevo DTE',
       slug: 'fe-emision-basica',
       icon: 'FileIcon',
@@ -25,7 +27,7 @@ export default [{
       permiso: 'WB000',
       submenu: [
         {
-          url: '/factura-electronica/emitidos/todos',
+          url: { name: 'e-bull-files', params: { categoria: 'emitidos', vista: 'todos' } },
           name: 'Todos',
           slug: 'emitidos-todos',
           permiso: 'WB000',
@@ -40,7 +42,7 @@ export default [{
       permiso: 'WB000',
       submenu: [
         {
-          url: '/factura-electronica/recibidos/todos',
+          url: { name: 'e-bull-files', params: { categoria: 'recibidos', vista: 'todos' } },
           name: 'Todos',
           slug: 'fe-emision-afecta',
           permiso: 'WB000',
@@ -55,14 +57,14 @@ export default [{
       permiso: 'WB000',
       submenu: [
         {
-          url: '/configuraciones/cafs',
+          url: { name: 'settings-cafs' },
           name: 'Listar CAFs',
           slug: 'cafs-listar',
           icon: 'HomeIcon',
           permiso: 'WB000',
         },
         {
-          url: '/configuraciones/usuarios',
+          url: { name: 'settings-users' },
           name: 'Gestión de Usuarios',
           slug: 'configuracion-usuarios',
           icon: 'HomeIcon',
@@ -76,14 +78,15 @@ export default [{
         //   permiso:'WB000',
         // },
         {
-          url: '/configuraciones/empresa',
+          url: { name: 'settings-company' },
           name: 'Empresa',
           slug: 'configuracion-empresa',
           icon: 'HomeIcon',
           permiso: 'WB000',
         },
       ]
-    }, /*
+    },
+    /*
     {
       url: null,
       name: "Eventos",
@@ -98,6 +101,7 @@ export default [{
           permiso:'WB000',
         },
       ]
-    }, */
+    },
+    */
   ]
 }];

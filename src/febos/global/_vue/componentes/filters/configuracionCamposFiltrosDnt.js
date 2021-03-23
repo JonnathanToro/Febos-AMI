@@ -114,5 +114,9 @@ export default {
   textoObservaciones: {
     nombre: 'Observaciones/Materia',
     tipo: 'texto'
+  },
+  codigosDerivacionUsuario: {
+    nombre: 'Derivado por',
+    tipo: 'usuarioIds'
   }
 };

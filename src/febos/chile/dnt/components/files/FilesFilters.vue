@@ -69,7 +69,7 @@ export default {
   props: ['value'],
   mixins: [FiltersDntMixin, FindTypeDocumentMixin],
   data() {
-    const view = this.$route.params.vista;
+    const { view } = this.$route.params;
     const filters = this.getFilterView(view);
 
     return {

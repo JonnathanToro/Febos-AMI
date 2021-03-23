@@ -19,6 +19,7 @@ const filterViews = {
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
       { campo: 'numeroInt', tipo: 'texto' },
+      { campo: 'codigosDerivacionUsuario', tipo: 'usuarioIds' },
       /*
       {
         campo: 'tipo',

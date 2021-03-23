@@ -178,7 +178,7 @@
         </div>
       </div>
       <div v-if="filtroActual.tipo == 'destinoUsuarios'
-            || filtroActual.tipo == 'usuarios'">
+       || filtroActual.tipo == 'usuarioIds'">
         <div class="texto-normal">
           <multiselect
             v-model="filterUsers"
@@ -616,6 +616,11 @@ export default {
           if (filtro.campo === 'solicitanteCorreo') {
             filtro.campo = 'solicitanteEmail';
           }
+          if (filtro.tipo === 'usuarioIds') {
+            if (filtro.campo === 'codigosDerivacionUsuario') {
+              filtro.campo = 'codigosDerivacionUsuario';
+            }
+          }
           query.push(`${filtro.campo }:${ filtro.valor}`);
         }
       });
@@ -695,6 +700,8 @@ export default {
       // eslint-disable-next-line no-plusplus
       if (filtro.tipo === 'destinoUsuarios') {
         this.filterUsers = [];
+      } else if (filtro.tipo === 'usuarioIds') {
+        this.filterUsers = [];
       } else if (filtro.tipo === 'destinoGrupos') {
         this.filterGroups = [];
       } else if (filtro.tipo === 'destinoCorreos') {
@@ -769,6 +776,7 @@ export default {
       console.log('filtros aplicados', this.filtrosAplicados);
     },
     formatearValor(filter) {
+      console.log('FILTER', filter);
       const filtro = filter;
       if (filtro.valor === '' || typeof filtro.valor === 'undefined') {
         filtro.valor = '';
@@ -804,6 +812,7 @@ export default {
             });
             break;
           }
+          case 'usuarioIds':
           case 'destinoUsuarios': {
             filtro.opciones = this.users.map((user) => {
               const userOption = {
@@ -884,6 +893,7 @@ export default {
           });
           break;
         }
+        case 'usuarioIds':
         case 'destinoUsuarios': {
           filtro.opciones = this.users.map((user) => {
             const userOption = {
