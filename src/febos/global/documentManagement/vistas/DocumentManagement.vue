@@ -503,7 +503,8 @@ export default {
   },
   watch: {
     personalRepository() {
-      this.tree.children = this.makeTree();
+      // eslint-disable-next-line prefer-destructuring
+      this.tree = this.makeTree()[0];
       this.getDetail(this.detailItem);
     },
     element(newValue) {

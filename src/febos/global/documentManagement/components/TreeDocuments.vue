@@ -3,7 +3,9 @@
     <div class="parent"
        v-if="item.type === 'folder'"
        v-bind:class="{
-        selected: element.febosId === item.febosId
+        selected: (element.type === 'document' && element.padreId) ?
+         element.padreId === item.febosId
+         : element.febosId === item.febosId
       }"
     >
       <span v-if="isFolder" @click="toggle" class="pt-1">

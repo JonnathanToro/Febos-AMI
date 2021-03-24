@@ -147,7 +147,7 @@ export default {
       element.size = `${ Math.ceil(Math.random() * 10) } MB`;
       element.padreId = this.element.type === 'document'
         ? this.element.padreId : this.element.febosId;
-      element.permisosCodigo = ['PER1', 'PER3', 'PER4', 'PER7', 'PER8'];
+      element.permisosCodigo = ['PER1', 'PER3', 'PER4', 'PER6', 'PER7', 'PER8'];
       element.permisos = [
         {
           codigo: 'PER1',
@@ -160,6 +160,10 @@ export default {
         {
           codigo: 'PER4',
           nombre: 'Descargas'
+        },
+        {
+          codigo: 'PER6',
+          nombre: 'Envío a flujo'
         },
         {
           codigo: 'PER7',
