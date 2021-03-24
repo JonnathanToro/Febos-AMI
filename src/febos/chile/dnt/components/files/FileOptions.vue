@@ -28,7 +28,7 @@
         <vs-dropdown-menu style="width: fit-content">
           <CheckPermission permission="ED016">
             <vs-dropdown-item
-              v-if="isDraft && onPendingFiles && isResposible"
+              v-if="isDraft && onPendingFiles && isResponsible"
               v-on:click="openDraft()"
             >
               <vs-icon icon="query_builder"/>
@@ -81,7 +81,7 @@
             <vs-dropdown-item
               v-on:click="onOptionCancelFile(file)"
               v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled"
             >
               <vs-icon icon="clear"/>
               Anular expediente
@@ -107,7 +107,7 @@
             <vs-dropdown-item
               v-on:click="onOptionGetComments(file)"
               v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled"
             >
               <vs-icon icon="chat"/>
               Comentarios
@@ -117,12 +117,20 @@
             <vs-dropdown-item
               v-on:click="onOptionSendFile(file)"
               v-if="!isDraft && onPendingFiles && isAssigned
-             && isResposible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled"
             >
               <vs-icon icon="chat"/>
               Enviar documento
             </vs-dropdown-item>
           </CheckPermission>
+          <vs-dropdown-item
+            v-on:click="onUpdateActivity(file)"
+            v-if="!isDraft  && onPendingFiles && isAssigned
+             && isResponsible && !isProcessed && !isCancelled"
+          >
+            <vs-icon icon="how_to_vote"/>
+            Act. Actividad
+          </vs-dropdown-item>
           <CheckPermission permission="ED027">
             <vs-dropdown-item
               v-on:click="onTicketFile(file)"
@@ -154,7 +162,7 @@ export default {
     'isAssigned',
     'isProcessed',
     'isCancelled',
-    'isResposible',
+    'isResponsible',
     'selectFile'
   ],
   computed: {
@@ -286,6 +294,10 @@ export default {
       });
       this.selectFile(file);
       this.showModals('sendFile');
+    },
+    onUpdateActivity(file) {
+      this.selectFile(file);
+      this.showModals('activitiesFile');
     },
     onTicketFile(file) {
       this.selectFile(file);

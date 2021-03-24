@@ -39,3 +39,6 @@ export const institutionsDocDigitalState = (state) => ({
 
 export const groupsState = (state) => state.groups;
 export const usersState = (state) => state.users;
+
+export const activitiesState = (state) => state.activities;
+export const activityStatesState = (state) => state.activityStates;

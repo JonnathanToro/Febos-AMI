@@ -71,5 +71,13 @@ export default {
   users: {
     list: [],
     loading: false
-  }
+  },
+  activities: {
+    list: [],
+    loading: false
+  },
+  activityStates: {
+    list: [],
+    loading: false
+  },
 };

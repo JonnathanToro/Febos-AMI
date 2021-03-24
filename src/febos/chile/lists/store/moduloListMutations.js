@@ -132,4 +132,27 @@ export default {
   SET_USERS_LOADING(state, payload) {
     state.users.loading = payload;
   },
+  SET_ACTIVITIES(state, payload) {
+    console.log('JODJO', payload);
+    state.activities.list = payload
+      .map((option) => ({
+        id: option.opcionId,
+        value: option.valor,
+        label: option.descripcion
+      }));
+  },
+  SET_ACTIVITIES_LOADING(state, payload) {
+    state.activities.loading = payload;
+  },
+  SET_ACTIVITY_STATES(state, payload) {
+    state.activityStates.list = payload
+      .map((option) => ({
+        id: option.opcionId,
+        value: option.valor,
+        label: option.descripcion
+      }));
+  },
+  SET_ACTIVITY_STATES_LOADING(state, payload) {
+    state.activityStates.loading = payload;
+  }
 };

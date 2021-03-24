@@ -203,7 +203,7 @@
         :is-assigned="isAssigned"
         :is-processed="isProcessed"
         :is-cancelled="isCancelled"
-        :is-resposible="isResposible"
+        :is-responsible="isResponsible"
         :on-pending-files="onPendingFiles"
         :on-general-files="onGeneralFiles"
         :select-file="selectFile"
@@ -231,7 +231,7 @@ export default {
     isAssigned() {
       return this.file.enGrupo === 'NO';
     },
-    isResposible() {
+    isResponsible() {
       return this.file.enResponsable === 'SI';
     },
     isProcessed() {

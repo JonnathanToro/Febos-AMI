@@ -137,3 +137,29 @@ export const getUsersGroup = async ({ commit, rootState }, groupId) => {
   commit('SET_USERS', response.data.usuarios);
   commit('SET_USERS_LOADING', false);
 };
+
+export const fetchActivities = async ({ commit }) => {
+  commit('SET_ACTIVITIES_LOADING', true);
+
+  console.log('soy actividad', 'tipos.actividades-ed');
+
+  const response = await listOptions({
+    grupoOpcion: 'tipos.actividades-ed',
+    deshabilitado: 'no'
+  });
+
+  commit('SET_ACTIVITIES', response.data.opciones);
+  commit('SET_ACTIVITIES_LOADING', false);
+};
+
+export const fetchActivityStates = async ({ commit }, payload) => {
+  commit('SET_ACTIVITY_STATES_LOADING', true);
+
+  const response = await listOptions({
+    grupoOpcion: `tipos.actividades-ed.${payload}.item`,
+    deshabilitado: 'no'
+  });
+
+  commit('SET_ACTIVITY_STATES', response.data.opciones);
+  commit('SET_ACTIVITY_STATES_LOADING', false);
+};
