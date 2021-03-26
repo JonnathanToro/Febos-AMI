@@ -89,7 +89,6 @@ export const createDnt = (payload) => {
     simular: 'no',
     foliar: 'si'
   });
-  console.log('CREAR EXPEDIENTE', payload, params);
   return apiClient.post(
     `${RESOURCE}/crear?${params}`,
     payload,
@@ -122,3 +121,19 @@ export const clReturnFileED = (payload) => apiClient
   .post(`${RESOURCE}/${payload.febosId}/destinos/devolver`,
     { comentario: payload.comentario },
     { operacionId: 'io.dnt.return.file' });
+
+export const activitiesFile = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.febosId}/actividades?${params}`, {
+    operacionId: 'io.dnt.activities'
+  });
+};
+
+export const addActivity = (payload) => apiClient.post(`${RESOURCE}/${payload.febosId}/actividades`,
+  payload.activity,
+  { operacionId: 'io.dnt.add.activity' });
+
+export const updateActivity = (payload) => apiClient.put(`${RESOURCE}/${payload.febosId}/actividades`,
+  payload.activity,
+  { operacionId: 'io.dnt.update.activity' });

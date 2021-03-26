@@ -15,7 +15,11 @@ import {
   clAsignFile,
   sendFile,
   fileTimeline,
-  clReturnFileED
+  clReturnFileED,
+  // eslint-disable-next-line import/named
+  activitiesFile,
+  addActivity,
+  updateActivity
 } from '@/febos/servicios/api/dnt.api';
 import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
@@ -340,6 +344,41 @@ export const sendToFlow = async ({ commit }, { data }) => {
       path: '/expedientes/entrada'
     });
     commit('SET_SUCCESS_MESSAGE', response.data);
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const getActivitiesFile = async ({ commit }, payload) => {
+  try {
+    commit('SET_LOADING', true);
+    const response = await activitiesFile(payload);
+    commit('SET_ACTIVITIES_FILE', response.data.actividades);
+    return response;
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const addActivityFile = async ({ commit }, payload) => {
+  try {
+    commit('SET_LOADING', true);
+    const response = await addActivity(payload);
+    store.commit('Modals/CLOSE_MODAL');
+    commit('SET_SUCCESS_MESSAGE', response.data);
+    return response.data;
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const updateActivityFile = async ({ commit }, payload) => {
+  try {
+    commit('SET_LOADING', true);
+    const response = await updateActivity(payload);
+    store.commit('Modals/CLOSE_MODAL');
+    commit('SET_SUCCESS_MESSAGE', response.data);
+    return response.data;
   } finally {
     commit('SET_LOADING', false);
   }

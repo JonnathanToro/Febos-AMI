@@ -41,4 +41,5 @@ export default {
   // TODO: this is the same object.
   pagination: (state) => state.pagination,
   timelineFile: (state) => state.timeline,
+  activities: (state) => state.activities
 };

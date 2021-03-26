@@ -169,6 +169,9 @@ export default {
     ...mapGetters('Empresas', [
       'company'
     ]),
+    ...mapGetters('Usuario', [
+      'currentUserId'
+    ])
   },
   methods: {
     ...mapActions('Modals', [
@@ -184,7 +187,8 @@ export default {
       'getFileDetails',
       'getFileComments',
       'getAttachmentsDnt',
-      'getFileTimeline'
+      'getFileTimeline',
+      'getActivitiesFile'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
@@ -297,6 +301,10 @@ export default {
     },
     onUpdateActivity(file) {
       this.selectFile(file);
+      this.getActivitiesFile({
+        filtros: `usuarioId:${this.currentUserId}`,
+        febosId: file.febosId
+      });
       this.showModals('activitiesFile');
     },
     onTicketFile(file) {

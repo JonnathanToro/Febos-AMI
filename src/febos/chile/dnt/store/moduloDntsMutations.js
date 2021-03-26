@@ -69,5 +69,8 @@ export default {
   },
   SET_TIMELINE(state, payload) {
     state.timeline = payload;
+  },
+  SET_ACTIVITIES_FILE(state, payload) {
+    state.activities = payload;
   }
 };
