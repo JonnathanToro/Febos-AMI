@@ -273,7 +273,6 @@ export const sendTicketHelp = async ({ commit }, payload) => {
 export const saveDocument = async ({ commit }, {
   id, data, isDraft, isFileOfficial, redirectFlow
 }) => {
-  console.log('ACCION', id, data, isDraft, isFileOfficial, redirectFlow);
   commit('SET_LOADING', true);
   try {
     const response = !id
@@ -383,6 +382,20 @@ export const updateActivityFile = async ({ commit }, payload) => {
     store.commit('Modals/CLOSE_MODAL');
     commit('SET_SUCCESS_MESSAGE', response.data);
     return response.data;
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const answerCreateFile = async ({ commit }, payload) => {
+  commit('SET_LOADING', true);
+  try {
+    const response = await createDnt(payload);
+    commit('SET_SUCCESS_MESSAGE', response.data);
+    const path = `/documentos/interno/${response.data.dnt.febosId}`;
+    await router.push({ path });
+  } catch (e) {
+    commit('SET_ERROR_MESSAGE', e.context);
   } finally {
     commit('SET_LOADING', false);
   }

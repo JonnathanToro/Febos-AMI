@@ -76,6 +76,14 @@
             </vs-dropdown-item>
           </CheckPermission>
           <vs-dropdown-item
+            v-on:click="onAnswerFile(file)"
+            v-if="!isDraft  && onPendingFiles && isAssigned
+            && !isProcessed && !isCancelled"
+          >
+            <vs-icon icon="how_to_reg"/>
+            Responder
+          </vs-dropdown-item>
+          <vs-dropdown-item
             v-on:click="onOptionReturnFile(file)"
             v-if="!isDraft  && onPendingFiles && isAssigned
               && !isProcessed && !isCancelled"
@@ -194,7 +202,8 @@ export default {
       'getFileComments',
       'getAttachmentsDnt',
       'getFileTimeline',
-      'getActivitiesFile'
+      'getActivitiesFile',
+      'answerCreateFile'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
@@ -214,6 +223,31 @@ export default {
     onOptionAssignFile(file) {
       this.selectFile(file);
       this.showModals('asignFile');
+    },
+    onAnswerFile(file) {
+      this.selectFile(file);
+      // this.$router.push(`/documentos/interno/${this.file.febosId}`);
+      const answerFile = {
+        dnt: {
+          tipo: 'EXP',
+          emisorRut: this.company.iut,
+          receptorRut: this.company.iut,
+          emisorRazonSocial: this.company.razonSocial,
+          receptorRazonSocial: this.company.razonSocial,
+          claseMercadoPublico: 'int',
+          estado: 3
+        },
+        referencias: [
+          {
+            linea: 1,
+            tipoDocumento: this.file.tipo,
+            folio: this.file.numero,
+            otraReferenciaId: this.file.febosId
+          }
+        ]
+      };
+      this.answerCreateFile(answerFile);
+      console.log('ACA', answerFile);
     },
     onOptionGetDetailsFile(file) {
       this.selectFile(file);
