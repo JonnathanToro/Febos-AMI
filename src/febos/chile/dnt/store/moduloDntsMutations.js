@@ -72,5 +72,17 @@ export default {
   },
   SET_ACTIVITIES_FILE(state, payload) {
     state.activities = payload;
+  },
+  SET_ACTIVITIES_TIMELINE_FILE(state, payload) {
+    state.activitiesHistory = payload;
+    state.activitiesHistory = (payload || [])
+      .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
+      .reduce((index, option) => ({
+        ...index,
+        [option.usuarioNombre]: [
+          ...(index[option.usuarioNombre] || []),
+          option
+        ]
+      }), {});
   }
 };

@@ -47,6 +47,12 @@
               Proceso Destinos
             </vs-dropdown-item>
           </CheckPermission>
+          <CheckPermission permission="ED018">
+            <vs-dropdown-item v-on:click="onOptionTimelineActivities(file)">
+              <vs-icon icon="assignment_turned_in"/>
+              Proceso Actividades
+            </vs-dropdown-item>
+          </CheckPermission>
           <CheckPermission permission="ED019">
             <vs-dropdown-item v-on:click="onOptionDownloadFile(file)">
               <vs-icon icon="save_alt"/>
@@ -299,12 +305,22 @@ export default {
       this.selectFile(file);
       this.showModals('sendFile');
     },
+    onOptionTimelineActivities(file) {
+      this.selectFile(file);
+      const payload = {
+        historico: 'si',
+        febosId: file.febosId
+      };
+      this.getActivitiesFile({ payload, historico: true });
+      this.showModals('activitiesTimelineFile');
+    },
     onUpdateActivity(file) {
       this.selectFile(file);
-      this.getActivitiesFile({
+      const payload = {
         filtros: `usuarioId:${this.currentUserId}`,
         febosId: file.febosId
-      });
+      };
+      this.getActivitiesFile({ payload, historico: false });
       this.showModals('activitiesFile');
     },
     onTicketFile(file) {

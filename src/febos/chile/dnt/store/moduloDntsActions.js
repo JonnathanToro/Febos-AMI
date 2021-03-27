@@ -349,11 +349,15 @@ export const sendToFlow = async ({ commit }, { data }) => {
   }
 };
 
-export const getActivitiesFile = async ({ commit }, payload) => {
+export const getActivitiesFile = async ({ commit }, { payload, historico }) => {
   try {
     commit('SET_LOADING', true);
     const response = await activitiesFile(payload);
-    commit('SET_ACTIVITIES_FILE', response.data.actividades);
+    if (historico) {
+      commit('SET_ACTIVITIES_TIMELINE_FILE', response.data.actividades);
+    } else {
+      commit('SET_ACTIVITIES_FILE', response.data.actividades);
+    }
     return response;
   } finally {
     commit('SET_LOADING', false);

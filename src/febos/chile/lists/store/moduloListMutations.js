@@ -133,7 +133,6 @@ export default {
     state.users.loading = payload;
   },
   SET_ACTIVITIES(state, payload) {
-    console.log('JODJO', payload);
     state.activities.list = payload
       .map((option) => ({
         id: option.opcionId,

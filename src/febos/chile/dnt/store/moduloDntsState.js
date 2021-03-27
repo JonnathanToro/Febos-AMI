@@ -14,6 +14,7 @@ export default {
   timeline: [],
   wizardData: {},
   activities: [],
+  activitiesHistory: [],
   pagination: {
     items: 0,
     pages: 0

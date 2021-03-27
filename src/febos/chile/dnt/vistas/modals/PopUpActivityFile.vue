@@ -36,8 +36,8 @@
               <template>
                 <tbody>
                 <vs-tr
-                  v-for="activity in activities"
-                  :key="activity.dntActividadId"
+                  v-for="(activity, index) in activities"
+                  :key="index"
                 >
                   <vs-td>
                     {{ activity.actividadDescripcion }}
@@ -152,12 +152,10 @@ export default {
       'closeModal'
     ]),
     ...mapActions('Dnts', [
-      'getActivitiesFile',
       'addActivityFile',
       'updateActivityFile'
     ]),
     editActivity(activity) {
-      console.log('ACA', activity);
       this.activity = activity.actividadId;
       this.stateActivity = activity.actividadEstado;
       this.activityId = activity.dntActividadId;
