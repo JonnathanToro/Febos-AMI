@@ -15,6 +15,7 @@ export default {
   wizardData: {},
   activities: [],
   activitiesHistory: [],
+  references: [],
   pagination: {
     items: 0,
     pages: 0

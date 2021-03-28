@@ -24,7 +24,7 @@ export default {
     tipo: 'fecha'
   },
   numero: {
-    nombre: 'Numero Expediente',
+    nombre: 'Número Expediente',
     tipo: 'numero'
   },
   numeroInt: {

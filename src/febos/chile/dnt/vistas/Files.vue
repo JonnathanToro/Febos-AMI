@@ -16,12 +16,14 @@
     </div>
     <PopUpBinnacleFile :titulo="'Bitácora del Expediente #'+selectedFile.numero"/>
     <PopUpTimelineFile :file="selectedFile"/>
+    <PopUpReferencesFile :file="selectedFile"/>
     <PopUpDetailFile :file="selectedFile" />
     <PopUpGeneralDetailFile :file="selectedFile" />
     <PopUpCancelFile :canceledFile="selectedFile" />
     <PopUpProcessFile :processedFile="selectedFile" />
     <PopUpReturnFile :file="selectedFile" />
     <PopUpAsignFile :file="selectedFile" />
+    <PopUpAnswerFile :file="selectedFile" />
     <PopUpParticipantsFile :file="selectedFile" />
     <PopUpCommentsFile :file="selectedFile" />
     <PopUpTicketFile :file="selectedFile" />
@@ -40,10 +42,12 @@ import { mapActions, mapGetters } from 'vuex';
 
 import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
 import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
+import PopUpReferencesFile from '@/febos/chile/dnt/vistas/modals/PopUpReferencesFile';
 import PopUpGeneralDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpGeneralDetailFile';
 import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
 import PopUpReturnFile from '@/febos/chile/dnt/vistas/modals/PopUpReturnFile';
 import PopUpAsignFile from '@/febos/chile/dnt/vistas/modals/PopUpAsignFile';
+import PopUpAnswerFile from '@/febos/chile/dnt/vistas/modals/PopUpAnswerFile';
 import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
 import PopUpSendFile from '@/febos/chile/dnt/vistas/modals/PopUpSendFile';
 import PopUpActivityFile from '@/febos/chile/dnt/vistas/modals/PopUpActivityFile';
@@ -62,6 +66,8 @@ export default {
     FilesPagination,
     FilesFilters,
     PopUpBinnacleFile,
+    PopUpAnswerFile,
+    PopUpReferencesFile,
     PopUpTimelineFile,
     FileRow,
     FilesHeader,

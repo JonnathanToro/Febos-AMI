@@ -94,6 +94,7 @@
                 subtitle="Acompaña físico"
               />
               <vs-list-item
+                v-if="detailsFile.observaciones && detailsFile.observaciones[0]"
                 icon="subject"
                 :title="detailsFile.observaciones
                      && detailsFile.observaciones[0].observacion"
@@ -265,7 +266,7 @@
                 :key="reference.dntReferenciaId"
               >
                 <vs-td>
-                  {{reference.tipoDocumento}}
+                  {{ findTypeDocument(reference.tipoDocumento) }}
                 </vs-td>
                 <vs-td>
                   {{reference.folio}}
@@ -282,11 +283,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 import DownloadFile from '@/febos/chile/dnt/components/DownloadFile';
 
 export default {
   name: 'PopUpDetailFile',
   components: { DownloadFile },
+  mixins: [FindTypeDocumentMixin],
   props: {
     file: {
       type: Object,

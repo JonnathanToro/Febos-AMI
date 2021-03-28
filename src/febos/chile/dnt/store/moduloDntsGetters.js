@@ -40,6 +40,6 @@ export default {
   timelineFile: (state) => state.timeline,
   activities: (state) => state.activities
     .sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion)),
-  activitiesHistory: (state) => state.activitiesHistory
-  // .sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion))
+  activitiesHistory: (state) => state.activitiesHistory,
+  references: (state) => state.references
 };

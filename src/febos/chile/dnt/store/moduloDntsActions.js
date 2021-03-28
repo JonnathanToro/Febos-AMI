@@ -25,6 +25,7 @@ import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
 import { fileDetails, sendToFlowFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
+import { clGetReferences } from '@/febos/servicios/api/documents.api';
 
 export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
   try {
@@ -285,7 +286,7 @@ export const saveDocument = async ({ commit }, {
       return;
     }
 
-    const fileRoutes = isFileOfficial ? '/expedientes/en-curso' : '/expedientes/entrada';
+    const fileRoutes = isFileOfficial ? '/expedientes/general' : '/expedientes/int-general';
     const routeFlow = `/documentos/flujo/${response.data.dnt.febosId}`;
     const finalRoute = redirectFlow ? routeFlow : fileRoutes;
 
@@ -388,14 +389,26 @@ export const updateActivityFile = async ({ commit }, payload) => {
 };
 
 export const answerCreateFile = async ({ commit }, payload) => {
-  commit('SET_LOADING', true);
   try {
+    commit('SET_LOADING', true);
     const response = await createDnt(payload);
     commit('SET_SUCCESS_MESSAGE', response.data);
     const path = `/documentos/interno/${response.data.dnt.febosId}`;
     await router.push({ path });
   } catch (e) {
     commit('SET_ERROR_MESSAGE', e.context);
+  } finally {
+    commit('SET_LOADING', false);
+  }
+};
+
+export const searchReferences = async ({ commit }, febosId) => {
+  try {
+    commit('CLEAR_REFERENCES');
+    commit('SET_LOADING', true);
+    const response = await clGetReferences(febosId);
+    commit('SET_REFERENCES_DNT', response.data);
+    return response.data;
   } finally {
     commit('SET_LOADING', false);
   }

@@ -53,6 +53,10 @@
               Proceso Actividades
             </vs-dropdown-item>
           </CheckPermission>
+          <vs-dropdown-item v-on:click="onOptionReferencesFile(file)">
+            <vs-icon icon="device_hub"/>
+            Ver Referencias
+          </vs-dropdown-item>
           <CheckPermission permission="ED019">
             <vs-dropdown-item v-on:click="onOptionDownloadFile(file)">
               <vs-icon icon="save_alt"/>
@@ -80,7 +84,7 @@
             v-if="!isDraft  && onPendingFiles && isAssigned
             && !isProcessed && !isCancelled"
           >
-            <vs-icon icon="how_to_reg"/>
+            <vs-icon icon="storage"/>
             Responder
           </vs-dropdown-item>
           <vs-dropdown-item
@@ -203,7 +207,8 @@ export default {
       'getAttachmentsDnt',
       'getFileTimeline',
       'getActivitiesFile',
-      'answerCreateFile'
+      'answerCreateFile',
+      'searchReferences'
     ]),
     ...mapActions('Empresas', [
       'getUsersCompany',
@@ -227,27 +232,7 @@ export default {
     onAnswerFile(file) {
       this.selectFile(file);
       // this.$router.push(`/documentos/interno/${this.file.febosId}`);
-      const answerFile = {
-        dnt: {
-          tipo: 'EXP',
-          emisorRut: this.company.iut,
-          receptorRut: this.company.iut,
-          emisorRazonSocial: this.company.razonSocial,
-          receptorRazonSocial: this.company.razonSocial,
-          claseMercadoPublico: 'int',
-          estado: 3
-        },
-        referencias: [
-          {
-            linea: 1,
-            tipoDocumento: this.file.tipo,
-            folio: this.file.numero,
-            otraReferenciaId: this.file.febosId
-          }
-        ]
-      };
-      this.answerCreateFile(answerFile);
-      console.log('ACA', answerFile);
+      this.showModals('answerFile');
     },
     onOptionGetDetailsFile(file) {
       this.selectFile(file);
@@ -283,6 +268,11 @@ export default {
         pagina: 1
       });
       this.showModals('binnacle');
+    },
+    onOptionReferencesFile(file) {
+      this.selectFile(file);
+      this.searchReferences(file.febosId);
+      this.showModals('references');
     },
     onOptionDownloadFile(file) {
       this.downloadFilePDF({

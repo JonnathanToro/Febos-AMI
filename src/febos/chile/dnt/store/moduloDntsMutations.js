@@ -84,5 +84,12 @@ export default {
           option
         ]
       }), {});
+  },
+  SET_REFERENCES_DNT(state, payload) {
+    state.references = payload.referenciadosTipoDnt
+      .concat(payload.referenciadosTipoDte, payload.referenciasTipoDnt, payload.referenciasTipoDte);
+  },
+  CLEAR_REFERENCES(state) {
+    state.references = [];
   }
 };

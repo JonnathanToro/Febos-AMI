@@ -32,7 +32,7 @@ export default [{
           i18n: 'entrada'
         },
         {
-          url: { name: 'files', params: { view: 'general' } },
+          url: { name: 'files', params: { view: 'int-general' } },
           name: 'Bandeja General',
           icon: 'files',
           permiso: 'ED011',

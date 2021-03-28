@@ -115,77 +115,70 @@
               {{(file.emisorCentroCostoNombre ||'')| truncate(20)}}
             </span>
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Documento externo'"
             v-if="file.claseMercadoPublico === 'ext'"
             color="primary" transparent
           >
             externo
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Documento interno'"
             v-if="file.claseMercadoPublico === 'int'"
             color="primary" transparent
           >
             interno
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-if="file.claseMercadoPublico === 'numInt'"
             v-tooltip="'Documento interno'"
             transparent color="primary">
             interno
           </vs-chip>
-          <vs-chip
-            v-tooltip="'Documento interno'"
-            v-if="file.claseMercadoPublico === 'numOf'"
-            color="primary" transparent
-          >
-            <span class="text-black">interno</span>
-          </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Numeración interna'"
             v-if="file.claseMercadoPublico === 'numInt'"
             transparent color="primary"
           >
-            numeración interna
+            num. interna
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Numeración Oficina de Partes'"
             v-if="file.claseMercadoPublico === 'numOf'"
             color="primary" transparent
           >
-            numeración Ofic. Parte
+            num. Oficial
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Estoy en copia'"
             v-if="file.enCopia === 'SI'"
             color="success" transparent
           >
-            en copia
+            copia
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Soy destinatario/responsable'"
             v-if="file.enResponsable === 'SI' && onGeneralFiles"
             color="danger" transparent
           >
             responsable
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Estoy en grupo'"
             v-if="file.enGrupo === 'SI'"
             color="danger" transparent
           >
             en grupo
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Acompaña físico'"
             v-if="file.transporteViaTransporteCodigoTransporte === '1'"
             color="#343a40" transparent
           >
             <vs-avatar icon="description" />
-            con físico
+            físico
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'archivo privado'"
             v-if="file.transportePuertoTipo === '1'"
             color="warning" transparent

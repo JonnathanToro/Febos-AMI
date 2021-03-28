@@ -21,7 +21,7 @@
           <vs-avatar icon="add" color="primary"/>
           Agregar filtro
         </vs-chip>
-        <vs-dropdown-menu>
+        <vs-dropdown-menu class="scroll-options shadow">
           <vs-dropdown-item
             v-for="(filtro, index) in filtrosDisponibles"
             :key="`filtro-${index}`"
@@ -449,6 +449,7 @@ export default {
             });
           }
         }
+        filtros.sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b));
         return filtros;
       } catch (e) {
         console.log(e);
@@ -1096,5 +1097,11 @@ input[type=number]::-webkit-inner-spin-button {
 
 .accionable {
   cursor: pointer;
+}
+
+.scroll-options {
+  height: 400px;
+  overflow-y: scroll;
+
 }
 </style>
