@@ -100,7 +100,10 @@
             <vs-avatar icon="description" color="#ff9f43" />
             {{file.numeroInt}}
           </vs-chip>
-          <vs-chip class="mr-3">
+          <vs-chip
+            class="mr-3"
+            v-if="file.emisorSucursalDireccion || file.emisorCentroCostoNombre "
+          >
             <vs-avatar icon="description" color="#ff9f43" />
             <span
               v-tooltip="`${file.emisorSucursalDireccion}`"
