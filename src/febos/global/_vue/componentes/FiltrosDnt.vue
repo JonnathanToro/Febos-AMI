@@ -1100,7 +1100,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .scroll-options {
-  height: 400px;
+  max-height: 400px;
   overflow-y: scroll;
 
 }

@@ -4,6 +4,34 @@ export default [{
   i18n: 'Documentos',
   items: [
     {
+      url: { name: 'files', params: { view: 'borradores' } },
+      name: 'Bandeja Borradores',
+      icon: 'PackageIcon',
+      permiso: 'ED009',
+      i18n: 'borradores'
+    },
+    {
+      url: { name: 'files', params: { view: 'pendientes' } },
+      name: 'Bandeja Pendientes',
+      icon: 'InboxIcon',
+      permiso: 'ED009',
+      i18n: 'expedientes'
+    },
+    {
+      url: { name: 'files', params: { view: 'general' } },
+      name: 'Bandeja General',
+      icon: 'HardDriveIcon',
+      permiso: 'ED011',
+      i18n: 'expedientes'
+    },
+    {
+      url: { name: 'files', params: { view: 'tramitados' } },
+      name: 'Bandeja Tramitados',
+      icon: 'ArchiveIcon',
+      permiso: 'ED010',
+      i18n: 'expedientes'
+    },
+    {
       url: null,
       name: 'Expedientes',
       slug: 'files',
@@ -23,27 +51,6 @@ export default [{
           icon: 'files',
           permiso: '*', // TODO set permission
           i18n: 'uploads'
-        },
-        {
-          url: { name: 'files', params: { view: 'entrada' } },
-          name: 'Bandeja Entrada',
-          icon: 'files',
-          permiso: '*', // TODO set permission
-          i18n: 'entrada'
-        },
-        {
-          url: { name: 'files', params: { view: 'int-general' } },
-          name: 'Bandeja General',
-          icon: 'files',
-          permiso: 'ED011',
-          i18n: 'general'
-        },
-        {
-          url: { name: 'files', params: { view: 'finalizados' } },
-          name: 'Bandeja Finalizados',
-          icon: 'files',
-          permiso: '*', // TODO set permission
-          i18n: 'finalizados'
         }
       ]
     },
@@ -67,27 +74,6 @@ export default [{
           icon: 'files',
           permiso: '*', // TODO set permission
           i18n: 'uploads'
-        },
-        {
-          url: { name: 'files', params: { view: 'en-curso' } },
-          name: 'Bandeja Pendientes',
-          icon: 'files',
-          permiso: 'ED009',
-          i18n: 'expedientes'
-        },
-        {
-          url: { name: 'files', params: { view: 'general' } },
-          name: 'Bandeja General',
-          icon: 'files',
-          permiso: 'ED011',
-          i18n: 'expedientes'
-        },
-        {
-          url: { name: 'files', params: { view: 'tramitados' } },
-          name: 'Bandeja Tramitados',
-          icon: 'files',
-          permiso: 'ED010',
-          i18n: 'expedientes'
         }
       ]
     },

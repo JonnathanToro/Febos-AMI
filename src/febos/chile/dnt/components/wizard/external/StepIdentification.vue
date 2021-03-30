@@ -40,6 +40,8 @@
         <datepicker
           class="w-100"
           name="issueDate"
+          :language="es"
+          :disabled-dates="disabledDates"
           v-model="step.issueDate"
         />
       </div>
@@ -117,6 +119,7 @@
 <script>
 
 import Datepicker from 'vuejs-datepicker';
+import { es } from 'vuejs-datepicker/dist/locale';
 import VueTagsInput from '@johmun/vue-tags-input'; // docs: http://www.vue-tags-input.com/#/api/props
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
@@ -133,7 +136,11 @@ export default {
   },
   data() {
     return {
+      es,
       tag: '',
+      disabledDates: {
+        from: new Date()
+      },
       step: {
         documentType: '',
         document: '',

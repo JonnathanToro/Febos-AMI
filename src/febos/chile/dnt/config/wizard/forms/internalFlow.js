@@ -15,15 +15,18 @@ export default () => ({
     return {
       fileUrl: rawData.imagenLink,
       fileNumber: rawData.numero,
-      fileType: rawData.tipo
+      fileType: rawData.tipo,
+      fileCategory: rawData.dnt.claseMercadoPublico
     };
   },
   documentMapper(input) {
     const data = {
+      typeFlow: input.typeFlow,
       ejecucion: {
         descripcion: input.description,
         estampar: input.pdfStamp,
         nombre: input.name,
+        numero: input.number,
         plantilla: {
           aprobaciones: {
             nombre: '',

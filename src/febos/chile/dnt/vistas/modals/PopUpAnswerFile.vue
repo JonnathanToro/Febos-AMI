@@ -35,6 +35,9 @@ export default {
     ...mapGetters('Modals', [
       'modalName'
     ]),
+    ...mapGetters('Empresas', [
+      'company'
+    ]),
     showModal: {
       get() {
         return this.modalName === 'answerFile';

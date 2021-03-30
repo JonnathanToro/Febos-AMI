@@ -301,6 +301,9 @@ export default {
         typeFlowId: this.wizardData.fileType,
         typeFlowText: `${ this.wizardData.fileType } - `,
         fileType: this.wizardData.fileType,
+        number: this.wizardData.fileNumber,
+        typeFlow: this.wizardData.fileCategory === 'numInt'
+          ? 'interna' : 'externa',
         privado: 'N',
         ...this.step
       };

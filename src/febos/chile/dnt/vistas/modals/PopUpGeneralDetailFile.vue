@@ -6,6 +6,13 @@
     fullscreen
   >
     <div class="row">
+      <div class="col-12">
+        <h5 style="color:#7a008d;">
+          Este expediente ha sido creado por {{ file.solicitanteNombre }}
+          <small>{{ file.solicitanteEmail }}</small>,
+          perteneciente a la unidad BLA
+        </h5>
+      </div>
       <div class="col-12" style="margin: 0 auto;">
         <div class="row">
           <div class="col-md-4 shadow">

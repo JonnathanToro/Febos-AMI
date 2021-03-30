@@ -178,7 +178,8 @@ export const loadWizardData = async ({ commit }, { id, mapper, loadAllData }) =>
       : {
         imagen: 'si',
         regenerar: 'no',
-        tipoImagen: 0
+        tipoImagen: 0,
+        retornarDnt: 'si'
       };
 
     const { data } = await getFile({
@@ -335,6 +336,7 @@ export const sendToFlow = async ({ commit }, { data }) => {
       params: {
         aprobacionId: 0,
         temporal: true,
+        enviarOficina: data.typeFlow,
         privado: 'N'
       },
       body: data

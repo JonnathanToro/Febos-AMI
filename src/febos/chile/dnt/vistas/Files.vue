@@ -88,7 +88,7 @@ export default {
     const { view } = this.$route.params;
 
     return {
-      onPendingFiles: view === 'en-curso',
+      onPendingFiles: view === 'pendientes',
       onGeneralFiles: view === 'general',
       fromCS: false,
       selectedFile: {},
