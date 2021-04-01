@@ -13,6 +13,7 @@ export default {
   binnacle: [],
   timeline: [],
   wizardData: {},
+  selectedFile: {},
   activities: [],
   activitiesHistory: [],
   references: [],

@@ -80,4 +80,8 @@ export default {
     list: [],
     loading: false
   },
+  userGroups: {
+    list: [],
+    loading: false
+  }
 };

@@ -163,3 +163,16 @@ export const fetchActivityStates = async ({ commit }, payload) => {
   commit('SET_ACTIVITY_STATES', response.data.opciones);
   commit('SET_ACTIVITY_STATES_LOADING', false);
 };
+
+export const fetchUserGroups = async ({ commit, rootState }) => {
+  commit('SET_USER_GROUPS_LOADING', true);
+  commit('SET_USER_GROUPS', []);
+  const response = await ioCompanyGroups(
+    {
+      empresaId: rootState.Empresas.empresa.id,
+      filtros: `usuarioId:${ rootState.Usuario.id }`
+    }
+  );
+  commit('SET_USER_GROUPS', response.data.grupos);
+  commit('SET_USER_GROUPS_LOADING', false);
+};

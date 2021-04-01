@@ -17,9 +17,6 @@
           {{ file.nombre }}
         </vs-col>
         <vs-col vs-lg="2">
-          {{ file.nombreAprobacion }}
-        </vs-col>
-        <vs-col vs-lg="2">
           {{ file.autor }}
         </vs-col>
         <vs-col vs-lg="2">

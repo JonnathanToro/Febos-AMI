@@ -91,5 +91,8 @@ export default {
   },
   CLEAR_REFERENCES(state) {
     state.references = [];
+  },
+  SET_SELECTED_FILE(state, payload) {
+    state.selectedFile = payload;
   }
 };

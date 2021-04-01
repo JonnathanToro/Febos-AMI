@@ -9,9 +9,6 @@
           <b>Flujo</b>
         </vs-col>
         <vs-col vs-lg="2">
-          <b>Plantilla</b>
-        </vs-col>
-        <vs-col vs-lg="2">
           <b>Propietario</b>
         </vs-col>
         <vs-col vs-lg="2">

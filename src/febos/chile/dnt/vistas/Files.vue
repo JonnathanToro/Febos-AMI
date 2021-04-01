@@ -176,17 +176,20 @@ export default {
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
-      'clearErrorMessage'
+      'clearErrorMessage',
+      'selectFileState'
     ]),
     ...mapActions('Modals', [
       'closeModal'
     ]),
     selectFile(file) {
       this.selectedFile = file;
+      this.selectFileState(file.febosId);
     }
   },
   created() {
     this.closeModal();
+    this.selectFileState('');
   }
 };
 </script>

@@ -153,5 +153,16 @@ export default {
   },
   SET_ACTIVITY_STATES_LOADING(state, payload) {
     state.activityStates.loading = payload;
-  }
+  },
+  SET_USER_GROUPS(state, payload) {
+    state.userGroups.list = payload
+      .map((option) => ({
+        id: option.id,
+        value: option.id,
+        label: option.nombre
+      }));
+  },
+  SET_USER_GROUPS_LOADING(state, payload) {
+    state.userGroups.loading = payload;
+  },
 };

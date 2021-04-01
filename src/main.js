@@ -177,7 +177,8 @@ Vue.use(VeeValidate, {
         rolType: 'tipo de rol',
         userStep: 'usuario',
         groupStep: 'grupo',
-        personEmail: 'correo de persona'
+        personEmail: 'correo de persona',
+        creatorGroup: 'grupo asociado a expediente'
       }
     }
   }

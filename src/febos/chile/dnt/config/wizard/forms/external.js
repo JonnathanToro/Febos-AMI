@@ -53,6 +53,7 @@ export default () => ({
       data.withAttachment = dnt.transporteViaTransporteCodigoTransporte;
       data.documentDetail = dnt.transporteNotas;
       data.safiContract = dnt.transportePuertoCodigo;
+      data.creatorGroup = dnt.solicitanteGrupoId;
     }
 
     if (observaciones && observaciones.length) {
@@ -181,6 +182,8 @@ export default () => ({
         emisorSucursalDireccion: input.documentName,
         numeroInt: input.documentNumber,
         transportePuertoTipo: input.isPrivate,
+        solicitanteGrupoId: input.creatorGroup,
+        solicitanteGrupoNombre: input.creatorGroupName,
         compradorCodigo: input.institutionType,
         compradorArea: input.institutionTypeName,
         emisorContactoCodigo: input.institution,

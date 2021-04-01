@@ -42,3 +42,5 @@ export const usersState = (state) => state.users;
 
 export const activitiesState = (state) => state.activities;
 export const activityStatesState = (state) => state.activityStates;
+
+export const userGroupsState = (state) => state.userGroups;

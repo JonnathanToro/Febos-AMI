@@ -41,5 +41,6 @@ export default {
   activities: (state) => state.activities
     .sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion)),
   activitiesHistory: (state) => state.activitiesHistory,
-  references: (state) => state.references
+  references: (state) => state.references,
+  selectedFile: (state) => state.selectedFile
 };

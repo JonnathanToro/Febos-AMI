@@ -32,6 +32,12 @@ export default [{
       i18n: 'expedientes'
     },
     {
+      url: { name: 'approval-trays', params: { view: 'entrada' } },
+      name: 'Bandeja entrada',
+      icon: 'InboxIcon',
+      permiso: '*' // TODO: set permission
+    },
+    {
       url: null,
       name: 'Expedientes',
       slug: 'files',

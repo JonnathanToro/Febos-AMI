@@ -1,6 +1,7 @@
 <template>
   <vs-row
-    class="p-3 mt-2 bg-white shadow-sm"
+    :class="{ selected: file.febosId == selectedFile }"
+    class="p-3 mt-2 shadow-sm"
   >
     <vs-col vs-lg="11">
       <vs-row>
@@ -71,9 +72,9 @@
               </small>
             </vs-col>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-              {{ file.solicitanteNombre }}
-              <small class="d-block" v-tooltip="`${file.solicitanteEmail}`">
-                {{ file.solicitanteEmail | truncate(20) }}
+              {{ file.solicitanteGrupoNombre }}
+              <small class="d-block" v-tooltip="`${file.solicitanteNombre}`">
+                {{ file.solicitanteNombre | truncate(20) }}
               </small>
             </vs-col>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12" v-if="onPendingFiles">
@@ -210,6 +211,8 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 import FileOptions from '@/febos/chile/dnt/components/files/FileOptions';
 
 export default {
@@ -221,6 +224,9 @@ export default {
     'selectFile'
   ],
   computed: {
+    ...mapGetters('Dnts', [
+      'selectedFile'
+    ]),
     isDraft() {
       return this.file.estado === '3';
     },
@@ -240,3 +246,8 @@ export default {
 };
 
 </script>
+<style>
+.selected {
+  background: #8e4aa01c !important;
+}
+</style>

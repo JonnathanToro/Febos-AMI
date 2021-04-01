@@ -1,6 +1,24 @@
 <template>
   <div>
     <form data-vv-scope="step-2-part-1">
+      <div class="row mb-5">
+        <div class="col-12">
+          <h4>Datos de la persona que ingresa el documento</h4>
+        </div>
+        <div class="col-md-12">
+          <list-user-groups
+            class="w-100"
+            autocomplete
+            label="Grupo al que irá asociado el expediente"
+            name="creatorGroup"
+            v-model="step.creatorGroup"
+            :danger="errors.has('step-2-part-1.creatorGroup')"
+            :danger-text="errors.first('step-2-part-1.creatorGroup')"
+            v-validate="{ required: userGroupsState.list.length > 1 }"
+            ref="creatorGroup"
+          />
+        </div>
+      </div>
       <div class="row mb-3">
         <div class="col-12">
           <h4>Origen / Datos Remitente</h4>
@@ -388,6 +406,7 @@ import ListInstitutionTypes from '@/febos/chile/lists/components/ListInstitution
 import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
 import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
 import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
+import ListUserGroups from '@/febos/chile/lists/components/ListUserGroups';
 
 export default {
   mixins: [WizardStep],
@@ -396,7 +415,8 @@ export default {
     ListInstitutions,
     ListSubjects,
     ListSubjectTypes,
-    ListInstitutionsDocDigital
+    ListInstitutionsDocDigital,
+    ListUserGroups
   },
   data() {
     return {
@@ -418,6 +438,7 @@ export default {
         copySubjectEmail: '',
       },
       step: {
+        creatorGroup: '',
         institutionType: '',
         institution: '',
         personName: '',
@@ -435,9 +456,12 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('List', [
+      'userGroupsState'
+    ]),
     ...mapGetters('Usuario', [
       'currentUserId'
-    ]),
+    ])
   },
   methods: {
     async addSubject() {
@@ -592,10 +616,17 @@ export default {
         }
         : {};
 
+      const creatorGroupName = this.step.creatorGroup
+        ? {
+          creatorGroupName: this.$refs.creatorGroup.getOption().label
+        }
+        : {};
+
       return {
         ...this.step,
         ...institutionTypeName,
-        ...institutionName
+        ...institutionName,
+        ...creatorGroupName
       };
     }
   }

@@ -415,3 +415,7 @@ export const searchReferences = async ({ commit }, febosId) => {
     commit('SET_LOADING', false);
   }
 };
+
+export const selectFileState = ({ commit }, file) => {
+  commit('SET_SELECTED_FILE', file);
+};
