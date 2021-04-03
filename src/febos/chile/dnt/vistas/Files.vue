@@ -1,7 +1,9 @@
 <template>
   <div id="list-dnt">
     <FilesFilters
-      v-model="filters"
+      :value="filters"
+      :onChange="onChangeFilters"
+      :clear="clearFilters"
     />
     <FilesHeader :on-pending-files="onPendingFiles" />
     <div class="force-render" :key="forceRender">
@@ -52,6 +54,8 @@ import PopUpTimelineFile from '@/febos/chile/dnt/vistas/modals/PopUpTimelineFile
 import PopUpBinnacleFile from '@/febos/chile/dnt/vistas/modals/PopUpBinnacleFile';
 import FilesFilters from '@/febos/chile/dnt/components/files/FilesFilters';
 import FilesPagination from '@/febos/chile/dnt/components/files/FilesPagination';
+import { mergeFilters } from '@/febos/chile/dnt/utils/fitlers';
+import { removeSearchParams, updateSearchParams } from '@/febos/global/utils/router';
 
 export default {
   components: {
@@ -90,35 +94,9 @@ export default {
     files() {
       this.forceRender = Date.now(); // TODO: remove this.
     },
-    filters(newValue) {
-      this.listDocuments({
-        data: {
-          tipo: 'EXP',
-          campos: '*',
-          pagina: 1,
-          orden: '-fechaCreacion',
-          itemsPorPagina: this.paginate,
-          filtros: newValue
-        },
-        fromCS: this.fromCS
-      });
-
-      if (!this.fromCS) {
-        this.fromCS = true;
-      }
-    },
-    page(newValue) {
-      this.listDocuments({
-        data: {
-          tipo: 'EXP',
-          campos: '*',
-          pagina: newValue,
-          orden: '-fechaCreacion',
-          itemsPorPagina: this.paginate,
-          filtros: this.filters
-        },
-        fromCS: this.fromCS
-      });
+    async page(page) {
+      updateSearchParams({ page });
+      await this.fetchDocuments();
     },
     loading(value) {
       if (!value) {
@@ -159,7 +137,7 @@ export default {
       'error',
       'successAction',
       'files'
-    ])
+    ]),
   },
   methods: {
     ...mapActions('Dnts', [
@@ -171,10 +149,47 @@ export default {
     ]),
     selectFile(file) {
       this.selectedFile = file;
+    },
+    async onChangeFilters(filters, onMounted) {
+      this.filters = filters;
+      if (!onMounted) {
+        if (this.page !== 1) {
+          this.page = 1;
+          // using else because this method has two responsibilities
+        } else {
+          // force fetch (if we change the page from 1 to 1 the watcher not run)
+          await this.fetchDocuments();
+        }
+      }
+    },
+    clearFilters() {
+      removeSearchParams(['filters']);
+      // TODO: try to change to default filter state for current view.
+      updateSearchParams({ page: 1 });
+      this.$router.go();
+    },
+    async fetchDocuments() {
+      await this.listDocuments({
+        data: {
+          tipo: 'EXP',
+          campos: '*',
+          pagina: this.page,
+          orden: '-fechaCreacion',
+          itemsPorPagina: this.paginate,
+          filtros: mergeFilters(this.filters, this.$route.query.filters)
+        },
+        fromCS: this.fromCS
+      });
+      if (!this.fromCS) {
+        this.fromCS = true;
+      }
     }
   },
   created() {
     this.closeModal();
+  },
+  mounted() {
+    this.fetchDocuments();
   }
 };
 </script>
