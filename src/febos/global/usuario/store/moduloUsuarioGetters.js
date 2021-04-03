@@ -7,12 +7,10 @@ export const currentUserId = (state) => state.id;
 export const currentUserAlias = (state) => state.alias;
 
 export const isSessionAlive = (state) => {
-  const now = new Date().getTime();
-
-  if (!state || !state.vencimiento) {
+  if (!state || !state.vencimiento || !state.token) {
     return false;
   }
-
+  const now = new Date().getTime();
   return now < state.vencimiento;
 };
 
