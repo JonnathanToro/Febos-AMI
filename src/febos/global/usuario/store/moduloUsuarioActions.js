@@ -20,7 +20,7 @@ export default {
     dispatch('validateSession');
   },
   signOut({ commit }) {
-    commit('LIMPIAR_SESION', {});
+    commit('LIMPIAR_SESION');
   },
   async loadPermissions({ commit, getters: { currentUser: { iut } } }) {
     const response = await ioUserPermissions(iut);
