@@ -5,7 +5,7 @@
 export default {
   moduloActual: '',
   inicio: [{
-    url: '/',
+    url: { name: 'start' },
     name: 'Inicio',
     slug: 'start',
     icon: 'HomeIcon',
@@ -13,8 +13,8 @@ export default {
   }],
   menus: [
     {
-      url: '/',
-      name: 'start',
+      url: { name: 'start' },
+      name: 'Inicio',
       slug: 'start',
       icon: 'HomeIcon',
       permiso: '*'
