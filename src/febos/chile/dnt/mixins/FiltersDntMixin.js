@@ -8,11 +8,10 @@ const filterViews = {
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
-      { campo: 'tipo', tipo: 'multi', valor: ['EXP'] }
-    ],
-    filtrosPorDefecto: [
+      { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
       { campo: 'estado', tipo: 'multi', valor: ['1', '3'] }
     ],
+    filtrosPorDefecto: [],
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
@@ -187,11 +186,10 @@ const filterViews = {
       { campo: 'emisorRut', valor: '${iutEmpresa}' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
       // eslint-disable-next-line no-template-curly-in-string
-      { campo: 'destinoResponsableIds', valor: '${idUsuario}' }
-    ],
-    filtrosPorDefecto: [
+      { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
       { campo: 'estado', tipo: 'multi', valor: ['8', '9'] }
     ],
+    filtrosPorDefecto: [],
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },

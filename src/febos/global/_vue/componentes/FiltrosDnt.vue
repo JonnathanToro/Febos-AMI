@@ -14,6 +14,15 @@
         <vs-avatar icon="search" color="#ccc"/>
         <strong>No hay filtros aplicados</strong>
       </vs-chip>
+      <vs-chip
+        :color="colores.navbar"
+        v-if="hasQueryFilters"
+        style="cursor: context-menu"
+        v-on:click.native="clearQueryFilters()"
+      >
+        <vs-avatar icon="link" color="primary"/>
+        <strong>Borrar filtros de enlace</strong>
+      </vs-chip>
     </div>
     <div style="float:right">
       <vs-dropdown>
@@ -42,14 +51,13 @@
       v-on:click.native="ventanaModificarFiltro(filtro)"
       style="cursor: context-menu"
     >
-
-        <vs-avatar
-          icon="clear"
-          color="primary"
-          v-on:click.native="eliminarFiltro(filtro)"
-          v-if="esEliminable[filtro.campo]"
-        />
-        <span />
+      <vs-avatar
+        icon="clear"
+        color="primary"
+        v-on:click.native="eliminarFiltro(filtro)"
+        v-if="esEliminable[filtro.campo]"
+      />
+      <span />
       <vs-tooltip :text="`Modificar filtro ${filtro.nombre}`">
         <strong>{{ typeof filtro == 'undefined' ? '' : filtro.nombre }}: </strong>
         <span class="pl-1">
@@ -364,6 +372,13 @@ export default {
     institutions: {
       type: Array,
       required: false
+    },
+    hasQueryFilters: {
+      type: Boolean,
+      default: false
+    },
+    clearQueryFilters: {
+      type: Function
     }
   },
   computed: {
@@ -568,7 +583,6 @@ export default {
         rango += '--';
         rango += this.rangoAvanzado.hasta.split('T')[0];
         this.filtroActual = rango;
-        console.log('aca', this.filtroActual);
         this.aplicarFiltros();
       }
 
@@ -581,7 +595,7 @@ export default {
       }
       this.$refs.configFiltro.close();
     },
-    aplicarFiltros() {
+    aplicarFiltros(onMounted = false) {
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filter) => {
@@ -635,7 +649,7 @@ export default {
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      this.$emit('filtros-aplicados', query.join('|'));
+      this.$emit('filtros-aplicados', query.join('|'), onMounted);
     },
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
@@ -760,7 +774,6 @@ export default {
       }
     },
     formatearValor(filter) {
-      console.log('FILTER', filter);
       const filtro = filter;
       if (filtro.valor === '' || typeof filtro.valor === 'undefined') {
         filtro.valor = '';
@@ -991,7 +1004,7 @@ export default {
         this.agregarFiltro(filtro);
       }
     }
-    this.aplicarFiltros();
+    this.aplicarFiltros(true);
   }
 };
 </script>
