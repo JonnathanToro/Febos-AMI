@@ -104,16 +104,22 @@ const waitForStorageToBeReady = async (to, from, next) => {
     return next({ name: 'root' });
   }
 
+  const redirect = await localForage.getItem(key);
+  if (name === 'start' && redirect) {
+    await localForage.removeItem(key);
+    return next(redirect);
+  }
+
   if (!to.meta.requiereLogin) {
     return next();
   }
 
   if (!authentication.isLogged()) {
+    await localForage.setItem(key, to.fullPath);
     return next({ name: 'sign-in', params: { portal } });
   }
 
   if (!authentication.hasPermission(to)) {
-    await localForage.setItem(key, to.fullPath);
     return next({ name: 'page-error-404', params: { portal } });
   }
 

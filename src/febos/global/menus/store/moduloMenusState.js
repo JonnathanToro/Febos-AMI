@@ -7,15 +7,15 @@ export default {
   inicio: [{
     url: '/',
     name: 'Inicio',
-    slug: 'inicio',
+    slug: 'start',
     icon: 'HomeIcon',
     permiso: '*'
   }],
   menus: [
     {
       url: '/',
-      name: 'Inicio',
-      slug: 'inicio',
+      name: 'start',
+      slug: 'start',
       icon: 'HomeIcon',
       permiso: '*'
     }
