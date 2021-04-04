@@ -268,8 +268,6 @@ const filterViews = {
         campo: 'claseMercadoPublico',
         tipo: 'multi',
         opciones: {
-          int: 'Interno',
-          ext: 'Externo',
           numInt: 'Num. Interno',
           numOf: 'Num. Oficial'
         }
