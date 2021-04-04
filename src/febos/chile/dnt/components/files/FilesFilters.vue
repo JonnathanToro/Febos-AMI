@@ -12,7 +12,7 @@
         <!--<input type="date" class="fecha" v-model="periodoDesde">-->
         <datetime
           v-model="periodoDesde"
-          input-class="fecha"
+          input-class="input-date"
           :phrases="{ok: 'Seleccionar',
            cancel: 'Cancelar'}"
           value-zone="local"
@@ -21,13 +21,13 @@
         y el
         <datetime
           v-model="periodoHasta"
-          input-class="fecha"
+          input-class="input-date"
           :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
           value-zone="local"
           format="yyyy-MM-dd"
         />
       </span>
-      <vs-dropdown style="margin-left: 15px">
+      <vs-dropdown vs-trigger-click style="margin-left: 15px">
         <a class="a-icon" href="#">
           Cambiar
           <vs-icon class="" icon="expand_more"></vs-icon>
@@ -44,13 +44,22 @@
         </vs-dropdown-menu>
       </vs-dropdown>
     </div>
-    <filtros
+    <!--<filtros
       :dntType="'files'"
       :users="usersCompany"
       :groups="groupsCompany"
       :documents="documentTypesState.list"
       :institutions="institutionTypesState.list"
       :configuracion-vista="configuracion"
+      :periodos="periodos"
+      v-on:filtros-aplicados="changeFilters"
+    />-->
+    <filtros-letty
+      :filtersView="filterView"
+      :users="usersCompany"
+      :groups="groupsCompany"
+      :documents="documentTypesState.list"
+      :institutions="institutionTypesState.list"
       :periodos="periodos"
       v-on:filtros-aplicados="changeFilters"
     />
@@ -60,17 +69,21 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import Filtros from '@/febos/global/_vue/componentes/FiltrosDnt';
+// import Filtros from '@/febos/global/_vue/componentes/FiltrosDnt';
+import FiltrosLetty from '@/febos/global/_vue/componentes/FiltrosLetty';
+import ConfigFileFiltersMixin from '@/febos/global/_vue/componentes/filtersLetty/ConfigFileFiltersMixin';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  components: { Filtros },
+  // components: { Filtros },
+  components: { FiltrosLetty },
   props: ['value'],
-  mixins: [FiltersDntMixin, FindTypeDocumentMixin],
+  mixins: [FiltersDntMixin, FindTypeDocumentMixin, ConfigFileFiltersMixin],
   data() {
     const { view } = this.$route.params;
     const filters = this.getFilterView(view);
+    const filterLetty = this.getFilterViewLetty(view);
 
     return {
       periodos: [
@@ -85,6 +98,7 @@ export default {
       periodoDesde: '',
       periodoHasta: '',
       configuracion: filters,
+      filterView: filterLetty,
       currentFilters: ''
     };
   },
@@ -188,3 +202,10 @@ export default {
 };
 
 </script>
+<style>
+.input-date {
+  border: 1px solid #bcbcbc;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+</style>

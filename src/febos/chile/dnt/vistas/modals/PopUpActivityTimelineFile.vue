@@ -1,7 +1,7 @@
 <template>
   <vs-popup
     :title="`Actividades para expediente ${file.numero}`" :active.sync="showModal"
-    @close="onModalClose()"
+    @close="closeModal()"
   >
     <div>
       <div class="row mb-3">
@@ -98,10 +98,7 @@ export default {
   methods: {
     ...mapActions('Modals', [
       'closeModal'
-    ]),
-    onModalClose() {
-      this.clearData();
-    }
+    ])
   }
 };
 </script>

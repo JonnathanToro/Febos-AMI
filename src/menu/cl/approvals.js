@@ -14,7 +14,8 @@ export default [{
       name: 'Bandeja salida',
       icon: 'ArchiveIcon',
       permiso: '*' // TODO: set permission
-    },
+    }
+    /*
     {
       url: { name: 'approval-files', params: { view: 'todos' } },
       name: 'Expedientes Apr.',
@@ -27,5 +28,6 @@ export default [{
       icon: 'FolderIcon',
       permiso: '*' // TODO: set permission
     }
+    */
   ]
 }];
