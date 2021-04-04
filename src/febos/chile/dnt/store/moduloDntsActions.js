@@ -21,6 +21,7 @@ import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
 import { fileDetails } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
+import { getSearchParams } from '@/febos/global/utils/router';
 
 export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
   try {
@@ -270,11 +271,15 @@ export const saveDocument = async ({ commit }, { id, data, isDraft }) => {
       return;
     }
 
-    const path = isDraft
-      ? `/documentos/externo/${response.data.dnt.febosId}`
-      : '/expedientes/en-curso';
+    const route = isDraft
+      ? {
+        name: 'files-wizard-update',
+        params: { wizard: 'externo', id: response.data.dnt.febosId },
+        query: getSearchParams()
+      }
+      : { name: 'files', params: { view: 'en-curso' } };
 
-    await router.push({ path });
+    await router.push(route);
   } catch (e) {
     commit('SET_ERROR_MESSAGE', e.context);
   } finally {
