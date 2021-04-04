@@ -17,7 +17,6 @@ const getRoutes = () => {
   return [
     {
       path: '/:portal',
-      name: 'portal',
       meta: { requiereLogin: true },
       component: () => import('@/layouts/PortalPage'),
       children
@@ -25,8 +24,7 @@ const getRoutes = () => {
     {
       path: '/',
       name: 'root',
-      component: () => import('@/febos/global/inicio/vistas/PortalSelector'),
-      children
+      component: () => import('@/febos/global/inicio/vistas/PortalSelector')
     },
     {
       path: '/error-404',
@@ -100,7 +98,12 @@ const waitForStorageToBeReady = async (to, from, next) => {
   const { params: { portal }, name } = to;
   const key = `${process.env.VUE_APP_CODIGO_PAIS}.${portal}.${process.env.VUE_APP_AMBIENTE}.redirect`;
 
-  if (!ROUTES_WITHOUT_PORTAL.includes(name) && !portal) {
+  if (!portal && !ROUTES_WITHOUT_PORTAL.includes(name)) {
+    return next({ name: 'root' });
+  }
+
+  const availablePortals = (process.env.VUE_APP_AVAILABLE_PORTALS || '').split(',');
+  if (portal && !availablePortals.includes(portal)) {
     return next({ name: 'root' });
   }
 
