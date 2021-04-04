@@ -18,6 +18,15 @@
         <vs-avatar icon="search" color="#ccc"/>
         <strong>No hay filtros aplicados</strong>
       </vs-chip>
+      <vs-chip
+        :color="colores.navbar"
+        v-if="hasQueryFilters"
+        style="cursor: context-menu"
+        v-on:click.native="clearQueryFilters()"
+      >
+        <vs-avatar icon="link" color="primary"/>
+        <strong>Borrar filtros de enlace</strong>
+      </vs-chip>
     </div>
     <div style="float:right">
       <vs-dropdown vs-trigger-click>
@@ -318,7 +327,7 @@
 import VsModal from 'vs-modal';
 import VueTagsInput from '@johmun/vue-tags-input';
 import Multiselect from 'vue-multiselect';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import Vue from 'vue';
 
 export default {
@@ -348,6 +357,13 @@ export default {
     periodos: {
       type: Array,
       required: false
+    },
+    hasQueryFilters: {
+      type: Boolean,
+      default: false
+    },
+    clearQueryFilters: {
+      type: Function
     }
   },
   data() {
@@ -489,7 +505,10 @@ export default {
     ]),
     ...mapGetters('Usuario', [
       'currentUser'
-    ])
+    ]),
+    ...mapState('Personalizacion', {
+      colores: (state) => state.colores
+    })
   },
   methods: {
     clearOptions() {
@@ -593,14 +612,12 @@ export default {
         return filterApplied;
       });
 
-      this.filtrosAplicados = this.filtrosAplicados.filter((filter) => {
-        return filter.valor !== '' || filter.valor.length;
-      });
+      this.filtrosAplicados = this.filtrosAplicados.filter((filter) => filter.valor !== '' || filter.valor.length);
 
       // this.actualFilter = {};
       this.$refs.configFiltro.close();
     },
-    setFilters() {
+    setFilters(onMounted = false) {
       const query = [];
       // para los filtros
       this.filtersView.filtrosFijos.forEach((filter) => {
@@ -640,7 +657,7 @@ export default {
       });
 
       console.log('FILTROS A APLICAR', query.join('|'));
-      this.$emit('filtros-aplicados', query.join('|'));
+      this.$emit('filtros-aplicados', query.join('|'), onMounted);
     },
     searchAvailableFilters() {
       let { filtrosHabilitados } = this.filtersView;
@@ -694,7 +711,7 @@ export default {
         }
         case 'grupoCreador':
         case 'grupoIds': {
-          opciones =  this.groups.map((group) => {
+          opciones = this.groups.map((group) => {
             const groupOption = {
               nombre: group.nombre,
               valor: group.id
@@ -704,7 +721,7 @@ export default {
           break;
         }
         case 'correos': {
-          opciones =  this.users.map((user) => {
+          opciones = this.users.map((user) => {
             const userOption = {
               nombre: user.nombre,
               valor: user.correo
@@ -787,7 +804,7 @@ export default {
   mounted() {
     this.periodosDisponibles = this.periodos.filter((periodo) => periodo.valor !== 'personalizado');
     this.searchAvailableFilters();
-    this.setFilters();
+    this.setFilters(true);
   }
 };
 

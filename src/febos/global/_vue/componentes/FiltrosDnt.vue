@@ -14,6 +14,15 @@
         <vs-avatar icon="search" color="#ccc"/>
         <strong>No hay filtros aplicados</strong>
       </vs-chip>
+      <vs-chip
+        :color="colores.navbar"
+        v-if="hasQueryFilters"
+        style="cursor: context-menu"
+        v-on:click.native="clearQueryFilters()"
+      >
+        <vs-avatar icon="link" color="primary"/>
+        <strong>Borrar filtros de enlace</strong>
+      </vs-chip>
     </div>
     <div style="float:right">
       <vs-dropdown vs-trigger-click>
@@ -42,13 +51,13 @@
       v-on:click.native="ventanaModificarFiltro(filtro)"
       style="cursor: context-menu"
     >
-        <vs-avatar
-          icon="clear"
-          color="primary"
-          v-on:click.native="eliminarFiltro(filtro)"
-          v-if="esEliminable[filtro.campo]"
-        />
-        <span />
+      <vs-avatar
+        icon="clear"
+        color="primary"
+        v-on:click.native="eliminarFiltro(filtro)"
+        v-if="esEliminable[filtro.campo]"
+      />
+      <span />
       <vs-tooltip :text="`Modificar filtro ${filtro.nombre}`">
         <strong>{{ typeof filtro == 'undefined' ? '' : filtro.nombre }}: </strong>
         <span class="pl-1">
@@ -370,6 +379,13 @@ export default {
     dntType: {
       type: String,
       required: true
+    },
+    hasQueryFilters: {
+      type: Boolean,
+      default: false
+    },
+    clearQueryFilters: {
+      type: Function
     }
   },
   computed: {
@@ -591,7 +607,7 @@ export default {
       }
       this.$refs.configFiltro.close();
     },
-    aplicarFiltros() {
+    aplicarFiltros(onMounted = false) {
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filter) => {
@@ -616,6 +632,11 @@ export default {
           }
           if (filtro.campo === 'solicitanteCorreo') {
             filtro.campo = 'solicitanteEmail';
+          }
+          if (filtro.tipo === 'usuarioIds') {
+            if (filtro.campo === 'codigosDerivacionUsuario') {
+              filtro.campo = 'codigosDerivacionUsuario';
+            }
           }
           query.push(`${filtro.campo }:${ filtro.valor}`);
         }
@@ -645,7 +666,7 @@ export default {
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      this.$emit('filtros-aplicados', query.join('|'));
+      this.$emit('filtros-aplicados', query.join('|'), onMounted);
     },
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
@@ -772,7 +793,6 @@ export default {
       console.log('filtros aplicados', this.filtrosAplicados);
     },
     formatearValor(filter) {
-      console.log('FILTER', filter);
       const filtro = filter;
       if (filtro.valor === '' || typeof filtro.valor === 'undefined') {
         filtro.valor = '';
@@ -1029,7 +1049,7 @@ export default {
         });
       }
     }
-    this.aplicarFiltros();
+    this.aplicarFiltros(true);
   },
   created() {
     this.configuracionCamposFiltros = configFilters[this.dntType]

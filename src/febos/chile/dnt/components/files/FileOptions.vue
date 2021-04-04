@@ -14,7 +14,7 @@
         />
       </div>
     </CheckPermission>
-    <vs-tooltip text="Desplegar acciones">
+    <div v-tooltip="'Desplegar acciones'">
       <vs-dropdown vs-custom-content vs-trigger-click>
         <a class="a-icon" href.prevent>
           <vs-icon
@@ -28,7 +28,7 @@
         <vs-dropdown-menu style="width: fit-content">
           <CheckPermission permission="ED016">
             <vs-dropdown-item
-              v-if="isDraft && onPendingFiles && isResponsible"
+              v-if="isDraft"
               v-on:click="openDraft()"
             >
               <vs-icon icon="query_builder"/>
@@ -161,7 +161,7 @@
         </vs-dropdown-menu>
       </vs-dropdown>
       <span />
-    </vs-tooltip>
+    </div>
   </div>
 </template>
 <script>

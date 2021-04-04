@@ -9,11 +9,10 @@ const filterViews = {
       { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
       // { campo: 'categoria', valor: 'pendiente' },
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
-      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext', 'numInt', 'numOf'] }
-    ],
-    filtrosPorDefecto: [
+      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext', 'numInt', 'numOf'] },
       { campo: 'estado', tipo: 'multi', valor: ['3'] }
     ],
+    filtrosPorDefecto: [],
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
@@ -272,14 +271,14 @@ const filterViews = {
       { campo: 'tipo', tipo: 'multi', valor: ['EXP'] },
       // eslint-disable-next-line no-template-curly-in-string
       { campo: 'destinoResponsableIds', valor: '${idUsuario}' },
-      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext', 'numInt', 'numOf'] }
-    ],
-    filtrosPorDefecto: [
+      { campo: 'claseMercadoPublico', tipo: 'multi', valor: ['int', 'ext', 'numInt', 'numOf'] },
       { campo: 'estado', tipo: 'multi', valor: ['8', '9'] }
     ],
+    filtrosPorDefecto: [],
     filtrosHabilitados: [
       { campo: 'fechaEmision', tipo: 'rangoFecha' },
       { campo: 'numero', tipo: 'numero' },
+      { campo: 'numeroInt', tipo: 'texto' },
       /*
       {
         campo: 'tipo',
@@ -314,6 +313,7 @@ const filterViews = {
       // { campo: 'emisorContactoArea', tipo: 'institucion' }, // nombre institucion
       { campo: 'emisorContactoNombre', tipo: 'texto' }, // nombre remitente
       { campo: 'emisorContactoCargo', tipo: 'texto' }, // cargo remitente
+      { campo: 'emisorContactoEmail', tipo: 'texto' }, // correo remitente
       {
         campo: 'transporteViaTransporteCodigoTransporte', // acompaña fisico
         tipo: 'multi',

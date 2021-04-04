@@ -26,6 +26,7 @@ import { sendTicket } from '@/febos/servicios/api/tickets.api';
 import { fileDetails, sendToFlowFile } from '@/febos/servicios/api/aprobaciones.api';
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 import { clGetReferences } from '@/febos/servicios/api/documents.api';
+import { getSearchParams } from '@/febos/global/utils/router';
 
 export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
   try {
@@ -273,7 +274,8 @@ export const sendTicketHelp = async ({ commit }, payload) => {
 };
 
 export const saveDocument = async ({ commit }, {
-  id, data, isDraft, isFileOfficial, redirectFlow
+  id, data, isDraft, redirectFlow
+// eslint-disable-next-line consistent-return
 }) => {
   commit('SET_LOADING', true);
   try {
@@ -284,18 +286,28 @@ export const saveDocument = async ({ commit }, {
     commit('SET_SUCCESS_MESSAGE', response.data);
 
     if (isDraft && id) {
-      return;
+      return Promise.resolve();
     }
 
-    const fileRoutes = isFileOfficial ? '/expedientes/general' : '/expedientes/int-general';
-    const routeFlow = `/documentos/flujo/${response.data.dnt.febosId}`;
-    const finalRoute = redirectFlow ? routeFlow : fileRoutes;
+    if (isDraft) {
+      return router.push({
+        name: 'files-wizard-update',
+        params: {
+          wizard: response.data.dnt.claseMercadoPublico,
+          id: response.data.dnt.febosId
+        },
+        query: getSearchParams()
+      });
+    }
 
-    const path = isDraft
-      ? `/documentos/externo/${response.data.dnt.febosId}`
-      : finalRoute;
+    if (redirectFlow) {
+      return router.push({
+        name: 'files-wizard-update',
+        params: { wizard: 'flujo', id: response.data.dnt.febosId }
+      });
+    }
 
-    await router.push({ path });
+    return router.push({ name: 'files', params: { view: 'general' } });
   } catch (e) {
     commit('SET_ERROR_MESSAGE', e.context);
   } finally {

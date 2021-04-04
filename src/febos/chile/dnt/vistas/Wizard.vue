@@ -3,7 +3,7 @@
     <vs-row vs-justify="center">
       <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="8">
         <step-progress
-          :current-step="wizard.currentStep"
+          :current-step="currentStep"
           :steps="mockedSteps"
           :active-color="colors.primario"
           :active-thickness="0"
@@ -68,6 +68,7 @@ import { mapGetters, mapActions } from 'vuex';
 import config from '../config/wizard';
 
 import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+import { updateSearchParams } from '@/febos/global/utils/router';
 
 export default {
   components: {
@@ -76,8 +77,8 @@ export default {
   },
   data() {
     return {
+      currentStep: Number.parseInt(this.$route.query.step || 0, 10),
       wizard: {
-        currentStep: 0,
         steps: []
       }
     };
@@ -107,17 +108,17 @@ export default {
       'wizardData'
     ]),
     isFirstStep() {
-      return this.wizard.currentStep === 0;
+      return this.currentStep === 0;
     },
     isLastStep() {
-      return this.wizard.currentStep >= this.wizard.steps.length - 1;
+      return this.currentStep >= this.wizard.steps.length - 1;
     },
     mockedSteps() {
       return new Array(this.wizard.steps.length)
         .fill('');
     },
     currentStepSetting() {
-      return this.wizard.steps[this.wizard.currentStep];
+      return this.wizard.steps[this.currentStep];
     }
   },
   methods: {
@@ -131,7 +132,7 @@ export default {
         return;
       }
 
-      this.wizard.currentStep -= 1;
+      this.currentStep -= 1;
     },
     async onNext() {
       if (!await this.$refs.step.isValid()) {
@@ -145,7 +146,8 @@ export default {
         return;
       }
 
-      this.wizard.currentStep += 1;
+      this.currentStep += 1;
+      updateSearchParams({ step: this.currentStep });
     },
     onEnd(flow) {
       const { id } = this.$route.params;

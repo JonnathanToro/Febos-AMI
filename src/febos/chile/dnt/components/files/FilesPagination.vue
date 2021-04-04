@@ -24,6 +24,9 @@ export default {
     ]),
   },
   watch: {
+    value(newValue) {
+      this.page = newValue;
+    },
     page(newValue) {
       this.$emit('input', newValue);
     }

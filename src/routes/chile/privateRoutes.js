@@ -21,7 +21,7 @@ export default [
   },
   {
     path: '/',
-    name: 'inicio',
+    name: 'start',
     meta: { requiereLogin: true },
     component: () => import('@/febos/global/inicio/vistas/Inicio.vue')
   },

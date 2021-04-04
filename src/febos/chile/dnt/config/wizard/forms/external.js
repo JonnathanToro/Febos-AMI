@@ -5,7 +5,6 @@ import StepInformation from '@/febos/chile/dnt/components/wizard/external/StepIn
 import StepFiles from '@/febos/chile/dnt/components/wizard/external/StepFiles';
 
 export default () => ({
-  currentStep: 0,
   steps: [
     {
       title: 'Identificación',
