@@ -25,6 +25,13 @@ export default [{
       i18n: 'expedientes'
     },
     {
+      url: { name: 'files', params: { view: 'finalizados' } },
+      name: 'Bandeja Finalizados',
+      icon: 'ArchiveIcon',
+      permiso: 'ED010',
+      i18n: 'expedientes'
+    },
+    {
       url: { name: 'files', params: { view: 'tramitados' } },
       name: 'Bandeja Tramitados',
       icon: 'ArchiveIcon',
@@ -33,7 +40,7 @@ export default [{
     },
     {
       url: { name: 'approval-trays', params: { view: 'entrada' } },
-      name: 'Bandeja entrada',
+      name: 'Aprobaciones - Entrada',
       icon: 'InboxIcon',
       permiso: '*' // TODO: set permission
     },

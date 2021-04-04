@@ -29,11 +29,11 @@
             Borrador
           </vs-chip>
           <vs-chip
-            title="Aprobado"
-            v-if="file.estado === '4'"
+            title="Tramitado"
+            v-if="file.estado === '10'"
           >
             <vs-avatar icon="thumb_up" color="#14AA59" />
-            Aprobado
+            Tramitado
           </vs-chip>
           <vs-chip
             title="Rechazado"
@@ -65,7 +65,8 @@
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
               {{ file.emisorContactoNombre | capitalize }}
               <small
-                class="d-block" v-if="file.emisorContactoEmail"
+                v-if="file.emisorContactoEmail"
+                class="d-block"
                 v-tooltip="`${file.emisorContactoEmail}`"
               >
                 {{ file.emisorContactoEmail | truncate(20) }}
@@ -73,7 +74,11 @@
             </vs-col>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
               {{ file.solicitanteGrupoNombre }}
-              <small class="d-block" v-tooltip="`${file.solicitanteNombre}`">
+              <small
+                v-if="file.solicitanteNombre"
+                class="d-block"
+                v-tooltip="`${file.solicitanteNombre}`"
+              >
                 {{ file.solicitanteNombre | truncate(20) }}
               </small>
             </vs-col>

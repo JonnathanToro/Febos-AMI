@@ -279,6 +279,125 @@ const filterViews = {
         campo: 'estado',
         tipo: 'multi',
         opciones: {
+          10: 'Tramitado'
+        }
+      }
+    ],
+    filtrosHabilitados: [
+      {
+        nombre: 'Fecha documento', campo: 'fechaEmision', tipo: 'fecha', valor: ''
+      },
+      {
+        nombre: 'Núm Exp.', campo: 'numero', tipo: 'texto', valor: []
+      },
+      {
+        nombre: 'Núm Doc.', campo: 'numeroInt', tipo: 'texto', valor: []
+      },
+      {
+        nombre: 'Es privado',
+        campo: 'transportePuertoTipo', // es privado
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          1: 'Documento privado',
+          0: 'Documento público'
+        }
+      },
+      {
+        nombre: 'Acompaña físico',
+        campo: 'transporteViaTransporteCodigoTransporte',
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          1: 'Acompaña físico',
+          0: 'No Acompaña físico'
+        }
+      },
+      {
+        nombre: 'Tipo de destino',
+        campo: 'destinoCodigoIds',
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          usuarios: 'Funcionarios',
+          unidades: 'Unidades',
+          oficinas: 'Oficinas',
+          docDigital: 'DocDigital',
+          ministerios: 'Ministerios',
+          empresas: 'Empresas',
+          personas: 'Personas'
+        }
+      },
+      {
+        nombre: 'Tipo de referencia',
+        campo: 'referenciaTipo',
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          EXP: 'Expediente',
+          SAFI: 'Contrato SAFI', // TODO  verificar estos filtros!!!
+          SSD: 'Proceso SSD'
+        }
+      },
+      {
+        nombre: 'Nombre remitente', campo: 'emisorContactoNombre', tipo: 'texto', valor: []
+      },
+      {
+        nombre: 'Cargo remitente', campo: 'emisorContactoCargo', tipo: 'texto', valor: []
+      },
+      {
+        nombre: 'Correo remitente', campo: 'emisorContactoEmail', tipo: 'texto', valor: []
+      },
+      {
+        nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
+      },
+      {
+        nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+      },
+      { nombre: 'Derivado por', campo: 'codigosDerivacionUsuario', tipo: 'derivadoIds' },
+      { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
+      { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
+      { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
+      { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
+      { nombre: 'Usuario creador', campo: 'solicitanteCorreo', tipo: 'correos' },
+      { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
+    ]
+  },
+  finalizados: {
+    filtrosFijos: [
+      {
+        // eslint-disable-next-line no-template-curly-in-string
+        nombre: 'Rut emisor', campo: 'emisorRut', tipo: 'text', valor: '${iutEmpresa}'
+      },
+      {
+        nombre: 'Responsable',
+        campo: 'destinoResponsableIds',
+        tipo: 'text',
+        // eslint-disable-next-line no-template-curly-in-string
+        valor: '${idUsuario}'
+      },
+      {
+        nombre: 'Tipo',
+        campo: 'tipo',
+        tipo: 'text',
+        valor: 'EXP'
+      },
+      {
+        nombre: 'Tipo expediente',
+        campo: 'claseMercadoPublico',
+        tipo: 'multi',
+        opciones: {
+          int: 'Interno',
+          ext: 'Externo',
+          numInt: 'Num. Interno',
+          numOf: 'Num. Oficial'
+        }
+      },
+      {
+        nombre: 'Estado',
+        campo: 'estado',
+        tipo: 'multi',
+        opciones: {
           8: 'Anulado',
           9: 'Finalizado'
         }
