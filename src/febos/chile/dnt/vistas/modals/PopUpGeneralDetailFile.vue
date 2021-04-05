@@ -10,7 +10,7 @@
         <h5 style="color:#7a008d;">
           Este expediente ha sido creado por {{ file.solicitanteNombre }}
           <small>{{ file.solicitanteEmail }}</small>,
-          perteneciente a la unidad BLA
+          perteneciente a la unidad {{file.solicitanteGrupoNombre}}
         </h5>
       </div>
       <div class="col-12" style="margin: 0 auto;">
