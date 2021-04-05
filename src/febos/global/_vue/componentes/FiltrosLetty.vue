@@ -32,7 +32,7 @@
       <vs-dropdown vs-trigger-click>
         <vs-chip color="primary">
           <vs-avatar icon="add" color="primary"/>
-          Agregar filtro Letty
+          Agregar filtro
         </vs-chip>
         <vs-dropdown-menu class="scroll-options shadow">
           <vs-dropdown-item

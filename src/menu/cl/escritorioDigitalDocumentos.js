@@ -34,14 +34,14 @@ export default [{
     {
       url: { name: 'files', params: { view: 'tramitados' } },
       name: 'Bandeja Tramitados',
-      icon: 'ArchiveIcon',
+      icon: 'TrelloIcon',
       permiso: 'ED010',
       i18n: 'expedientes'
     },
     {
       url: { name: 'approval-trays', params: { view: 'entrada' } },
       name: 'Aprobaciones - Entrada',
-      icon: 'InboxIcon',
+      icon: 'MailIcon',
       permiso: '*' // TODO: set permission
     },
     {
