@@ -215,6 +215,26 @@
             </multiselect>
           </div>
         </div>
+        <div v-if="actualFilter.tipo === 'grupoDestino'">
+          <div class="texto-normal">
+            <multiselect
+              v-model="filterOptions.groupSubject"
+              select-label="Presiona enter para seleccionar"
+              selected-label="Presiona enter para remover"
+              deselect-label="Presiona enter para remover"
+              placeholder="Seleccione los grupos"
+              label="nombre" track-by="valor"
+              :options="actualFilter.opciones" :multiple="true"
+              :close-on-select="false" :clear-on-select="false"
+              :preserve-search="true" :preselect-first="false"
+            >
+              <template slot="selection" slot-scope="{ values, search, isOpen }">
+              <span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">
+                {{ values.length }} grupos seleccionados</span>
+              </template>
+            </multiselect>
+          </div>
+        </div>
         <div v-if="actualFilter.tipo == 'multi'">
           <div v-if="actualFilter.valor.length==1" class="alerta">
             Debe seleccionar como mínimo 1 de las opciones. Seleccione otra
@@ -391,6 +411,7 @@ export default {
         institutions: [],
         groups: [],
         groupCreator: [],
+        groupSubject: []
       }
     };
   },
@@ -441,6 +462,11 @@ export default {
     },
     // eslint-disable-next-line func-names
     'filterOptions.groupCreator': function (valorNuevo) {
+      this.actualFilter.valor = valorNuevo.map((group) => group.valor);
+      this.actualFilter.valorFormateado = valorNuevo.map((group) => group.nombre).join(',');
+    },
+    // eslint-disable-next-line func-names
+    'filterOptions.groupSubject': function (valorNuevo) {
       this.actualFilter.valor = valorNuevo.map((group) => group.valor);
       this.actualFilter.valorFormateado = valorNuevo.map((group) => group.nombre).join(',');
     },
@@ -541,6 +567,10 @@ export default {
         }
         case 'grupoCreador': {
           this.filterOptions.groupCreator = [];
+          break;
+        }
+        case 'grupoDestino': {
+          this.filterOptions.groupSubject = [];
           break;
         }
         case 'correos': {
@@ -743,6 +773,7 @@ export default {
           break;
         }
         case 'grupoCreador':
+        case 'grupoDestino':
         case 'grupoIds': {
           opciones = this.groups.map((group) => {
             const groupOption = {
@@ -807,6 +838,10 @@ export default {
           break;
         }
         case 'correos': {
+          this.actualFilter.opciones = this.setOptionsFilter(filter);
+          break;
+        }
+        case 'grupoDestino': {
           this.actualFilter.opciones = this.setOptionsFilter(filter);
           break;
         }
