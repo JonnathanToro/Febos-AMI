@@ -518,6 +518,39 @@ export default {
     removeFilter(filter) {
       this.filtrosAplicados = this.filtrosAplicados
         .filter((filterApplied) => filterApplied.campo !== filter.campo);
+      switch (filter.tipo) {
+        case 'usuarioIds': {
+          this.filterOptions.users = [];
+          break;
+        }
+        case 'derivadoIds': {
+          this.filterOptions.derivados = [];
+          break;
+        }
+        case 'opcionInst': {
+          this.filterOptions.institutions = [];
+          break;
+        }
+        case 'opcionDoc': {
+          this.filterOptions.documents = [];
+          break;
+        }
+        case 'grupoIds': {
+          this.filterOptions.groups = [];
+          break;
+        }
+        case 'grupoCreador': {
+          this.filterOptions.groupCreator = [];
+          break;
+        }
+        case 'correos': {
+          this.filterOptions.userCorreos = [];
+          break;
+        }
+        default: {
+          console.log('format filtro default', this.actualFilter);
+        }
+      }
     },
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
