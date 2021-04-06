@@ -2,8 +2,8 @@
   <div>
     <!-- eslint-disable -->
     <vx-card title="Configuraciones" title-color="primary">
-      <vs-row vs-align="flex-start" vs-type="flex" vs-w="12">
-        <vs-col vs-type="flex" vs-w="4" >
+      <div class="row">
+        <div class="col-4">
           <div class="demo-inline-spacing" v-if="isLoadingConfigurations">
             <b-spinner
               key="primary"
@@ -14,24 +14,27 @@
           <TreeItem
             v-if="!isLoadingConfigurations"
             class="item"
-            :item="arbol"
+            :item="tree"
             @select-item="selectItem"
           >
             <template slot="folder-description" slot-scope="{item, isOpen}">
-              <b-icon :icon="isOpen?'folder2-open':'folder'"/>
+              <b-icon :icon="isOpen ? 'folder2-open' : 'folder'"/>
               {{ item.name }}
             </template>
             <template slot="item-description" slot-scope="{item, isOpen}">
               <ul>
-                <li> <b-icon icon="pencil"/> {{ item.name }}</li>
+                <li>
+                  <b-icon icon="pencil"/>
+                  {{ item.name }}
+                </li>
               </ul>
             </template>
           </TreeItem>
-        </vs-col>
-        <vs-col vs-type="flex" vs-w="8"  v-if="selected.name">
-        <ConfigList :config="selected" :configurations="configurations" :key="selected.name"/>
-        </vs-col>
-      </vs-row>
+        </div>
+        <div class="col-8" v-if="selected.name">
+          <ConfigList :config="selected" :configurations="configurations" :key="selected.name"/>
+        </div>
+      </div>
     </vx-card>
   </div>
 </template>
@@ -42,7 +45,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { BSpinner, BIcon } from 'bootstrap-vue';
 
 import TreeItem from '@/components/TreeItem';
-import configurations from '@/febos/global/empresas/componentes/configs/configuraciones';
+import configurations from '@/febos/global/empresas/configs';
 import ConfigList from '@/febos/global/empresas/componentes/configs/ConfigList';
 
 export default {
@@ -55,7 +58,7 @@ export default {
   },
   data() {
     return {
-      arbol: configurations,
+      tree: configurations,
       isOpen: true,
       selected: {}
     };

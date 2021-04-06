@@ -32,5 +32,5 @@ export default {
   groupsCompany: [],
   isLoadingConfigurations: false,
   isSavingConfigurations: false,
-  configuratios: []
+  configurations: []
 };

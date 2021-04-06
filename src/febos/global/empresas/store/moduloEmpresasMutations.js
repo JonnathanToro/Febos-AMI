@@ -34,7 +34,7 @@ export default {
     state.groupsCompany = payload;
   },
   SET_CONFIGURATIONS(state, payload) {
-    state.configuratios = payload;
+    state.configurations = payload;
   },
   SET_LOAD_CONFIGURATIONS(state, payload) {
     state.isLoadingConfigurations = payload;

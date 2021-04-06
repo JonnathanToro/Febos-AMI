@@ -16,6 +16,6 @@ export const usersCompany = (state) => (state.usersCompany || [])
 export const groupsCompany = (state) => (state.groupsCompany || [])
   .sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b));
 
-export const configurations = (state) => state.configuratios;
+export const configurations = (state) => state.configurations;
 export const isLoadingConfigurations = (state) => state.isLoadingConfigurations;
 export const isSavingConfigurations = (state) => state.isSavingConfigurations;

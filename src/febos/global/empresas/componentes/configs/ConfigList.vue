@@ -8,7 +8,7 @@
       v-for="(parameter, index) in config.parameters"
       v-bind:key="index"
     >
-    <ConfigListItem :key="index" :configurations="configurations" :param="parameter" />
+      <ConfigListItem :key="index" :configurations="configurations" :param="parameter"/>
     </app-collapse>
   </vx-card>
 </template>
@@ -37,14 +37,7 @@ export default {
       required: true
     }
   },
-  mounted() {
-
-  },
   methods: {
   }
 };
 </script>
-
-<style scoped>
-
-</style>

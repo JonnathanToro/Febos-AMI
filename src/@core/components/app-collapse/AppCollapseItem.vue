@@ -18,9 +18,7 @@
       </slot>
       </div>
       <div class="header-acction">
-      <slot name="header-acction">
-
-      </slot>
+        <slot name="header-acction"/>
       </div>
     </b-card-header>
 
@@ -92,11 +90,11 @@ export default {
 </script>
 
 <style scoped>
-  .header-acction{
+  .header-acction {
     position: relative;
     float: right;
   }
-  .header{
+  .header {
     position: relative;
     float: left;
   }

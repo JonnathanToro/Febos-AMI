@@ -1,19 +1,20 @@
 <template>
   <div>
-    <div v-if="isFolder"
-         :class="{bold: isFolder}"
-         @click="toggleFolder()"
+    <div
+      v-if="isFolder"
+      :class="{bold: isFolder}"
+      @click="toggleFolder()"
     >
-      <slot name="folder-description"  v-bind:item="item" v-bind:isOpen="isOpen">
+      <slot name="folder-description" v-bind:item="item" v-bind:isOpen="isOpen">
         {{ item.name }} <span>[{{ isOpen ? '-' : '+' }}]</span>
       </slot>
     </div>
     <div v-if="!isFolder" @click="selectItem">
-      <slot name="item-description" v-bind:item="item" >
+      <slot name="item-description" v-bind:item="item">
         {{ item.name }}
       </slot>
     </div>
-    <ul v-show="isOpen" v-if="isFolder" class="nivel">
+    <ul v-show="isOpen" v-if="isFolder" class="level">
       <tree-item
         class="item"
         v-for="(child, index) in item.children"
@@ -24,21 +25,21 @@
         @select-item="$emit('select-item', $event)"
       >
         <template slot="folder-description" slot-scope="{item, isOpen}">
-          <slot name="folder-description"  v-bind:item="item" v-bind:isOpen="isOpen">
+          <slot name="folder-description" v-bind:item="item" v-bind:isOpen="isOpen">
             {{ item.name }} <span>[{{ isOpen ? '-' : '+' }}]</span>
           </slot>
         </template>
         <template slot="item-description" slot-scope="{item}">
-          <slot name="item-description" v-bind:item="item" >
+          <slot name="item-description" v-bind:item="item">
             {{ item.name }}
           </slot>
         </template>
       </tree-item>
-<!--      TODO: habilitar cuando se tenga opcion para agregar nuevos items-->
-<!--      <li v-if="isFolder" class="add" @click="$emit('add-item', item)"-->
-<!--          @mouseover="isFolder?hover = true:null"-->
-<!--          @mouseleave="isFolder?hover = false:null"-->
-<!--      > - <span v-show="hover">Agregar Item a : {{ item.name }} </span></li>-->
+      <!--      TODO: habilitar cuando se tenga opcion para agregar nuevos items-->
+      <!--      <li v-if="isFolder" class="add" @click="$emit('add-item', item)"-->
+      <!--          @mouseover="isFolder?hover = true:null"-->
+      <!--          @mouseleave="isFolder?hover = false:null"-->
+      <!--      > - <span v-show="hover">Agregar Item a : {{ item.name }} </span></li>-->
     </ul>
   </div>
 </template>
@@ -50,13 +51,15 @@ export default {
   },
   data() {
     return {
-      isOpen: true, hover: false
+      isOpen: true,
+      hover: false
     };
   },
   computed: {
     isFolder() {
-      return this.item && this.item.children
-               && this.item.children.length;
+      return this.item
+         && this.item.children
+         && this.item.children.length;
     }
   },
   methods: {
@@ -87,7 +90,7 @@ export default {
     cursor: pointer;
   }
 
-  .nivel {
+  .level {
     padding-left: 1em;
     line-height: 1.5em;
     list-style-type: dot;

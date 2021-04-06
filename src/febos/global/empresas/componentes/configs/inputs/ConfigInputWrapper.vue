@@ -130,7 +130,7 @@ export default {
 </script>
 
 <style scoped>
-  .disabled > button{
+  .disabled > button {
     cursor: no-drop;
   }
 </style>

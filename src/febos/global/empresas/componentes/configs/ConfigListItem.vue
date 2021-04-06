@@ -36,13 +36,13 @@
     </div>
     <br>
     <config-input-wrapper
-          :key="level"
-          :type="param.type"
-          :level="level"
-          :levels="levels"
-          :param="param.parameter_id"
-          :value="value"
-     />
+      :key="level"
+      :type="param.type"
+      :level="level"
+      :levels="levels"
+      :param="param.parameter_id"
+      :value="value"
+    />
   </app-collapse-item>
 </template>
 
