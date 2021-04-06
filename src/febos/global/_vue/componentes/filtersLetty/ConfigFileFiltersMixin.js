@@ -86,7 +86,7 @@ const filterViews = {
       },
       {
         nombre: 'Tipo de referencia',
-        campo: 'referenciaTipo',
+        campo: 'codigosReferenciasTipos',
         tipo: 'multi',
         valor: [],
         opciones: {
@@ -116,13 +116,13 @@ const filterViews = {
         nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Destino tipo correo', campo: 'destinoCorreos', tipo: 'texto', valor: []
+        nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
       },
       { nombre: 'Derivado por', campo: 'codigosDerivacionUsuario', tipo: 'derivadoIds' },
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
       { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
-      { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
-      { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
+      { nombre: 'Destino tipo usuario', campo: 'destinoParticipanteIds', tipo: 'usuarioIds' },
+      { nombre: 'Destino tipo grupo', campo: 'destinoParticipanteIds', tipo: 'grupoIds' },
       { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' }
 
     ]
@@ -213,7 +213,7 @@ const filterViews = {
       },
       {
         nombre: 'Tipo de referencia',
-        campo: 'referenciaTipo',
+        campo: 'codigosReferenciasTipos',
         tipo: 'multi',
         valor: [],
         opciones: {
@@ -239,11 +239,14 @@ const filterViews = {
       {
         nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
+      {
+        nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
+      },
       { nombre: 'Derivado por', campo: 'codigosDerivacionUsuario', tipo: 'derivadoIds' },
       { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
-      { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
-      { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
+      { nombre: 'Destino tipo usuario', campo: 'destinoParticipanteIds', tipo: 'usuarioIds' },
+      { nombre: 'Destino tipo grupo', campo: 'destinoParticipanteIds', tipo: 'grupoIds' },
       { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]
@@ -332,7 +335,7 @@ const filterViews = {
       },
       {
         nombre: 'Tipo de referencia',
-        campo: 'referenciaTipo',
+        campo: 'codigosReferenciasTipos',
         tipo: 'multi',
         valor: [],
         opciones: {
@@ -358,11 +361,14 @@ const filterViews = {
       {
         nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
+      {
+        nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
+      },
       { nombre: 'Derivado por', campo: 'codigosDerivacionUsuario', tipo: 'derivadoIds' },
       { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
-      { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
-      { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
+      { nombre: 'Destino tipo usuario', campo: 'destinoParticipanteIds', tipo: 'usuarioIds' },
+      { nombre: 'Destino tipo grupo', campo: 'destinoParticipanteIds', tipo: 'grupoIds' },
       { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]
@@ -454,7 +460,7 @@ const filterViews = {
       },
       {
         nombre: 'Tipo de referencia',
-        campo: 'referenciaTipo',
+        campo: 'codigosReferenciasTipos',
         tipo: 'multi',
         valor: [],
         opciones: {
@@ -480,11 +486,14 @@ const filterViews = {
       {
         nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
+      {
+        nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
+      },
       { nombre: 'Derivado por', campo: 'codigosDerivacionUsuario', tipo: 'derivadoIds' },
       { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
-      { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
-      { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
+      { nombre: 'Destino tipo usuario', campo: 'destinoParticipanteIds', tipo: 'usuarioIds' },
+      { nombre: 'Destino tipo grupo', campo: 'destinoParticipanteIds', tipo: 'grupoIds' },
       { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]
@@ -583,7 +592,7 @@ const filterViews = {
       },
       {
         nombre: 'Tipo de referencia',
-        campo: 'referenciaTipo',
+        campo: 'codigosReferenciasTipos',
         tipo: 'multi',
         valor: [],
         opciones: {
@@ -613,13 +622,13 @@ const filterViews = {
         nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Destino tipo correo', campo: 'destinoCorreos', tipo: 'texto', valor: []
+        nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
       },
       { nombre: 'Derivado por', campo: 'codigosDerivacionUsuario', tipo: 'derivadoIds' },
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
       { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
-      { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
-      { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
+      { nombre: 'Destino tipo usuario', campo: 'destinoParticipanteIds', tipo: 'usuarioIds' },
+      { nombre: 'Destino tipo grupo', campo: 'destinoParticipanteIds', tipo: 'grupoIds' },
       { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]

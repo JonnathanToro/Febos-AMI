@@ -105,14 +105,14 @@
                 icon="subject"
                 :title="detailsFile.observaciones
                      && detailsFile.observaciones[0].observacion"
-                subtitle="Materia"
+                subtitle="Observación"
               />
               <vs-list-item
                 v-if="detailsFile.observaciones && detailsFile.observaciones[1]"
                 icon="subject"
                 :title="detailsFile.observaciones
                      && detailsFile.observaciones[1].observacion"
-                subtitle="Observaciones"
+                subtitle="Materia"
               />
               <div class="mt-3">
                 <h5>Etiquetas</h5>
