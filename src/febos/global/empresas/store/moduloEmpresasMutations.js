@@ -32,5 +32,14 @@ export default {
   },
   SET_GROUPS_COMPANY(state, payload) {
     state.groupsCompany = payload;
+  },
+  SET_CONFIGURATIONS(state, payload) {
+    state.configuratios = payload;
+  },
+  SET_LOAD_CONFIGURATIONS(state, payload) {
+    state.isLoadingConfigurations = payload;
+  },
+  SET_SAVING_CONFIGURATIONS(state, payload) {
+    state.isSavingConfigurations = payload;
   }
 };

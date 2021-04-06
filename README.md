@@ -8,6 +8,7 @@ Aplicación web de Febos mas moderna, y con VUE
 - [Template](https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-1/components/timeline)
 - [ICONOS](https://vue-feather-icons.egoist.sh/)
 - [ICONOS BS](https://bootstrap-vue.org/docs/icons)
+- [BS GRID](https://bootstrap-vue.org/docs/components/layout)
 
 ## Ejecución
 
