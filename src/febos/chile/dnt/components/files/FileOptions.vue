@@ -36,24 +36,36 @@
             </vs-dropdown-item>
           </CheckPermission>
           <CheckPermission permission="ED017">
-            <vs-dropdown-item v-on:click="onOptionBinnacleFile(file)">
+            <vs-dropdown-item
+              v-if="!isShared"
+              v-on:click="onOptionBinnacleFile(file)"
+            >
               <vs-icon icon="list"/>
               Bitácora
             </vs-dropdown-item>
           </CheckPermission>
           <CheckPermission permission="ED018">
-            <vs-dropdown-item v-on:click="onOptionTimelineFile(file)">
+            <vs-dropdown-item
+              v-if="!isShared"
+              v-on:click="onOptionTimelineFile(file)"
+            >
               <vs-icon icon="all_inbox"/>
               Proceso Destinos
             </vs-dropdown-item>
           </CheckPermission>
           <CheckPermission permission="ED018">
-            <vs-dropdown-item v-on:click="onOptionTimelineActivities(file)">
+            <vs-dropdown-item
+              v-if="!isShared"
+              v-on:click="onOptionTimelineActivities(file)"
+            >
               <vs-icon icon="assignment_turned_in"/>
               Proceso Actividades
             </vs-dropdown-item>
           </CheckPermission>
-          <vs-dropdown-item v-on:click="onOptionReferencesFile(file)">
+          <vs-dropdown-item
+            v-if="!isShared"
+            v-on:click="onOptionReferencesFile(file)"
+          >
             <vs-icon icon="device_hub"/>
             Ver Referencias
           </vs-dropdown-item>
@@ -73,7 +85,7 @@
             <vs-dropdown-item
               v-on:click="onOptionAssignFile(file)"
               v-if="!isDraft  && onPendingFiles && !isAssigned
-              && !isProcessed && !isCancelled"
+              && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="how_to_reg"/>
               Asignarme expediente
@@ -82,7 +94,7 @@
           <vs-dropdown-item
             v-on:click="onAnswerFile(file)"
             v-if="!isDraft  && onPendingFiles && isAssigned
-            && !isProcessed && !isCancelled"
+            && !isProcessed && !isCancelled && !isShared"
           >
             <vs-icon icon="storage"/>
             Responder
@@ -90,7 +102,7 @@
           <vs-dropdown-item
             v-on:click="onOptionReturnFile(file)"
             v-if="!isDraft  && onPendingFiles && isAssigned
-              && !isProcessed && !isCancelled"
+              && !isProcessed && !isCancelled && !isShared"
           >
             <vs-icon icon="keyboard_backspace"/>
             Devolver expediente
@@ -99,7 +111,7 @@
             <vs-dropdown-item
               v-on:click="onOptionCancelFile(file)"
               v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResponsible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="clear"/>
               Anular expediente
@@ -109,14 +121,17 @@
             <vs-dropdown-item
               v-on:click="onOptionProcessFile(file)"
               v-if="!isDraft  && (onGeneralFiles || onPendingFiles)
-            && isAssigned && !isProcessed && !isCancelled"
+            && isAssigned && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="move_to_inbox"/>
               Finalizar documento
             </vs-dropdown-item>
           </CheckPermission>
           <CheckPermission permission="ED024">
-            <vs-dropdown-item v-on:click="onOptionGetParticipants(file)">
+            <vs-dropdown-item
+              v-if="!isShared"
+              v-on:click="onOptionGetParticipants(file)"
+            >
               <vs-icon icon="group"/>
               Participantes
             </vs-dropdown-item>
@@ -125,7 +140,7 @@
             <vs-dropdown-item
               v-on:click="onOptionGetComments(file)"
               v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResponsible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="chat"/>
               Comentarios
@@ -135,7 +150,7 @@
             <vs-dropdown-item
               v-on:click="onOptionSendFile(file)"
               v-if="!isDraft && onPendingFiles && isAssigned
-             && isResponsible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="chat"/>
               Enviar documento
@@ -144,7 +159,7 @@
           <vs-dropdown-item
             v-on:click="onUpdateActivity(file)"
             v-if="!isDraft  && onPendingFiles && isAssigned
-             && isResponsible && !isProcessed && !isCancelled"
+             && isResponsible && !isProcessed && !isCancelled && !isShared"
           >
             <vs-icon icon="how_to_vote"/>
             Act. Actividad
@@ -152,7 +167,7 @@
           <CheckPermission permission="ED027">
             <vs-dropdown-item
               v-on:click="onTicketFile(file)"
-              v-if="!isDraft"
+              v-if="!isDraft && !isShared"
             >
               <vs-icon icon="help"/>
               Ticket de ayuda
@@ -181,7 +196,8 @@ export default {
     'isProcessed',
     'isCancelled',
     'isResponsible',
-    'selectFile'
+    'selectFile',
+    'isShared'
   ],
   computed: {
     ...mapGetters('Empresas', [

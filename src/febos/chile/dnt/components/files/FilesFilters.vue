@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="view !== 'compartido'">
     <div style="text-align: right;margin-bottom: 5px;">
       <span>
         Viendo documentos que ingresaron
@@ -103,6 +103,7 @@ export default {
       rangeSelected: { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
       rangeFrom: '',
       rangeUntil: '',
+      view,
       configuration: filters,
       filterView: filterLetty,
       currentFilters: '',

@@ -16,5 +16,11 @@ export default [
     name: 'files',
     meta: { permiso: 'ED008', requiereLogin: true },
     component: () => import('@/febos/chile/dnt/vistas/Files')
+  },
+  {
+    path: 'expediente/:view/:id/:idSubject',
+    name: 'shared-file',
+    meta: { requiereLogin: false },
+    component: () => import('@/febos/chile/dnt/vistas/SharedFiles')
   }
 ];

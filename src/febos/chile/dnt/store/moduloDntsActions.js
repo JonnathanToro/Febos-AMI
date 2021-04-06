@@ -408,6 +408,7 @@ export const answerCreateFile = async ({ commit }, payload) => {
     const response = await createDnt(payload);
     commit('SET_SUCCESS_MESSAGE', response.data);
     const path = `/documentos/interno/${response.data.dnt.febosId}`;
+    store.commit('Modals/CLOSE_MODAL');
     await router.push({ path });
   } catch (e) {
     commit('SET_ERROR_MESSAGE', e.context);

@@ -160,9 +160,12 @@
               >
                 <vs-td>
                   {{subject.destinoListaNombre}}
+                  <small v-if="externalSubject.includes(subject.destinoCodigo)">
+                    {{subject.destinoCorreo}}
+                  </small>
                 </vs-td>
                 <vs-td>
-                  {{subject.destinoListaNombre}}
+                  {{subject.destinoNombre}}
                 </vs-td>
                 <vs-td>
                   <vs-chip
@@ -306,7 +309,12 @@ export default {
   },
   data() {
     return {
-      tags: []
+      tags: [],
+      externalSubject: [
+        'empresas',
+        'personas',
+        'ministerios'
+      ]
     };
   },
   computed: {

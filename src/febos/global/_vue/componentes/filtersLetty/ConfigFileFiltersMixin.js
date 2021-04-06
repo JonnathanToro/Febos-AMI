@@ -91,7 +91,6 @@ const filterViews = {
         valor: [],
         opciones: {
           EXP: 'Expediente',
-          SAFI: 'Contrato SAFI', // TODO  verificar estos filtros!!!
           SSD: 'Proceso SSD'
         }
       },
@@ -100,6 +99,9 @@ const filterViews = {
       },
       {
         nombre: 'Nombre remitente', campo: 'emisorContactoNombre', tipo: 'texto', valor: []
+      },
+      {
+        nombre: 'Nº Contrato SAFI', campo: 'transportePuertoCodigo', tipo: 'texto', valor: []
       },
       {
         nombre: 'Cargo remitente', campo: 'emisorContactoCargo', tipo: 'texto', valor: []
@@ -121,7 +123,7 @@ const filterViews = {
       { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
       { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
       { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
-      { nombre: 'Usuario creador', campo: 'solicitanteCorreo', tipo: 'correos' }
+      { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' }
 
     ]
   },
@@ -216,9 +218,11 @@ const filterViews = {
         valor: [],
         opciones: {
           EXP: 'Expediente',
-          SAFI: 'Contrato SAFI', // TODO  verificar estos filtros!!!
           SSD: 'Proceso SSD'
         }
+      },
+      {
+        nombre: 'Nº Contrato SAFI', campo: 'transportePuertoCodigo', tipo: 'texto', valor: []
       },
       {
         nombre: 'Nombre remitente', campo: 'emisorContactoNombre', tipo: 'texto', valor: []
@@ -240,7 +244,7 @@ const filterViews = {
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
       { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
       { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
-      { nombre: 'Usuario creador', campo: 'solicitanteCorreo', tipo: 'correos' },
+      { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]
   },
@@ -333,9 +337,11 @@ const filterViews = {
         valor: [],
         opciones: {
           EXP: 'Expediente',
-          SAFI: 'Contrato SAFI', // TODO  verificar estos filtros!!!
           SSD: 'Proceso SSD'
         }
+      },
+      {
+        nombre: 'Nº Contrato SAFI', campo: 'transportePuertoCodigo', tipo: 'texto', valor: []
       },
       {
         nombre: 'Nombre remitente', campo: 'emisorContactoNombre', tipo: 'texto', valor: []
@@ -357,7 +363,7 @@ const filterViews = {
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
       { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
       { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
-      { nombre: 'Usuario creador', campo: 'solicitanteCorreo', tipo: 'correos' },
+      { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]
   },
@@ -453,9 +459,11 @@ const filterViews = {
         valor: [],
         opciones: {
           EXP: 'Expediente',
-          SAFI: 'Contrato SAFI', // TODO  verificar estos filtros!!!
           SSD: 'Proceso SSD'
         }
+      },
+      {
+        nombre: 'Nº Contrato SAFI', campo: 'transportePuertoCodigo', tipo: 'texto', valor: []
       },
       {
         nombre: 'Nombre remitente', campo: 'emisorContactoNombre', tipo: 'texto', valor: []
@@ -477,7 +485,7 @@ const filterViews = {
       { nombre: 'Tipo institución', campo: 'compradorCodigo', tipo: 'opcionInst' },
       { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
       { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
-      { nombre: 'Usuario creador', campo: 'solicitanteCorreo', tipo: 'correos' },
+      { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]
   },
@@ -580,9 +588,11 @@ const filterViews = {
         valor: [],
         opciones: {
           EXP: 'Expediente',
-          SAFI: 'Contrato SAFI', // TODO  verificar estos filtros!!!
           SSD: 'Proceso SSD'
         }
+      },
+      {
+        nombre: 'Nº Contrato SAFI', campo: 'transportePuertoCodigo', tipo: 'texto', valor: []
       },
       {
         nombre: 'Fecha documento', campo: 'fechaEmision', tipo: 'fecha', valor: ''
@@ -610,9 +620,43 @@ const filterViews = {
       { nombre: 'Tipo Documento', campo: 'emisorCentroCostoNumero', tipo: 'opcionDoc' },
       { nombre: 'Destino tipo usuario', campo: 'destinoUsuarios', tipo: 'usuarioIds' },
       { nombre: 'Destino tipo grupo', campo: 'destinoGrupos', tipo: 'grupoIds' },
-      { nombre: 'Usuario creador', campo: 'solicitanteCorreo', tipo: 'correos' },
+      { nombre: 'Usuario creador', campo: 'solicitanteEmail', tipo: 'correos' },
       { nombre: 'Unidad del creador', campo: 'solicitanteGrupoId', tipo: 'grupoCreador' }
     ]
+  },
+  compartido: {
+    filtrosFijos: [
+      {
+        // eslint-disable-next-line no-template-curly-in-string
+        nombre: 'Rut emisor', campo: 'emisorRut', tipo: 'text', valor: '${iutEmpresa}'
+      },
+      {
+        nombre: 'Tipo',
+        campo: 'tipo',
+        tipo: 'text',
+        valor: 'EXP'
+      },
+      {
+        nombre: 'Tipo expediente',
+        campo: 'claseMercadoPublico',
+        tipo: 'multi',
+        opciones: {
+          int: 'Interno',
+          ext: 'Externo',
+          numInt: 'Num. Interno',
+          numOf: 'Num. Oficial'
+        }
+      },
+      {
+        nombre: 'Estado',
+        campo: 'estado',
+        tipo: 'multi',
+        opciones: {
+          1: 'Creado'
+        }
+      }
+    ],
+    filtrosHabilitados: []
   }
 
   /*
