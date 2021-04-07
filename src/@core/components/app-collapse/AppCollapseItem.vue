@@ -13,8 +13,8 @@
       data-toggle="collapse"
     >
       <div class="header" @click="updateVisible(!visible)">
-      <slot name="header" v-bind:visible="visible">
-        <span class="lead collapse-title">{{ title }}</span>
+      <slot name="header" v-bind:visible="visible" v-bind:title="title">
+        <span class="lead collapse-title" v-if="title">{{ title }}</span>
       </slot>
       </div>
       <div class="header-acction">
