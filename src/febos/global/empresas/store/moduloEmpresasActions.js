@@ -60,6 +60,8 @@ export default {
     }
   },
   async updateGroup({ commit }, { empresaId, group }) {
+    //commit('UPDATE_GROUP', group);
+
     try {
       commit('SET_LOADING', true);
       const response = await ioCompanyUpdateGroup(empresaId, group);
@@ -69,6 +71,7 @@ export default {
     } finally {
       commit('SET_LOADING', false);
     }
+
   },
   async createGroup({ commit }, { empresaId, group }) {
     try {

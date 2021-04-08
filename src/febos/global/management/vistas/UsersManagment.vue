@@ -170,6 +170,9 @@
                     <span style="line-height: 38px;">{{user.nombre}}</span>
                   </div>
                   <div class="col-4">
+                    <vs-chip color="warning" v-if="user.esAdministradorEmpresa === 'Y'">
+                      administrador
+                    </vs-chip>
                     <vs-chip v-if="user.esLider === 'Y'" color="warning">
                       <vs-avatar icon="flag" />
                       lider
@@ -273,6 +276,8 @@ export default {
       });
     },
     groupsCompany(newValue, oldValue) {
+      console.log('GROUPS NEW VALUE', newValue);
+      console.log('GROUPS OLD VALUE', oldValue);
       if (newValue !== oldValue) {
         this.tree.children = this.makeTree();
       }
@@ -341,19 +346,20 @@ export default {
     getChildren(item) {
       this.setElement(item.id);
       this.selectedGroup = { ...item };
-      if (item.name !== this.company.razonSocial) {
+      console.log('item', this.selectedGroup);
+      if (item.nombre !== this.company.razonSocial) {
         this.getUsersGroup(item.id);
         this.usersTree = this.usersByGroup;
-      } else {
-        this.getUsersCompany({
-          empresaId: this.company.id,
-          pagina: 1,
-          filas: 10,
-          buscarInfoExtra: 'si',
-          filtroInfoExtra: 'CARGO'
-        });
-        this.usersTree = this.usersCompany;
-      }
+      } else if (!this.usersCompany.length) {
+          this.getUsersCompany({
+            empresaId: this.company.id,
+            pagina: 1,
+            filas: 10,
+            buscarInfoExtra: 'si',
+            filtroInfoExtra: 'CARGO'
+          });
+          this.usersTree = this.usersCompany;
+        }
     },
     agregarUsuario() {
       this.usuario = {

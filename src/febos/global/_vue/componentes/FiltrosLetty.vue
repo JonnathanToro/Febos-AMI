@@ -673,8 +673,7 @@ export default {
           };
         }
         return filterApplied;
-      }).filter((filter) => filter.valor.length > 0 && filter.valor !== '' );
-
+      }).filter((filter) => filter.valor.length > 0 && filter.valor !== '');
 
       // this.actualFilter = {};
       this.$refs.configFiltro.close();
@@ -714,8 +713,8 @@ export default {
           const fin = Vue.moment().format('YYYY-MM-DD');
           query.push(`${filter.campo}:${inicio}--${fin}`);
         } else if (filter.valor.length > 0 && filter.valor !== '') {
-            query.push(`${ filter.campo }:${ filter.valor }`);
-          }
+          query.push(`${ filter.campo }:${ filter.valor }`);
+        }
       });
 
       console.log('FILTROS A APLICAR', query.join('|'));

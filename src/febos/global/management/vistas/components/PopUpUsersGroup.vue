@@ -113,7 +113,7 @@ export default {
       return this.usersByGroup.find((userGroup) => userGroup.id === user.id);
     },
     addUser(user) {
-      console.log('ACC', user);
+      console.log('this group', this.usersGroup);
       const body = {
         grupoId: this.usersGroup.id,
         usuarios: this.usersOnGroup.map((userMap) => userMap.id).join(),
@@ -121,7 +121,7 @@ export default {
       };
 
       body.usuarios = body.usuarios.length
-        ? body.usuarios.concat(user.id) : body.usuarios = user.id;
+        ? body.usuarios.concat(`,${user.id}`) : body.usuarios = user.id;
       this.addUserToGroup({ empresaId: this.company.id, body });
     },
     saveChanges() {
@@ -133,6 +133,7 @@ export default {
   },
   mounted() {
     this.usersOnGroup = this.usersByGroup;
+    console.log('soy el grupo', this.group);
   }
 };
 </script>

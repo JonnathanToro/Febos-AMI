@@ -32,7 +32,25 @@
         />
       </div>
       <div class="col-md-12 mt-3" v-if="this.action !== 'addParent'">
-        <div class="row">
+        <div>
+          <vs-select
+            class="w-100"
+            autocomplete
+            label="Es oficina"
+            name="isOffice"
+            v-model="editGroup.esOficina"
+          >
+            <vs-select-item
+              :value="'Y'"
+              text="Si"
+            />
+            <vs-select-item
+              :value="'N'"
+              text="No"
+            />
+          </vs-select>
+        </div>
+        <div class="row mt-3" v-if="editGroup.esOficina === 'Y'">
           <div class="col-md-4">
             <label>Es tipo de oficina</label>
           </div>
@@ -138,14 +156,12 @@ export default {
       };
 
       if (this.action !== 'addParent') {
-        group.esOficina = this.editGroup.isOffice ? 'si' : 'no';
         group.esDivision = this.editGroup.esDivision === 'Y' ? 'si' : 'no';
-        group.esOficina = (this.editGroup.tipo.includes('int') || this.editGroup.tipo.includes('ext'))
-          ? 'si' : 'no';
+        group.esOficina = this.editGroup.esOficina
       }
 
       console.log('GROUP', group);
-      /* if (this.action === 'add') {
+      if (this.action === 'add') {
         this.createGroup({
           empresaId: this.company.id,
           group
@@ -155,7 +171,7 @@ export default {
           empresaId: this.company.id,
           group
         });
-      } */
+      }
     },
     cancelEdit() {
       console.log('cancelar', this);

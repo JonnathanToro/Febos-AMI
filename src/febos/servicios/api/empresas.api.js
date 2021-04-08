@@ -43,5 +43,5 @@ export const ioCompanyCreateGroup = (empresaId, group) => {
 export const ioCompanyUpdateUsersGroup = (empresaId, body) => {
   const params = apiClient.queryParams(body);
   return apiClient.post(`${RESOURCE}/${empresaId}/grupos/${body.grupoId}?${params}`,
-    body.usuarios, { operacionId: 'io.empresas.update.users.group' });
+    { usuarios: body.usuarios }, { operacionId: 'io.empresas.update.users.group' });
 };
