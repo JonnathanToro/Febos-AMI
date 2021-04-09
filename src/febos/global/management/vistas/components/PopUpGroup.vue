@@ -157,7 +157,7 @@ export default {
 
       if (this.action !== 'addParent') {
         group.esDivision = this.editGroup.esDivision === 'Y' ? 'si' : 'no';
-        group.esOficina = this.editGroup.esOficina
+        group.esOficina = this.editGroup.esOficina;
       }
 
       console.log('GROUP', group);

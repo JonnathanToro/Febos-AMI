@@ -114,25 +114,27 @@ export default {
     this.rangeFrom = this.$moment().subtract(6, 'month').format('YYYY-MM-DD');
     this.rangeUntil = this.$moment().format('YYYY-MM-DD');
 
-    if (!this.usersCompany.length) {
-      this.getUsersCompany({
-        empresaId: this.empresa.id,
-        pagina: 1,
-        filas: 9999,
-        buscarInfoExtra: 'si',
-        filtroInfoExtra: 'CARGO'
-      });
-    }
-    if (!this.groupsCompany.length) {
-      this.getGroupsCompany({
-        empresaId: this.empresa.id
-      });
-    }
-    if (!this.documentTypesState.length) {
-      this.fetchDocumentTypes();
-    }
-    if (!this.institutionTypesState.length) {
-      this.fetchInstitutionTypes();
+    if (this.view !== 'compartido') {
+      if (!this.usersCompany.length) {
+        this.getUsersCompany({
+          empresaId: this.empresa.id,
+          pagina: 1,
+          filas: 9999,
+          buscarInfoExtra: 'si',
+          filtroInfoExtra: 'CARGO'
+        });
+      }
+      if (!this.groupsCompany.length) {
+        this.getGroupsCompany({
+          empresaId: this.empresa.id
+        });
+      }
+      if (!this.documentTypesState.length) {
+        this.fetchDocumentTypes();
+      }
+      if (!this.institutionTypesState.length) {
+        this.fetchInstitutionTypes();
+      }
     }
   },
   computed: {

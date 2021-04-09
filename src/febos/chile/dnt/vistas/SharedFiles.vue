@@ -6,10 +6,40 @@
       :clear="clearFilters"
     />
     <div v-if="!isVerified">
-      <div>
-        <input type="text">
-        <label>Codigo de verificacion</label>
-        <button v-on:click="verifyFile">hola</button>
+      <div class="row mb-3">
+        <h5 class="m-auto">
+          Por favor ingresa el código de verifiación enviado a tu correo
+          para poder visualizar el expediente
+        </h5>
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4 mt-5">
+          <vs-card>
+            <form data-vv-scope="security">
+              <vs-input
+                class="w-100"
+                label="Código de verificación"
+                maxlength="10"
+                name="securityPin"
+                v-model="verificationCode"
+                v-validate="'required'"
+                :danger="errors.has('security.securityPin')"
+                :danger-text="errors.first('security.securityPin')"
+              />
+              <div class="text-center">
+                <vs-button
+                  color="warning"
+                  class="mt-4"
+                  @click="verifyFile"
+                >
+                  Verificar
+                </vs-button>
+              </div>
+            </form>
+          </vs-card>
+        </div>
+        <div class="col-md-4">
+        </div>
       </div>
     </div>
     <div v-if="isVerified">
@@ -262,8 +292,8 @@ export default {
   },
   data() {
     const { view } = this.$route.params;
-
     return {
+      verificationCode: '',
       isVerified: false,
       view,
       onPendingFiles: view === 'pendientes',

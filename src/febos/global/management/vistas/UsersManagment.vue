@@ -351,15 +351,15 @@ export default {
         this.getUsersGroup(item.id);
         this.usersTree = this.usersByGroup;
       } else if (!this.usersCompany.length) {
-          this.getUsersCompany({
-            empresaId: this.company.id,
-            pagina: 1,
-            filas: 10,
-            buscarInfoExtra: 'si',
-            filtroInfoExtra: 'CARGO'
-          });
-          this.usersTree = this.usersCompany;
-        }
+        this.getUsersCompany({
+          empresaId: this.company.id,
+          pagina: 1,
+          filas: 10,
+          buscarInfoExtra: 'si',
+          filtroInfoExtra: 'CARGO'
+        });
+        this.usersTree = this.usersCompany;
+      }
     },
     agregarUsuario() {
       this.usuario = {

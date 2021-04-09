@@ -16,7 +16,12 @@
       <vs-navbar class="vx-navbar navbar-custom navbar-skelton" :color="navbarColorLocal" :class="textColor">
 
         <!-- SM - OPEN SIDEBAR BUTTON -->
-        <feather-icon class="sm:inline-flex xl:hidden cursor-pointer p-2" icon="MenuIcon" @click.stop="showSidebar" />
+        <feather-icon
+          v-if="view !== 'compartido'"
+          class="sm:inline-flex xl:hidden cursor-pointer p-2"
+          icon="MenuIcon"
+          @click.stop="showSidebar"
+        />
 
         <bookmarks :navbarColor="navbarColor" v-if="windowWidth >= 992" />
 
@@ -46,6 +51,11 @@ export default {
       type: String,
       default: '#fff',
     },
+  },
+  data() {
+    return {
+      view: this.$route.params.view
+    };
   },
   components: {
     Bookmarks,
