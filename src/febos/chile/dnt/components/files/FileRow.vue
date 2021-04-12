@@ -139,12 +139,6 @@
             interno
           </vs-chip>
           <vs-chip class="mr-3"
-            v-if="file.claseMercadoPublico === 'numInt'"
-            v-tooltip="'Documento interno'"
-            transparent color="primary">
-            interno
-          </vs-chip>
-          <vs-chip class="mr-3"
             v-tooltip="'Numeración interna'"
             v-if="file.claseMercadoPublico === 'numInt'"
             transparent color="primary"
@@ -208,6 +202,7 @@
         :is-responsible="isResponsible"
         :on-pending-files="onPendingFiles"
         :on-general-files="onGeneralFiles"
+        :is-intern-file="isInternFile"
         :select-file="selectFile"
       />
     </vs-col>
@@ -246,6 +241,10 @@ export default {
     },
     isCancelled() {
       return this.file.estado === '8';
+    },
+    isInternFile() {
+      return this.file.claseMercadoPublico === 'numInt'
+        || this.file.claseMercadoPublico === 'numOf';
     }
   }
 };

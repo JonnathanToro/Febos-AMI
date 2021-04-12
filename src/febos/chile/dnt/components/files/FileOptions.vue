@@ -81,6 +81,14 @@
               Descargar expediente
             </vs-dropdown-item>
           </CheckPermission>
+          <vs-dropdown-item
+            v-on:click="onSendToFlow(file)"
+            v-if="!isDraft && onPendingFiles && isAssigned
+              && !isProcessed && !isCancelled && !isShared && isInternFile"
+          >
+            <vs-icon icon="swipe"/>
+            Enviar a flujo
+          </vs-dropdown-item>
           <CheckPermission permission="ED021">
             <vs-dropdown-item
               v-on:click="onOptionAssignFile(file)"
@@ -190,6 +198,7 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+import router from '@/router';
 
 export default {
   components: { CheckPermission },
@@ -203,7 +212,8 @@ export default {
     'isCancelled',
     'isResponsible',
     'selectFile',
-    'isShared'
+    'isShared',
+    'isInternFile'
   ],
   computed: {
     ...mapGetters('Empresas', [
@@ -251,9 +261,15 @@ export default {
       this.selectFile(file);
       this.showModals('asignFile');
     },
+    onSendToFlow(file) {
+      this.selectFile(file);
+      return router.push({
+        name: 'files-wizard-update',
+        params: { wizard: 'flujo', id: file.febosId }
+      });
+    },
     onAnswerFile(file) {
       this.selectFile(file);
-      // this.$router.push(`/documentos/interno/${this.file.febosId}`);
       this.showModals('answerFile');
     },
     onOptionGetDetailsFile(file) {

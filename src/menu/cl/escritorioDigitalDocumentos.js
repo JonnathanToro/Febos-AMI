@@ -60,7 +60,7 @@ export default [{
         },
         {
           url: { name: 'files-wizard', params: { wizard: 'numInt' } },
-          name: 'Iniciar Trámite Interno.',
+          name: 'Iniciar Trámite Interno',
           icon: 'files',
           permiso: 'ED044',
           i18n: 'uploads'
