@@ -801,6 +801,18 @@ export default {
     addFilter(filter) {
       this.actualFilter = {};
       this.clearOptions();
+
+      this.filtrosAplicados = this.filtrosAplicados.map((filterApplied) => {
+        if (filterApplied.campo === filter.campo) {
+          return {
+            ...filterApplied,
+            valor: filter.valor,
+            valorFormateado: filter.valorFormateado
+          };
+        }
+        return filterApplied;
+      }).filter((filter2) => filter2.valor.length > 0 && filter2.valor !== '');
+
       const isApplied = this.filtrosAplicados
         .some((filterApplied) => filterApplied.campo === filter.campo);
 
