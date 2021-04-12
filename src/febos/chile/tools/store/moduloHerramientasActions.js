@@ -64,6 +64,7 @@ export default {
     try {
       commit('SET_ACTIVITY', payload);
       commit('SET_LOADING', true);
+      console.log('JODER', payload);
       const response = await listOptions({
         // grupoOpcion: 'tipos.documentos-ed. ---- .item',
         grupoOpcion: `tipos.actividades-ed.${ payload.valor }.item`,

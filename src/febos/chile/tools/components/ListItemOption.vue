@@ -31,7 +31,7 @@
         class="margin-right"
         size="small"
         type="border"
-        v-on:click="listActivities(option)"
+        v-on:click="listDocuments(option)"
         icon="search"
       />
       <CheckPermission permission="ED029" v-if="!editMood">
@@ -70,7 +70,7 @@
           v-tooltip="'Deshabilitar opción'"
           color="primary"
           v-model="selected"
-          v-on:click="toggleEnableOptionActivity({ option, selected, type })"
+          v-on:click="toggleEnableOption({ option, selected, type })"
         />
       </CheckPermission>
     </vs-col>
@@ -114,8 +114,8 @@ export default {
   computed: {},
   methods: {
     ...mapActions('Herramientas', [
-      'listActivities',
-      'toggleEnableOptionActivity',
+      'listDocuments',
+      'toggleEnableOption',
       'saveOptions',
       'clearSelected'
     ]),
@@ -123,7 +123,7 @@ export default {
       this.editMood = !this.editMood;
       this.createMood = false;
       if (this.type === 'category') {
-        this.clearSelected({ type: 'ACTIVITY', option: this.option });
+        this.clearSelected({ type: 'CATEGORY', option: this.option });
       }
     },
     saveOption(option) {

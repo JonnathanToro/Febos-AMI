@@ -355,7 +355,7 @@ export const sendToFlow = async ({ commit }, { data }) => {
     };
     const response = await sendToFlowFile(payload);
     await router.push({
-      path: '/expedientes/entrada'
+      path: '/aprobaciones/entrada'
     });
     commit('SET_SUCCESS_MESSAGE', response.data);
   } finally {

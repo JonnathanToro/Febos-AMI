@@ -36,7 +36,7 @@
               class="wrap-list-item"
               :key="category.opcionId"
             >
-              <ListItemOption
+              <ListItemOptionActivity
                 :option="category"
                 :type="'category'"
                 :selectedCategory="selectedCategory
@@ -72,7 +72,10 @@
               class="wrap-list-item"
               :key="document.opcionId"
             >
-              <ListItemOption :option="document" :type="'document'"></ListItemOption>
+              <ListItemOptionActivity
+                :option="document"
+                :type="'document'"
+              />
             </div>
           </vs-list>
         </vs-col>
@@ -119,12 +122,12 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import ListItemOption from '../components/ListItemOption';
+import ListItemOptionActivity from '../components/ListItemOptionActivity';
 
 import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 
 export default {
-  components: { ListItemOption, CheckPermission },
+  components: { ListItemOptionActivity, CheckPermission },
   mixins: [],
   data() {
     return {

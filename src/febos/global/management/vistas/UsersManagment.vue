@@ -179,7 +179,16 @@
                   <div class="col-8">
                     <span style="line-height: 38px;">{{user.nombre}}</span>
                   </div>
-                  <div class="col-3 text-right">
+                  <div class="col-1 text-right">
+                    <vs-button
+                      v-tooltip="'Editar datos'"
+                      size="small"
+                      radius color="primary"
+                      type="border" icon="edit"
+                      @click="editUser(user)"
+                    />
+                  </div>
+                  <div class="col-2 text-right">
                     <vs-chip
                       v-tooltip="'Administrador'"
                       color="warning"
@@ -196,13 +205,6 @@
                       <vs-avatar icon="flag" />
                       lider
                     </vs-chip>
-                    <vs-button
-                      v-tooltip="'Editar datos'"
-                      size="small"
-                      radius color="primary"
-                      type="border" icon="edit"
-                      @click="editUser(user)"
-                    />
                   </div>
                 </div>
               </li>
@@ -358,9 +360,10 @@ export default {
       this.showModals('modalEditGroup');
     },
     addSubGroup() {
+      console.log('ADD SUB - ', this);
       this.action = 'add';
-      const padreId = this.element.id;
-      const parentName = this.element.nombre;
+      const padreId = this.selectedGroup.id;
+      const parentName = this.selectedGroup.nombre;
       this.selectedGroup = {
         nombre: '',
         descripcion: '',

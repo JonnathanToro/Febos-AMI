@@ -270,6 +270,7 @@ export default {
       this.selectFile(file);
       await this.getFileDnt({
         febosId: file.febosId,
+        dnt: 'si',
         destinatarios: 'si',
         etiquetas: 'si',
         referencias: 'si',

@@ -30,8 +30,23 @@
                 :title="file.numeroInt || '-'" subtitle="Nº Documento"
               />
               <vs-list-item
+                v-if="file.claseMercadoPublico === 'int' || file.claseMercadoPublico === 'ext'"
                 icon="date_range"
                 :title="file.fechaEmision || '-'" subtitle="Fecha Documento"
+              />
+              <vs-list-item
+                v-if="(file.claseMercadoPublico === 'numInt'
+                 || file.claseMercadoPublico === 'numOf')
+                  && file.condicionDespacho === '0'"
+                icon="description"
+                :title="'Papel' || '-'" subtitle="Formato"
+              />
+              <vs-list-item
+                v-if="(file.claseMercadoPublico === 'numInt'
+                 || file.claseMercadoPublico === 'numOf')
+                  && file.condicionDespacho === '1'"
+                icon="description"
+                :title="'Electrónico' || '-'" subtitle="Formato"
               />
               <vs-list-item
                 v-if="file.claseMercadoPublico === 'ext'"

@@ -70,7 +70,7 @@
           v-tooltip="'Deshabilitar opción'"
           color="primary"
           v-model="selected"
-          v-on:click="toggleEnableOption({ option, selected, type })"
+          v-on:click="toggleEnableOptionActivity({ option, selected, type })"
         />
       </CheckPermission>
     </vs-col>
@@ -115,7 +115,7 @@ export default {
   methods: {
     ...mapActions('Herramientas', [
       'listActivities',
-      'toggleEnableOption',
+      'toggleEnableOptionActivity',
       'saveOptions',
       'clearSelected'
     ]),
@@ -123,7 +123,7 @@ export default {
       this.editMood = !this.editMood;
       this.createMood = false;
       if (this.type === 'category') {
-        this.clearSelected({ type: 'CATEGORY', option: this.option });
+        this.clearSelected({ type: 'ACTIVITY', option: this.option });
       }
     },
     saveOption(option) {

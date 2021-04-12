@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-center">
-    <CheckPermission permission="ED018">
+   <!-- <CheckPermission permission="ED018">
       <div
         class="mr-1"
         style="cursor: pointer;"
@@ -38,17 +38,17 @@
         </vs-dropdown-menu>
       </vs-dropdown>
       <span />
-    </vs-tooltip>
+    </vs-tooltip>-->
   </div>
 </template>
 <script>
 
 import { mapActions, mapGetters } from 'vuex';
 
-import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+// import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 
 export default {
-  components: { CheckPermission },
+  // components: { CheckPermission },
   props: [
     'file',
     'onPendingFiles',
