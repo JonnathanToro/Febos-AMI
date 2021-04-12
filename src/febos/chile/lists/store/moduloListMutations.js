@@ -26,7 +26,8 @@ export default {
       .map((option) => ({
         id: option.opcionId,
         value: option.valor,
-        label: option.descripcion
+        label: option.descripcion,
+        groupId: option.grupoId
       }));
   },
   SET_ALL_DOCUMENTS_LOADING(state, payload) {

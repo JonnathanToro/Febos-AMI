@@ -763,7 +763,7 @@ export default {
         case 'opcionDoc': {
           opciones = this.documents.map((document) => {
             const documentOption = {
-              nombre: document.label,
+              nombre: document.groupId.includes('.item') ? document.label : `${document.label} (todos)`,
               valor: document.value
             };
             return documentOption;
