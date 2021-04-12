@@ -29,5 +29,8 @@ export default {
     estadoEmpresa: false
   },
   usersCompany: [],
-  groupsCompany: []
+  groupsCompany: [],
+  isLoadingConfigurations: false,
+  isSavingConfigurations: false,
+  configurations: []
 };
