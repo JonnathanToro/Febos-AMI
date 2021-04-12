@@ -60,7 +60,7 @@
       :filtersView="filterView"
       :users="usersCompany"
       :groups="groupsCompany"
-      :documents="documentTypesState.list"
+      :documents="allDocumentsState.list"
       :institutions="institutionTypesState.list"
       :periodos="ranges"
       :has-query-filters="!!queryFilters"
@@ -129,8 +129,8 @@ export default {
           empresaId: this.empresa.id
         });
       }
-      if (!this.documentTypesState.length) {
-        this.fetchDocumentTypes();
+      if (!this.allDocumentsState.length) {
+        this.fetchAllDocuments();
       }
       if (!this.institutionTypesState.length) {
         this.fetchInstitutionTypes();
@@ -144,7 +144,7 @@ export default {
       'groupsCompany'
     ]),
     ...mapGetters('List', [
-      'documentTypesState',
+      'allDocumentsState',
       'institutionTypesState'
     ])
   },
@@ -154,7 +154,7 @@ export default {
       'getGroupsCompany'
     ]),
     ...mapActions('List', [
-      'fetchDocumentTypes',
+      'fetchAllDocuments',
       'fetchInstitutionTypes'
     ]),
     async changeFilters(filters, onMounted) {

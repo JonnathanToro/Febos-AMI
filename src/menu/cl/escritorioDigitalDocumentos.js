@@ -42,7 +42,7 @@ export default [{
       url: { name: 'approval-trays', params: { view: 'entrada' } },
       name: 'Aprobaciones - Entrada',
       icon: 'MailIcon',
-      permiso: '*' // TODO: set permission
+      permiso: 'ED042'
     },
     {
       url: null,
@@ -55,14 +55,14 @@ export default [{
           url: { name: 'files-wizard', params: { wizard: 'numOf' } },
           name: 'Iniciar Trámite',
           icon: 'files',
-          permiso: '*', // TODO set permission
+          permiso: 'ED043',
           i18n: 'uploads'
         },
         {
           url: { name: 'files-wizard', params: { wizard: 'numInt' } },
           name: 'Iniciar Trámite Interno.',
           icon: 'files',
-          permiso: '*', // TODO set permission
+          permiso: 'ED044',
           i18n: 'uploads'
         }
       ]
@@ -85,7 +85,7 @@ export default [{
           url: { name: 'files-wizard', params: { wizard: 'interno' } },
           name: 'Cargar Doc. Interno',
           icon: 'files',
-          permiso: '*', // TODO set permission
+          permiso: 'ED045',
           i18n: 'uploads'
         }
       ]
@@ -123,8 +123,8 @@ export default [{
           name: 'Actividades',
           slug: '/herramientas/mantenedor-actividades',
           icon: 'library_books',
-          permiso: 'ED007',
-          i18n: 'Destinos'
+          permiso: 'ED048',
+          i18n: 'Actividades'
         }
       ]
     }

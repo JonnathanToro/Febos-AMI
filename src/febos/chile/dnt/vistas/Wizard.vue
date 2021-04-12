@@ -42,11 +42,14 @@
                   Guardar Borrador
                 </vs-button>
               </CheckPermission>
-              <vs-button v-if="wizard.options.includes('flow') && isLastStep"
-                color="warning" class="ml-2" @click="onFlow"
+              <CheckPermission
+                permission="ED046"
+                v-if="wizard.options.includes('flow') && isLastStep"
               >
-                <span>Enviar a Flujo</span>
-              </vs-button>
+                <vs-button color="warning" class="ml-2" @click="onFlow">
+                  <span>Enviar a Flujo</span>
+                </vs-button>
+              </CheckPermission>
               <CheckPermission permission="ED015" v-if="wizard.options.includes('submit')">
                 <vs-button color="success" class="ml-2" @click="onNext">
                   <span v-if="isLastStep">Guardar y Enviar</span>

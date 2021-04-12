@@ -7,6 +7,10 @@ export default {
     list: [],
     loading: false
   },
+  allDocuments: {
+    list: [],
+    loading: false
+  },
   institutionTypes: {
     list: [],
     loading: false

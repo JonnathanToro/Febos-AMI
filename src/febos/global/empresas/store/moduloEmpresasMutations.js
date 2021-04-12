@@ -72,5 +72,31 @@ export default {
       ...state.usersGroup,
       payload
     ];
+  },
+  UPDATE_USER(state, payload) {
+    state.usersGroup = state.usersGroup.map((user) => {
+      if (user.id === payload.id) {
+        return payload;
+      }
+      return user;
+    });
+
+    state.usersCompany = state.usersCompany.map((user) => {
+      if (user.id === payload.id) {
+        return payload;
+      }
+      return user;
+    });
+  },
+  ADD_USER(state, payload) {
+    state.usersGroup = [
+      ...state.usersGroup,
+      payload
+    ];
+
+    state.usersCompany = [
+      ...state.usersCompany,
+      payload
+    ];
   }
 };

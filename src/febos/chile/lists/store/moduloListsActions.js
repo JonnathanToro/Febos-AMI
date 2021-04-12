@@ -26,6 +26,19 @@ export const fetchDocuments = async ({ commit }, payload) => {
   commit('SET_DOCUMENTS_LOADING', false);
 };
 
+export const fetchAllDocuments = async ({ commit }) => {
+  commit('SET_ALL_DOCUMENTS_LOADING', true);
+
+  const response = await listOptions({
+    grupoOpcion: 'tipos.documentos-ed',
+    deshabilitado: 'no',
+    agrupar: 'si'
+  });
+
+  commit('SET_ALL_DOCUMENTS', response.data.opciones);
+  commit('SET_ALL_DOCUMENTS_LOADING', false);
+};
+
 export const fetchInstitutionTypes = async ({ commit }) => {
   commit('SET_INSTITUTION_TYPES_LOADING', true);
 

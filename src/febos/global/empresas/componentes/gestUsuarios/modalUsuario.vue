@@ -114,9 +114,6 @@ export default {
   watch: {
     editar(val) {
       this.tabDefault = 0;
-      this.user = {
-        id: null, iut: null, nombre: null, alias: null, correo: null
-      };
       if (val) {
         this.$refs.modalEdicion.open();
       } else {

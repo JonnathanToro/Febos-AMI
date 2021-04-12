@@ -87,7 +87,6 @@ export default {
     commit('SET_ELEMENT', payload);
   },
   async addUserToGroup({ commit }, { empresaId, body }) {
-    console.log('ACA', body);
     try {
       commit('SET_LOADING', true);
       const response = await ioCompanyUpdateUsersGroup(empresaId,

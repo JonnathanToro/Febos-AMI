@@ -21,6 +21,17 @@ export default {
   SET_DOCUMENTS_LOADING(state, payload) {
     state.documents.loading = payload;
   },
+  SET_ALL_DOCUMENTS(state, payload) {
+    state.allDocuments.list = payload
+      .map((option) => ({
+        id: option.opcionId,
+        value: option.valor,
+        label: option.descripcion
+      }));
+  },
+  SET_ALL_DOCUMENTS_LOADING(state, payload) {
+    state.allDocuments.loading = payload;
+  },
   SET_INSTITUTION_TYPES(state, payload) {
     state.institutionTypes.list = payload
       .map((option) => ({

@@ -34,6 +34,18 @@ export const isUserUpdate = (id, iut, name, alias, email) => (
   )
 );
 
+export const ioUpdateUser = (params, user) => {
+  const paramsRequest = apiClient.queryParams(params);
+  return apiClient.put(`${RESOURCE}/${user.id}?${paramsRequest}`,
+    user, { operacionId: 'io.update.user' });
+};
+
+export const ioCreateUser = (params, user) => {
+  const paramsRequest = apiClient.queryParams(params);
+  return apiClient.put(`${RESOURCE}?${paramsRequest}`,
+    user, { operacionId: 'io.create.user' });
+};
+
 export const getUsers = (payload) => {
   const params = apiClient.queryParams(payload);
 

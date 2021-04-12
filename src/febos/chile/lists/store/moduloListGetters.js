@@ -9,6 +9,12 @@ export const documentsState = (state) => ({
     .sort(({ label: a }, { label: b }) => a.localeCompare(b))
 });
 
+export const allDocumentsState = (state) => ({
+  ...state.allDocuments,
+  list: state.allDocuments.list
+    .sort(({ label: a }, { label: b }) => a.localeCompare(b))
+});
+
 export const institutionTypesState = (state) => ({
   ...state.institutionTypes,
   list: state.institutionTypes.list

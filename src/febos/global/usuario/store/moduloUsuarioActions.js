@@ -3,9 +3,12 @@ import {
   ioUserHeartbeat,
   isUserUpdate,
   ioGetAuthCode,
-  updatePassword
+  updatePassword,
+  ioUpdateUser,
+  ioCreateUser
 } from '@/febos/servicios/api/usuarios.api';
 import { ioUserPermissions } from '@/febos/servicios/api/permisos.api';
+import store from '@/store/store';
 
 export default {
   async signIn({ commit }, payload) {
@@ -50,6 +53,33 @@ export default {
     const response = await ioGetAuthCode(payload);
     commit('SET_VERIFICATION_CODE', response.data.febosId);
     commit('SET_LOADING', false);
+  },
+  async updateUserComppany({ commit }, user) {
+    try {
+      commit('SET_LOADING', true);
+      await ioUpdateUser({
+        simular: 'no',
+        usuarioId: user.id
+      }, user);
+      store.commit('Empresas/UPDATE_USER', user);
+      store.commit('Modals/CLOSE_MODAL');
+      commit('SET_SUCCESS_MESSAGE', true);
+    } finally {
+      commit('SET_LOADING', false);
+    }
+  },
+  async createUserCompany({ commit }, user) {
+    try {
+      commit('SET_LOADING', true);
+      await ioCreateUser({
+        simular: 'no'
+      }, user);
+      store.commit('Empresas/ADD_USER', user);
+      store.commit('Modals/CLOSE_MODAL');
+      commit('SET_SUCCESS_MESSAGE', true);
+    } finally {
+      commit('SET_LOADING', false);
+    }
   },
   async changePassword({ commit }, passwords) {
     try {

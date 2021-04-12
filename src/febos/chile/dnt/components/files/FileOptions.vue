@@ -91,22 +91,26 @@
               Asignarme expediente
             </vs-dropdown-item>
           </CheckPermission>
-          <vs-dropdown-item
-            v-on:click="onAnswerFile(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned
+          <CheckPermission permission="ED039">
+            <vs-dropdown-item
+              v-on:click="onAnswerFile(file)"
+              v-if="!isDraft  && onPendingFiles && isAssigned
             && !isProcessed && !isCancelled && !isShared"
-          >
-            <vs-icon icon="storage"/>
-            Responder
-          </vs-dropdown-item>
-          <vs-dropdown-item
-            v-on:click="onOptionReturnFile(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned
+            >
+              <vs-icon icon="storage"/>
+              Responder
+            </vs-dropdown-item>
+          </CheckPermission>
+          <CheckPermission permission="ED040">
+            <vs-dropdown-item
+              v-on:click="onOptionReturnFile(file)"
+              v-if="!isDraft  && onPendingFiles && isAssigned
               && !isProcessed && !isCancelled && !isShared"
-          >
-            <vs-icon icon="keyboard_backspace"/>
-            Devolver expediente
-          </vs-dropdown-item>
+            >
+              <vs-icon icon="keyboard_backspace"/>
+              Devolver expediente
+            </vs-dropdown-item>
+          </CheckPermission>
           <CheckPermission permission="ED022">
             <vs-dropdown-item
               v-on:click="onOptionCancelFile(file)"
@@ -156,14 +160,16 @@
               Enviar documento
             </vs-dropdown-item>
           </CheckPermission>
-          <vs-dropdown-item
-            v-on:click="onUpdateActivity(file)"
-            v-if="!isDraft  && onPendingFiles && isAssigned
+          <CheckPermission permission="ED041">
+            <vs-dropdown-item
+              v-on:click="onUpdateActivity(file)"
+              v-if="!isDraft  && onPendingFiles && isAssigned
              && isResponsible && !isProcessed && !isCancelled && !isShared"
-          >
-            <vs-icon icon="how_to_vote"/>
-            Act. Actividad
-          </vs-dropdown-item>
+            >
+              <vs-icon icon="how_to_vote"/>
+              Act. Actividad
+            </vs-dropdown-item>
+          </CheckPermission>
           <CheckPermission permission="ED027">
             <vs-dropdown-item
               v-on:click="onTicketFile(file)"

@@ -53,13 +53,13 @@
                   size="small"
                   radius color="primary"
                   type="border" icon="edit"
-                  @click="editarUsuario(tr)"
+                  @click="editUser(tr)"
                 />
 
                 <!--              <vs-button-->
                 <!--                size="small"-->
                 <!--                color="success"-->
-                <!--                @click="editarUsuario(tr)">Permisos</vs-button>-->
+                <!--                @click="editUser(tr)">Permisos</vs-button>-->
                 <!--<vs-button
                   size="small"
                   color="warning"
@@ -106,7 +106,7 @@
               @click="editGroup()"
               size="small"
               icon="edit">
-              Editar
+              Editar Grupo
             </vs-button>
             <vs-button
               v-if="selectedGroup.nombre"
@@ -123,9 +123,19 @@
               color="primary"
               type="border"
               @click="addGroup()"
+              v-if="!selectedGroup.nombre"
               size="small"
               icon="add_circle_outline">
               Agregar
+            </vs-button>
+            <vs-button
+              class="action mr-2"
+              color="primary"
+              type="border"
+              @click="addUser()"
+              size="small"
+              icon="person_add">
+              Agregar Usuario
             </vs-button>
             <vs-button
               class="action"
@@ -141,7 +151,7 @@
             <h5 class="mb-3 mt-3" v-if="selectedGroup.nombre">
               Usuarios del grupo {{selectedGroup.nombre}}
             </h5>
-            <ul v-if="usersTree.length" >
+            <ul v-if="usersTree.length" class="mt-4">
               <li v-for="user in usersTree" :key="user.id">
                 <div class="row mb-2">
                   <div class="col-1">
@@ -166,17 +176,33 @@
                       />
                     </div>
                   </div>
-                  <div class="col-6">
+                  <div class="col-8">
                     <span style="line-height: 38px;">{{user.nombre}}</span>
                   </div>
-                  <div class="col-4">
-                    <vs-chip color="warning" v-if="user.esAdministradorEmpresa === 'Y'">
-                      administrador
+                  <div class="col-3 text-right">
+                    <vs-chip
+                      v-tooltip="'Administrador'"
+                      color="warning"
+                      v-if="user.esAdministradorEmpresa === 'Y'"
+                    >
+                      <vs-avatar icon="verified_user" />
+                      admin
                     </vs-chip>
-                    <vs-chip v-if="user.esLider === 'Y'" color="warning">
+                    <vs-chip
+                      v-tooltip="'Lider'"
+                      v-if="user.esLider === 'Y'"
+                      color="warning"
+                    >
                       <vs-avatar icon="flag" />
                       lider
                     </vs-chip>
+                    <vs-button
+                      v-tooltip="'Editar datos'"
+                      size="small"
+                      radius color="primary"
+                      type="border" icon="edit"
+                      @click="editUser(user)"
+                    />
                   </div>
                 </div>
               </li>
@@ -194,10 +220,9 @@
     </div>
   </vx-card>
 
-  <modal-usuario
-    :editar="editar"
-    :usuario="usuario"
-    @cerrarEdicionUsuario="cancelarEdicion"
+  <PopUpUser
+    :action="actionUser"
+    :user="user"
   />
   <PopUpGroup
     v-if="selectedGroup && action"
@@ -216,7 +241,7 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import modalUsuario from '@/febos/global/empresas/componentes/gestUsuarios/modalUsuario';
+import PopUpUser from '@/febos/global/management/vistas/components/PopUpUser';
 import TreeItem from '@/febos/global/management/vistas/components/TreeItem';
 import FbPaginacion from '@/febos/chile/_vue/componentes/FbPaginacion';
 import PopUpGroup from '@/febos/global/management/vistas/components/PopUpGroup';
@@ -225,7 +250,7 @@ import PopUpUsersGroup from '@/febos/global/management/vistas/components/PopUpUs
 export default {
   name: 'UsersManagement',
   components: {
-    modalUsuario,
+    PopUpUser,
     TreeItem,
     FbPaginacion,
     PopUpGroup,
@@ -236,8 +261,8 @@ export default {
       page: 1,
       paginate: 10,
       treeView: true,
-      editar: false,
-      usuario: null,
+      actionUser: '',
+      user: {},
       editarEmpresa: false,
       empresas: null,
       noAvatar: require('../../../../assets/images/no-avatar.svg'),
@@ -276,10 +301,13 @@ export default {
       });
     },
     groupsCompany(newValue, oldValue) {
-      console.log('GROUPS NEW VALUE', newValue);
-      console.log('GROUPS OLD VALUE', oldValue);
       if (newValue !== oldValue) {
         this.tree.children = this.makeTree();
+      }
+    },
+    usersCompany(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.usersTree = this.usersCompany;
       }
     }
   },
@@ -346,11 +374,10 @@ export default {
     getChildren(item) {
       this.setElement(item.id);
       this.selectedGroup = { ...item };
-      console.log('item', this.selectedGroup);
       if (item.nombre !== this.company.razonSocial) {
         this.getUsersGroup(item.id);
         this.usersTree = this.usersByGroup;
-      } else if (!this.usersCompany.length) {
+      } else {
         this.getUsersCompany({
           empresaId: this.company.id,
           pagina: 1,
@@ -361,28 +388,23 @@ export default {
         this.usersTree = this.usersCompany;
       }
     },
-    agregarUsuario() {
-      this.usuario = {
-        id: null, iut: null, nombre: null, alias: null, correo: null
-      };
-      this.editar = true;
+    addUser() {
+      this.user = {};
+      this.actionUser = 'add';
+      this.showModals('modalUser');
     },
     viewData(user) {
-      this.editar = true;
-      this.usuario = user;
+      this.user = { ...user };
+      this.actionUser = 'watch';
+      this.showModals('modalUser');
     },
-    editarUsuario(val) {
-      this.editar = true;
-      this.usuario = val;
+    editUser(user) {
+      this.user = { ...user };
+      this.actionUser = 'edit';
+      this.showModals('modalUser');
     },
     eliminarUsuario(val) {
       console.log(val);
-    },
-    async cancelarEdicion(val) {
-      this.editar = false;
-      this.usuario = null;
-      if (val) this.obtenerUsuarios();
-      await this.$validator.reset();
     },
     cancelarEmpresas() {
       this.editarEmpresa = false;
