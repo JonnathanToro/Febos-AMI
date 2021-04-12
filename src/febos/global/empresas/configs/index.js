@@ -156,8 +156,14 @@ export default {
           parameters: [
             {
               name: 'Se encuentra Activo',
-              type: 'switch-y-n',
+              type: 'switch',
               value: '',
+              config: {
+                option_true: 'Y',
+                option_false: 'N',
+                label_true: 'Si',
+                label_false: 'No'
+              },
               parameter_id: 'poner.qr.aprobacion'
             }
           ]

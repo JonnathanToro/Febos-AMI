@@ -1,5 +1,5 @@
 <template>
-  <app-collapse-item @visible="(visible)=>{param.visible=visible}" :is-visible="true">
+  <app-collapse-item >
     <template slot="header" slot-scope="props">
       <!-- SLOT DE TITULO, PERSONALIZAR BARRA GENERAL-->
       <feather-icon
@@ -13,31 +13,38 @@
       <!-- TODO: Revisar como armar segun array de levels y permisos -->
       <span class="level-config"
             @click="changeLevelView('global')" v-b-tooltip.hover title="Configuracion General">
-      <b-avatar size="25" icon="globe"
-                :variant="level=='global'?'success':config.valorGlobal?'info':'secondary'"
+      <b-avatar
+        size="25"
+        icon="globe"
+        :variant="level === 'global' ? 'success' : config.valorGlobal ? 'info' : 'secondary'"
       />
       </span>
       <span class="level-config"
             @click="changeLevelView('empresa')" v-b-tooltip.hover title="Configuracion Empresa">
-      <b-avatar size="25" icon="building"
-                :variant="level=='empresa'?'success':config.valorEmpresa?'info':'secondary'"
+      <b-avatar
+        size="25"
+        icon="building"
+        :variant="level === 'empresa' ? 'success' : config.valorEmpresa ? 'info' : 'secondary'"
       />
         </span>
       <span class="level-config"
             @click="changeLevelView('usuario')" v-b-tooltip.hover title="Configuracion Usuario">
-      <b-avatar size="25" icon="person"
-                :variant="level=='usuario'?'success':config.valorUsuario?'info':'secondary'"/>
+      <b-avatar
+        size="25"
+        icon="person"
+        :variant="level === 'usuario' ? 'success' : config.valorUsuario ? 'info' : 'secondary'"/>
         </span>
     </template>
     <div class="row">
-      <div class="col-md-6">{{config.descripcion}}</div>
+      <div class="col-md-6">Parametro Id: <strong>{{ param.parameter_id }}</strong></div>
       <div class="col-md-6">Ultima Actualizacion: {{config.fechaConfiguracion || 'Nunca'}}</div>
-      <div class="col-md-6">Parametro Id: <strong>{{param.parameter_id}}</strong></div>
+      <div class="col-md-6" v-if="config.descripcion">{{config.descripcion}}</div>
     </div>
     <br>
     <config-input-wrapper
       :key="level"
       :type="param.type"
+      :config="param.config"
       :level="level"
       :levels="levels"
       :param="param.parameter_id"
@@ -119,7 +126,7 @@ export default {
         .map((level) => level.id)
         .map((level) => [level, configuration[`valor${capitalize(level)}`]])
         .reverse()
-        .find(([, config]) => config);
+        .find(([, config]) => config) || [];
     }
   }
 };

@@ -1,14 +1,13 @@
 <template>
   <div>
     <vs-switch v-model="valueMutable" v-on:change="changeValue()">
-      <span slot="on">Si</span>
-      <span slot="off">No</span>
+      <span slot="on">{{ config.label_true }}</span>
+      <span slot="off">{{ config.label_false }}</span>
     </vs-switch>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'ConfigInputSwitchYN',
   data() {
@@ -20,6 +19,18 @@ export default {
     value: {
       type: String,
       required: true,
+    },
+    config: {
+      type: Object,
+      required: false,
+      default() {
+        return {
+          option_true: 'Y',
+          option_false: 'N',
+          label_true: 'Si',
+          label_false: 'No'
+        };
+      }
     }
   },
   mounted() {

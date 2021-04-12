@@ -2,12 +2,14 @@
   <div>
     <div class="row">
       <div class="col">
-        <component v-bind:is="currentInputComponent"
-                   :type="type"
-                   :level="level"
-                   :param="param"
-                   :value="value"
-                   @input="input"
+        <component
+          v-bind:is="currentInputComponent"
+          :type="type"
+          :level="level"
+          :param="param"
+          :config="config"
+          :value="value"
+          @input="input"
         />
       </div>
     </div>
@@ -44,16 +46,16 @@
 import { mapActions, mapGetters } from 'vuex';
 import { BButton } from 'bootstrap-vue';
 
-import ConfigInputSwitchYN from '@/febos/global/empresas/componentes/configs/inputs/ConfigInputSwitchYN';
+import ConfigInputSwitch from '@/febos/global/empresas/componentes/configs/inputs/ConfigInputSwitch';
 import ConfigInputText from '@/febos/global/empresas/componentes/configs/inputs/ConfigInputText';
 
 export default {
   name: 'ConfigInputWrapper',
-  components: { ConfigInputSwitchYN, ConfigInputText, BButton },
+  components: { ConfigInputSwitch, ConfigInputText, BButton },
   data() {
     return {
       defaultType: 'text',
-      types: ['switch-y-n', 'text'],
+      types: ['switch', 'text'],
       newValue: '',
       levelsPermissions: {},
       hasPermissionSave: false,
@@ -79,6 +81,10 @@ export default {
     type: {
       type: String,
       required: true,
+    },
+    config: {
+      type: Object,
+      required: false
     }
   },
   mounted() {
