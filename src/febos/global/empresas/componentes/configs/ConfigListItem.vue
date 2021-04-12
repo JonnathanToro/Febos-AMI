@@ -126,7 +126,7 @@ export default {
         .map((level) => level.id)
         .map((level) => [level, configuration[`valor${capitalize(level)}`]])
         .reverse()
-        .find(([, config]) => config) || [];
+        .find(([, config]) => config) || ['global'];
     }
   }
 };
