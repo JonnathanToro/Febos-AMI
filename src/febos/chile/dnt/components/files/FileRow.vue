@@ -183,11 +183,19 @@
           </vs-chip>
           <vs-chip class="mr-3"
             v-tooltip="'archivo privado'"
-            v-if="file.transportePuertoTipo === '1'"
+            v-if="file.transportePuertoTipo == '1'"
             color="warning" transparent
           >
             <vs-avatar icon="lock" />
             privado
+          </vs-chip>
+          <vs-chip class="mr-3"
+           v-tooltip="'archivo público'"
+           v-if="file.transportePuertoTipo == '0'"
+           color="warning" transparent
+          >
+            <vs-avatar icon="lock" />
+            público
           </vs-chip>
         </vs-col>
       </vs-row>

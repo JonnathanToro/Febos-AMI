@@ -60,6 +60,18 @@ const filterViews = {
         }
       },
       {
+        nombre: 'Tipo Expediente',
+        campo: 'claseMercadoPublico', // tipo de expedient
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          numInt: 'Numeración interna',
+          numOf: 'Numeración oficial',
+          ext: 'Externo',
+          int: 'Interno'
+        }
+      },
+      {
         nombre: 'Acompaña físico',
         campo: 'transporteViaTransporteCodigoTransporte',
         tipo: 'multi',
@@ -113,7 +125,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'Observacion / Materia', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -187,6 +199,18 @@ const filterViews = {
         }
       },
       {
+        nombre: 'Tipo Expediente',
+        campo: 'claseMercadoPublico', // tipo de expedient
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          numInt: 'Numeración interna',
+          numOf: 'Numeración oficial',
+          ext: 'Externo',
+          int: 'Interno'
+        }
+      },
+      {
         nombre: 'Acompaña físico',
         campo: 'transporteViaTransporteCodigoTransporte',
         tipo: 'multi',
@@ -237,7 +261,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -310,6 +334,18 @@ const filterViews = {
         }
       },
       {
+        nombre: 'Tipo Expediente',
+        campo: 'claseMercadoPublico', // tipo de expedient
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          numInt: 'Numeración interna',
+          numOf: 'Numeración oficial',
+          ext: 'Externo',
+          int: 'Interno'
+        }
+      },
+      {
         nombre: 'Acompaña físico',
         campo: 'transporteViaTransporteCodigoTransporte',
         tipo: 'multi',
@@ -360,7 +396,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -436,6 +472,18 @@ const filterViews = {
         }
       },
       {
+        nombre: 'Tipo Expediente',
+        campo: 'claseMercadoPublico', // tipo de expedient
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          numInt: 'Numeración interna',
+          numOf: 'Numeración oficial',
+          ext: 'Externo',
+          int: 'Interno'
+        }
+      },
+      {
         nombre: 'Acompaña físico',
         campo: 'transporteViaTransporteCodigoTransporte',
         tipo: 'multi',
@@ -486,7 +534,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -569,6 +617,18 @@ const filterViews = {
         }
       },
       {
+        nombre: 'Tipo Expediente',
+        campo: 'claseMercadoPublico', // tipo de expedient
+        tipo: 'multi',
+        valor: [],
+        opciones: {
+          numInt: 'Numeración interna',
+          numOf: 'Numeración oficial',
+          ext: 'Externo',
+          int: 'Interno'
+        }
+      },
+      {
         nombre: 'Acompaña físico',
         campo: 'transporteViaTransporteCodigoTransporte',
         tipo: 'multi',
@@ -622,7 +682,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Observaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []

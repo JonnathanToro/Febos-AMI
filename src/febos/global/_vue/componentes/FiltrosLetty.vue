@@ -72,6 +72,7 @@
     <vs-modal
       :title="`Filtrar por ${actualFilter.nombre}`"
       ref="configFiltro"
+      @close="verificarFiltrosAlCerrar"
       dismiss-on="close-button esc"
     >
       <div>
@@ -429,19 +430,16 @@ export default {
     },
     // eslint-disable-next-line func-names
     'filterOptions.users': function (valorNuevo) {
-      console.log('watc users', valorNuevo);
       this.actualFilter.valor = valorNuevo.map((user) => user.valor);
       this.actualFilter.valorFormateado = valorNuevo.map((user) => user.nombre).join(',');
     },
     // eslint-disable-next-line func-names
     'filterOptions.derivados': function (valorNuevo) {
-      console.log('watc derivados', valorNuevo);
       this.actualFilter.valor = valorNuevo.map((user) => user.valor);
       this.actualFilter.valorFormateado = valorNuevo.map((user) => user.nombre).join(',');
     },
     // eslint-disable-next-line func-names
     'filterOptions.userCorreos': function (valorNuevo) {
-      console.log('watc correos', valorNuevo);
       this.actualFilter.valor = valorNuevo.map((user) => user.valor);
       this.actualFilter.valorFormateado = valorNuevo.map((user) => user.nombre).join(',');
     },
@@ -517,8 +515,10 @@ export default {
     },
     selectAllOptions(valorNuevo) {
       if (valorNuevo === true) {
-        this.actualFilter.valor = Object.keys(this.actualFilter.opciones);
-        this.actualFilter.valorFormateado = Object.values(this.actualFilter.opciones);
+        if (this.actualFilter.valor.length !== Object.keys(this.actualFilter.opciones).length) {
+          this.actualFilter.valor = Object.keys(this.actualFilter.opciones);
+          this.actualFilter.valorFormateado = Object.values(this.actualFilter.opciones);
+        }
       } else {
         this.actualFilter.valor = [];
         this.actualFilter.valorFormateado = [];
@@ -575,6 +575,10 @@ export default {
         }
         case 'correos': {
           this.filterOptions.userCorreos = [];
+          break;
+        }
+        case 'multi': {
+          this.selectAllOptions = false;
           break;
         }
         default: {
@@ -717,7 +721,6 @@ export default {
         }
       });
 
-      console.log('FILTROS A APLICAR', query.join('|'));
       this.$emit('filtros-aplicados', query.join('|'), onMounted);
     },
     searchAvailableFilters() {
@@ -855,6 +858,10 @@ export default {
           this.actualFilter.opciones = this.setOptionsFilter(filter);
           break;
         }
+        case 'multi': {
+          this.selectAllOptions = false;
+          break;
+        }
         default: {
           console.log('format filtro default', this.actualFilter);
         }
@@ -877,6 +884,9 @@ export default {
         }
         return filterApplied;
       });
+      if (this.actualFilter.valor.length === Object.keys(this.actualFilter.opciones).length) {
+        this.selectAllOptions = true;
+      }
     }
   },
   mounted() {
