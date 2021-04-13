@@ -39,8 +39,8 @@
               <ListItemOptionActivity
                 :option="category"
                 :type="'category'"
-                :selectedCategory="selectedCategory
-                && selectedCategory.opcionId === category.opcionId"/>
+                :selectedCategory="selectedActivity
+                && selectedActivity.opcionId === category.opcionId"/>
             </div>
           </vs-list>
         </vs-col>
@@ -56,8 +56,8 @@
                 v-tooltip="'Agregar estado a categoría'"
                 color="primary"
                 class="margin-right"
-                v-if="selectedCategory.opcionId"
-                v-on:click="createOption(selectedCategory)"
+                v-if="selectedActivity.opcionId"
+                v-on:click="createOption(selectedActivity)"
                 type="border"
                 icon="playlist_add"
               />
@@ -154,7 +154,7 @@ export default {
       'loading',
       'categoryActivities',
       'activityStates',
-      'selectedCategory'
+      'selectedActivity'
     ]),
     ...mapGetters('Usuario', [
       'usuarioActual'
@@ -198,8 +198,8 @@ export default {
       };
       await this.saveOptions(option);
 
-      if (Object.keys(this.selectedCategory).length) {
-        await this.listActivities(this.selectedCategory);
+      if (Object.keys(this.selectedActivity).length) {
+        await this.listActivities(this.selectedActivity);
       } else {
         await this.listCategories({
           grupoOpcion: 'tipos.actividades-ed',
