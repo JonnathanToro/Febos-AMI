@@ -193,7 +193,7 @@ export default {
         : defaultFilters;
 
       if (this.textSearch !== '') {
-        newFilters = newFilters.concat(`codigosEtiqueta:${this.textSearch}`);
+        newFilters = newFilters.concat(`|codigosEtiqueta:${this.textSearch}`);
       }
 
       console.log('CHANGE', newFilters);

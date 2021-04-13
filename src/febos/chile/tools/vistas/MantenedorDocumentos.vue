@@ -72,7 +72,11 @@
               class="wrap-list-item"
               :key="document.opcionId"
             >
-              <ListItemOption :option="document" :type="'document'"></ListItemOption>
+              <ListItemOption
+                :option="document" :type="'document'"
+                :usersCompany="usersCompany"
+                :groupsCompany="groupsCompany"
+              />
             </div>
           </vs-list>
         </vs-col>
@@ -157,7 +161,9 @@ export default {
       'usuarioActual'
     ]),
     ...mapGetters('Empresas', [
-      'empresa'
+      'empresa',
+      'usersCompany',
+      'groupsCompany'
     ])
   },
   methods: {
@@ -166,6 +172,10 @@ export default {
       'listDocuments',
       'clearDocuments',
       'saveOptions'
+    ]),
+    ...mapActions('Empresas', [
+      'getUsersCompany',
+      'getGroupsCompany'
     ]),
     createOption(category) {
       this.createMood = !this.createMood;
@@ -213,6 +223,16 @@ export default {
     this.listCategories({
       grupoOpcion: 'tipos.documentos-ed',
       deshabilitado: 'si'
+    });
+    this.getUsersCompany({
+      empresaId: this.empresa.id,
+      pagina: 1,
+      filas: 9999,
+      buscarInfoExtra: 'si',
+      filtroInfoExtra: 'CARGO'
+    });
+    this.getGroupsCompany({
+      empresaId: this.empresa.id
     });
   }
 };
