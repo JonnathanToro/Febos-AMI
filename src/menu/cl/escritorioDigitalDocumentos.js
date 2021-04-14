@@ -49,7 +49,7 @@ export default [{
       name: 'Expedientes',
       slug: 'files',
       icon: 'FolderIcon',
-      permiso: 'ED008',
+      permiso: 'ED049',
       submenu: [
         {
           url: { name: 'files-wizard', params: { wizard: 'numOf' } },
