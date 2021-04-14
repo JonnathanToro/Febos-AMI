@@ -184,31 +184,42 @@ export default {
       }
     },
     async saveOption() {
-      const option = {
-        valor: this.option.valor,
-        descripcion: this.option.descripcion,
-        configuradoPor: this.usuarioActual.id,
-        referenciaId: this.empresa.id,
-        parametroId: this.createDocument
-          ? this.option.parametroId + this.option.valor : `tipos.actividades-ed.${ this.option.valor}`,
-        orden: this.createDocument ? this.option.orden : this.categoryActivities.length + 1,
-        nivel: 0,
-        grupoId: this.createDocument ? this.option.grupoId : 'tipos.actividades-ed',
-        extra: '{}'
-      };
-      await this.saveOptions(option);
+      if ((this.option.valor && this.option.valor !== '')
+        && (this.option.descripcion && this.option.descripcion !== '')) {
+        const option = {
+          valor: this.option.valor,
+          descripcion: this.option.descripcion,
+          configuradoPor: this.usuarioActual.id,
+          referenciaId: this.empresa.id,
+          parametroId: this.createDocument
+            ? this.option.parametroId + this.option.valor : `tipos.actividades-ed.${ this.option.valor}`,
+          orden: this.createDocument ? this.option.orden : this.categoryActivities.length + 1,
+          nivel: 0,
+          grupoId: this.createDocument ? this.option.grupoId : 'tipos.actividades-ed',
+          extra: '{}'
+        };
+        await this.saveOptions(option);
 
-      if (Object.keys(this.selectedActivity).length) {
-        await this.listActivities(this.selectedActivity);
+        if (Object.keys(this.selectedActivity).length) {
+          await this.listActivities(this.selectedActivity);
+        } else {
+          await this.listCategories({
+            grupoOpcion: 'tipos.actividades-ed',
+            deshabilitado: 'si'
+          });
+        }
+
+        this.createDocument = false;
+        this.createMood = false;
       } else {
-        await this.listCategories({
-          grupoOpcion: 'tipos.actividades-ed',
-          deshabilitado: 'si'
+        this.$vs.notify({
+          title: 'Oops!',
+          text: 'Tienes que colocar una abreviación / descripción',
+          color: 'warning',
+          time: 3000,
+          position: 'top-center'
         });
       }
-
-      this.createDocument = false;
-      this.createMood = false;
     }
   },
   mounted() {

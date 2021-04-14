@@ -191,31 +191,41 @@ export default {
       }
     },
     async saveOption() {
-      const option = {
-        valor: this.option.valor,
-        descripcion: this.option.descripcion,
-        configuradoPor: this.usuarioActual.id,
-        referenciaId: this.empresa.id,
-        parametroId: this.createDocument
-          ? this.option.parametroId + this.option.valor : `tipos.documentos-ed.${ this.option.valor}`,
-        orden: this.createDocument ? this.option.orden : this.mantenedorCategorias.length + 1,
-        nivel: 0,
-        grupoId: this.createDocument ? this.option.grupoId : 'tipos.documentos-ed',
-        extra: '{}'
-      };
-      await this.saveOptions(option);
+      if ((this.option.valor && this.option.valor !== '')
+        && (this.option.descripcion && this.option.descripcion !== '')) {
+        const option = {
+          valor: this.option.valor,
+          descripcion: this.option.descripcion,
+          configuradoPor: this.usuarioActual.id,
+          referenciaId: this.empresa.id,
+          parametroId: this.createDocument
+            ? this.option.parametroId + this.option.valor : `tipos.documentos-ed.${ this.option.valor}`,
+          orden: this.createDocument ? this.option.orden : this.mantenedorCategorias.length + 1,
+          nivel: 0,
+          grupoId: this.createDocument ? this.option.grupoId : 'tipos.documentos-ed',
+          extra: '{}'
+        };
+        await this.saveOptions(option);
 
-      if (Object.keys(this.selectedCategory).length) {
-        await this.listDocuments(this.selectedCategory);
+        if (Object.keys(this.selectedCategory).length) {
+          await this.listDocuments(this.selectedCategory);
+        } else {
+          await this.listCategories({
+            grupoOpcion: 'tipos.documentos-ed',
+            deshabilitado: 'si'
+          });
+        }
+        this.createDocument = false;
+        this.createMood = false;
       } else {
-        await this.listCategories({
-          grupoOpcion: 'tipos.documentos-ed',
-          deshabilitado: 'si'
+        this.$vs.notify({
+          title: 'Oops!',
+          text: 'Tienes que colocar una abreviación / descripción',
+          color: 'warning',
+          time: 3000,
+          position: 'top-center'
         });
       }
-
-      this.createDocument = false;
-      this.createMood = false;
     }
   },
   mounted() {
