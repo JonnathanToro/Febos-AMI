@@ -30,7 +30,7 @@
           <div v-for="user in usersOnGroup" :key="user.id">
             <vs-list-item :title="user.nombre" :subtitle="user.correo">
               <vs-chip color="warning" v-if="user.esAdministradorEmpresa === 'Y'">
-                administrador
+                admin
               </vs-chip>
               <vs-chip color="warning" v-if="user.esLider === 'Y'">
                 <vs-avatar icon="flag" />
@@ -40,8 +40,9 @@
                 color="danger"
                 size="small"
                 type="border"
+                icon="highlight_off"
               >
-                Remover
+
               </vs-button>
             </vs-list-item>
           </div>
