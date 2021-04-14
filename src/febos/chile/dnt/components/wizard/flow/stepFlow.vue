@@ -158,6 +158,13 @@
           v-for="(step, index) in step.steps" :key="`step-${index}`"
         >
           <div class="step-wrapper">
+            <span style="background: pink">
+               <vs-icon
+                 icon="highlight_off"
+                 size="small"
+                 bg="red" round
+               />
+            </span>
             <span class="step-number">{{step.stepNumber}}</span>
             <span class="step-number">{{step.stepNumber}}</span>
             <div class="text-center step-name">

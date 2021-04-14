@@ -1,5 +1,25 @@
 <template>
   <div id="list-dnt">
+    <div class="d-flex search-bar">
+      <vs-input
+        icon-after="true"
+        class="mt-2 w-100"
+        size="small"
+        label-placeholder="icon-after"
+        icon="mode_edit"
+        placeholder="Buscar coincidencias"
+        v-model="textSearch"
+      />
+      <vs-button
+        radius
+        class="ml-3"
+        color="primary"
+        type="border"
+        icon="search"
+        size="small"
+        @click="searchCoincidences()"
+      />
+    </div>
     <FilesFilters
       :value="filters"
       :onChange="onChangeFilters"
@@ -97,6 +117,8 @@ export default {
       fromCS: false,
       selectedFile: {},
       filters: '',
+      textSearch: '',
+      searchParam: false,
       page: Number.parseInt(this.$route.query.page || 1, 10),
       paginate: Number.parseInt(this.$route.query.paginate || 10, 10),
       forceRender: Date.now() // TODO: the files watch is triggered but the component not re-render.
@@ -160,6 +182,10 @@ export default {
     ...mapActions('Modals', [
       'closeModal'
     ]),
+    async searchCoincidences() {
+      this.searchParam = true;
+      await this.fetchDocuments();
+    },
     selectFile(file) {
       this.selectedFile = file;
       this.selectFileState(file.febosId);
@@ -183,7 +209,7 @@ export default {
       this.$router.go();
     },
     async fetchDocuments() {
-      await this.listDocuments({
+      const query = {
         data: {
           tipo: 'EXP',
           campos: '*',
@@ -193,7 +219,13 @@ export default {
           filtros: mergeFilters(this.filters, this.$route.query.filters)
         },
         fromCS: this.fromCS
-      });
+      };
+
+      if (this.textSearch !== '') {
+        query.data.busqueda = this.textSearch;
+        this.fromCS = true;
+      }
+      await this.listDocuments(query);
       if (!this.fromCS) {
         this.fromCS = true;
       }

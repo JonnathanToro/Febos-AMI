@@ -1,25 +1,5 @@
 <template>
   <div v-if="view !== 'compartido'">
-    <div class="d-flex search-bar">
-      <vs-input
-        icon-after="true"
-        class="mt-2 w-100"
-        size="small"
-        label-placeholder="icon-after"
-        icon="mode_edit"
-        placeholder="Buscar coincidencias"
-        v-model="textSearch"
-      />
-      <vs-button
-        radius
-        class="ml-3"
-        color="primary"
-        type="border"
-        icon="search"
-        size="small"
-        @click="searchCoincidences()"
-      />
-    </div>
     <div style="text-align: right;margin-bottom: 5px;">
       <span>
         Viendo documentos que ingresaron
@@ -123,7 +103,6 @@ export default {
       rangeSelected: { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
       rangeFrom: '',
       rangeUntil: '',
-      textSearch: '',
       view,
       configuration: filters,
       filterView: filterLetty,
@@ -178,25 +157,12 @@ export default {
       'fetchAllDocuments',
       'fetchInstitutionTypes'
     ]),
-    async searchCoincidences() {
-      const defaultFilters = `codigosEtiqueta:${this.textSearch}`;
-      const newFilters = this.currentFilters !== ''
-        ? `${defaultFilters}|${this.currentFilters}`
-        : defaultFilters;
-      console.log('SEARCH codigos etiqueta', newFilters);
-    },
     async changeFilters(filters, onMounted) {
       const defaultFilters = `fechaCreacion:${this.rangeFrom}--${this.rangeUntil}`;
       this.currentFilters = filters;
-      let newFilters = filters !== ''
+      const newFilters = filters !== ''
         ? `${defaultFilters}|${filters}`
         : defaultFilters;
-
-      if (this.textSearch !== '') {
-        newFilters = newFilters.concat(`|codigosEtiqueta:${this.textSearch}`);
-      }
-
-      console.log('CHANGE', newFilters);
 
       if (!onMounted) {
         const nonShareableFilters = [
