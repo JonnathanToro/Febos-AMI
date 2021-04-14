@@ -15,4 +15,5 @@ export default {
   verificationCode: '',
   loading: false,
   successAction: false,
+  sharedFile: {}
 };

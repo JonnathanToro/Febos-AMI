@@ -90,7 +90,92 @@
       size="l"
       dismiss-on="close-button esc"
     >
-      <form data-vv-scope="config-sheets">
+      <div v-if="configSheetByDoc.configFolios">
+        <div class="row mb-3">
+          <div class="col-5">
+            <vs-select
+              class="w-100"
+              autocomplete
+              name="approach"
+              disabled
+              label="Alcance de la configuración"
+              v-model="configSheetByDoc.alcance"
+            >
+              <vs-select-item
+                :value="'empresa'"
+                text="Empresa"
+              />
+              <vs-select-item
+                :value="'grupos'"
+                text="Grupos"
+              />
+              <vs-select-item
+                :value="'usuarios'"
+                text="Usuarios"
+              />
+            </vs-select>
+          </div>
+          <div class="col-5">
+            <vs-select
+              class="w-100"
+              autocomplete
+              name="renew"
+              disabled
+              label="Reiniciar configuración"
+              v-model="configSheetByDoc.reinicio"
+            >
+              <vs-select-item
+                :value="'A'"
+                text="Anual"
+              />
+              <vs-select-item
+                :value="'M'"
+                text="Mensual"
+              />
+              <vs-select-item
+                :value="'N'"
+                text="Nunca"
+              />
+            </vs-select>
+          </div>
+          <div class="col-2">
+          </div>
+        </div>
+        <div
+          class="row"
+          v-for="(config, index) in configSheetByDoc.configFolios" :key="index"
+        >
+          <div class="col-5" v-if="configSheetByDoc.alcance === 'usuarios'">
+            <vs-input
+              disabled
+              class="w-100"
+              label="Usuario"
+              v-model="config.configNombre"
+            />
+
+          </div>
+          <div class="col-5" v-if="configSheetByDoc.alcance === 'grupos'">
+            <vs-input
+              disabled
+              class="w-100"
+              label="Grupo"
+              v-model="config.configNombre"
+            />
+          </div>
+          <div class="col-5">
+            <vs-input
+              disabled
+              class="w-100"
+              label="Folio inicial"
+              maxlength="50"
+              v-model="config.folioInicial"
+            />
+          </div>
+          <hr>
+        </div>
+
+      </div>
+      <form data-vv-scope="config-sheets" v-if="!configSheetByDoc.configFolios">
         <div class="row mb-3">
           <div class="col-5">
             <vs-select
@@ -278,7 +363,7 @@
           </div>
         </div>
       </form>
-      <div class="text-center">
+      <div class="text-center" v-if="!configSheetByDoc.configFolios">
         <vs-button
           class="mt-4"
           color="primary"
@@ -343,6 +428,9 @@ export default {
     ...mapGetters('Empresas', [
       'company',
       'empresa'
+    ]),
+    ...mapGetters('Herramientas', [
+      'configSheetByDoc'
     ])
   },
   methods: {
@@ -350,7 +438,9 @@ export default {
       'listDocuments',
       'toggleEnableOption',
       'saveOptions',
-      'clearSelected'
+      'clearSelected',
+      'getDocConfigSheet',
+      'saveDocConfigSheet'
     ]),
 
     editOption() {
@@ -409,7 +499,6 @@ export default {
         this.configId = '';
         this.configFolio = '';
 
-        console.log('ids', this.configIds);
         await this.$validator.reset();
       } else {
         this.$vs.notify({
@@ -463,15 +552,23 @@ export default {
         return;
       }
       console.log('save', this.configSheetDoc);
+      this.saveDocConfigSheet({
+        id: this.sheetsDoc.opcionId,
+        config: this.configSheetDoc
+      });
     },
-    configSheets(option) {
+    async configSheets(option) {
       this.sheetsDoc = { ...option };
+
       this.$refs.sheetsConfig.open();
       this.configSheetDoc = {
         tipoDoc: option.opcionId,
+        iut: this.company.iut,
         alcance: '',
+        reinicio: '',
         configFolios: []
       };
+      await this.getDocConfigSheet({ id: option.opcionId });
     },
     saveOption(option) {
       this.editMood = false;

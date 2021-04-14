@@ -48,5 +48,8 @@ export default {
   },
   SET_SUCCESS_MESSAGE(state, payload) {
     state.successAction = payload;
+  },
+  SET_SHARED_FILE(state, payload) {
+    state.sharedFile = payload;
   }
 };

@@ -1,10 +1,5 @@
 <template>
   <div id="list-dnt">
-    <FilesFilters
-      :value="filters"
-      :onChange="onChangeFilters"
-      :clear="clearFilters"
-    />
     <div v-if="!isVerified">
       <div class="row mb-3">
         <h5 class="m-auto">
@@ -21,10 +16,10 @@
                 label="Código de verificación"
                 maxlength="10"
                 name="securityPin"
-                v-model="verificationCode"
+                v-model="verificationInput"
                 v-validate="'required'"
-                :danger="errors.has('security.securityPin')"
-                :danger-text="errors.first('security.securityPin')"
+                :danger="errors.has('security.verificationInput')"
+                :danger-text="errors.first('security.verificationInput')"
               />
               <div class="text-center">
                 <vs-button
@@ -42,229 +37,83 @@
         </div>
       </div>
     </div>
-    <div v-if="isVerified">
-      <FilesHeader :on-pending-files="onPendingFiles" />
-      <div class="force-render" :key="forceRender">
-        <!--<FileRow
-          :key="file.febosId"
-          v-for="file in files"
-          :file="file"
-          :on-pending-files="onPendingFiles"
-          :on-general-files="onGeneralFiles"
-          :select-file="selectFile"
-        />-->
-        <vs-row
-          v-for="file in files"
-          :key="file.febosId"
-          class="p-3 mt-2 shadow-sm"
-        >
-          <vs-col vs-lg="11">
-            <vs-row>
-              <vs-col class="text-center text-primary" vs-lg="1">
-                <div>
-                  # <br>
-                </div>
-                <div>
-                  {{ file.numero }}
-                </div>
-              </vs-col>
-              <vs-col vs-lg="2">
-                <vs-chip
-                  v-if="file.estado === '1'"
-                  title="creado"
-                >
-                  <vs-avatar icon="mail_outline" color="#43C3B9" />
-                  Creado
-                </vs-chip>
-                <vs-chip
-                  title="Borrador"
-                  v-if="file.estado === '3'"
-                >
-                  <vs-avatar icon="query_builder" color="#87579e" />
-                  Borrador
-                </vs-chip>
-                <vs-chip
-                  title="Tramitado"
-                  v-if="file.estado === '10'"
-                >
-                  <vs-avatar icon="thumb_up" color="#14AA59" />
-                  Tramitado
-                </vs-chip>
-                <vs-chip
-                  title="Rechazado"
-                  v-if="file.estado === '5'"
-                >
-                  <vs-avatar icon="thumb_down" color="#CE4B4B" />
-                  Rechazado
-                </vs-chip>
-                <vs-chip
-                  title="Anulado"
-                  v-if="file.estado === '8'"
-                >
-                  <vs-avatar icon="close" color="#A04E4E" />
-                  Anulado
-                </vs-chip>
-                <vs-chip
-                  title="Finalizado"
-                  v-if="file.estado === '9'"
-                >
-                  <vs-avatar icon="move_to_inbox" color="#A04E4E" />
-                  Finalizado
-                </vs-chip>
-              </vs-col>
-              <vs-col vs-lg="9">
-                <vs-row>
-                  <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-                    {{file.compradorArea | capitalize }}
-                  </vs-col>
-                  <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-                    {{ file.emisorContactoNombre | capitalize }}
-                    <small
-                      v-if="file.emisorContactoEmail"
-                      class="d-block"
-                      v-tooltip="`${file.emisorContactoEmail}`"
-                    >
-                      {{ file.emisorContactoEmail | truncate(20) }}
-                    </small>
-                  </vs-col>
-                  <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-                    {{ file.solicitanteGrupoNombre }}
-                    <small
-                      v-if="file.solicitanteNombre"
-                      class="d-block"
-                      v-tooltip="`${file.solicitanteNombre}`"
-                    >
-                      {{ file.solicitanteNombre | truncate(20) }}
-                    </small>
-                  </vs-col>
-                  <vs-col vs-lg="3" vs-sm="3" vs-xs="12" v-if="onPendingFiles">
-                    {{ file.derivadoPor }}
-                  </vs-col>
-                </vs-row>
-              </vs-col>
-            </vs-row>
-            <vs-row>
-              <vs-col vs-offset="1" vs-lg="9" vs-type="flex">
-                <vs-chip class="mr-4" v-tooltip="'Fecha de Actualización'">
-                  <vs-avatar icon="date_range" />
-                  {{ file.fechaActualizacion | dateFormat }}
-                </vs-chip>
-                <vs-chip class="mr-4" v-tooltip="'Fecha del documento'">
-                  <vs-avatar icon="event" color="#ff9f43"/>
-                  {{ file.fechaEmision | dateFormat }}
-                </vs-chip>
-                <vs-chip
-                  class="mr-3"
-                  v-tooltip="'Número de documento'"
-                  v-if="file.numeroInt"
-                >
-                  <vs-avatar icon="description" color="#ff9f43" />
-                  {{file.numeroInt}}
-                </vs-chip>
-                <vs-chip
-                  class="mr-3"
-                  v-if="file.emisorSucursalDireccion || file.emisorCentroCostoNombre "
-                >
-                  <vs-avatar icon="description" color="#ff9f43" />
-                  <span
-                    v-tooltip="`${file.emisorSucursalDireccion}`"
-                    v-if="file.emisorSucursalDireccion"
-                  >
-              {{file.emisorSucursalDireccion | truncate(20)}}
-            </span>
-                  <span
-                    v-tooltip="`${file.emisorCentroCostoNombre}`"
-                    v-if="!file.emisorSucursalDireccion"
-                  >
-              {{(file.emisorCentroCostoNombre ||'')| truncate(20)}}
-            </span>
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Documento externo'"
-                         v-if="file.claseMercadoPublico === 'ext'"
-                         color="primary" transparent
-                >
-                  externo
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Documento interno'"
-                         v-if="file.claseMercadoPublico === 'int'"
-                         color="primary" transparent
-                >
-                  interno
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-if="file.claseMercadoPublico === 'numInt'"
-                         v-tooltip="'Documento interno'"
-                         transparent color="primary">
-                  interno
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Numeración interna'"
-                         v-if="file.claseMercadoPublico === 'numInt'"
-                         transparent color="primary"
-                >
-                  num. interna
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Numeración Oficina de Partes'"
-                         v-if="file.claseMercadoPublico === 'numOf'"
-                         color="primary" transparent
-                >
-                  num. Oficial
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Estoy en copia'"
-                         v-if="file.enCopia === 'SI'"
-                         color="success" transparent
-                >
-                  copia
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Soy destinatario/responsable'"
-                         v-if="file.enResponsable === 'SI' && onGeneralFiles"
-                         color="danger" transparent
-                >
-                  responsable
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Estoy en grupo'"
-                         v-if="file.enGrupo === 'SI'"
-                         color="danger" transparent
-                >
-                  en grupo
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'Acompaña físico'"
-                         v-if="file.transporteViaTransporteCodigoTransporte === '1'"
-                         color="#343a40" transparent
-                >
-                  <vs-avatar icon="description" />
-                  físico
-                </vs-chip>
-                <vs-chip class="mr-3"
-                         v-tooltip="'archivo privado'"
-                         v-if="file.transportePuertoTipo === '1'"
-                         color="warning" transparent
-                >
-                  <vs-avatar icon="lock" />
-                  privado
-                </vs-chip>
-              </vs-col>
-            </vs-row>
-          </vs-col>
-          <vs-col vs-lg="1" vs-type="flex" vs-justify="center" vs-align="center">
-            <FileOptions
-              :file="file"
-              :is-shared="true"
-              :select-file="selectFile"
-            />
-          </vs-col>
-        </vs-row>
+    <div v-if="sharedFile.dnt">
+      <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-8 bg-white">
+          <h5 style="color:#7a008d;">
+            Este expediente ha sido creado por {{ sharedFile.dnt.solicitanteNombre }}
+            <small>{{ sharedFile.dnt.solicitanteEmail }}</small>,
+            perteneciente a la unidad {{sharedFile.dnt.solicitanteGrupoNombre}}
+          </h5>
+          <div>
+            - Tipo de documento: {{ sharedFile.dnt.emisorCentroCostoNombre }}
+          </div>
+          <div>
+            - Documento: {{ sharedFile.dnt.emisorSucursalDireccion }}
+          </div>
+          <div v-if="sharedFile.dnt.numeroInt">
+            - Número de documento: {{ sharedFile.dnt.numeroInt }}
+          </div>
+          <div>
+            - Tipo de expediente: {{ sharedFile.dnt.claseMercadoPublico }}
+          </div>
+          <div v-if="sharedFile.dnt.condicionDespacho">
+            - Formato documento: {{ sharedFile.dnt.condicionDespacho }}
+          </div>
+          <div v-if="sharedFile.dnt.fechaEmision">
+            - Fecha documento: {{ sharedFile.dnt.fechaEmision }}
+          </div>
+          <div v-if="sharedFile.dnt.transportePuertoTipo">
+            - Es privado: {{ sharedFile.dnt.transportePuertoTipo }}
+          </div>
+          <div v-if="sharedFile.dnt.compradorArea">
+            - Tipo institución: {{ sharedFile.dnt.compradorArea }}
+          </div>
+          <div v-if="sharedFile.dnt.emisorContactoArea">
+            - Institución: {{ sharedFile.dnt.emisorContactoArea }}
+          </div>
+          <div v-if="sharedFile.dnt.emisorContactoNombre">
+            - Persona Remitente: {{ sharedFile.dnt.emisorContactoNombre }}
+          </div>
+
+          <div v-if="sharedFile.dnt.emisorContactoCargo">
+            - Cargo Remitente: {{ sharedFile.dnt.emisorContactoCargo }}
+          </div>
+          <div v-if="sharedFile.dnt.transporteNotas">
+            - Detalle: {{ sharedFile.dnt.transporteNotas }}
+          </div>
+          <div v-if="sharedFile.dnt.transporteViaTransporteCodigoTransporte === 0">
+            - Acompaña físico: acompaña la wea 0
+          </div>
+          <div v-if="sharedFile.dnt.transporteViaTransporteCodigoTransporte === 1">
+            - Acompaña físico: acompaña la wea 1
+          </div>
+          <!--<div v-if="sharedFile.observaciones[0]">
+            - Observaciones: {{ sharedFile.observaciones[0] }}
+          </div>
+          <div v-if="sharedFile.observaciones[1]">
+            - Materia: {{ sharedFile.observaciones[1] }}
+          </div>-->
+          <hr>
+          <div v-for="destino in sharedFile.destinatarios" :key="destino.dntDestinatariosId">
+            - Tipo destino: {{ destino.destinoNombre }}
+            <br>
+            - Nombre destino: {{ destino.destinoListaNombre }}
+          </div>
+
+          <hr>
+          <div v-for="referencia in sharedFile.referencias" :key="referencia.dntReferenciaId">
+            - Tipo doc: {{ referencia.tipoDocumento }}
+            <br>
+            - folio referencia: {{ referencia.folio }}
+          </div>
+
+        </div>
+        <div class="col-2">
+        </div>
       </div>
-      <PopUpBinnacleFile :titulo="'Bitácora del Expediente #'+selectedFile.numero"/>
-      <PopUpDetailFile :file="selectedFile" />
-      <PopUpGeneralDetailFile :file="selectedFile" />
     </div>
   </div>
 </template>
@@ -272,29 +121,14 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import FileOptions from '@/febos/chile/dnt/components/files/FileOptions';
-import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
-import PopUpGeneralDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpGeneralDetailFile';
-import FilesHeader from '@/febos/chile/dnt/components/files/FilesHeader';
-import PopUpBinnacleFile from '@/febos/chile/dnt/vistas/modals/PopUpBinnacleFile';
-import FilesFilters from '@/febos/chile/dnt/components/files/FilesFilters';
-import { mergeFilters } from '@/febos/chile/dnt/utils/fitlers';
-import { removeSearchParams, updateSearchParams } from '@/febos/global/utils/router';
-
 export default {
-  components: {
-    FilesFilters,
-    PopUpBinnacleFile,
-    FilesHeader,
-    PopUpDetailFile,
-    PopUpGeneralDetailFile,
-    FileOptions
-  },
+  components: {},
   data() {
     const { view } = this.$route.params;
     return {
-      verificationCode: '',
-      isVerified: false,
+      verificationInput: '',
+      // isVerified: false,
+      isVerified: true,
       view,
       onPendingFiles: view === 'pendientes',
       onGeneralFiles: view === 'general',
@@ -307,13 +141,6 @@ export default {
     };
   },
   watch: {
-    files() {
-      this.forceRender = Date.now(); // TODO: remove this.
-    },
-    async page(page) {
-      updateSearchParams({ page });
-      await this.fetchDocuments();
-    },
     loading(value) {
       if (!value) {
         this.$vs.loading.close('#list-dnt > .con-vs-loading');
@@ -354,6 +181,10 @@ export default {
       'successAction',
       'files'
     ]),
+    ...mapGetters('Usuario', [
+      'verificationCode',
+      'sharedFile'
+    ])
   },
   methods: {
     ...mapActions('Dnts', [
@@ -364,54 +195,28 @@ export default {
     ...mapActions('Modals', [
       'closeModal'
     ]),
-    selectFile(file) {
-      this.selectedFile = file;
-      this.selectFileState(file.febosId);
-    },
-    async onChangeFilters(filters, onMounted) {
-      this.filters = filters;
-      if (!onMounted) {
-        if (this.page !== 1) {
-          this.page = 1;
-          // using else because this method has two responsibilities
-        } else {
-          // force fetch (if we change the page from 1 to 1 the watcher not run)
-          await this.fetchDocuments();
-        }
-      }
-    },
-    clearFilters() {
-      removeSearchParams(['filters']);
-      // TODO: try to change to default filter state for current view.
-      updateSearchParams({ page: 1 });
-      this.$router.go();
-    },
-    async fetchDocuments() {
-      const { id } = this.$route.params;
-      this.filters = this.filters.concat(`|febosId:${ id}`);
-      await this.listDocuments({
-        data: {
-          tipo: 'EXP',
-          campos: '*',
-          pagina: this.page,
-          orden: '-fechaCreacion',
-          itemsPorPagina: this.paginate,
-          filtros: mergeFilters(this.filters, this.$route.query.filters)
-        },
-        fromCS: this.fromCS
-      });
-      if (!this.fromCS) {
-        this.fromCS = true;
-      }
-    },
+    ...mapActions('Usuario', [
+      'ioGetFileCodeVerification',
+      'verifySharedFile'
+    ]),
     verifyFile() {
-      console.log('verificando codigo');
       this.isVerified = true;
-      this.fetchDocuments();
+      this.verifySharedFile({
+        id: this.verificationCode,
+        codigo: this.verificationInput
+      });
     }
   },
   created() {
-    this.selectFileState('');
+    const { id } = this.$route.params;
+    const { idSubject } = this.$route.params;
+    this.ioGetFileCodeVerification(
+      {
+        tipo: 'expediente_externo',
+        febosId: id,
+        destinoId: idSubject
+      }
+    );
   }
 };
 </script>

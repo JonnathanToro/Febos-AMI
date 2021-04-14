@@ -62,6 +62,19 @@ export const ioGetAuthCode = (payload) => {
   });
 };
 
+export const ioGetFileCode = (identification) => apiClient.post(`${RESOURCE}/autenticadoble`,
+  identification, {
+    operacionId: 'io.user.FileCode'
+  });
+
+export const getSharedFile = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/autenticadoble/${payload.id}?${params}`, {
+    operacionId: 'io.user.sharedFile'
+  });
+};
+
 export const updatePassword = (passwords) => {
   const params = apiClient.queryParams({
     simular: 'no'

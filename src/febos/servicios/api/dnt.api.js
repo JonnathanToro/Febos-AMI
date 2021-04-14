@@ -137,3 +137,20 @@ export const addActivity = (payload) => apiClient.post(`${RESOURCE}/${payload.fe
 export const updateActivity = (payload) => apiClient.put(`${RESOURCE}/${payload.febosId}/actividades`,
   payload.activity,
   { operacionId: 'io.dnt.update.activity' });
+
+export const getSheetsConfig = (idOption) => {
+  const params = apiClient.queryParams(idOption);
+
+  return apiClient.get(`${RESOURCE}/cafs/configuraciones?${params}`, {
+    operacionId: 'io.dnt.config.sheets'
+  });
+};
+
+export const saveSheetsConfig = (id, config) => {
+  console.log('API', id, config);
+  const params = apiClient.queryParams(id);
+
+  return apiClient.post(`${RESOURCE}/cafs/configuraciones?${params}`, config, {
+    operacionId: 'io.dnt.save.config.sheets'
+  });
+};
