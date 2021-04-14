@@ -76,7 +76,7 @@ export default {
     try {
       commit('SET_LOADING', true);
       const response = await ioCompanyCreateGroup(empresaId, group);
-      commit('ADD_GROUP', group);
+      commit('ADD_GROUP', response.data.grupo);
       store.commit('Modals/CLOSE_MODAL');
       return response.data;
     } finally {

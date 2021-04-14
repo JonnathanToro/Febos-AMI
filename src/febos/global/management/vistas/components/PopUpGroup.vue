@@ -161,7 +161,7 @@ export default {
       }
 
       console.log('GROUP', group);
-      if (this.action === 'add') {
+      if (this.action === 'add' || this.action === 'addParent') {
         this.createGroup({
           empresaId: this.company.id,
           group

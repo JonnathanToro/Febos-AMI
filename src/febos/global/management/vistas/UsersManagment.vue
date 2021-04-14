@@ -1,11 +1,11 @@
 <template>
 <div>
   <vx-card title="Gestión de usuarios" title-color="primary">
-    <div style="display: flex;">
+    <!--<div style="display: flex;">
       <span v-if="treeView" class="pr-2">Cambiar a vista de árbol</span>
       <span v-if="!treeView" class="pr-2">Cambiar a vista de tabla</span>
       <vs-switch v-model="treeView"/>
-    </div>
+    </div>-->
     <div v-if="!treeView">
       <vs-table
         :data="usersCompany" :search="true"
