@@ -168,6 +168,9 @@ export default {
         ...documentName
       };
     }
+  },
+  created() {
+    console.log('YO', this);
   }
 };
 

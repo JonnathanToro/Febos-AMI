@@ -36,9 +36,9 @@ export default () => ({
 
     if (dnt) {
       data.fileNumber = dnt.numero;
-      data.documentType = dnt.emisorCentroCostoNumero;
-      data.document = dnt.emisorSucursalCodigo;
-      data.documentNumber = dnt.numeroInt;
+      data.documentType = dnt.emisorCentroCostoNumero || '';
+      data.document = dnt.emisorSucursalCodigo || '';
+      data.documentNumber = dnt.numeroInt || '';
       if (dnt.fechaEmision) {
         data.issueDate = Date.parse(dnt.fechaEmision);
       }

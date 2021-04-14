@@ -66,7 +66,8 @@ export default {
         ACRE: 'Expediente',
         MEMO: 'Memorandum',
         DTE: 'Documento Tributario',
-        EXP: 'Expediente'
+        EXP: 'Expediente',
+        SSD: 'Proceso SSD'
       }
     };
   },
