@@ -89,7 +89,7 @@
         </vs-col>
       </vs-row>
       <vs-row>
-        <vs-col vs-offset="1" vs-lg="9" vs-type="flex">
+        <vs-col vs-offset="1" vs-lg="11" vs-type="flex">
           <vs-chip class="mr-4" v-tooltip="'Fecha de Actualización'">
             <vs-avatar icon="date_range" />
             {{ file.fechaActualizacion | dateFormat }}
@@ -123,6 +123,14 @@
             >
               {{(file.emisorCentroCostoNombre ||'')| truncate(20)}}
             </span>
+          </vs-chip>
+          <vs-chip
+            class="mr-3"
+            v-tooltip="'Documento en flujo'"
+            v-if="file.tieneAprobacionActiva === 'Y'"
+            color="#43C3B9" transparent
+          >
+            en flujo
           </vs-chip>
           <vs-chip class="mr-3"
             v-tooltip="'Documento externo'"
