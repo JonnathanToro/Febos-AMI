@@ -158,15 +158,15 @@
           v-for="(step, index) in step.steps" :key="`step-${index}`"
         >
           <div class="step-wrapper">
-            <span style="background: pink">
-               <vs-icon
-                 icon="highlight_off"
-                 size="small"
-                 bg="red" round
-               />
+            <span class="step-number">{{step.stepNumber}}</span>
+            <span class="step-delete">
+              <vs-icon
+                icon="highlight_off"
+                size="small"
+                bg="white" round
+                @click="removeStep(index)"
+              />
             </span>
-            <span class="step-number">{{step.stepNumber}}</span>
-            <span class="step-number">{{step.stepNumber}}</span>
             <div class="text-center step-name">
               {{ step.responsibleName }}
               <span v-if="step.stepType === stepTypes.GROUP">
@@ -244,6 +244,9 @@ export default {
   },
   watch: {},
   methods: {
+    removeStep(index) {
+      this.step.step = this.step.steps.splice(index, 1);
+    },
     async addStep() {
       const isValid = await this.validateForm('flow-part-2');
 
@@ -340,6 +343,15 @@ export default {
   border-radius: 50%;
   color: white;
   font-size: 12px;
+}
+
+.step-delete {
+  position: absolute;
+  top: -10px;
+  right: -4px;
+  font-size: 10px;
+  color: #b11e0b;
+  cursor: pointer;
 }
 
 .step-rol {
