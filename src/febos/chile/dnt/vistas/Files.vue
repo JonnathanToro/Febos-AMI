@@ -136,6 +136,12 @@ export default {
     };
   },
   watch: {
+    textSearch(oldValue, newVaue) {
+      if (oldValue !== newVaue) {
+        console.log('cambio la busqueda');
+        this.searchParam = false;
+      }
+    },
     files() {
       this.forceRender = Date.now(); // TODO: remove this.
     },
