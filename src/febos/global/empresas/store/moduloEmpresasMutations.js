@@ -73,6 +73,10 @@ export default {
       payload
     ];
   },
+  REMOVE_USER_GROUP(state, payload) {
+    state.usersGroup = state.usersGroup
+      .filter((userFilter) => userFilter.id !== payload.id);
+  },
   UPDATE_USER(state, payload) {
     state.usersGroup = state.usersGroup.map((user) => {
       if (user.id === payload.id) {

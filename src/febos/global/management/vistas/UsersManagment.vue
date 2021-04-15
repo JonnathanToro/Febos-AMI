@@ -141,6 +141,7 @@
               class="action"
               color="primary"
               type="border"
+              v-if="selectedGroup.nombre"
               @click="viewUsers()"
               size="small"
               icon="groups">
@@ -289,6 +290,7 @@ export default {
       });
     },
     usersByGroup(newValue) {
+      console.log('WATCH usersByGroup', newValue);
       this.usersTree = newValue;
     },
     loading(value) {
@@ -309,7 +311,9 @@ export default {
     },
     usersCompany(newValue, oldValue) {
       if (newValue !== oldValue) {
-        this.usersTree = this.usersCompany;
+        if (!this.selectedGroup.nombre) {
+          this.usersTree = this.usersCompany;
+        }
       }
     }
   },

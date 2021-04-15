@@ -97,5 +97,17 @@ export default {
     } finally {
       commit('SET_LOADING', false);
     }
+  },
+  async removeUserToGroup({ commit }, { empresaId, body }) {
+    try {
+      commit('SET_LOADING', true);
+      const response = await ioCompanyUpdateUsersGroup(empresaId,
+        { grupoId: body.grupoId, usuarios: body.usuarios });
+      commit('REMOVE_USER_GROUP', body.user);
+      // store.commit('Modals/CLOSE_MODAL');
+      return response.data;
+    } finally {
+      commit('SET_LOADING', false);
+    }
   }
 };

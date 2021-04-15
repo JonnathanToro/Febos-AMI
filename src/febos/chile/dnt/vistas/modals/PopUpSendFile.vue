@@ -149,6 +149,22 @@ export default {
       },
     };
   },
+  watch: {
+    file() {
+      this.subject = {
+        typeSend: 'moodUser',
+        group: '',
+        user: '',
+        commentary: ''
+      };
+      this.copy = {
+        typeCopy: 'sendGroup',
+        group: '',
+        user: '',
+        commentary: ''
+      };
+    }
+  },
   computed: {
     ...mapGetters('Dnts', [
       'commentsEd'
@@ -231,6 +247,18 @@ export default {
         febosId: this.file.febosId,
         destinos: newSubjects
       });
+      this.subject = {
+        typeSend: 'moodUser',
+        group: '',
+        user: '',
+        commentary: ''
+      };
+      this.copy = {
+        typeCopy: 'sendGroup',
+        group: '',
+        user: '',
+        commentary: ''
+      };
     }
   }
 };

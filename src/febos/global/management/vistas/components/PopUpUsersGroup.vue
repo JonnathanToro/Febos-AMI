@@ -41,6 +41,7 @@
                 size="small"
                 type="border"
                 icon="highlight_off"
+                @click="removeUser(user)"
               >
 
               </vs-button>
@@ -108,13 +109,23 @@ export default {
     ]),
     ...mapActions('Empresas', [
       'getUsersGroup',
-      'addUserToGroup'
+      'addUserToGroup',
+      'removeUserToGroup'
     ]),
     isUserInGroup(user) {
       return this.usersByGroup.find((userGroup) => userGroup.id === user.id);
     },
+    removeUser(user) {
+      const body = {
+        grupoId: this.usersGroup.id,
+        usuarios: this.usersOnGroup
+          .filter((userFilter) => userFilter.id !== user.id)
+          .map((userMap) => userMap.id).join(),
+        user
+      };
+      this.removeUserToGroup({ empresaId: this.company.id, body });
+    },
     addUser(user) {
-      console.log('this group', this.usersGroup);
       const body = {
         grupoId: this.usersGroup.id,
         usuarios: this.usersOnGroup.map((userMap) => userMap.id).join(),

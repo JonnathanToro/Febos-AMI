@@ -84,7 +84,8 @@
           <vs-dropdown-item
             v-on:click="onSendToFlow(file)"
             v-if="!isDraft && onPendingFiles && isAssigned
-              && !isProcessed && !isCancelled && !isShared && isInternFile"
+              && !isProcessed && !isCancelled && !isShared
+              && isInternFile && file.tieneAprobacionActiva === 'N'"
           >
             <vs-icon icon="swipe"/>
             Enviar a flujo
