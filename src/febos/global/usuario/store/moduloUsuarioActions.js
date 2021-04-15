@@ -72,6 +72,7 @@ export default {
   },
   async ioGetFileCodeVerification({ commit }, identification) {
     try {
+      commit('SET_SHARED_FILE', {});
       commit('SET_LOADING', true);
       const response = await ioGetFileCode(identification);
       commit('SET_VERIFICATION_CODE', response.data.id);
@@ -82,6 +83,7 @@ export default {
   },
   async verifySharedFile({ commit }, payload) {
     try {
+      commit('SET_SHARED_FILE', {});
       commit('SET_LOADING', true);
       const response = await getSharedFile(payload);
       commit('SET_SHARED_FILE', response.data);
