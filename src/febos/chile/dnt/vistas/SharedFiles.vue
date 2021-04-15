@@ -510,13 +510,13 @@ export default {
   created() {
     const { id } = this.$route.params;
     const { idSubject } = this.$route.params;
-    /*this.ioGetFileCodeVerification(
+    /* this.ioGetFileCodeVerification(
       {
         tipo: 'expediente_externo',
         febosId: id,
         destinoId: idSubject
       }
-    );*/
+    ); */
   }
 };
 </script>

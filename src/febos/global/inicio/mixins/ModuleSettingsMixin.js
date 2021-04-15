@@ -86,7 +86,7 @@ const moduleSettings = {
       icono: 'done_all',
       habilitado: true,
       visible: true,
-      permission: '*' // TODO: set permission
+      permission: 'ED052'
     },
   ]
 };
