@@ -11,6 +11,7 @@
         v-model="textSearch"
       />
       <vs-button
+        v-if="!searchParam"
         radius
         class="ml-3"
         color="primary"
@@ -18,6 +19,16 @@
         icon="search"
         size="small"
         @click="searchCoincidences()"
+      />
+      <vs-button
+        v-if="searchParam"
+        radius
+        class="ml-3"
+        color="primary"
+        type="border"
+        icon="highlight_off"
+        size="small"
+        @click="clearSearch()"
       />
     </div>
     <FilesFilters
@@ -182,6 +193,11 @@ export default {
     ...mapActions('Modals', [
       'closeModal'
     ]),
+    async clearSearch() {
+      this.searchParam = false;
+      this.textSearch = '';
+      await this.fetchDocuments();
+    },
     async searchCoincidences() {
       this.searchParam = true;
       await this.fetchDocuments();
