@@ -77,6 +77,9 @@ export default {
       const response = await ioGetFileCode(identification);
       commit('SET_VERIFICATION_CODE', response.data.id);
       commit('SET_SUCCESS_MESSAGE', true);
+    } catch (e) {
+      console.log('E', e);
+      commit('SET_ERROR_MESSAGE', e.context);
     } finally {
       commit('SET_LOADING', false);
     }
@@ -88,6 +91,8 @@ export default {
       const response = await getSharedFile(payload);
       commit('SET_SHARED_FILE', response.data);
       commit('SET_LOADING', false);
+    } catch (e) {
+      commit('SET_ERROR_MESSAGE', e.context);
     } finally {
       commit('SET_LOADING', false);
     }

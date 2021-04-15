@@ -1,6 +1,6 @@
 <template>
   <div id="list-dnt">
-    <div v-if="!isVerified">
+    <div v-if="!isVerified && !sharedFile.dnt">
       <div class="row mb-3">
         <h5 class="m-auto">
           Por favor ingresa el código de verifiación enviado a tu correo
@@ -280,13 +280,12 @@
                     {{attachment.tipo}}
                   </vs-td>
                   <vs-td>
-                    <DownloadFile
-                      :mood="'compact'"
-                      v-if="attachment && attachment.nombre && attachment.url"
-                      :path="attachment.url"
-                      :name="attachment.nombre"
-                      class="pill-info-attach"
-                    />
+                    <span
+                      v-on:click="getFile(attachment)"
+                      style="cursor:pointer;width: fit-content;"
+                    >
+                      <vs-icon icon="description" size="small" :title="name"/>
+                    </span>
                   </vs-td>
                 </vs-tr>
                 </tbody>
@@ -305,10 +304,8 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
-import DownloadFile from '@/febos/chile/dnt/components/DownloadFile';
 
 export default {
-  components: { DownloadFile },
   mixins: [FindTypeDocumentMixin],
   data() {
     const { view } = this.$route.params;
@@ -325,6 +322,12 @@ export default {
     };
   },
   watch: {
+    sharedFile() {
+      console.log('ACA', this.sharedFile);
+      if (this.sharedFile.dnt) {
+        this.isVerified = true;
+      }
+    },
     loading(value) {
       if (!value) {
         this.$vs.loading.close('#list-dnt > .con-vs-loading');
@@ -349,7 +352,7 @@ export default {
       if (error !== '') {
         this.$vs.notify({
           title: 'Oops!',
-          text: error,
+          text: 'Código de verificación erroneo',
           color: 'danger',
           time: 10000,
           position: 'top-center'
@@ -367,7 +370,8 @@ export default {
     ]),
     ...mapGetters('Usuario', [
       'verificationCode',
-      'sharedFile'
+      'sharedFile',
+      'error'
     ])
   },
   methods: {
@@ -383,8 +387,10 @@ export default {
       'ioGetFileCodeVerification',
       'verifySharedFile'
     ]),
+    getFile(attachment) {
+      window.open(attachment.url, '_blank');
+    },
     verifyFile() {
-      this.isVerified = true;
       this.verifySharedFile({
         id: this.verificationCode,
         codigo: this.verificationInput

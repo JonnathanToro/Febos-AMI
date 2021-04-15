@@ -51,5 +51,8 @@ export default {
   },
   SET_SHARED_FILE(state, payload) {
     state.sharedFile = payload;
+  },
+  SET_ERROR_MESSAGE(state, payload) {
+    state.error = payload;
   }
 };
