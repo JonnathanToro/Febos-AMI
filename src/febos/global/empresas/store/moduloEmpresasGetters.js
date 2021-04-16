@@ -36,3 +36,7 @@ export const loading = (state) => state.loading;
 export const groupSelected = (state) => (
   state.groupsCompany.find((group) => group.id === state.selectedElement)
 );
+
+export const configurations = (state) => state.configurations;
+export const isLoadingConfigurations = (state) => state.isLoadingConfigurations;
+export const isSavingConfigurations = (state) => state.isSavingConfigurations;

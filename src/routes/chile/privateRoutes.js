@@ -49,5 +49,11 @@ export default [
     meta: { permiso: 'WB001', requiereLogin: true },
     component: () => import('@/febos/global/empresas/vistas/gestCAFs.vue')
   },
+  {
+    path: 'configuraciones/parametros',
+    name: 'settings-params',
+    meta: { permiso: 'FEB99', requiereLogin: true },
+    component: () => import('@/febos/global/empresas/vistas/ConfigParams.vue')
+  },
   ...routes
 ];

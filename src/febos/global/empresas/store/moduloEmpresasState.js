@@ -30,6 +30,9 @@ export default {
   },
   usersCompany: [],
   groupsCompany: [],
+  isLoadingConfigurations: false,
+  isSavingConfigurations: false,
+  configurations: [],
   pagination: {
     items: 0,
     pages: 0

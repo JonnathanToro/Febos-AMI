@@ -102,5 +102,14 @@ export default {
       ...state.usersCompany,
       payload
     ];
+  },
+  SET_CONFIGURATIONS(state, payload) {
+    state.configurations = payload;
+  },
+  SET_LOAD_CONFIGURATIONS(state, payload) {
+    state.isLoadingConfigurations = payload;
+  },
+  SET_SAVING_CONFIGURATIONS(state, payload) {
+    state.isSavingConfigurations = payload;
   }
 };

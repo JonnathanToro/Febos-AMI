@@ -8,7 +8,6 @@
   <!-- eslint-disable -->
   <div>
     <vx-card title="Perfil de la empresa" title-color="primary">
-
       <vs-tabs style="min-height: 500px">
         <vs-tab label="Empresa">
           <empresa-perfil v-if="datos" :empresa="datos"></empresa-perfil>
