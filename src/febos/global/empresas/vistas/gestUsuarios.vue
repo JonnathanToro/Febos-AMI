@@ -2,9 +2,17 @@
 <div>
   <vx-card title="Gestión de usuarios" title-color="primary">
 
-    <vs-table :data="usuarios" :search="true" :pagination="true" :maxItems="10" noDataText="Sin registros encontrados">
+    <vs-table
+      :data="usuarios"
+      :search="true"
+      :pagination="true"
+      :maxItems="10"
+      noDataText="Sin registros encontrados"
+     >
       <template slot="header">
-        <vs-button size="small" style="margin-bottom: 10px;" @click="agregarUsuario">Agregar</vs-button>
+        <vs-button size="small" style="margin-bottom: 10px;" @click="agregarUsuario">
+          Agregar
+        </vs-button>
       </template>
       <template slot="thead">
         <!--<vs-th>Alias</vs-th>-->
@@ -57,8 +65,15 @@
 
   </vx-card>
 
-  <modal-usuario :editar="editar" :usuario="usuario" @cerrarEdicionUsuario="cancelarEdicion"></modal-usuario>
-<!--  <modal-empresas :editar="editarEmpresa" :usuario="usuario" :empresas="empresas" @cerrarEdicionUsuarioEmpresas="cancelarEmpresas"></modal-empresas>-->
+  <modal-usuario :editar="editar" :usuario="usuario" @cerrarEdicionUsuario="cancelarEdicion" />
+  <!--
+  <modal-empresas
+    :editar="editarEmpresa"
+    :usuario="usuario"
+    :empresas="empresas"
+    @cerrarEdicionUsuarioEmpresas="cancelarEmpresas"
+  />
+   -->
 
 </div>
 </template>
@@ -95,7 +110,7 @@ export default {
       this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
       clienteFebosAPI.get('/usuarios?filas=10000&pagina=1').then((response) => {
         this.$vs.loading.close();
-        if (response.data.codigo == 10) {
+        if (response.data.codigo === 10) {
           this.usuarios = response.data.usuarios;
           console.log(this.usuarios);
         } else {
@@ -139,10 +154,12 @@ export default {
       this.usuario = null;
     },
 
+    /*
     cargarEmpresas() {
       this.empresas = null;
       this.$vs.loading({ color: '#FF2961', text: 'Espera un momento por favor' });
-      clienteFebosAPI.get('/empresas?busquedaSimple=si&filas=9000&pagina=1').then((response) => {
+      clienteFebosAPI.get('/empresas?busquedaSimple=si&filas=9000&pagina=1')
+      .then((response) => {
         this.$vs.loading.close();
 
         if (response.data.codigo == 10) {
@@ -152,7 +169,9 @@ export default {
         } else {
           this.$vs.loading.close();
           this.$vs.notify({
-            color: 'danger', title: 'Empresas del usuario', text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`, time: 10000
+            color: 'danger', title: 'Empresas del usuario',
+            text: `${response.data.mensaje }<br/><b>Seguimiento: </b>
+            ${ response.data.seguimientoId}`, time: 10000
           });
         }
       }).catch(() => {
@@ -162,6 +181,7 @@ export default {
         });
       });
     },
+    */
 
   }
 };

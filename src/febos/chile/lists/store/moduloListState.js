@@ -7,6 +7,10 @@ export default {
     list: [],
     loading: false
   },
+  allDocuments: {
+    list: [],
+    loading: false
+  },
   institutionTypes: {
     list: [],
     loading: false
@@ -61,6 +65,26 @@ export default {
     loading: false
   },
   institutionsDocDigital: {
+    list: [],
+    loading: false
+  },
+  groups: {
+    list: [],
+    loading: false
+  },
+  users: {
+    list: [],
+    loading: false
+  },
+  activities: {
+    list: [],
+    loading: false
+  },
+  activityStates: {
+    list: [],
+    loading: false
+  },
+  userGroups: {
     list: [],
     loading: false
   }

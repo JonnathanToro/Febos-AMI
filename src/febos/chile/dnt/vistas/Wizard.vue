@@ -37,12 +37,20 @@
               <vs-button color="primary" v-if="!isFirstStep" @click="onBack">
                 Volver
               </vs-button>
-              <CheckPermission permission="ED014">
+              <CheckPermission permission="ED014" v-if="wizard.options.includes('draft')">
                 <vs-button color="primary" class="ml-2" @click="onBackup">
                   Guardar Borrador
                 </vs-button>
               </CheckPermission>
-              <CheckPermission permission="ED015">
+              <CheckPermission
+                permission="ED046"
+                v-if="wizard.options.includes('flow') && isLastStep"
+              >
+                <vs-button color="warning" class="ml-2" @click="onFlow">
+                  <span>Enviar a Flujo</span>
+                </vs-button>
+              </CheckPermission>
+              <CheckPermission permission="ED015" v-if="wizard.options.includes('submit')">
                 <vs-button color="success" class="ml-2" @click="onNext">
                   <span v-if="isLastStep">Guardar y Enviar</span>
                   <span v-if="!isLastStep">Siguiente</span>
@@ -118,7 +126,6 @@ export default {
   },
   methods: {
     ...mapActions('Dnts', [
-      'saveDocument',
       'clearWizardData',
       'loadWizardData',
       'addWizardData'
@@ -145,16 +152,21 @@ export default {
       this.currentStep += 1;
       updateSearchParams({ step: this.currentStep });
     },
-    onEnd() {
+    onEnd(flow) {
       const { id } = this.$route.params;
+      const isFileOfficial = this.$route.params.wizard.includes('externo')
+        || this.$route.params.wizard.includes('interno');
 
-      this.saveDocument({
+      this.$store.dispatch(`Dnts/${this.wizard.submitAction}`, {
         id,
         data: this.wizard.documentMapper(
           this.wizardData,
           this.company.iut,
           this.company.razonSocial
-        )
+        ),
+        isDraft: false,
+        isFileOfficial,
+        redirectFlow: flow
       });
     },
     onBackup() {
@@ -162,7 +174,7 @@ export default {
 
       this.addWizardData(this.$refs.step.getStepData());
 
-      this.saveDocument({
+      this.$store.dispatch(`Dnts/${this.wizard.backupAction}`, {
         id,
         data: this.wizard.documentMapper(
           this.wizardData,
@@ -172,6 +184,19 @@ export default {
         ),
         isDraft: true
       });
+    },
+    async onFlow() {
+      if (!await this.$refs.step.isValid()) {
+        return;
+      }
+
+      this.addWizardData(this.$refs.step.getStepData());
+      if (this.isLastStep && this.wizard.options.includes('flow')) {
+        this.onEnd(true);
+        return;
+      }
+
+      this.wizard.currentStep += 1;
     }
   },
   created() {
@@ -185,7 +210,8 @@ export default {
     if (id) {
       this.loadWizardData({
         id,
-        mapper: this.wizard.wizardMapper
+        mapper: this.wizard.wizardMapper,
+        loadAllData: this.wizard.loadAllData
       });
     }
   },

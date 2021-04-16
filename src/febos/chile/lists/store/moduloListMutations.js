@@ -21,6 +21,18 @@ export default {
   SET_DOCUMENTS_LOADING(state, payload) {
     state.documents.loading = payload;
   },
+  SET_ALL_DOCUMENTS(state, payload) {
+    state.allDocuments.list = payload
+      .map((option) => ({
+        id: option.opcionId,
+        value: option.valor,
+        label: option.descripcion,
+        groupId: option.grupoId
+      }));
+  },
+  SET_ALL_DOCUMENTS_LOADING(state, payload) {
+    state.allDocuments.loading = payload;
+  },
   SET_INSTITUTION_TYPES(state, payload) {
     state.institutionTypes.list = payload
       .map((option) => ({
@@ -108,5 +120,61 @@ export default {
         value: option.valor,
         label: option.descripcion
       }));
-  }
+  },
+  SET_GROUPS(state, payload) {
+    state.groups.list = payload
+      .map((option) => ({
+        id: option.id,
+        value: option.id,
+        label: option.nombre
+      }));
+  },
+  SET_GROUPS_LOADING(state, payload) {
+    state.groups.loading = payload;
+  },
+  SET_USERS(state, payload) {
+    state.users.list = payload
+      .map((option) => ({
+        id: option.id,
+        value: option.id,
+        label: option.nombre,
+        email: option.correo
+      }));
+  },
+  SET_USERS_LOADING(state, payload) {
+    state.users.loading = payload;
+  },
+  SET_ACTIVITIES(state, payload) {
+    state.activities.list = payload
+      .map((option) => ({
+        id: option.opcionId,
+        value: option.valor,
+        label: option.descripcion
+      }));
+  },
+  SET_ACTIVITIES_LOADING(state, payload) {
+    state.activities.loading = payload;
+  },
+  SET_ACTIVITY_STATES(state, payload) {
+    state.activityStates.list = payload
+      .map((option) => ({
+        id: option.opcionId,
+        value: option.valor,
+        label: option.descripcion
+      }));
+  },
+  SET_ACTIVITY_STATES_LOADING(state, payload) {
+    state.activityStates.loading = payload;
+  },
+  SET_USER_GROUPS(state, payload) {
+    state.userGroups.list = payload
+      .map((option) => ({
+        id: option.id,
+        value: option.id,
+        label: option.nombre
+      }));
+  },
+  SET_USER_GROUPS_LOADING(state, payload) {
+    state.userGroups.loading = payload;
+  },
 };

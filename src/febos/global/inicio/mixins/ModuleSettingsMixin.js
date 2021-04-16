@@ -78,7 +78,16 @@ const moduleSettings = {
       habilitado: true,
       visible: true,
       permission: 'ED003'
-    }
+    },
+    {
+      nombre: 'approvals',
+      descripcion: 'Aprobaciones',
+      tooltip: '',
+      icono: 'done_all',
+      habilitado: true,
+      visible: true,
+      permission: 'ED052'
+    },
   ]
 };
 

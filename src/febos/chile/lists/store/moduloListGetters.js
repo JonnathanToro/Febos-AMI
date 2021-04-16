@@ -9,6 +9,12 @@ export const documentsState = (state) => ({
     .sort(({ label: a }, { label: b }) => a.localeCompare(b))
 });
 
+export const allDocumentsState = (state) => ({
+  ...state.allDocuments,
+  list: state.allDocuments.list
+    .sort(({ label: a }, { label: b }) => a.localeCompare(b))
+});
+
 export const institutionTypesState = (state) => ({
   ...state.institutionTypes,
   list: state.institutionTypes.list
@@ -36,3 +42,11 @@ export const institutionsDocDigitalState = (state) => ({
   list: state.institutionsDocDigital.list
     .sort(({ label: a }, { label: b }) => a.localeCompare(b))
 });
+
+export const groupsState = (state) => state.groups;
+export const usersState = (state) => state.users;
+
+export const activitiesState = (state) => state.activities;
+export const activityStatesState = (state) => state.activityStates;
+
+export const userGroupsState = (state) => state.userGroups;

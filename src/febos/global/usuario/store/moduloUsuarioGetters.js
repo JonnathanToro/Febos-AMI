@@ -22,5 +22,6 @@ export const userPermissions = (state) => state.permisos;
 
 export const userToken = (state) => state.token;
 export const verificationCode = (state) => state.verificationCode;
+export const sharedFile = (state) => state.sharedFile;
 export const successAction = (state) => state.successAction;
 export const loading = (state) => state.loading;

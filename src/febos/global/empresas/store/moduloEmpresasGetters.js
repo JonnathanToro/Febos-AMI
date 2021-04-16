@@ -14,7 +14,28 @@ export const companies = (state) => state.empresas;
 export const usersCompany = (state) => (state.usersCompany || [])
   .sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b));
 export const groupsCompany = (state) => (state.groupsCompany || [])
-  .sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b));
+  .sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b))
+  .map((group) => ({
+    ...group,
+    isDivision: group.esDivision === 'Y',
+    isOffice: group.esOficina === 'Y',
+    isOpen: true
+  }));
+
+export const firstGroupsCompany = (state) => (state.groupsCompany || [])
+  .filter((group) => !group.padreId)
+  .map((group) => ({
+    ...group,
+    isDivision: group.esDivision === 'Y',
+    isOffice: group.esOficina === 'Y',
+    isOpen: true
+  }));
+export const pagination = (state) => state.pagination;
+export const usersByGroup = (state) => state.usersGroup;
+export const loading = (state) => state.loading;
+export const groupSelected = (state) => (
+  state.groupsCompany.find((group) => group.id === state.selectedElement)
+);
 
 export const configurations = (state) => state.configurations;
 export const isLoadingConfigurations = (state) => state.isLoadingConfigurations;

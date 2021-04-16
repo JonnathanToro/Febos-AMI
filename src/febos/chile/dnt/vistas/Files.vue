@@ -1,5 +1,36 @@
 <template>
   <div id="list-dnt">
+    <div class="d-flex search-bar">
+      <vs-input
+        icon-after="true"
+        class="mt-2 w-100"
+        size="small"
+        label-placeholder="icon-after"
+        icon="mode_edit"
+        placeholder="Buscar coincidencias"
+        v-model="textSearch"
+      />
+      <vs-button
+        v-if="!searchParam"
+        radius
+        class="ml-3"
+        color="primary"
+        type="border"
+        icon="search"
+        size="small"
+        @click="searchCoincidences()"
+      />
+      <vs-button
+        v-if="searchParam"
+        radius
+        class="ml-3"
+        color="primary"
+        type="border"
+        icon="highlight_off"
+        size="small"
+        @click="clearSearch()"
+      />
+    </div>
     <FilesFilters
       :value="filters"
       :onChange="onChangeFilters"
@@ -18,16 +49,20 @@
     </div>
     <PopUpBinnacleFile :titulo="'Bitácora del Expediente #'+selectedFile.numero"/>
     <PopUpTimelineFile :file="selectedFile"/>
+    <PopUpReferencesFile :file="selectedFile"/>
     <PopUpDetailFile :file="selectedFile" />
     <PopUpGeneralDetailFile :file="selectedFile" />
     <PopUpCancelFile :canceledFile="selectedFile" />
     <PopUpProcessFile :processedFile="selectedFile" />
     <PopUpReturnFile :file="selectedFile" />
     <PopUpAsignFile :file="selectedFile" />
+    <PopUpAnswerFile :file="selectedFile" />
     <PopUpParticipantsFile :file="selectedFile" />
     <PopUpCommentsFile :file="selectedFile" />
     <PopUpTicketFile :file="selectedFile" />
     <PopUpSendFile :file="selectedFile" />
+    <PopUpActivityFile :file="selectedFile" />
+    <PopUpActivityTimelineFile :file="selectedFile" />
     <FilesPagination
       :show="files.length"
       v-model="page"
@@ -40,12 +75,16 @@ import { mapActions, mapGetters } from 'vuex';
 
 import PopUpCancelFile from '@/febos/chile/dnt/vistas/modals/PopUpCancelFile';
 import PopUpDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpDetailFile';
+import PopUpReferencesFile from '@/febos/chile/dnt/vistas/modals/PopUpReferencesFile';
 import PopUpGeneralDetailFile from '@/febos/chile/dnt/vistas/modals/PopUpGeneralDetailFile';
 import PopUpProcessFile from '@/febos/chile/dnt/vistas/modals/PopUpProcessFile';
 import PopUpReturnFile from '@/febos/chile/dnt/vistas/modals/PopUpReturnFile';
 import PopUpAsignFile from '@/febos/chile/dnt/vistas/modals/PopUpAsignFile';
+import PopUpAnswerFile from '@/febos/chile/dnt/vistas/modals/PopUpAnswerFile';
 import PopUpTicketFile from '@/febos/chile/dnt/vistas/modals/PopUpTicketFile';
 import PopUpSendFile from '@/febos/chile/dnt/vistas/modals/PopUpSendFile';
+import PopUpActivityFile from '@/febos/chile/dnt/vistas/modals/PopUpActivityFile';
+import PopUpActivityTimelineFile from '@/febos/chile/dnt/vistas/modals/PopUpActivityTimelineFile';
 import PopUpParticipantsFile from '@/febos/chile/dnt/vistas/modals/PopUpParticipantsFile';
 import PopUpCommentsFile from '@/febos/chile/dnt/vistas/modals/PopUpCommentsFile';
 import FilesHeader from '@/febos/chile/dnt/components/files/FilesHeader';
@@ -62,6 +101,8 @@ export default {
     FilesPagination,
     FilesFilters,
     PopUpBinnacleFile,
+    PopUpAnswerFile,
+    PopUpReferencesFile,
     PopUpTimelineFile,
     FileRow,
     FilesHeader,
@@ -74,23 +115,32 @@ export default {
     PopUpParticipantsFile,
     PopUpCommentsFile,
     PopUpTicketFile,
-    PopUpSendFile
+    PopUpSendFile,
+    PopUpActivityFile,
+    PopUpActivityTimelineFile
   },
   data() {
     const { view } = this.$route.params;
 
     return {
-      onPendingFiles: view === 'en-curso',
+      onPendingFiles: view === 'pendientes',
       onGeneralFiles: view === 'general',
       fromCS: false,
       selectedFile: {},
       filters: '',
+      textSearch: '',
+      searchParam: false,
       page: Number.parseInt(this.$route.query.page || 1, 10),
       paginate: Number.parseInt(this.$route.query.paginate || 10, 10),
       forceRender: Date.now() // TODO: the files watch is triggered but the component not re-render.
     };
   },
   watch: {
+    textSearch(oldValue, newVaue) {
+      if (oldValue !== newVaue) {
+        this.searchParam = false;
+      }
+    },
     files() {
       this.forceRender = Date.now(); // TODO: remove this.
     },
@@ -142,13 +192,24 @@ export default {
   methods: {
     ...mapActions('Dnts', [
       'listDocuments',
-      'clearErrorMessage'
+      'clearErrorMessage',
+      'selectFileState'
     ]),
     ...mapActions('Modals', [
       'closeModal'
     ]),
+    async clearSearch() {
+      this.searchParam = false;
+      this.textSearch = '';
+      await this.fetchDocuments();
+    },
+    async searchCoincidences() {
+      this.searchParam = true;
+      await this.fetchDocuments();
+    },
     selectFile(file) {
       this.selectedFile = file;
+      this.selectFileState(file.febosId);
     },
     async onChangeFilters(filters, onMounted) {
       this.filters = filters;
@@ -169,7 +230,7 @@ export default {
       this.$router.go();
     },
     async fetchDocuments() {
-      await this.listDocuments({
+      const query = {
         data: {
           tipo: 'EXP',
           campos: '*',
@@ -179,7 +240,13 @@ export default {
           filtros: mergeFilters(this.filters, this.$route.query.filters)
         },
         fromCS: this.fromCS
-      });
+      };
+
+      if (this.textSearch !== '') {
+        query.data.busqueda = this.textSearch;
+        this.fromCS = true;
+      }
+      await this.listDocuments(query);
       if (!this.fromCS) {
         this.fromCS = true;
       }
@@ -187,6 +254,7 @@ export default {
   },
   created() {
     this.closeModal();
+    this.selectFileState('');
   },
   mounted() {
     this.fetchDocuments();

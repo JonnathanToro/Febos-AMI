@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="view !== 'compartido'">
     <div style="text-align: right;margin-bottom: 5px;">
       <span>
         Viendo documentos que ingresaron
@@ -12,7 +12,7 @@
         <!--<input type="date" class="fecha" v-model="periodoDesde">-->
         <datetime
           v-model="rangeFrom"
-          input-class="fecha"
+          input-class="input-date"
           :phrases="{ok: 'Seleccionar',
            cancel: 'Cancelar'}"
           value-zone="local"
@@ -27,7 +27,7 @@
           format="yyyy-MM-dd"
         />
       </span>
-      <vs-dropdown style="margin-left: 15px">
+      <vs-dropdown vs-trigger-click style="margin-left: 15px">
         <a class="a-icon" href="#">
           Cambiar
           <vs-icon class="" icon="expand_more"></vs-icon>
@@ -44,12 +44,24 @@
         </vs-dropdown-menu>
       </vs-dropdown>
     </div>
-    <filtros
+    <!--<filtros
+      :dntType="'files'"
       :users="usersCompany"
       :groups="groupsCompany"
       :documents="documentTypesState.list"
       :institutions="institutionTypesState.list"
       :configuracion-vista="configuration"
+      :periodos="ranges"
+      :has-query-filters="!!queryFilters"
+      :clear-query-filters="clear"
+      v-on:filtros-aplicados="changeFilters"
+    />-->
+    <filtros-letty
+      :filtersView="filterView"
+      :users="usersCompany"
+      :groups="groupsCompany"
+      :documents="allDocumentsState.list"
+      :institutions="institutionTypesState.list"
       :periodos="ranges"
       :has-query-filters="!!queryFilters"
       :clear-query-filters="clear"
@@ -61,19 +73,23 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import Filtros from '@/febos/global/_vue/componentes/FiltrosDnt';
+// import Filtros from '@/febos/global/_vue/componentes/FiltrosDnt';
+import FiltrosLetty from '@/febos/global/_vue/componentes/FiltrosLetty';
+import ConfigFileFiltersMixin from '@/febos/global/_vue/componentes/filtersLetty/ConfigFileFiltersMixin';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 import { getShareableFilters } from '@/febos/chile/dnt/utils/fitlers';
 import { removeSearchParams, updateSearchParams } from '@/febos/global/utils/router';
 
 export default {
-  components: { Filtros },
+  // components: { Filtros },
+  components: { FiltrosLetty },
   props: ['value', 'onChange', 'clear'],
-  mixins: [FiltersDntMixin, FindTypeDocumentMixin],
+  mixins: [FiltersDntMixin, FindTypeDocumentMixin, ConfigFileFiltersMixin],
   data() {
     const { view } = this.$route.params;
     const filters = this.getFilterView(view);
+    const filterLetty = this.getFilterViewLetty(view);
 
     return {
       ranges: [
@@ -87,7 +103,9 @@ export default {
       rangeSelected: { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
       rangeFrom: '',
       rangeUntil: '',
+      view,
       configuration: filters,
+      filterView: filterLetty,
       currentFilters: '',
       queryFilters: this.$route.query.filters
     };
@@ -96,25 +114,27 @@ export default {
     this.rangeFrom = this.$moment().subtract(6, 'month').format('YYYY-MM-DD');
     this.rangeUntil = this.$moment().format('YYYY-MM-DD');
 
-    if (!this.usersCompany.length) {
-      this.getUsersCompany({
-        empresaId: this.empresa.id,
-        pagina: 1,
-        filas: 9999,
-        buscarInfoExtra: 'si',
-        filtroInfoExtra: 'CARGO'
-      });
-    }
-    if (!this.groupsCompany.length) {
-      this.getGroupsCompany({
-        empresaId: this.empresa.id
-      });
-    }
-    if (!this.documentTypesState.length) {
-      this.fetchDocumentTypes();
-    }
-    if (!this.institutionTypesState.length) {
-      this.fetchInstitutionTypes();
+    if (this.view !== 'compartido') {
+      if (!this.usersCompany.length) {
+        this.getUsersCompany({
+          empresaId: this.empresa.id,
+          pagina: 1,
+          filas: 9999,
+          buscarInfoExtra: 'si',
+          filtroInfoExtra: 'CARGO'
+        });
+      }
+      if (!this.groupsCompany.length) {
+        this.getGroupsCompany({
+          empresaId: this.empresa.id
+        });
+      }
+      if (!this.allDocumentsState.length) {
+        this.fetchAllDocuments();
+      }
+      if (!this.institutionTypesState.length) {
+        this.fetchInstitutionTypes();
+      }
     }
   },
   computed: {
@@ -124,7 +144,7 @@ export default {
       'groupsCompany'
     ]),
     ...mapGetters('List', [
-      'documentTypesState',
+      'allDocumentsState',
       'institutionTypesState'
     ])
   },
@@ -134,7 +154,7 @@ export default {
       'getGroupsCompany'
     ]),
     ...mapActions('List', [
-      'fetchDocumentTypes',
+      'fetchAllDocuments',
       'fetchInstitutionTypes'
     ]),
     async changeFilters(filters, onMounted) {
@@ -147,6 +167,7 @@ export default {
       if (!onMounted) {
         const nonShareableFilters = [
           ...['destinoVisorIds', 'destinoParticipanteIds', 'destinoResponsableIds'],
+          // TODO: agregar campo de busqueda de coincidencias
           ...(this.configuration.filtrosFijos || []).map((filterConfig) => filterConfig.campo)
         ];
         const queryFilters = getShareableFilters(newFilters, nonShareableFilters);
@@ -205,3 +226,14 @@ export default {
 };
 
 </script>
+<style>
+.input-date {
+  border: 1px solid #bcbcbc;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+.search-bar {
+  align-items: baseline;
+  width: 50%;
+}
+</style>

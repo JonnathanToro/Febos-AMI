@@ -5,7 +5,7 @@
     <div class="text-right leading-tight hidden sm:block">
       &nbsp;
     </div>
-    <div class="text-right leading-tight hidden sm:block">
+    <div class="text-right leading-tight hidden sm:block" v-if="view !== 'compartido'">
       <p class="font-semibold" style="margin-top:-5px">{{ currentUser.alias }}</p>
       <vx-tooltip text="Click para cambiar de empresa" position="left" style="display:inline-block">
         <small class="empresa" v-on:click="selectCompany()">
@@ -35,12 +35,17 @@
           class="rounded-full shadow-md cursor-pointer block"
         />
       </div>
-      <vs-dropdown-menu class="vx-navbar-dropdown">
-        <ul style="min-width: 9rem">
+      <vs-dropdown-menu v-if="view !== 'compartido'" class="vx-navbar-dropdown">
+        <ul style="min-width: 200px">
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
               @click="$router.push('/usuario/perfil')">
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4"></feather-icon>
             <span class="ml-2">Perfil</span>
+          </li>
+          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+              @click="$router.push('/administracion/usuarios')">
+            <feather-icon icon="UsersIcon" svgClasses="w-4 h-4" />
+            <span class="ml-2">Admin. Usuarios</span>
           </li>
           <!--
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
@@ -76,6 +81,7 @@ export default {
   mixins: [RutMixin],
   data() {
     return {
+      view: this.$route.params.view,
       noAvatar: require('../../../../assets/images/no-avatar.svg')
     };
   },

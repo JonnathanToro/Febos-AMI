@@ -40,6 +40,7 @@ import './assets/scss/vuexy/main.scss';
 import './assets/scss/bootstrap/main.scss';
 import './assets/scss/main.scss';
 import './assets/scss/multiSelect.scss';
+import './assets/scss/treeView.scss';
 import '@core/assets/fonts/feather/iconfont.css'; // For form-wizard
 import '@core/scss/core.scss';
 import '@/assets/scss/style.scss';
@@ -72,8 +73,12 @@ import spanish from 'vee-validate/dist/locale/es';
 import VueLogger from 'vuejs-logger';
 import './shame';
 
+import VTooltip from 'v-tooltip';
+
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
+
+Vue.use(VTooltip);
 
 Vue.moment.locale('es', {
   months: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
@@ -168,7 +173,12 @@ Vue.use(VeeValidate, {
         mainFileName: 'documento principal',
         relatedDocumentType: 'relacionado con',
         relatedDocumentNumber: 'nº de documento',
-        personEmail: 'correo de persona'
+        stepType: 'tipo de paso',
+        rolType: 'tipo de rol',
+        userStep: 'usuario',
+        groupStep: 'grupo',
+        personEmail: 'correo de persona',
+        creatorGroup: 'grupo asociado a expediente'
       }
     }
   }

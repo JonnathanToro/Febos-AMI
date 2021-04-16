@@ -6,6 +6,13 @@
     fullscreen
   >
     <div class="row">
+      <div class="col-12">
+        <h5 style="color:#7a008d;">
+          Este expediente ha sido creado por {{ file.solicitanteNombre }}
+          <small>{{ file.solicitanteEmail }}</small>,
+          perteneciente a la unidad {{file.solicitanteGrupoNombre}}
+        </h5>
+      </div>
       <div class="col-12" style="margin: 0 auto;">
         <div class="row">
           <div class="col-md-4 shadow">
@@ -23,8 +30,23 @@
                 :title="file.numeroInt || '-'" subtitle="Nº Documento"
               />
               <vs-list-item
+                v-if="file.claseMercadoPublico === 'int' || file.claseMercadoPublico === 'ext'"
                 icon="date_range"
                 :title="file.fechaEmision || '-'" subtitle="Fecha Documento"
+              />
+              <vs-list-item
+                v-if="(file.claseMercadoPublico === 'numInt'
+                 || file.claseMercadoPublico === 'numOf')
+                  && file.condicionDespacho === '0'"
+                icon="description"
+                :title="'Papel' || '-'" subtitle="Formato"
+              />
+              <vs-list-item
+                v-if="(file.claseMercadoPublico === 'numInt'
+                 || file.claseMercadoPublico === 'numOf')
+                  && file.condicionDespacho === '1'"
+                icon="description"
+                :title="'Electrónico' || '-'" subtitle="Formato"
               />
               <vs-list-item
                 v-if="file.claseMercadoPublico === 'ext'"
@@ -94,17 +116,18 @@
                 subtitle="Acompaña físico"
               />
               <vs-list-item
+                v-if="detailsFile.observaciones && detailsFile.observaciones[0]"
                 icon="subject"
                 :title="detailsFile.observaciones
                      && detailsFile.observaciones[0].observacion"
-                subtitle="Materia"
+                subtitle="Observación"
               />
               <vs-list-item
                 v-if="detailsFile.observaciones && detailsFile.observaciones[1]"
                 icon="subject"
                 :title="detailsFile.observaciones
                      && detailsFile.observaciones[1].observacion"
-                subtitle="Observaciones"
+                subtitle="Materia"
               />
               <div class="mt-3">
                 <h5>Etiquetas</h5>
@@ -152,9 +175,12 @@
               >
                 <vs-td>
                   {{subject.destinoListaNombre}}
+                  <small v-if="externalSubject.includes(subject.destinoCodigo)">
+                    {{subject.destinoCorreo}}
+                  </small>
                 </vs-td>
                 <vs-td>
-                  {{subject.destinoListaNombre}}
+                  {{subject.destinoNombre}}
                 </vs-td>
                 <vs-td>
                   <vs-chip
@@ -265,7 +291,7 @@
                 :key="reference.dntReferenciaId"
               >
                 <vs-td>
-                  {{reference.tipoDocumento}}
+                  {{ findTypeDocument(reference.tipoDocumento) }}
                 </vs-td>
                 <vs-td>
                   {{reference.folio}}
@@ -282,11 +308,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 import DownloadFile from '@/febos/chile/dnt/components/DownloadFile';
 
 export default {
   name: 'PopUpDetailFile',
   components: { DownloadFile },
+  mixins: [FindTypeDocumentMixin],
   props: {
     file: {
       type: Object,
@@ -296,7 +324,12 @@ export default {
   },
   data() {
     return {
-      tags: []
+      tags: [],
+      externalSubject: [
+        'empresas',
+        'personas',
+        'ministerios'
+      ]
     };
   },
   computed: {

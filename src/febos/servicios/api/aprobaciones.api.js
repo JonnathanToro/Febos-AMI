@@ -23,3 +23,19 @@ export const downloadAttachments = (payload) => {
   return apiClient.get(`${RESOURCE}/${payload.aprobacionId}/ejecucion/${payload.ejecucionId}/previsualizacion?${params}`,
     { operacionId: 'io.download.attachments' });
 };
+
+export const sendToFlowFile = (payload) => {
+  // /aprobaciones/' + query.aprobacionId+ '/ejecucion'
+  const params = apiClient.queryParams(payload.params);
+
+  return apiClient.post(`${RESOURCE}/${payload.params.aprobacionId}/ejecucion?${params}`,
+    payload.body, { operacionId: 'io.send.flow' });
+};
+
+export const clTraysList = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/bandeja?${params}`, {
+    operacionId: 'io.trays'
+  });
+};

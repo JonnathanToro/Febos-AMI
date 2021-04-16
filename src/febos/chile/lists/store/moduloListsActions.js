@@ -1,6 +1,6 @@
 import { listOptions } from '@/febos/servicios/api/opciones.api';
 import { getUsers } from '@/febos/servicios/api/usuarios.api';
-import { ioCompanyGroups } from '@/febos/servicios/api/empresas.api';
+import { ioCompanyGroups, getUsersByGroup } from '@/febos/servicios/api/empresas.api';
 
 export const fetchDocumentTypes = async ({ commit }) => {
   commit('SET_DOCUMENT_TYPES_LOADING', true);
@@ -24,6 +24,19 @@ export const fetchDocuments = async ({ commit }, payload) => {
 
   commit('SET_DOCUMENTS', response.data.opciones);
   commit('SET_DOCUMENTS_LOADING', false);
+};
+
+export const fetchAllDocuments = async ({ commit }) => {
+  commit('SET_ALL_DOCUMENTS_LOADING', true);
+
+  const response = await listOptions({
+    grupoOpcion: 'tipos.documentos-ed',
+    deshabilitado: 'no',
+    agrupar: 'si'
+  });
+
+  commit('SET_ALL_DOCUMENTS', response.data.opciones);
+  commit('SET_ALL_DOCUMENTS_LOADING', false);
 };
 
 export const fetchInstitutionTypes = async ({ commit }) => {
@@ -113,4 +126,66 @@ export const fetchSubjects = async ({ commit, rootState }, payload) => {
       break;
   }
   commit('SET_SUBJECTS_LOADING', false);
+};
+
+export const fetchGroups = async ({ commit, rootState }) => {
+  commit('SET_GROUPS_LOADING', true);
+  commit('SET_GROUPS', []);
+  const response = await ioCompanyGroups(
+    { empresaId: rootState.Empresas.empresa.id }
+  );
+  commit('SET_GROUPS', response.data.grupos);
+  commit('SET_GROUPS_LOADING', false);
+};
+
+export const getUsersGroup = async ({ commit, rootState }, groupId) => {
+  commit('SET_USERS_LOADING', true);
+  commit('SET_USERS', []);
+  const response = await getUsersByGroup({
+    empresaId: rootState.Empresas.empresa.id,
+    pagina: 1,
+    filas: 9999,
+    groupId
+  });
+  commit('SET_USERS', response.data.usuarios);
+  commit('SET_USERS_LOADING', false);
+};
+
+export const fetchActivities = async ({ commit }) => {
+  commit('SET_ACTIVITIES_LOADING', true);
+
+  console.log('soy actividad', 'tipos.actividades-ed');
+
+  const response = await listOptions({
+    grupoOpcion: 'tipos.actividades-ed',
+    deshabilitado: 'no'
+  });
+
+  commit('SET_ACTIVITIES', response.data.opciones);
+  commit('SET_ACTIVITIES_LOADING', false);
+};
+
+export const fetchActivityStates = async ({ commit }, payload) => {
+  commit('SET_ACTIVITY_STATES_LOADING', true);
+
+  const response = await listOptions({
+    grupoOpcion: `tipos.actividades-ed.${payload}.item`,
+    deshabilitado: 'no'
+  });
+
+  commit('SET_ACTIVITY_STATES', response.data.opciones);
+  commit('SET_ACTIVITY_STATES_LOADING', false);
+};
+
+export const fetchUserGroups = async ({ commit, rootState }) => {
+  commit('SET_USER_GROUPS_LOADING', true);
+  commit('SET_USER_GROUPS', []);
+  const response = await ioCompanyGroups(
+    {
+      empresaId: rootState.Empresas.empresa.id,
+      filtros: `usuarioId:${ rootState.Usuario.id }`
+    }
+  );
+  commit('SET_USER_GROUPS', response.data.grupos);
+  commit('SET_USER_GROUPS_LOADING', false);
 };

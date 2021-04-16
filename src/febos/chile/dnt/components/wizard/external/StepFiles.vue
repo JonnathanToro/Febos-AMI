@@ -132,7 +132,7 @@
             :danger-text="errors.first('step-3-part-2.relatedDocumentType')"
           >
             <vs-select-item
-              value="expediente"
+              value="EXP"
               text="Expediente"
             />
             <vs-select-item
@@ -176,7 +176,7 @@
             <template slot-scope="{data}">
               <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
                 <vs-td :data="data[indextr].type">
-                  {{ tr.type }}
+                  {{ findTypeDocument(tr.type) }}
                 </vs-td>
                 <vs-td :data="data[indextr].number">
                   {{ tr.number }}
@@ -194,9 +194,10 @@
 
 import UploadFile from '@/febos/global/_vue/componentes/UploadFile';
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
+import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
 
 export default {
-  mixins: [WizardStep],
+  mixins: [WizardStep, FindTypeDocumentMixin],
   components: {
     UploadFile
   },
@@ -221,6 +222,7 @@ export default {
     };
   },
   watch: {
+    // eslint-disable-next-line func-names
     'step.mainFile.name': function () {
       this.$validator.reset();
     }

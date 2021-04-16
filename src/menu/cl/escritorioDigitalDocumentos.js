@@ -4,6 +4,70 @@ export default [{
   i18n: 'Documentos',
   items: [
     {
+      url: { name: 'files', params: { view: 'borradores' } },
+      name: 'Bandeja Borradores',
+      icon: 'PackageIcon',
+      permiso: 'ED009',
+      i18n: 'borradores'
+    },
+    {
+      url: { name: 'files', params: { view: 'pendientes' } },
+      name: 'Bandeja Pendientes',
+      icon: 'InboxIcon',
+      permiso: 'ED009',
+      i18n: 'expedientes'
+    },
+    {
+      url: { name: 'files', params: { view: 'general' } },
+      name: 'Bandeja General',
+      icon: 'HardDriveIcon',
+      permiso: 'ED011',
+      i18n: 'expedientes'
+    },
+    {
+      url: { name: 'files', params: { view: 'finalizados' } },
+      name: 'Bandeja Finalizados',
+      icon: 'ArchiveIcon',
+      permiso: 'ED010',
+      i18n: 'expedientes'
+    },
+    {
+      url: { name: 'files', params: { view: 'tramitados' } },
+      name: 'Bandeja Tramitados',
+      icon: 'TrelloIcon',
+      permiso: 'ED010',
+      i18n: 'expedientes'
+    },
+    {
+      url: { name: 'approval-trays', params: { view: 'entrada' } },
+      name: 'Aprobaciones - Entrada',
+      icon: 'MailIcon',
+      permiso: 'ED042'
+    },
+    {
+      url: null,
+      name: 'Expedientes',
+      slug: 'files',
+      icon: 'FolderIcon',
+      permiso: 'ED049',
+      submenu: [
+        {
+          url: { name: 'files-wizard', params: { wizard: 'numOf' } },
+          name: 'Iniciar Trámite',
+          icon: 'files',
+          permiso: 'ED043',
+          i18n: 'uploads'
+        },
+        {
+          url: { name: 'files-wizard', params: { wizard: 'numInt' } },
+          name: 'Iniciar Trámite Interno',
+          icon: 'files',
+          permiso: 'ED044',
+          i18n: 'uploads'
+        }
+      ]
+    },
+    {
       url: null,
       name: 'Oficina de partes',
       slug: 'files',
@@ -18,25 +82,11 @@ export default [{
           i18n: 'uploads'
         },
         {
-          url: { name: 'files', params: { view: 'en-curso' } },
-          name: 'Bandeja Pendientes',
+          url: { name: 'files-wizard', params: { wizard: 'interno' } },
+          name: 'Cargar Doc. Interno',
           icon: 'files',
-          permiso: 'ED009',
-          i18n: 'expedientes'
-        },
-        {
-          url: { name: 'files', params: { view: 'general' } },
-          name: 'Bandeja General',
-          icon: 'files',
-          permiso: 'ED011',
-          i18n: 'expedientes'
-        },
-        {
-          url: { name: 'files', params: { view: 'finalizados' } },
-          name: 'Bandeja Tramitados',
-          icon: 'files',
-          permiso: 'ED010',
-          i18n: 'expedientes'
+          permiso: 'ED045',
+          i18n: 'uploads'
         }
       ]
     },
@@ -67,6 +117,14 @@ export default [{
           icon: 'library_books',
           permiso: 'ED007',
           i18n: 'Destinos'
+        },
+        {
+          url: '/mantenedores/actividades',
+          name: 'Actividades',
+          slug: '/herramientas/mantenedor-actividades',
+          icon: 'library_books',
+          permiso: 'ED048',
+          i18n: 'Actividades'
         }
       ]
     }

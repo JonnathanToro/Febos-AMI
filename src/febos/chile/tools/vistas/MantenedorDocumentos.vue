@@ -72,7 +72,11 @@
               class="wrap-list-item"
               :key="document.opcionId"
             >
-              <ListItemOption :option="document" :type="'document'"></ListItemOption>
+              <ListItemOption
+                :option="document" :type="'document'"
+                :usersCompany="usersCompany"
+                :groupsCompany="groupsCompany"
+              />
             </div>
           </vs-list>
         </vs-col>
@@ -157,7 +161,9 @@ export default {
       'usuarioActual'
     ]),
     ...mapGetters('Empresas', [
-      'empresa'
+      'empresa',
+      'usersCompany',
+      'groupsCompany'
     ])
   },
   methods: {
@@ -166,6 +172,10 @@ export default {
       'listDocuments',
       'clearDocuments',
       'saveOptions'
+    ]),
+    ...mapActions('Empresas', [
+      'getUsersCompany',
+      'getGroupsCompany'
     ]),
     createOption(category) {
       this.createMood = !this.createMood;
@@ -181,31 +191,41 @@ export default {
       }
     },
     async saveOption() {
-      const option = {
-        valor: this.option.valor,
-        descripcion: this.option.descripcion,
-        configuradoPor: this.usuarioActual.id,
-        referenciaId: this.empresa.id,
-        parametroId: this.createDocument
-          ? this.option.parametroId + this.option.valor : `tipos.documentos-ed.${ this.option.valor}`,
-        orden: this.createDocument ? this.option.orden : this.mantenedorCategorias.length + 1,
-        nivel: 0,
-        grupoId: this.createDocument ? this.option.grupoId : 'tipos.documentos-ed',
-        extra: '{}'
-      };
-      await this.saveOptions(option);
+      if ((this.option.valor && this.option.valor !== '')
+        && (this.option.descripcion && this.option.descripcion !== '')) {
+        const option = {
+          valor: this.option.valor,
+          descripcion: this.option.descripcion,
+          configuradoPor: this.usuarioActual.id,
+          referenciaId: this.empresa.id,
+          parametroId: this.createDocument
+            ? this.option.parametroId + this.option.valor : `tipos.documentos-ed.${ this.option.valor}`,
+          orden: this.createDocument ? this.option.orden : this.mantenedorCategorias.length + 1,
+          nivel: 0,
+          grupoId: this.createDocument ? this.option.grupoId : 'tipos.documentos-ed',
+          extra: '{}'
+        };
+        await this.saveOptions(option);
 
-      if (Object.keys(this.selectedCategory).length) {
-        await this.listDocuments(this.selectedCategory);
+        if (Object.keys(this.selectedCategory).length) {
+          await this.listDocuments(this.selectedCategory);
+        } else {
+          await this.listCategories({
+            grupoOpcion: 'tipos.documentos-ed',
+            deshabilitado: 'si'
+          });
+        }
+        this.createDocument = false;
+        this.createMood = false;
       } else {
-        await this.listCategories({
-          grupoOpcion: 'tipos.documentos-ed',
-          deshabilitado: 'si'
+        this.$vs.notify({
+          title: 'Oops!',
+          text: 'Tienes que colocar una abreviación / descripción',
+          color: 'warning',
+          time: 3000,
+          position: 'top-center'
         });
       }
-
-      this.createDocument = false;
-      this.createMood = false;
     }
   },
   mounted() {
@@ -213,6 +233,16 @@ export default {
     this.listCategories({
       grupoOpcion: 'tipos.documentos-ed',
       deshabilitado: 'si'
+    });
+    this.getUsersCompany({
+      empresaId: this.empresa.id,
+      pagina: 1,
+      filas: 9999,
+      buscarInfoExtra: 'si',
+      filtroInfoExtra: 'CARGO'
+    });
+    this.getGroupsCompany({
+      empresaId: this.empresa.id
     });
   }
 };
