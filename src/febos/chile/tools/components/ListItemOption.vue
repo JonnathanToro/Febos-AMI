@@ -553,11 +553,22 @@ export default {
       if (!await this.validateConfig()) {
         return;
       }
+
+      if (this.configSheetDoc.configFolios.length) {
+        this.saveDocConfigSheet({
+          id: this.sheetsDoc.opcionId,
+          config: this.configSheetDoc
+        });
+      } else {
+        this.$vs.notify({
+          title: 'Oops!',
+          text: 'Te faltó añadir la configuración de los elementos',
+          color: 'warning',
+          time: 4000,
+          position: 'top-center'
+        });
+      }
       console.log('save', this.configSheetDoc);
-      this.saveDocConfigSheet({
-        id: this.sheetsDoc.opcionId,
-        config: this.configSheetDoc
-      });
     },
     async configSheets(option) {
       this.sheetsDoc = { ...option };
