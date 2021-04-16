@@ -182,7 +182,13 @@ Vue.use(VeeValidate, {
         userStep: 'usuario',
         groupStep: 'grupo',
         personEmail: 'correo de persona',
-        creatorGroup: 'grupo asociado a expediente'
+        creatorGroup: 'grupo asociado a expediente',
+        approach: 'alcance',
+        renew: 'reinicio',
+        initialSheet: 'folio inicial',
+        configId: 'elemento grupo',
+        configIdUser: 'elemento usuario',
+        configFolio: 'folio inicial'
       }
     }
   }
