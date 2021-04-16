@@ -114,14 +114,41 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(subjectForm.subjectType)"
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Destino"
             name="subject"
             v-model="subjectForm.subject"
             :parent-value="subjectForm.subjectType"
-            v-validate="{ required: !isInput.includes(subjectForm.subjectType) }"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            }"
+            :disabled="!subjectForm.subjectType"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
+            ref="subject"
+            key="subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="subject"
+            v-model="subjectForm.subject"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            }"
+            :disabled="!subjectForm.subjectType"
             :danger="errors.has('step-2-part-2.subject')"
             :danger-text="errors.first('step-2-part-2.subject')"
             ref="subject"
@@ -237,16 +264,43 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(copySubjectForm.copySubjectType)"
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Distribución"
             name="copySubject"
             v-model="copySubjectForm.copySubject"
             :parent-value="copySubjectForm.copySubjectType"
-            v-validate="{ required: !isInput.includes(copySubjectForm.copySubject) }"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubject)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            }"
+            :disabled="!copySubjectForm.copySubjectType"
             :danger="errors.has('step-2-part-3.copySubject')"
             :danger-text="errors.first('step-2-part-3.copySubject')"
+            ref="copySubject"
+            key="copy-subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="copySubject"
+            v-model="copySubjectForm.copySubject"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            }"
+            :disabled="!copySubjectForm.copySubjectType"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
             ref="copySubject"
             key="copy-subject-select"
           />
@@ -407,6 +461,7 @@ import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
 import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
 import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
 import ListUserGroups from '@/febos/chile/lists/components/ListUserGroups';
+import ListUser from '@/febos/chile/lists/components/ListUser';
 
 export default {
   mixins: [WizardStep],
@@ -416,7 +471,8 @@ export default {
     ListSubjects,
     ListSubjectTypes,
     ListInstitutionsDocDigital,
-    ListUserGroups
+    ListUserGroups,
+    ListUser
   },
   data() {
     return {
@@ -456,6 +512,7 @@ export default {
     };
   },
   computed: {
+    // TODO: move this getter to the ListUserGroups component
     ...mapGetters('List', [
       'userGroupsState'
     ]),

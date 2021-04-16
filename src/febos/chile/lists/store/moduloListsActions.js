@@ -75,21 +75,42 @@ export const fetchInstitutionsDocDigital = async ({ commit }, payload) => {
   commit('SET_INSTITUTIONS_DOC_DIGITAL_LOADING', false);
 };
 
+export const fetchUsers = async (
+  { commit, rootState },
+  { page = 1, limit = 10, query }
+) => {
+  commit('SET_LIST_LOADING', { target: 'users', value: true });
+
+  const appendQuery = query
+    ? { filtro: query }
+    : {};
+
+  const {
+    data: {
+      usuarios: value,
+      totalPaginas: pages
+    }
+  } = await getUsers({
+    empresaId: rootState.Empresas.empresa.id,
+    pagina: page,
+    filas: limit,
+    ...appendQuery
+  });
+  const state = { value, limit, pages: parseInt(pages, 10) };
+  commit('SET_LIST_STATUS', {
+    target: 'users',
+    ...state,
+  });
+
+  commit('SET_LIST_LOADING', { target: 'users', value: false });
+  return state;
+};
+
 export const fetchSubjects = async ({ commit, rootState }, payload) => {
   commit('SET_SUBJECTS_LOADING', true);
   commit('SET_SUBJECTS', []);
 
   switch (payload) {
-    case 'usuarios': {
-      const response = await getUsers({
-        empresaId: rootState.Empresas.empresa.id,
-        pagina: 1,
-        filas: 9999
-      });
-
-      commit('SET_SUBJECTS', { type: payload, list: response.data.usuarios });
-      break;
-    }
     case 'unidades': {
       const response = await ioCompanyGroups(
         { empresaId: rootState.Empresas.empresa.id }
@@ -139,16 +160,16 @@ export const fetchGroups = async ({ commit, rootState }) => {
 };
 
 export const getUsersGroup = async ({ commit, rootState }, groupId) => {
-  commit('SET_USERS_LOADING', true);
-  commit('SET_USERS', []);
+  commit('SET_GROUP_USERS_LOADING', true);
+  commit('SET_GROUP_USERS', []);
   const response = await getUsersByGroup({
     empresaId: rootState.Empresas.empresa.id,
     pagina: 1,
     filas: 9999,
     groupId
   });
-  commit('SET_USERS', response.data.usuarios);
-  commit('SET_USERS_LOADING', false);
+  commit('SET_GROUP_USERS', response.data.usuarios);
+  commit('SET_GROUP_USERS_LOADING', false);
 };
 
 export const fetchActivities = async ({ commit }) => {

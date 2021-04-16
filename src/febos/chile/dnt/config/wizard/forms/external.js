@@ -43,13 +43,13 @@ export default () => ({
       if (dnt.fechaEmision) {
         data.issueDate = Date.parse(dnt.fechaEmision);
       }
-      data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10);
+      data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
       data.institutionType = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
       data.personPosition = dnt.emisorContactoCargo;
       data.personEmail = dnt.emisorContactoEmail;
-      data.withAttachment = dnt.transporteViaTransporteCodigoTransporte;
+      data.withAttachment = dnt.transporteViaTransporteCodigoTransporte || 0;
       data.documentDetail = dnt.transporteNotas;
       data.safiContract = dnt.transportePuertoCodigo;
       data.creatorGroup = dnt.solicitanteGrupoId;

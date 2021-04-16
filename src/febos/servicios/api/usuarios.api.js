@@ -49,7 +49,7 @@ export const ioCreateUser = (params, user) => {
 export const getUsers = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.get(`${RESOURCE }?${ params}`, {
+  return apiClient.get(`${RESOURCE}?${params}`, {
     operacionId: 'io.usuarios.listar'
   });
 };

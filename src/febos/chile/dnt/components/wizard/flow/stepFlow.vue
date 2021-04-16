@@ -126,7 +126,7 @@
           />
         </div>
         <div class="col-3" v-show="stepType === stepTypes.USER">
-          <list-users
+          <list-group-users
             class="w-100"
             autocomplete
             label="Usuario del grupo"
@@ -146,7 +146,7 @@
             color="primary"
             icon="add"
             v-on:click="addStep()"
-            :disabled="usersState.loading"
+            :disabled="groupUsersState.loading"
           >
             Agregar Paso
           </vs-button>
@@ -205,12 +205,12 @@ import Vue from 'vue';
 import RolTypes from '@/febos/chile/dnt/mixins/RolTypes';
 import StepTypes from '@/febos/chile/dnt/mixins/StepTypes';
 import ListGroups from '@/febos/chile/lists/components/ListGroups';
-import ListUsers from '@/febos/chile/lists/components/ListUsers';
+import ListGroupUsers from '@/febos/chile/lists/components/ListGroupUsers';
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
 
 export default {
   mixins: [WizardStep],
-  components: { ListGroups, ListUsers },
+  components: { ListGroups, ListGroupUsers },
   data() {
     return {
       error: {
@@ -236,7 +236,7 @@ export default {
   },
   computed: {
     ...mapGetters('List', [
-      'usersState'
+      'groupUsersState'
     ]),
     ...mapGetters('Dnts', [
       'wizardData'
@@ -268,7 +268,7 @@ export default {
       };
 
       if (this.stepType === this.stepTypes.GROUP) {
-        step.groupUsers = this.usersState.list.map((user) => {
+        step.groupUsers = this.groupUsersState.list.map((user) => {
           const userId = {};
           userId.tipoValorResponsableId = user.id;
           return userId;

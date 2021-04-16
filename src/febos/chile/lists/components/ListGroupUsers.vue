@@ -9,7 +9,7 @@
       :key="item.id"
       :value="item.value"
       :text="item.label"
-      v-for="item in usersState.list"
+      v-for="item in groupUsersState.list"
     />
   </vs-select>
 </template>
@@ -47,10 +47,10 @@ export default {
   },
   computed: {
     ...mapGetters('List', [
-      'usersState'
+      'groupUsersState'
     ]),
     disabled() {
-      return !this.usersState.list.length || !this.parentValue || this.usersState.loading;
+      return !this.groupUsersState.list.length || !this.parentValue || this.groupUsersState.loading;
     }
   },
   methods: {
@@ -58,7 +58,7 @@ export default {
       'getUsersGroup'
     ]),
     getOption() {
-      return this.usersState.list.find((option) => option.value === this.value);
+      return this.groupUsersState.list.find((option) => option.value === this.value);
     }
   },
   created() {

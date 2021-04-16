@@ -70,6 +70,8 @@ import '../node_modules/timeline-vuejs/dist/timeline-vuejs.css';
 import VeeValidate from 'vee-validate';
 import spanish from 'vee-validate/dist/locale/es';
 
+import vSelect from 'vue-select';
+
 import VueLogger from 'vuejs-logger';
 import './shame';
 
@@ -77,6 +79,8 @@ import VTooltip from 'v-tooltip';
 
 Vue.use(Vuesax);
 Vue.use(require('vue-moment'));
+
+Vue.component('v-select', vSelect);
 
 Vue.use(VTooltip);
 

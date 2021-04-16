@@ -72,7 +72,7 @@ export default {
     list: [],
     loading: false
   },
-  users: {
+  groupUsers: {
     list: [],
     loading: false
   },
@@ -86,6 +86,11 @@ export default {
   },
   userGroups: {
     list: [],
+    loading: false
+  },
+  users: {
+    value: {},
+    query: '',
     loading: false
   }
 };
