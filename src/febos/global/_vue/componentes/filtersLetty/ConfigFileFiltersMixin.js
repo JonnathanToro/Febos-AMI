@@ -125,7 +125,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'Observacion / Materia', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'Observación / Materia', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -261,7 +261,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'Observación / Materia', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -396,7 +396,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'Observación / Materia', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -534,7 +534,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'Observación / Materia', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
@@ -682,7 +682,7 @@ const filterViews = {
         nombre: 'Etiquetas', campo: 'codigosEtiqueta', tipo: 'texto', valor: []
       },
       {
-        nombre: 'textoObservaciones', campo: 'textoObservaciones', tipo: 'texto', valor: []
+        nombre: 'Observación / Materia', campo: 'textoObservaciones', tipo: 'texto', valor: []
       },
       {
         nombre: 'Destino tipo correo', campo: 'destinoCorreoIds', tipo: 'texto', valor: []
