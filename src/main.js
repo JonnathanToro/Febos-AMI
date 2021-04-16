@@ -173,6 +173,7 @@ Vue.use(VeeValidate, {
         copySubject: 'distribución',
         copySubjectTypeDigitalDoc: 'lista de instituciones',
         copySubjectEmail: 'correo',
+        personName: 'persona',
         documentDetail: 'detalle',
         mainFileName: 'documento principal',
         relatedDocumentType: 'relacionado con',

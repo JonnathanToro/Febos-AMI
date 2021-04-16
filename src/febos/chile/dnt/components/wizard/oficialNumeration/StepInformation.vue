@@ -48,6 +48,9 @@
             name="personName"
             v-model="step.personName"
             :parent-value="step.directionId"
+            :danger="errors.has('step-2-part-1.personName')"
+            :danger-text="errors.first('step-2-part-1.personName')"
+            v-validate="'required'"
             ref="personName"
           />
         </div>
