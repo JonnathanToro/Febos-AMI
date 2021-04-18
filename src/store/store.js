@@ -13,7 +13,7 @@ Vue.use(Vuex);
 const vuexLocal = new VuexPersistence({
   storage: localForage,
   asyncStorage: true,
-  key: `${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`
+  key: process.env.VUE_APP_AMBIENTE
 });
 
 // carga automatica de Modulos

@@ -1,11 +1,10 @@
 import Vue from 'vue';
 
-import StepIdentification from '@/febos/chile/dnt/components/external/StepIdentification';
-import StepInformation from '@/febos/chile/dnt/components/external/StepInformation';
-import StepFiles from '@/febos/chile/dnt/components/external/StepFiles';
+import StepIdentification from '@/febos/chile/dnt/components/wizard/external/StepIdentification';
+import StepInformation from '@/febos/chile/dnt/components/wizard/external/StepInformation';
+import StepFiles from '@/febos/chile/dnt/components/wizard/external/StepFiles';
 
 export default () => ({
-  currentStep: 0,
   steps: [
     {
       title: 'Identificación',
@@ -20,6 +19,10 @@ export default () => ({
       component: StepFiles
     }
   ],
+  options: ['submit', 'draft'],
+  submitAction: 'saveDocument',
+  backupAction: 'saveDocument',
+  loadAllData: true,
   wizardMapper(
     {
       dnt,
@@ -40,15 +43,16 @@ export default () => ({
       if (dnt.fechaEmision) {
         data.issueDate = Date.parse(dnt.fechaEmision);
       }
-      data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10);
+      data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
       data.institutionType = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
       data.personPosition = dnt.emisorContactoCargo;
       data.personEmail = dnt.emisorContactoEmail;
-      data.withAttachment = dnt.transporteViaTransporteCodigoTransporte;
+      data.withAttachment = dnt.transporteViaTransporteCodigoTransporte || 0;
       data.documentDetail = dnt.transporteNotas;
       data.safiContract = dnt.transportePuertoCodigo;
+      data.creatorGroup = dnt.solicitanteGrupoId;
     }
 
     if (observaciones && observaciones.length) {
@@ -177,6 +181,8 @@ export default () => ({
         emisorSucursalDireccion: input.documentName,
         numeroInt: input.documentNumber,
         transportePuertoTipo: input.isPrivate,
+        solicitanteGrupoId: input.creatorGroup,
+        solicitanteGrupoNombre: input.creatorGroupName,
         compradorCodigo: input.institutionType,
         compradorArea: input.institutionTypeName,
         emisorContactoCodigo: input.institution,

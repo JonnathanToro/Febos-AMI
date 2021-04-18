@@ -1,45 +1,57 @@
 <template>
   <div>
     <form data-vv-scope="step-2-part-1">
+      <div class="row mb-5">
+        <div class="col-12">
+          <h4>Datos de la persona que ingresa el documento</h4>
+        </div>
+        <div class="col-md-12">
+          <list-user-groups
+            class="w-100"
+            autocomplete
+            label="Grupo al que irá asociado el expediente"
+            name="creatorGroup"
+            v-model="step.creatorGroup"
+            :danger="errors.has('step-2-part-1.creatorGroup')"
+            :danger-text="errors.first('step-2-part-1.creatorGroup')"
+            v-validate="{ required: userGroupsState.list.length > 1 }"
+            ref="creatorGroup"
+          />
+        </div>
+      </div>
       <div class="row mb-3">
         <div class="col-12">
           <h4>Origen / Datos Remitente</h4>
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-6">
-          <list-institution-types
+        <div class="col-md-12">
+          <list-groups
             class="w-100"
             autocomplete
-            label="Tipo Institución"
-            name="institutionType"
-            v-model="step.institutionType"
-            :danger="errors.has('step-2-part-1.institutionType')"
-            :danger-text="errors.first('step-2-part-1.institutionType')"
+            label="Dirección - Región"
+            name="directionId"
+            v-model="step.directionId"
+            :danger="errors.has('step-2-part-1.directionId')"
+            :danger-text="errors.first('step-2-part-1.directionId')"
             v-validate="'required'"
-            ref="institutionType"
-          />
-        </div>
-        <div class="col-md-6">
-          <list-institutions
-            class="w-100"
-            autocomplete
-            label="Institución"
-            name="institution"
-            v-model="step.institution"
-            :parent-value="step.institutionType"
-            ref="institution"
+            ref="directionId"
           />
         </div>
       </div>
       <div class="row mb-3">
         <div class="col-12">
-          <vs-input
+          <list-group-users
             class="w-100"
-            label="Nombre Persona"
-            maxlength="50"
+            autocomplete
+            label="Nombre de Persona que Genera Documento"
             name="personName"
             v-model="step.personName"
+            :parent-value="step.directionId"
+            :danger="errors.has('step-2-part-1.personName')"
+            :danger-text="errors.first('step-2-part-1.personName')"
+            v-validate="'required'"
+            ref="personName"
           />
         </div>
       </div>
@@ -48,23 +60,9 @@
           <vs-input
             class="w-100"
             label="Cargo Persona"
-            maxlength="50"
+            maxlength="150"
             name="personPosition"
             v-model="step.personPosition"
-          />
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-12">
-          <vs-input
-            class="w-100"
-            label="Correo Persona"
-            maxlength="70"
-            name="personEmail"
-            v-validate="'email'"
-            :danger="errors.has('step-2-part-1.personEmail')"
-            :danger-text="errors.first('step-2-part-1.personEmail')"
-            v-model="step.personEmail"
           />
         </div>
       </div>
@@ -96,14 +94,40 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(subjectForm.subjectType)"
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Destino"
             name="subject"
             v-model="subjectForm.subject"
             :parent-value="subjectForm.subjectType"
-            v-validate="{ required: !isInput.includes(subjectForm.subjectType) }"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            }"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
+            ref="subject"
+            key="subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="subject"
+            v-model="subjectForm.subject"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            }"
+            :disabled="!subjectForm.subjectType"
             :danger="errors.has('step-2-part-2.subject')"
             :danger-text="errors.first('step-2-part-2.subject')"
             ref="subject"
@@ -219,16 +243,42 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(copySubjectForm.copySubjectType)"
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Distribución"
             name="copySubject"
             v-model="copySubjectForm.copySubject"
             :parent-value="copySubjectForm.copySubjectType"
-            v-validate="{ required: !isInput.includes(copySubjectForm.copySubject) }"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubject)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            }"
             :danger="errors.has('step-2-part-3.copySubject')"
             :danger-text="errors.first('step-2-part-3.copySubject')"
+            ref="copySubject"
+            key="copy-subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="copySubject"
+            v-model="copySubjectForm.copySubject"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            }"
+            :disabled="!copySubjectForm.copySubjectType"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
             ref="copySubject"
             key="copy-subject-select"
           />
@@ -355,7 +405,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <label for="observation">Observación</label>
+          <label for="observation">Observacion (5000 caracteres)</label>
           <vs-textarea
             id="observation"
             maxlength="5000"
@@ -383,20 +433,24 @@
 import { mapGetters } from 'vuex';
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
-import ListInstitutions from '@/febos/chile/lists/components/ListInstitutions';
-import ListInstitutionTypes from '@/febos/chile/lists/components/ListInstitutionTypes';
 import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
 import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
 import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
+import ListGroups from '@/febos/chile/lists/components/ListGroups';
+import ListGroupUsers from '@/febos/chile/lists/components/ListGroupUsers';
+import ListUserGroups from '@/febos/chile/lists/components/ListUserGroups';
+import ListUser from '@/febos/chile/lists/components/ListUser';
 
 export default {
   mixins: [WizardStep],
   components: {
-    ListInstitutionTypes,
-    ListInstitutions,
+    ListGroups,
+    ListGroupUsers,
     ListSubjects,
     ListSubjectTypes,
-    ListInstitutionsDocDigital
+    ListInstitutionsDocDigital,
+    ListUserGroups,
+    ListUser
   },
   data() {
     return {
@@ -418,11 +472,10 @@ export default {
         copySubjectEmail: '',
       },
       step: {
-        institutionType: '',
-        institution: '',
+        creatorGroup: '',
+        directionId: '',
         personName: '',
         personPosition: '',
-        personEmail: '',
         withAttachment: 0,
         documentDetail: '',
         observation: '',
@@ -435,9 +488,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('Usuario', [
-      'currentUserId'
-    ]),
+    ...mapGetters('List', [
+      'userGroupsState'
+    ])
   },
   methods: {
     async addSubject() {
@@ -470,21 +523,9 @@ export default {
       const isSelected = this.step.subjectsSelected
         .some((subjectRow) => subjectRow.subject.id === row.subject.id);
 
-      const itsMe = row.subject.id === this.currentUserId;
-
       if (!isSelected) {
-        if (!itsMe) {
-          this.step.subjects.push(row);
-          this.step.subjectsSelected.push(row);
-        } else {
-          this.$vs.notify({
-            title: 'Oops!',
-            text: 'No te puedes agregar como destinatario',
-            color: 'warning',
-            time: 3000,
-            position: 'top-center'
-          });
-        }
+        this.step.subjects.push(row);
+        this.step.subjectsSelected.push(row);
       } else {
         this.$vs.notify({
           title: 'Oops!',
@@ -531,21 +572,9 @@ export default {
       const isSelected = this.step.copiesSelected
         .some((copyRow) => copyRow.copySubject.id === row.copySubject.id);
 
-      const itsMe = row.copySubject.id === this.currentUserId;
-
       if (!isSelected) {
-        if (!itsMe) {
-          this.step.copies.push(row);
-          this.step.copiesSelected.push(row);
-        } else {
-          this.$vs.notify({
-            title: 'Oops!',
-            text: 'No te puedes agregar como copia',
-            color: 'warning',
-            time: 3000,
-            position: 'top-center'
-          });
-        }
+        this.step.copies.push(row);
+        this.step.copiesSelected.push(row);
       } else {
         this.$vs.notify({
           title: 'Oops!',
@@ -580,22 +609,29 @@ export default {
       return true;
     },
     getStepData() {
-      const institutionTypeName = this.step.institutionType
+      const directionName = this.step.directionId
         ? {
-          institutionTypeName: this.$refs.institutionType.getOption().label
+          directionName: this.$refs.directionId.getOption().label
         }
         : {};
 
-      const institutionName = this.step.institution
+      const personName = this.step.personName
         ? {
-          institutionName: this.$refs.institution.getOption().label
+          personName: this.$refs.personName.getOption().label
+        }
+        : {};
+
+      const creatorGroupName = this.step.creatorGroup
+        ? {
+          creatorGroupName: this.$refs.creatorGroup.getOption().label
         }
         : {};
 
       return {
         ...this.step,
-        ...institutionTypeName,
-        ...institutionName
+        ...directionName,
+        ...personName,
+        ...creatorGroupName
       };
     }
   }

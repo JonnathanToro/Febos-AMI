@@ -7,8 +7,12 @@ export default {
     nombre: 'Destinatario/Responsable',
     tipo: 'texto'
   },
+  claseMercadoPublico: {
+    nombre: 'Tipo entrada',
+    tipo: 'multi'
+  },
   destinoParticipanteIds: {
-    nombre: 'Destinatario/Responsable',
+    nombre: 'Participante',
     tipo: 'texto'
   },
   fechaEmision: {
@@ -20,7 +24,7 @@ export default {
     tipo: 'fecha'
   },
   numero: {
-    nombre: 'Numero Expediente',
+    nombre: 'Número Expediente',
     tipo: 'numero'
   },
   numeroInt: {
@@ -28,7 +32,7 @@ export default {
     tipo: 'texto'
   },
   estado: {
-    nombre: 'Estado de expedientes',
+    nombre: 'Estado',
     tipo: 'multi'
   },
   destinoCopiaIds: {

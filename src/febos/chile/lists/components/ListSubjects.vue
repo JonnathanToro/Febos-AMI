@@ -1,17 +1,27 @@
 <template>
-  <vs-select
-    v-bind="$props"
-    :value="value"
-    :disabled="disabled"
-    @input="$emit('input', $event)"
-  >
-    <vs-select-item
-      :key="item.id"
-      :value="item.value"
-      :text="item.label"
-      v-for="item in subjectsState.list"
-    />
-  </vs-select>
+  <div class="con-select w-100 autocompletex">
+    <label :for="name" class="vs-select--label">{{ label }}</label>
+    <v-select
+      :name="name"
+      :value="optionSelected"
+      :options="subjectsState.list"
+      :class="{ 'v-select-danger': danger }"
+      :disabled="isDisabled"
+      @input="onInput"
+    >
+      <template #spinner>
+        <div
+          v-if="subjectsState.loading"
+          style="border-left-color: rgba(88,151,251,0.71)"
+          :style="{ opacity: subjectsState.loading ? 1 : 0 }"
+          class="vs__spinner"
+        />
+      </template>
+      <template slot="no-options">
+        no hay destinos para el criterio de búsqueda
+      </template>
+    </v-select>
+  </div>
 </template>
 
 <script>
@@ -19,45 +29,26 @@
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  props: {
-    autocomplete: {
-      type: Boolean,
-      default: false
-    },
-    label: {
-      type: String,
-      default: 'Destinos'
-    },
-    value: {
-      type: String
-    },
-    danger: {
-      type: Boolean
-    },
-    dangerText: {
-      type: String
-    },
-    nested: {
-      type: Boolean,
-      default: true
-    },
-    parentValue: {
-      type: String,
-      required: true
-    }
-  },
   computed: {
     ...mapGetters('List', [
       'subjectsState'
     ]),
-    disabled() {
-      return !this.subjectsState.list.length || this.subjectsState.loading;
+    optionSelected() {
+      return this.subjectsState.list.find((option) => option.value === this.value);
+    },
+    isDisabled() {
+      return this.disabled
+        || !this.subjectsState.list.length
+        || this.subjectsState.loading;
     }
   },
   methods: {
     ...mapActions('List', [
       'fetchSubjects'
     ]),
+    onInput(event) {
+      this.$emit('input', event?.value);
+    },
     getOption() {
       return this.subjectsState.list.find((option) => option.value === this.value);
     }
@@ -81,6 +72,16 @@ export default {
     } else {
       this.fetchSubjects(this.parentValue);
     }
+  },
+  props: {
+    name: { type: String, required: true },
+    label: { type: String, default: 'Destinos' },
+    value: { type: String },
+    danger: { type: Boolean },
+    dangerText: { type: String },
+    nested: { type: Boolean, default: true },
+    parentValue: { type: String, required: true },
+    disabled: { type: Boolean, default: false }
   }
 };
 

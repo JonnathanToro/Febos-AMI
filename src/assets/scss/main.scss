@@ -29,3 +29,21 @@
   margin-right: 14px;
   margin-left: 14px;
 }
+
+.v-select {
+  .vs__search,
+  .vs__selected,
+  .vs__dropdown-option {
+    font-size: 1rem;
+  }
+
+  .vs__dropdown-menu {
+    padding: 0;
+  }
+
+  &.v-select-danger {
+    .vs__dropdown-toggle {
+      border-color: var(--danger);
+    }
+  }
+}

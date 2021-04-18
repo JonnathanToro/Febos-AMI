@@ -69,5 +69,30 @@ export default {
   },
   SET_TIMELINE(state, payload) {
     state.timeline = payload;
+  },
+  SET_ACTIVITIES_FILE(state, payload) {
+    state.activities = payload;
+  },
+  SET_ACTIVITIES_TIMELINE_FILE(state, payload) {
+    state.activitiesHistory = payload;
+    state.activitiesHistory = (payload || [])
+      .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
+      .reduce((index, option) => ({
+        ...index,
+        [option.usuarioNombre]: [
+          ...(index[option.usuarioNombre] || []),
+          option
+        ]
+      }), {});
+  },
+  SET_REFERENCES_DNT(state, payload) {
+    state.references = payload.referenciadosTipoDnt
+      .concat(payload.referenciadosTipoDte, payload.referenciasTipoDnt, payload.referenciasTipoDte);
+  },
+  CLEAR_REFERENCES(state) {
+    state.references = [];
+  },
+  SET_SELECTED_FILE(state, payload) {
+    state.selectedFile = payload;
   }
 };

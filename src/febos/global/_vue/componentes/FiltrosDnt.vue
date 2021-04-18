@@ -14,14 +14,23 @@
         <vs-avatar icon="search" color="#ccc"/>
         <strong>No hay filtros aplicados</strong>
       </vs-chip>
+      <vs-chip
+        :color="colores.navbar"
+        v-if="hasQueryFilters"
+        style="cursor: context-menu"
+        v-on:click.native="clearQueryFilters()"
+      >
+        <vs-avatar icon="link" color="primary"/>
+        <strong>Borrar filtros de enlace</strong>
+      </vs-chip>
     </div>
     <div style="float:right">
-      <vs-dropdown>
+      <vs-dropdown vs-trigger-click>
         <vs-chip color="primary">
           <vs-avatar icon="add" color="primary"/>
           Agregar filtro
         </vs-chip>
-        <vs-dropdown-menu>
+        <vs-dropdown-menu class="scroll-options shadow">
           <vs-dropdown-item
             v-for="(filtro, index) in filtrosDisponibles"
             :key="`filtro-${index}`"
@@ -42,14 +51,13 @@
       v-on:click.native="ventanaModificarFiltro(filtro)"
       style="cursor: context-menu"
     >
-
-        <vs-avatar
-          icon="clear"
-          color="primary"
-          v-on:click.native="eliminarFiltro(filtro)"
-          v-if="esEliminable[filtro.campo]"
-        />
-        <span />
+      <vs-avatar
+        icon="clear"
+        color="primary"
+        v-on:click.native="eliminarFiltro(filtro)"
+        v-if="esEliminable[filtro.campo]"
+      />
+      <span />
       <vs-tooltip :text="`Modificar filtro ${filtro.nombre}`">
         <strong>{{ typeof filtro == 'undefined' ? '' : filtro.nombre }}: </strong>
         <span class="pl-1">
@@ -137,7 +145,8 @@
           />
         </div>
       </div>
-      <div v-if="filtroActual.tipo == 'solicitanteCorreo'">
+      <div v-if="filtroActual.tipo == 'solicitanteCorreo'
+            || filtroActual.tipo == 'correo'">
         <div class="texto-normal">
           <multiselect
             v-model="filterCreators"
@@ -335,7 +344,9 @@ import VsModal from 'vs-modal';
 import Multiselect from 'vue-multiselect';
 import VueTagsInput from '@johmun/vue-tags-input'; // docs: http://www.vue-tags-input.com/#/api/props
 
-import configuracionCamposFiltros from './configuracionCamposFiltrosDnt';
+import configFilters from './filters';
+// eslint-disable-next-line max-len
+// import configuracionCamposFiltros from '@/febos/global/_vue/componentes/filters/configCamposFiltrosApprovalFiles';
 
 export default {
   name: 'FiltrosDnt',
@@ -364,6 +375,17 @@ export default {
     institutions: {
       type: Array,
       required: false
+    },
+    dntType: {
+      type: String,
+      required: true
+    },
+    hasQueryFilters: {
+      type: Boolean,
+      default: false
+    },
+    clearQueryFilters: {
+      type: Function
     }
   },
   computed: {
@@ -435,12 +457,15 @@ export default {
         for (let i = 0; i < this.configuracionVista.filtrosHabilitados.length; i++) {
           const { campo } = this.configuracionVista.filtrosHabilitados[i];
           if (!this.filtroYaEstaAplicado(campo)) {
-            const filtro = configuracionCamposFiltros[campo];
-            filtro.campo = campo;
-            filtro.tipo = this.configuracionVista.filtrosHabilitados[i].tipo;
-            filtros.push(filtro);
+            const filtro = this.configuracionCamposFiltros[campo];
+            filtros.push({
+              ...filtro,
+              campo,
+              tipo: this.configuracionVista.filtrosHabilitados[i].tipo
+            });
           }
         }
+        filtros.sort(({ nombre: a }, { nombre: b }) => a.localeCompare(b));
         return filtros;
       } catch (e) {
         console.log(e);
@@ -474,7 +499,8 @@ export default {
     creators: '',
     filterCreators: [],
     copies: '',
-    filterCopies: []
+    filterCopies: [],
+    configuracionCamposFiltros: {}
   }),
   watch: {
     tags(valorNuevo, valorAntiguo) {
@@ -569,7 +595,7 @@ export default {
         rango += this.rangoAvanzado.hasta.split('T')[0];
         this.filtroActual = rango;
         console.log('aca', this.filtroActual);
-        this.aplicarFiltros();
+        // this.aplicarFiltros();
       }
 
       // eslint-disable-next-line no-plusplus
@@ -581,7 +607,7 @@ export default {
       }
       this.$refs.configFiltro.close();
     },
-    aplicarFiltros() {
+    aplicarFiltros(onMounted = false) {
       const query = [];
       const that = this;
       this.filtrosAplicados.forEach((filter) => {
@@ -627,6 +653,11 @@ export default {
           valor = valor.replace('${iutEmpresa}', that.empresaActual.iut);
         }
         // eslint-disable-next-line no-template-curly-in-string
+        if (valor === '${correoUsuario}') {
+          // eslint-disable-next-line no-template-curly-in-string
+          valor = valor.replace('${correoUsuario}', that.usuarioActual.correo);
+        }
+        // eslint-disable-next-line no-template-curly-in-string
         if (valor === '${idUsuario}') {
           // eslint-disable-next-line no-template-curly-in-string
           valor = valor.replace('${idUsuario}', that.usuarioActual.id);
@@ -635,7 +666,7 @@ export default {
 
         query.push(`${filtro.campo }:${ valor}`);
       });
-      this.$emit('filtros-aplicados', query.join('|'));
+      this.$emit('filtros-aplicados', query.join('|'), onMounted);
     },
     formatoTipoRango(formato, humano = false) {
       const estilo = humano ? 'LL' : 'YYYY-MM-DD';
@@ -748,6 +779,7 @@ export default {
       }
     },
     modificarFiltro(filtro) {
+      console.log('seleccione', filtro);
       if (this.filtrosAplicados.length === 0) {
         this.seleccionarAlMenosUnaOpcionDeFiltro(filtro);
       }
@@ -758,14 +790,24 @@ export default {
           break;
         }
       }
+      console.log('filtros aplicados', this.filtrosAplicados);
     },
     formatearValor(filter) {
-      console.log('FILTER', filter);
       const filtro = filter;
       if (filtro.valor === '' || typeof filtro.valor === 'undefined') {
         filtro.valor = '';
         filtro.valorFormateado = '';
         switch (filtro.tipo) {
+          case 'usuarios': {
+            filtro.opciones = this.users.map((user) => {
+              const userOption = {
+                nombre: user.nombre,
+                valor: user.id
+              };
+              return userOption;
+            });
+            break;
+          }
           case 'tipoDocumento': {
             filtro.opciones = this.documents.map((document) => {
               const documentOption = {
@@ -807,6 +849,7 @@ export default {
             });
             break;
           }
+          case 'correo':
           case 'solicitanteCorreo': {
             filtro.opciones = this.users.map((user) => {
               const userOption = {
@@ -843,6 +886,16 @@ export default {
               valor: document.value
             };
             return documentOption;
+          });
+          break;
+        }
+        case 'usuarios': {
+          filtro.opciones = this.users.map((user) => {
+            const userOption = {
+              nombre: user.nombre,
+              valor: user.id
+            };
+            return userOption;
           });
           break;
         }
@@ -897,6 +950,7 @@ export default {
           });
           break;
         }
+        case 'correo':
         case 'destinoCorreos': {
           filtro.valorFormateado = filtro.valor;
           break;
@@ -947,6 +1001,7 @@ export default {
               (valor) => valor.nombre
             ).join(', ').replace(/,(?=[^,]*$)/, ' y')}`;
           }
+          console.log('filtro', filtro.valorFormateado);
           break;
         }
         case 'rut':
@@ -971,6 +1026,7 @@ export default {
           filtro.valorFormateado = filtro.valor;
         }
       }
+      console.log('return', filtro);
       return filtro;
     },
     agregarFiltro(filter, desplegarVentanaDeModificacion = false) {
@@ -985,13 +1041,19 @@ export default {
     for (let i = 0; i < this.configuracionVista.filtrosPorDefecto.length; i++) {
       const { campo } = this.configuracionVista.filtrosPorDefecto[i];
       if (!this.filtroYaEstaAplicado(campo)) {
-        const filtro = configuracionCamposFiltros[campo];
-        filtro.valor = this.configuracionVista.filtrosPorDefecto[i].valor;
-        filtro.campo = this.configuracionVista.filtrosPorDefecto[i].campo;
-        this.agregarFiltro(filtro);
+        const filtro = this.configuracionCamposFiltros[campo];
+        this.agregarFiltro({
+          ...filtro,
+          valor: this.configuracionVista.filtrosPorDefecto[i].valor,
+          campo: this.configuracionVista.filtrosPorDefecto[i].campo
+        });
       }
     }
-    this.aplicarFiltros();
+    this.aplicarFiltros(true);
+  },
+  created() {
+    this.configuracionCamposFiltros = configFilters[this.dntType]
+      && configFilters[this.dntType]();
   }
 };
 </script>
@@ -1055,5 +1117,11 @@ input[type=number]::-webkit-inner-spin-button {
 
 .accionable {
   cursor: pointer;
+}
+
+.scroll-options {
+  max-height: 400px;
+  overflow-y: scroll;
+
 }
 </style>

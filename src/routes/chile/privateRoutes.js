@@ -21,7 +21,7 @@ export default [
   },
   {
     path: '/',
-    name: 'inicio',
+    name: 'start',
     meta: { requiereLogin: true },
     component: () => import('@/febos/global/inicio/vistas/Inicio.vue')
   },
@@ -48,6 +48,12 @@ export default [
     name: 'settings-cafs',
     meta: { permiso: 'WB001', requiereLogin: true },
     component: () => import('@/febos/global/empresas/vistas/gestCAFs.vue')
+  },
+  {
+    path: 'configuraciones/parametros',
+    name: 'settings-params',
+    meta: { permiso: 'FEB99', requiereLogin: true },
+    component: () => import('@/febos/global/empresas/vistas/ConfigParams.vue')
   },
   ...routes
 ];

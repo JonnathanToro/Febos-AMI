@@ -1,18 +1,18 @@
 <template>
-  <div>
+  <div v-if="view !== 'compartido'">
     <div style="text-align: right;margin-bottom: 5px;">
       <span>
         Viendo documentos que ingresaron
       </span>
-      <span v-if="periodoSeleccionado.valor !== 'personalizado'">
-        {{ periodoSeleccionado.nombre }}
+      <span v-if="rangeSelected.valor !== 'personalizado'">
+        {{ rangeSelected.nombre }}
       </span>
-      <span v-if="periodoSeleccionado.valor === 'personalizado'">
+      <span v-if="rangeSelected.valor === 'personalizado'">
         entre el
         <!--<input type="date" class="fecha" v-model="periodoDesde">-->
         <datetime
-          v-model="periodoDesde"
-          input-class="fecha"
+          v-model="rangeFrom"
+          input-class="input-date"
           :phrases="{ok: 'Seleccionar',
            cancel: 'Cancelar'}"
           value-zone="local"
@@ -20,14 +20,14 @@
         />
         y el
         <datetime
-          v-model="periodoHasta"
+          v-model="rangeUntil"
           input-class="fecha"
           :phrases="{ok: 'Seleccionar', cancel: 'Cancelar'}"
           value-zone="local"
           format="yyyy-MM-dd"
         />
       </span>
-      <vs-dropdown style="margin-left: 15px">
+      <vs-dropdown vs-trigger-click style="margin-left: 15px">
         <a class="a-icon" href="#">
           Cambiar
           <vs-icon class="" icon="expand_more"></vs-icon>
@@ -35,22 +35,36 @@
         <vs-dropdown-menu>
           <vs-dropdown-item
             style="width:200px"
-            v-for="periodo in periodos"
-            :key="periodo.valor"
-            v-on:click.native="seleccionarPeriodo(periodo)"
+            v-for="range in ranges"
+            :key="range.valor"
+            v-on:click.native="selectRange(range)"
           >
-            {{ periodo.nombre }}
+            {{ range.nombre }}
           </vs-dropdown-item>
         </vs-dropdown-menu>
       </vs-dropdown>
     </div>
-    <filtros
+    <!--<filtros
+      :dntType="'files'"
       :users="usersCompany"
       :groups="groupsCompany"
       :documents="documentTypesState.list"
       :institutions="institutionTypesState.list"
-      :configuracion-vista="configuracion"
-      :periodos="periodos"
+      :configuracion-vista="configuration"
+      :periodos="ranges"
+      :has-query-filters="!!queryFilters"
+      :clear-query-filters="clear"
+      v-on:filtros-aplicados="changeFilters"
+    />-->
+    <filtros-letty
+      :filtersView="filterView"
+      :users="usersCompany"
+      :groups="groupsCompany"
+      :documents="allDocumentsState.list"
+      :institutions="institutionTypesState.list"
+      :periodos="ranges"
+      :has-query-filters="!!queryFilters"
+      :clear-query-filters="clear"
       v-on:filtros-aplicados="changeFilters"
     />
   </div>
@@ -59,20 +73,26 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import Filtros from '@/febos/global/_vue/componentes/FiltrosDnt';
+// import Filtros from '@/febos/global/_vue/componentes/FiltrosDnt';
+import FiltrosLetty from '@/febos/global/_vue/componentes/FiltrosLetty';
+import ConfigFileFiltersMixin from '@/febos/global/_vue/componentes/filtersLetty/ConfigFileFiltersMixin';
 import FiltersDntMixin from '@/febos/chile/dnt/mixins/FiltersDntMixin';
 import FindTypeDocumentMixin from '@/febos/chile/dnt/mixins/FindTypeDocumentMixin';
+import { getShareableFilters } from '@/febos/chile/dnt/utils/fitlers';
+import { removeSearchParams, updateSearchParams } from '@/febos/global/utils/router';
 
 export default {
-  components: { Filtros },
-  props: ['value'],
-  mixins: [FiltersDntMixin, FindTypeDocumentMixin],
+  // components: { Filtros },
+  components: { FiltrosLetty },
+  props: ['value', 'onChange', 'clear'],
+  mixins: [FiltersDntMixin, FindTypeDocumentMixin, ConfigFileFiltersMixin],
   data() {
     const { view } = this.$route.params;
     const filters = this.getFilterView(view);
+    const filterLetty = this.getFilterViewLetty(view);
 
     return {
-      periodos: [
+      ranges: [
         { nombre: 'las últimas 4 semanas', valor: 'ultimas4semanas' },
         { nombre: 'este mes', valor: 'esteMes' },
         { nombre: 'este mes y el anterior', valor: 'esteMesConAnterior' },
@@ -80,36 +100,41 @@ export default {
         { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
         { nombre: '* Rango personalizado', valor: 'personalizado' }
       ],
-      periodoSeleccionado: { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
-      periodoDesde: '',
-      periodoHasta: '',
-      configuracion: filters,
-      currentFilters: ''
+      rangeSelected: { nombre: 'los últimos 6 meses', valor: 'ultimos6meses' },
+      rangeFrom: '',
+      rangeUntil: '',
+      view,
+      configuration: filters,
+      filterView: filterLetty,
+      currentFilters: '',
+      queryFilters: this.$route.query.filters
     };
   },
   created() {
-    this.periodoDesde = this.$moment().subtract(6, 'month').format('YYYY-MM-DD');
-    this.periodoHasta = this.$moment().format('YYYY-MM-DD');
+    this.rangeFrom = this.$moment().subtract(6, 'month').format('YYYY-MM-DD');
+    this.rangeUntil = this.$moment().format('YYYY-MM-DD');
 
-    if (!this.usersCompany.length) {
-      this.getUsersCompany({
-        empresaId: this.empresa.id,
-        pagina: 1,
-        filas: 9999,
-        buscarInfoExtra: 'si',
-        filtroInfoExtra: 'CARGO'
-      });
-    }
-    if (!this.groupsCompany.length) {
-      this.getGroupsCompany({
-        empresaId: this.empresa.id
-      });
-    }
-    if (!this.documentTypesState.length) {
-      this.fetchDocumentTypes();
-    }
-    if (!this.institutionTypesState.length) {
-      this.fetchInstitutionTypes();
+    if (this.view !== 'compartido') {
+      if (!this.usersCompany.length) {
+        this.getUsersCompany({
+          empresaId: this.empresa.id,
+          pagina: 1,
+          filas: 9999,
+          buscarInfoExtra: 'si',
+          filtroInfoExtra: 'CARGO'
+        });
+      }
+      if (!this.groupsCompany.length) {
+        this.getGroupsCompany({
+          empresaId: this.empresa.id
+        });
+      }
+      if (!this.allDocumentsState.length) {
+        this.fetchAllDocuments();
+      }
+      if (!this.institutionTypesState.length) {
+        this.fetchInstitutionTypes();
+      }
     }
   },
   computed: {
@@ -119,7 +144,7 @@ export default {
       'groupsCompany'
     ]),
     ...mapGetters('List', [
-      'documentTypesState',
+      'allDocumentsState',
       'institutionTypesState'
     ])
   },
@@ -129,61 +154,86 @@ export default {
       'getGroupsCompany'
     ]),
     ...mapActions('List', [
-      'fetchDocumentTypes',
+      'fetchAllDocuments',
       'fetchInstitutionTypes'
     ]),
-    changeFilters(filters) {
-      const defaultFilters = `fechaCreacion:${this.periodoDesde}--${this.periodoHasta}`;
+    async changeFilters(filters, onMounted) {
+      const defaultFilters = `fechaCreacion:${this.rangeFrom}--${this.rangeUntil}`;
       this.currentFilters = filters;
       const newFilters = filters !== ''
         ? `${defaultFilters}|${filters}`
         : defaultFilters;
 
-      this.$emit('input', newFilters);
+      if (!onMounted) {
+        const nonShareableFilters = [
+          ...['destinoVisorIds', 'destinoParticipanteIds', 'destinoResponsableIds'],
+          // TODO: agregar campo de busqueda de coincidencias
+          ...(this.configuration.filtrosFijos || []).map((filterConfig) => filterConfig.campo)
+        ];
+        const queryFilters = getShareableFilters(newFilters, nonShareableFilters);
+        updateSearchParams({ filters: queryFilters });
+      }
+      this.onChange(newFilters, onMounted);
     },
-    seleccionarPeriodo(periodo) {
-      switch (periodo.valor) {
+    selectRange(range) {
+      switch (range.valor) {
         case 'ultimas4semanas':
-          this.periodoDesde = this.$moment().subtract(28, 'days')
+          this.rangeFrom = this.$moment().subtract(28, 'days')
             .format('YYYY-MM-DD');
-          this.periodoHasta = this.$moment().subtract(0, 'days')
+          this.rangeUntil = this.$moment().subtract(0, 'days')
             .format('YYYY-MM-DD');
           break;
         case 'esteMes':
-          this.periodoDesde = this.$moment().startOf('month')
+          this.rangeFrom = this.$moment().startOf('month')
             .format('YYYY-MM-DD');
-          this.periodoHasta = this.$moment().subtract(0, 'days')
+          this.rangeUntil = this.$moment().subtract(0, 'days')
             .format('YYYY-MM-DD');
           break;
         case 'esteMesConAnterior':
-          this.periodoDesde = this.$moment().subtract(2, 'month').startOf('month')
+          this.rangeFrom = this.$moment().subtract(2, 'month').startOf('month')
             .format('YYYY-MM-DD');
-          this.periodoHasta = this.$moment().subtract(0, 'days')
+          this.rangeUntil = this.$moment().subtract(0, 'days')
             .format('YYYY-MM-DD');
           break;
         case 'ultimos3meses':
-          this.periodoDesde = this.$moment().subtract(3, 'month').startOf('month')
+          this.rangeFrom = this.$moment().subtract(3, 'month').startOf('month')
             .format('YYYY-MM-DD');
-          this.periodoHasta = this.$moment().subtract(0, 'days')
+          this.rangeUntil = this.$moment().subtract(0, 'days')
             .format('YYYY-MM-DD');
           break;
         case 'ultimos6meses':
-          this.periodoDesde = this.$moment().subtract(6, 'month').startOf('month')
+          this.rangeFrom = this.$moment().subtract(6, 'month').startOf('month')
             .format('YYYY-MM-DD');
-          this.periodoHasta = this.$moment().subtract(0, 'days')
+          this.rangeUntil = this.$moment().subtract(0, 'days')
             .format('YYYY-MM-DD');
           break;
         default:
-          this.periodoDesde = this.$moment().subtract(6, 'month').startOf('month')
+          this.rangeFrom = this.$moment().subtract(6, 'month').startOf('month')
             .format('YYYY-MM-DD');
-          this.periodoHasta = this.$moment().subtract(0, 'days')
+          this.rangeUntil = this.$moment().subtract(0, 'days')
             .format('YYYY-MM-DD');
           break;
       }
-      this.periodoSeleccionado = periodo;
+      this.rangeSelected = range;
       this.changeFilters(this.currentFilters);
+    },
+    clearQueryFilters() {
+      removeSearchParams(['filters']);
+      // TODO: try to change to default filter state for current view.
+      this.$router.go();
     }
   }
 };
 
 </script>
+<style>
+.input-date {
+  border: 1px solid #bcbcbc;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+.search-bar {
+  align-items: baseline;
+  width: 50%;
+}
+</style>

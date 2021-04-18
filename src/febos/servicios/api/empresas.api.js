@@ -18,3 +18,30 @@ export const ioCompanyGroups = (payload) => {
     operacionId: 'io.empresas.grupos'
   });
 };
+
+export const getUsersByGroup = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/${payload.empresaId}/grupos/${payload.groupId}/usuarios?${params}`, {
+    operacionId: 'io.empresas.usuariosBygroup'
+  });
+};
+
+export const ioCompanyUpdateGroup = (empresaId, group) => {
+  const params = apiClient.queryParams(group);
+  console.log('API', empresaId, group);
+  return apiClient.put(`${RESOURCE}/${empresaId}/grupos/${group.id}?${params}`,
+    group, { operacionId: 'io.empresas.update.group' });
+};
+
+export const ioCompanyCreateGroup = (empresaId, group) => {
+  const params = apiClient.queryParams(group);
+  return apiClient.post(`${RESOURCE}/${empresaId}/grupos?${params}`,
+    group, { operacionId: 'io.empresas.create.group' });
+};
+
+export const ioCompanyUpdateUsersGroup = (empresaId, body) => {
+  const params = apiClient.queryParams(body);
+  return apiClient.post(`${RESOURCE}/${empresaId}/grupos/${body.grupoId}?${params}`,
+    { usuarios: body.usuarios }, { operacionId: 'io.empresas.update.users.group' });
+};

@@ -13,7 +13,7 @@ const withoutLog = ['io.usuario.latido'];
 const unreportableStatus = [1, 3, 10];
 
 const authInterceptor = async (config) => {
-  const storage = await localForage.getItem(`${process.env.VUE_APP_AMBIENTE}/${process.env.VUE_APP_PORTAL}`);
+  const storage = await localForage.getItem(process.env.VUE_APP_AMBIENTE);
 
   if (!storage) {
     return config;

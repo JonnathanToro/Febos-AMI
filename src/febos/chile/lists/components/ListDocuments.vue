@@ -1,17 +1,27 @@
 <template>
-  <vs-select
-    v-bind="$props"
-    :value="value"
-    :disabled="disabled"
-    @input="$emit('input', $event)"
-  >
-    <vs-select-item
-      :key="item.id"
-      :value="item.value"
-      :text="item.label"
-      v-for="item in documentsState.list"
-    />
-  </vs-select>
+  <div class="con-select w-100 autocompletex">
+    <label :for="name" class="vs-select--label">{{ label }}</label>
+    <v-select
+      :name="name"
+      :value="optionSelected"
+      :options="documentsState.list"
+      :class="{ 'v-select-danger': danger }"
+      :disabled="isDisabled"
+      @input="onInput"
+    >
+      <template #spinner>
+        <div
+          v-if="documentsState.loading"
+          style="border-left-color: rgba(88,151,251,0.71)"
+          :style="{ opacity: documentsState.loading ? 1 : 0 }"
+          class="vs__spinner"
+        />
+      </template>
+      <template slot="no-options">
+        no hay documentos para el criterio de búsqueda
+      </template>
+    </v-select>
+  </div>
 </template>
 
 <script>
@@ -19,45 +29,26 @@
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  props: {
-    autocomplete: {
-      type: Boolean,
-      default: false
-    },
-    label: {
-      type: String,
-      default: 'Documentos'
-    },
-    value: {
-      type: String
-    },
-    danger: {
-      type: Boolean
-    },
-    dangerText: {
-      type: String
-    },
-    nested: {
-      type: Boolean,
-      default: true
-    },
-    parentValue: {
-      type: String,
-      required: true
-    }
-  },
   computed: {
     ...mapGetters('List', [
       'documentsState'
     ]),
-    disabled() {
-      return !this.documentsState.list.length || this.documentsState.loading;
+    optionSelected() {
+      return this.documentsState.list.find((option) => option.value === this.value);
+    },
+    isDisabled() {
+      return this.disabled
+        || !this.documentsState.list.length
+        || this.documentsState.loading;
     }
   },
   methods: {
     ...mapActions('List', [
       'fetchDocuments'
     ]),
+    onInput(event) {
+      this.$emit('input', event?.value);
+    },
     getOption() {
       return this.documentsState.list.find((option) => option.value === this.value);
     }
@@ -80,6 +71,16 @@ export default {
     } else {
       this.fetchDocuments(this.parentValue.value);
     }
+  },
+  props: {
+    name: { type: String, required: true },
+    label: { type: String, default: 'Documentos' },
+    value: { type: String },
+    danger: { type: Boolean },
+    dangerText: { type: String },
+    nested: { type: Boolean, default: true },
+    parentValue: { type: String, required: true },
+    disabled: { type: Boolean, default: false }
   }
 };
 
