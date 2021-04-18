@@ -34,7 +34,7 @@
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-3">
-              <label>Estampar PDF</label>
+              <label>Estampar aprobaciones</label>
             </div>
             <div class="col-md-1">
               <vs-radio

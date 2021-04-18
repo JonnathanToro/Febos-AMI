@@ -1,6 +1,6 @@
 import StepIdentification from '@/febos/chile/dnt/components/wizard/oficialNumeration/StepIdentification';
-import StepInformation from '@/febos/chile/dnt/components/wizard/oficialNumeration/StepInformation';
-import StepFiles from '@/febos/chile/dnt/components/wizard/oficialNumeration/StepFiles';
+import StepInformation from '@/febos/chile/dnt/components/wizard/sharedSteps/StepInformation';
+import StepFiles from '@/febos/chile/dnt/components/wizard/sharedSteps/StepFiles';
 
 export default () => ({
   currentStep: 0,
@@ -43,6 +43,7 @@ export default () => ({
         data.issueDate = Date.parse(dnt.fechaEmision);
       }
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
+      data.resumen = dnt.nombreDescriptivo;
       data.direccionId = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
@@ -178,6 +179,7 @@ export default () => ({
         emisorSucursalDireccion: input.documentName,
         condicionDespacho: input.formatDocument,
         transportePuertoTipo: input.isPrivate,
+        nombreDescriptivo: input.resumen,
         solicitanteGrupoId: input.creatorGroup,
         solicitanteGrupoNombre: input.creatorGroupName,
         compradorCodigo: input.directionId,

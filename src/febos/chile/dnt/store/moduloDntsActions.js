@@ -365,6 +365,7 @@ export const sendToFlow = async ({ commit }, { data }) => {
 
 export const getActivitiesFile = async ({ commit }, { payload, historico }) => {
   try {
+    commit('SET_ACTIVITIES_TIMELINE_FILE', []);
     commit('SET_LOADING', true);
     const response = await activitiesFile(payload);
     if (historico) {
@@ -403,11 +404,12 @@ export const updateActivityFile = async ({ commit }, payload) => {
 };
 
 export const answerCreateFile = async ({ commit }, payload) => {
+  console.log('responder action', payload);
   try {
     commit('SET_LOADING', true);
     const response = await createDnt(payload);
     commit('SET_SUCCESS_MESSAGE', response.data);
-    const path = `/documentos/interno/${response.data.dnt.febosId}`;
+    const path = `/documentos/${payload.dnt.claseMercadoPublico}/${response.data.dnt.febosId}`;
     store.commit('Modals/CLOSE_MODAL');
     await router.push({ path });
   } catch (e) {

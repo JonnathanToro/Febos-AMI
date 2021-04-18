@@ -4,6 +4,30 @@
       Si decides responder este expediente vas a ser re-dirigido a un formulario
       y éste expediente quedará referenciado.
     </div>
+    <div class="mt-3">
+      <div class="bg-alert p-3">
+        Por favor selecciona con que tipo de expediente quieres responder, recuerda que
+        <b>trámite interno es procesado por oficinas internas</b>
+      </div>
+      <div class="mt-3">
+        <vs-select
+          class="w-100"
+          autocomplete
+          label="Tipo de Expediente respuesta"
+          name="formatDocument"
+          v-model="fileType"
+        >
+          <vs-select-item
+            :value="'numInt'"
+            text="Trámite interno"
+          />
+          <vs-select-item
+            :value="'numOf'"
+            text="Trámite oficial"
+          />
+        </vs-select>
+      </div>
+    </div>
     <div class="m-top-20" style="display: flex;justify-content: flex-end;">
       <vs-button color="dark" v-on:click="cancelAsign()" type="border">Cancelar</vs-button>
       <vs-button
@@ -24,6 +48,11 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
   name: 'PopUpAnswerFile',
   mixins: [],
+  data() {
+    return {
+      fileType: 'numInt'
+    };
+  },
   props: {
     file: {
       type: [Object],
@@ -62,7 +91,7 @@ export default {
           receptorRut: this.company.iut,
           emisorRazonSocial: this.company.razonSocial,
           receptorRazonSocial: this.company.razonSocial,
-          claseMercadoPublico: 'int',
+          claseMercadoPublico: this.fileType,
           estado: 3
         },
         referencias: [
@@ -74,6 +103,7 @@ export default {
           }
         ]
       };
+
       this.answerCreateFile(answerFile);
     },
     cancelAsign() {
@@ -83,5 +113,11 @@ export default {
 };
 </script>
 <style scoped>
+
+.bg-alert {
+  background: #671e85;
+  border-radius: 5px;
+  color: white;
+}
 
 </style>

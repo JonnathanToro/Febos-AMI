@@ -40,7 +40,28 @@ export default {
   timelineFile: (state) => state.timeline,
   activities: (state) => state.activities
     .sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion)),
-  activitiesHistory: (state) => state.activitiesHistory,
+  /*
+   state.activitiesHistory = (payload || [])
+      .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
+      .reduce((index, option) => ({
+        ...index,
+        [option.usuarioNombre]: [
+          ...(index[option.usuarioNombre] || []),
+          option
+        ]
+      }), {});
+   */
+  activitiesHistory: (state) => state.activitiesHistory
+    .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
+    .reduce((index, option) => ({
+      ...index,
+      [option.usuarioNombre]: [
+        ...(index[option.usuarioNombre] || []),
+        option
+      ]
+    }), {}),
+  activitiesHistoryDates: (state) => state.activitiesHistory
+    .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion)),
   references: (state) => state.references,
   selectedFile: (state) => state.selectedFile
 };

@@ -60,17 +60,10 @@
         <vs-col vs-lg="9">
           <vs-row>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-              {{file.compradorArea | capitalize }}
-            </vs-col>
-            <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-              {{ file.emisorContactoNombre | capitalize }}
-              <small
-                v-if="file.emisorContactoEmail"
-                class="d-block"
-                v-tooltip="`${file.emisorContactoEmail}`"
-              >
-                {{ file.emisorContactoEmail | truncate(20) }}
-              </small>
+              <b>{{file.compradorArea | capitalize }}</b>
+              <div v-tooltip="'Remitente'">
+                {{ file.emisorContactoNombre | capitalize }}
+              </div>
             </vs-col>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
               {{ file.solicitanteGrupoNombre }}
@@ -85,11 +78,14 @@
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12" v-if="onPendingFiles">
               {{ file.derivadoPor }}
             </vs-col>
+            <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
+              {{ file.nombreDescriptivo }}
+            </vs-col>
           </vs-row>
         </vs-col>
       </vs-row>
       <vs-row>
-        <vs-col vs-offset="1" vs-lg="11" vs-type="flex">
+        <vs-col vs-offset="1" vs-lg="11" vs-type="flex" class="pt-2 border-top">
           <vs-chip class="mr-4" v-tooltip="'Fecha de Actualización'">
             <vs-avatar icon="date_range" />
             {{ file.fechaActualizacion | dateFormat }}
@@ -147,7 +143,7 @@
             interno
           </vs-chip>
           <vs-chip class="mr-3"
-            v-tooltip="'Numeración interna'"
+            v-tooltip="'Numeración Interna'"
             v-if="file.claseMercadoPublico === 'numInt'"
             transparent color="primary"
           >
@@ -158,7 +154,7 @@
             v-if="file.claseMercadoPublico === 'numOf'"
             color="primary" transparent
           >
-            num. Oficial
+            num. oficial
           </vs-chip>
           <vs-chip class="mr-3"
             v-tooltip="'Estoy en copia'"

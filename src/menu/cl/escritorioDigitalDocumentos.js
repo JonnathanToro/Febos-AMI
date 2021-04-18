@@ -4,29 +4,29 @@ export default [{
   i18n: 'Documentos',
   items: [
     {
-      url: { name: 'files', params: { view: 'borradores' } },
-      name: 'Bandeja Borradores',
-      icon: 'PackageIcon',
-      permiso: 'ED009',
-      i18n: 'borradores'
-    },
-    {
       url: { name: 'files', params: { view: 'pendientes' } },
-      name: 'Bandeja Pendientes',
+      name: 'Pendientes',
       icon: 'InboxIcon',
       permiso: 'ED009',
       i18n: 'expedientes'
     },
     {
+      url: { name: 'files', params: { view: 'borradores' } },
+      name: 'Borradores',
+      icon: 'PackageIcon',
+      permiso: 'ED009',
+      i18n: 'borradores'
+    },
+    {
       url: { name: 'files', params: { view: 'general' } },
-      name: 'Bandeja General',
+      name: 'General',
       icon: 'HardDriveIcon',
       permiso: 'ED011',
       i18n: 'expedientes'
     },
     {
       url: { name: 'files', params: { view: 'finalizados' } },
-      name: 'Bandeja Finalizados',
+      name: 'Finalizados',
       icon: 'ArchiveIcon',
       permiso: 'ED010',
       i18n: 'expedientes'
