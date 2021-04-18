@@ -14,13 +14,13 @@
               <b>Enviado por</b>
             </vs-col>
             <vs-col vs-lg="3">
-              <b>Remitente</b>
-            </vs-col>
-            <vs-col vs-lg="3">
               <b>Creado por</b>
             </vs-col>
             <vs-col vs-lg="3" v-if="onPendingFiles">
               <b>Derivado por</b>
+            </vs-col>
+            <vs-col vs-lg="3">
+              <b>Resumen</b>
             </vs-col>
           </vs-row>
         </vs-col>

@@ -11,7 +11,11 @@
              registradas a este expediente... despliega sobre el usuario
              que quieras ver la información
           </div>
-          <div class="py-2 box-activities">
+          <div class="my-3 order">
+            Ordenar por usuarios
+            <vs-switch class="ml-3" v-model="sortByUsers"/>
+          </div>
+          <div class="py-2 box-activities" v-if="sortByUsers">
             <vs-collapse accordion>
               <vs-collapse-item
                 v-for="(activityUser, index) in Object.keys(activitiesHistory)"
@@ -60,6 +64,49 @@
               </vs-collapse-item>
             </vs-collapse>
           </div>
+          <div class="py-2 box-activities" v-if="!sortByUsers">
+            <vs-table
+              class="wrap-table"
+              stripe
+              :data="(activitiesHistoryDates || [])"
+              noDataText="No hay actividades aun"
+            >
+              <template slot="header">
+              </template>
+              <template slot="thead">
+                <vs-th>
+                  Actividad
+                </vs-th>
+                <vs-th>
+                  Estado
+                </vs-th>
+                <vs-th>
+                  Fecha
+                </vs-th>
+              </template>
+              <template>
+                <tbody>
+                <vs-tr
+                  v-for="(activity, index) in activitiesHistoryDates"
+                  :key="index"
+                >
+                  <vs-td>
+                    {{ activity.actividadDescripcion }}
+                    <div>
+                      <small>{{ activity.usuarioNombre }}</small>
+                    </div>
+                  </vs-td>
+                  <vs-td>
+                    {{activity.actividadEstadoDescripcion}}
+                  </vs-td>
+                  <vs-td>
+                    <small>{{activity.fechaCreacion | dateFormatTime}}</small>
+                  </vs-td>
+                </vs-tr>
+                </tbody>
+              </template>
+            </vs-table>
+          </div>
         </div>
       </div>
     </div>
@@ -77,11 +124,14 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      sortByUsers: true,
+    };
   },
   computed: {
     ...mapGetters('Dnts', [
-      'activitiesHistory'
+      'activitiesHistory',
+      'activitiesHistoryDates'
     ]),
     ...mapGetters('Modals', [
       'modalName'
@@ -122,5 +172,9 @@ export default {
   background: #fff5df;
   border-radius: 10px;
   padding: 4px 8px;
+}
+.order {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

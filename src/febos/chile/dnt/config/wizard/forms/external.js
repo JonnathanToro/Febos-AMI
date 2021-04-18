@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 import StepIdentification from '@/febos/chile/dnt/components/wizard/external/StepIdentification';
 import StepInformation from '@/febos/chile/dnt/components/wizard/external/StepInformation';
-import StepFiles from '@/febos/chile/dnt/components/wizard/external/StepFiles';
+import StepFiles from '@/febos/chile/dnt/components/wizard/sharedSteps/StepFiles';
 
 export default () => ({
   steps: [
@@ -44,6 +44,7 @@ export default () => ({
         data.issueDate = Date.parse(dnt.fechaEmision);
       }
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
+      data.resumen = dnt.nombreDescriptivo;
       data.institutionType = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
@@ -181,6 +182,7 @@ export default () => ({
         emisorSucursalDireccion: input.documentName,
         numeroInt: input.documentNumber,
         transportePuertoTipo: input.isPrivate,
+        nombreDescriptivo: input.resumen,
         solicitanteGrupoId: input.creatorGroup,
         solicitanteGrupoNombre: input.creatorGroupName,
         compradorCodigo: input.institutionType,

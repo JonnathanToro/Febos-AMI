@@ -109,7 +109,7 @@
               Editar Grupo
             </vs-button>
             <vs-button
-              v-if="selectedGroup.nombre"
+              v-if="selectedGroup.nombre && selectedGroup.esOficina !== 'Y'"
               class="action mr-2"
               color="primary"
               type="border"
