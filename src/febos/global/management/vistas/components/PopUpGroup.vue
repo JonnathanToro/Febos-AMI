@@ -1,43 +1,81 @@
 <template>
   <vs-popup
-    :title="`Datos del grupo ${group.nombre}`"
+    :title="`Datos del grupo ${name}`"
+    @close="cancelEdit"
     :active.sync="showModal">
     <div class="row mb-5">
       <div class="col-md-6 mt-3">
         <vs-input
           class="w-100"
           label="Código"
-          maxlength="150"
+          maxlength="40"
           name="groupName"
-          v-model="group.codigo"
+          v-model="editGroup.codigo"
         />
       </div>
       <div class="col-md-6 mt-3">
         <vs-input
           class="w-100"
           label="Nombre de Grupo"
-          maxlength="150"
+          maxlength="250"
           name="groupName"
-          v-model="group.nombre"
+          v-model="editGroup.nombre"
         />
       </div>
       <div class="col-md-12 mt-3">
         <vs-input
           class="w-100"
           label="Descripción de Grupo"
-          maxlength="150"
+          maxlength="250"
           name="groupDescription"
-          v-model="group.descripcion"
+          v-model="editGroup.descripcion"
         />
       </div>
-      <div class="col-md-6 mt-3 ml-2">
-        <label for="ifOffice">
-          Es Oficina Externa
-        </label>
-        <vs-switch id="ifOffice" v-model="group.isOffice"/>
+      <div class="col-md-12 mt-3" v-if="this.action !== 'addParent'">
+        <div>
+          <vs-select
+            class="w-100"
+            autocomplete
+            label="Es oficina"
+            name="isOffice"
+            v-model="editGroup.esOficina"
+          >
+            <vs-select-item
+              :value="'Y'"
+              text="Si"
+            />
+            <vs-select-item
+              :value="'N'"
+              text="No"
+            />
+          </vs-select>
+        </div>
+        <div class="row mt-3" v-if="editGroup.esOficina === 'Y'">
+          <div class="col-md-4">
+            <label>Es tipo de oficina</label>
+          </div>
+          <div class="col-md-4">
+            <vs-radio
+              vs-name="isPrivate"
+              :vs-value="'int'"
+              v-model="editGroup.tipo"
+            >
+              Interna
+            </vs-radio>
+          </div>
+          <div class="col-md-4">
+            <vs-radio
+              vs-name="isPrivate"
+              :vs-value="'ext'"
+              v-model="editGroup.tipo"
+            >
+              Externa
+            </vs-radio>
+          </div>
+        </div>
       </div>
-      <div class="col-md-12 mt-3">
-        Este grupo será creado como subgrupo de {{group.padreNombre}}
+      <div class="col-md-12 mt-3 chip-custom" v-if="this.action === 'add'">
+        Este grupo será creado como subgrupo de {{editGroup.padreNombre}}
       </div>
       <div class="col-md-12 mt-3">
         <div style="float: right">
@@ -48,7 +86,7 @@
             @click="saveChanges()"
             icon="save"
           >
-            Guardar edición
+            Guardar
           </vs-button>
         </div>
       </div>
@@ -64,18 +102,40 @@ export default {
   mixins: [],
   props: {
     group: {
-      type: [Object],
-      required: true,
-      default: () => {}
+      type: Object,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      editGroup: {
+        ...this.group
+      }
+    };
+  },
+  watch: {
+    group(newValue) {
+      this.editGroup = { ...newValue };
     }
   },
   computed: {
+    ...mapGetters('Empresas', [
+      'company'
+    ]),
     ...mapGetters('Modals', [
       'modalName'
     ]),
     showModal: {
       get() {
-        return this.modalName === 'modalGroup';
+        return this.modalName === 'modalEditGroup';
       },
       set() {
         this.closeModal();
@@ -83,18 +143,49 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Dnts', [
-      'asignDntFileED'
-    ]),
     ...mapActions('Modals', [
       'closeModal'
     ]),
+    ...mapActions('Empresas', [
+      'updateGroup',
+      'createGroup'
+    ]),
     saveChanges() {
-      console.log('ACA', this.group);
+      const group = {
+        ...this.editGroup
+      };
+
+      if (this.action !== 'addParent') {
+        group.esDivision = this.editGroup.esDivision === 'Y' ? 'si' : 'no';
+        group.esOficina = this.editGroup.esOficina;
+      }
+
+      console.log('GROUP', group);
+      if (this.action === 'add' || this.action === 'addParent') {
+        this.createGroup({
+          empresaId: this.company.id,
+          group
+        });
+      } else {
+        this.updateGroup({
+          empresaId: this.company.id,
+          group
+        });
+      }
+    },
+    cancelEdit() {
+      console.log('cancelar', this);
     }
   }
 };
 </script>
 <style scoped>
-
+.chip-custom {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #ffb300;
+  background: #fff5df;
+  border-radius: 10px;
+  padding: 4px 8px;
+}
 </style>

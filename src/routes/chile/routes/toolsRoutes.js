@@ -16,5 +16,11 @@ export default [
     name: 'maintainer-subjects',
     meta: { permiso: 'ED007', requiereLogin: true },
     component: () => import('@/febos/chile/tools/vistas/MantenedorDestinos.vue')
+  },
+  {
+    path: 'mantenedores/actividades',
+    name: 'maintainer-activities',
+    meta: { permiso: 'ED007', requiereLogin: true }, // TODO: change permission
+    component: () => import('@/febos/chile/tools/vistas/Activities.vue')
   }
 ];

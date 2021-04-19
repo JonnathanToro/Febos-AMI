@@ -1,6 +1,24 @@
 <template>
   <div>
     <form data-vv-scope="step-2-part-1">
+      <div class="row mb-5">
+        <div class="col-12">
+          <h4>Datos de la persona que ingresa el documento</h4>
+        </div>
+        <div class="col-md-12">
+          <list-user-groups
+            class="w-100"
+            autocomplete
+            label="Grupo al que irá asociado el expediente"
+            name="creatorGroup"
+            v-model="step.creatorGroup"
+            :danger="errors.has('step-2-part-1.creatorGroup')"
+            :danger-text="errors.first('step-2-part-1.creatorGroup')"
+            v-validate="{ required: userGroupsState.list.length > 1 }"
+            ref="creatorGroup"
+          />
+        </div>
+      </div>
       <div class="row mb-3">
         <div class="col-12">
           <h4>Origen / Datos Remitente</h4>
@@ -23,13 +41,16 @@
       </div>
       <div class="row mb-3">
         <div class="col-12">
-          <list-users
+          <list-group-users
             class="w-100"
             autocomplete
             label="Nombre de Persona que Genera Documento"
             name="personName"
             v-model="step.personName"
             :parent-value="step.directionId"
+            :danger="errors.has('step-2-part-1.personName')"
+            :danger-text="errors.first('step-2-part-1.personName')"
+            v-validate="'required'"
             ref="personName"
           />
         </div>
@@ -73,14 +94,40 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(subjectForm.subjectType)"
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Destino"
             name="subject"
             v-model="subjectForm.subject"
             :parent-value="subjectForm.subjectType"
-            v-validate="{ required: !isInput.includes(subjectForm.subjectType) }"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            }"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
+            ref="subject"
+            key="subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="subject"
+            v-model="subjectForm.subject"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            }"
+            :disabled="!subjectForm.subjectType"
             :danger="errors.has('step-2-part-2.subject')"
             :danger-text="errors.first('step-2-part-2.subject')"
             ref="subject"
@@ -196,16 +243,42 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(copySubjectForm.copySubjectType)"
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Distribución"
             name="copySubject"
             v-model="copySubjectForm.copySubject"
             :parent-value="copySubjectForm.copySubjectType"
-            v-validate="{ required: !isInput.includes(copySubjectForm.copySubject) }"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubject)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            }"
             :danger="errors.has('step-2-part-3.copySubject')"
             :danger-text="errors.first('step-2-part-3.copySubject')"
+            ref="copySubject"
+            key="copy-subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="copySubject"
+            v-model="copySubjectForm.copySubject"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            }"
+            :disabled="!copySubjectForm.copySubjectType"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
             ref="copySubject"
             key="copy-subject-select"
           />
@@ -330,6 +403,17 @@
           />
         </div>
       </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <vs-input
+            class="w-100"
+            label="Resumen"
+            maxlength="250"
+            name="resumen"
+            v-model="step.resumen"
+          />
+        </div>
+      </div>
       <div class="row">
         <div class="col-12">
           <label for="observation">Observacion (5000 caracteres)</label>
@@ -357,21 +441,27 @@
 
 <script>
 
+import { mapGetters } from 'vuex';
+
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
 import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
 import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
 import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
 import ListGroups from '@/febos/chile/lists/components/ListGroups';
-import ListUsers from '@/febos/chile/lists/components/ListUsers';
+import ListGroupUsers from '@/febos/chile/lists/components/ListGroupUsers';
+import ListUserGroups from '@/febos/chile/lists/components/ListUserGroups';
+import ListUser from '@/febos/chile/lists/components/ListUser';
 
 export default {
   mixins: [WizardStep],
   components: {
     ListGroups,
-    ListUsers,
+    ListGroupUsers,
     ListSubjects,
     ListSubjectTypes,
-    ListInstitutionsDocDigital
+    ListInstitutionsDocDigital,
+    ListUserGroups,
+    ListUser
   },
   data() {
     return {
@@ -393,11 +483,13 @@ export default {
         copySubjectEmail: '',
       },
       step: {
+        creatorGroup: '',
         directionId: '',
         personName: '',
         personPosition: '',
         withAttachment: 0,
         documentDetail: '',
+        resumen: '',
         observation: '',
         subjects: [],
         copies: [],
@@ -406,6 +498,11 @@ export default {
         ...this.draft
       }
     };
+  },
+  computed: {
+    ...mapGetters('List', [
+      'userGroupsState'
+    ])
   },
   methods: {
     async addSubject() {
@@ -536,10 +633,17 @@ export default {
         }
         : {};
 
+      const creatorGroupName = this.step.creatorGroup
+        ? {
+          creatorGroupName: this.$refs.creatorGroup.getOption().label
+        }
+        : {};
+
       return {
         ...this.step,
         ...directionName,
-        ...personName
+        ...personName,
+        ...creatorGroupName
       };
     }
   }

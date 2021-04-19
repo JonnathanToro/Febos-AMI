@@ -47,4 +47,69 @@ export default {
   SET_LOADING(state, payload) {
     state.loading = payload;
   },
+  UPDATE_GROUP(state, payload) {
+    state.groupsCompany = state.groupsCompany.map((group) => {
+      if (group.id === payload.id) {
+        return {
+          ...payload
+        };
+      }
+      return group;
+    });
+  },
+  ADD_GROUP(state, payload) {
+    const group = payload;
+    group.isDivision = payload.esDivision === 'Y';
+    group.isOffice = payload.esOficina === 'Y';
+    state.groupsCompany = [...state.groupsCompany, group];
+  },
+  SET_ELEMENT(state, payload) {
+    state.selectedElement = payload;
+  },
+  ADD_USER_GROUP(state, payload) {
+    // TODO agregar al grupo el id del usuario?
+    state.usersGroup = [
+      ...state.usersGroup,
+      payload
+    ];
+  },
+  REMOVE_USER_GROUP(state, payload) {
+    state.usersGroup = state.usersGroup
+      .filter((userFilter) => userFilter.id !== payload.id);
+  },
+  UPDATE_USER(state, payload) {
+    state.usersGroup = state.usersGroup.map((user) => {
+      if (user.id === payload.id) {
+        return payload;
+      }
+      return user;
+    });
+
+    state.usersCompany = state.usersCompany.map((user) => {
+      if (user.id === payload.id) {
+        return payload;
+      }
+      return user;
+    });
+  },
+  ADD_USER(state, payload) {
+    state.usersGroup = [
+      ...state.usersGroup,
+      payload
+    ];
+
+    state.usersCompany = [
+      ...state.usersCompany,
+      payload
+    ];
+  },
+  SET_CONFIGURATIONS(state, payload) {
+    state.configurations = payload;
+  },
+  SET_LOAD_CONFIGURATIONS(state, payload) {
+    state.isLoadingConfigurations = payload;
+  },
+  SET_SAVING_CONFIGURATIONS(state, payload) {
+    state.isSavingConfigurations = payload;
+  }
 };

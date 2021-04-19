@@ -44,6 +44,20 @@ export default {
         [option.opcionId]: option
       }), {});
   },
+  SET_OPCIONES_CATEGORIES_ACTIVITIES(state, payload) {
+    state.herramientas.mantenedores.categoryActivities = (payload.opciones || [])
+      .reduce((index, option) => ({
+        ...index,
+        [option.opcionId]: option
+      }), {});
+  },
+  SET_OPCIONES_ACTIVITIES(state, payload) {
+    state.herramientas.mantenedores.activityStates = (payload.opciones || [])
+      .reduce((index, option) => ({
+        ...index,
+        [option.opcionId]: option
+      }), {});
+  },
   SET_CATEGORY(state, payload) {
     state.category = payload;
   },
@@ -52,6 +66,9 @@ export default {
   },
   SET_INSTITUTION(state, payload) {
     state.institution = payload;
+  },
+  SET_ACTIVITY(state, payload) {
+    state.activity = payload;
   },
   UPDATE_OPTION_CATEGORY(state, { option }) {
     state.herramientas.mantenedores.categorias[option.opcionId] = option;
@@ -71,6 +88,12 @@ export default {
   UPDATE_OPTION_SUBJECT(state, { option }) {
     state.herramientas.mantenedores.subjects[option.opcionId] = option;
   },
+  UPDATE_OPTION_ACTIVITY_CATEGORY(state, { option }) {
+    state.herramientas.mantenedores.categoryActivities[option.opcionId] = option;
+  },
+  UPDATE_OPTION_ACTIVITY(state, { option }) {
+    state.herramientas.mantenedores.activityStates[option.opcionId] = option;
+  },
   SET_LOADING(state, payload) {
     state.loading = payload;
   },
@@ -79,5 +102,8 @@ export default {
   },
   SET_ERROR_MESSAGE(state, payload) {
     state.error = payload;
+  },
+  SET_CONFIG_SHEET(state, payload) {
+    state.configSheet = payload;
   }
 };

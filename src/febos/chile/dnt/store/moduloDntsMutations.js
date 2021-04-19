@@ -69,5 +69,21 @@ export default {
   },
   SET_TIMELINE(state, payload) {
     state.timeline = payload;
+  },
+  SET_ACTIVITIES_FILE(state, payload) {
+    state.activities = payload;
+  },
+  SET_ACTIVITIES_TIMELINE_FILE(state, payload) {
+    state.activitiesHistory = payload;
+  },
+  SET_REFERENCES_DNT(state, payload) {
+    state.references = payload.referenciadosTipoDnt
+      .concat(payload.referenciadosTipoDte, payload.referenciasTipoDnt, payload.referenciasTipoDte);
+  },
+  CLEAR_REFERENCES(state) {
+    state.references = [];
+  },
+  SET_SELECTED_FILE(state, payload) {
+    state.selectedFile = payload;
   }
 };

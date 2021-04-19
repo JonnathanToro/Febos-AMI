@@ -15,17 +15,22 @@ export default () => ({
     return {
       fileUrl: rawData.imagenLink,
       fileNumber: rawData.numero,
-      fileType: rawData.tipo
+      fileType: rawData.tipo,
+      fileCategory: rawData.dnt.claseMercadoPublico
     };
   },
   documentMapper(input) {
     const data = {
+      typeFlow: input.typeFlow,
       ejecucion: {
         descripcion: input.description,
         estampar: input.pdfStamp,
         nombre: input.name,
+        numero: input.number,
         plantilla: {
           aprobaciones: {
+            nombre: '',
+            descripcion: '',
             estampar: input.pdfStamp,
             foliacion: true,
             tipoejecucion: 'N',
@@ -60,7 +65,8 @@ export default () => ({
           tipoObjetoId: input.typeFlowId,
           tipoObjetoTexto: input.typeFlowText
         }
-      ]
+      ],
+      gatillacionesPreDefinidas: ['f13b799d-8640-4b42-a1e1-2e9044e038b5']
     };
 
     return data;

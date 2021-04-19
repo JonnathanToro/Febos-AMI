@@ -1,5 +1,6 @@
 export default {
   LIMPIAR_SESION(state) {
+    // TODO: try to use the initial state
     state.id = undefined;
     state.nombre = undefined;
     state.iut = undefined;
@@ -11,6 +12,7 @@ export default {
     state.successAction = false;
     state.loading = false;
     state.token = undefined;
+    state.vencimiento = undefined;
   },
   SET_USUARIO(state, payload) {
     state.id = payload.usuario.id;
@@ -46,5 +48,11 @@ export default {
   },
   SET_SUCCESS_MESSAGE(state, payload) {
     state.successAction = payload;
+  },
+  SET_SHARED_FILE(state, payload) {
+    state.sharedFile = payload;
+  },
+  SET_ERROR_MESSAGE(state, payload) {
+    state.error = payload;
   }
 };

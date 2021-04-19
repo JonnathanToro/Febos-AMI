@@ -123,7 +123,7 @@ export default {
     select(company) {
       this.selectCompany(company);
       // TODO: ver si necesita actualizar la información de su empresa, y redirigir a esa ventana
-      this.$router.push({ name: 'inicio' });
+      this.$router.push({ name: 'start' });
     }
   },
   mounted() {

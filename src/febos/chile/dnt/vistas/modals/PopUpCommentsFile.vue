@@ -14,7 +14,7 @@
                 <vs-avatar />
               </template>
               <vs-chip transparent color="#24c1a0">
-                <small>{{comment.creado}}</small>
+                <small class="text-right">{{comment.creado}}</small>
               </vs-chip>
             </vs-list-item>
           </div>
@@ -26,7 +26,7 @@
                 <vs-avatar />
               </template>
               <vs-chip transparent color="#24c1a0">
-                <small>{{comment.creado}}</small>
+                <small class="text-right">{{comment.creado}}</small>
               </vs-chip>
             </vs-list-item>
           </div>
@@ -145,5 +145,9 @@ export default {
   border-radius: 25px;
   margin-bottom: 10px;
   float: right;
+}
+
+.list-titles {
+  width: 90%;
 }
 </style>

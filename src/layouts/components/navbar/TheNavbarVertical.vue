@@ -13,10 +13,19 @@
 
     <div class="vx-navbar-wrapper" :class="classObj">
 
-      <vs-navbar class="vx-navbar navbar-custom navbar-skelton" :color="navbarColorLocal" :class="textColor">
+      <vs-navbar
+        class="vx-navbar navbar-custom navbar-skelton"
+        :color="navbarColorLocal"
+        :class="textColor"
+      >
 
         <!-- SM - OPEN SIDEBAR BUTTON -->
-        <feather-icon class="sm:inline-flex xl:hidden cursor-pointer p-2" icon="MenuIcon" @click.stop="showSidebar" />
+        <feather-icon
+          v-if="view !== 'compartido'"
+          class="sm:inline-flex xl:hidden cursor-pointer p-2"
+          icon="MenuIcon"
+          @click.stop="showSidebar"
+        />
 
         <bookmarks :navbarColor="navbarColor" v-if="windowWidth >= 992" />
 
@@ -34,10 +43,8 @@
 </template>
 
 <script>
-import Bookmarks from './components/Bookmarks.vue';
-import SearchBar from './components/SearchBar.vue';
-import NotificationDropDown from './components/NotificationDropDown.vue';
-import ProfileDropDown from './components/ProfileDropDown.vue';
+import Bookmarks from './components/Bookmarks';
+import ProfileDropDown from './components/ProfileDropDown';
 
 export default {
   name: 'the-navbar-vertical',
@@ -47,10 +54,13 @@ export default {
       default: '#fff',
     },
   },
+  data() {
+    return {
+      view: this.$route.params.view
+    };
+  },
   components: {
     Bookmarks,
-    SearchBar,
-    NotificationDropDown,
     ProfileDropDown,
   },
   computed: {
@@ -61,7 +71,10 @@ export default {
       return this.$store.state.verticalNavMenuWidth;
     },
     textColor() {
-      return { 'text-white': (this.navbarColor != '#10163a' && this.$store.state.theme === 'dark') || (this.navbarColor != '#fff' && this.$store.state.theme !== 'dark') };
+      return {
+        'text-white': (this.navbarColor !== '#10163a' && this.$store.state.theme === 'dark')
+          || (this.navbarColor !== '#fff' && this.$store.state.theme !== 'dark')
+      };
     },
     windowWidth() {
       return this.$store.state.windowWidth;
@@ -69,9 +82,10 @@ export default {
 
     // NAVBAR STYLE
     classObj() {
-      if (this.verticalNavMenuWidth == 'default') return 'navbar-default';
-      if (this.verticalNavMenuWidth == 'reduced') return 'navbar-reduced';
+      if (this.verticalNavMenuWidth === 'default') return 'navbar-default';
+      if (this.verticalNavMenuWidth === 'reduced') return 'navbar-reduced';
       if (this.verticalNavMenuWidth) return 'navbar-full';
+      return '';
     },
   },
   methods: {

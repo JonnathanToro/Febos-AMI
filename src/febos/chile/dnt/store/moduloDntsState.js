@@ -13,6 +13,10 @@ export default {
   binnacle: [],
   timeline: [],
   wizardData: {},
+  selectedFile: {},
+  activities: [],
+  activitiesHistory: [],
+  references: [],
   pagination: {
     items: 0,
     pages: 0

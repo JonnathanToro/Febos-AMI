@@ -34,12 +34,12 @@
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-3">
-              <label>Estampar PDF</label>
+              <label>Estampar aprobaciones</label>
             </div>
             <div class="col-md-1">
               <vs-radio
                 vs-name="pdfStamp"
-                :vs-value="1"
+                :vs-value="true"
                 v-model="step.pdfStamp"
               >
                 Si
@@ -48,7 +48,7 @@
             <div class="col-md-1">
               <vs-radio
                 vs-name="pdfStamp"
-                :vs-value="0"
+                :vs-value="false"
                 v-model="step.pdfStamp"
               >
                 No
@@ -126,7 +126,7 @@
           />
         </div>
         <div class="col-3" v-show="stepType === stepTypes.USER">
-          <list-users
+          <list-group-users
             class="w-100"
             autocomplete
             label="Usuario del grupo"
@@ -146,7 +146,7 @@
             color="primary"
             icon="add"
             v-on:click="addStep()"
-            :disabled="usersState.loading"
+            :disabled="groupUsersState.loading"
           >
             Agregar Paso
           </vs-button>
@@ -159,7 +159,14 @@
         >
           <div class="step-wrapper">
             <span class="step-number">{{step.stepNumber}}</span>
-            <span class="step-number">{{step.stepNumber}}</span>
+            <span class="step-delete">
+              <vs-icon
+                icon="highlight_off"
+                size="small"
+                bg="white" round
+                @click="removeStep(index)"
+              />
+            </span>
             <div class="text-center step-name">
               {{ step.responsibleName }}
               <span v-if="step.stepType === stepTypes.GROUP">
@@ -198,12 +205,12 @@ import Vue from 'vue';
 import RolTypes from '@/febos/chile/dnt/mixins/RolTypes';
 import StepTypes from '@/febos/chile/dnt/mixins/StepTypes';
 import ListGroups from '@/febos/chile/lists/components/ListGroups';
-import ListUsers from '@/febos/chile/lists/components/ListUsers';
+import ListGroupUsers from '@/febos/chile/lists/components/ListGroupUsers';
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
 
 export default {
   mixins: [WizardStep],
-  components: { ListGroups, ListUsers },
+  components: { ListGroups, ListGroupUsers },
   data() {
     return {
       error: {
@@ -217,7 +224,7 @@ export default {
         fileId: this.$route.params.id,
         name: '',
         description: '',
-        pdfStamp: 1,
+        pdfStamp: true,
         steps: [],
         file: ''
       },
@@ -229,7 +236,7 @@ export default {
   },
   computed: {
     ...mapGetters('List', [
-      'usersState'
+      'groupUsersState'
     ]),
     ...mapGetters('Dnts', [
       'wizardData'
@@ -237,6 +244,9 @@ export default {
   },
   watch: {},
   methods: {
+    removeStep(index) {
+      this.step.step = this.step.steps.splice(index, 1);
+    },
     async addStep() {
       const isValid = await this.validateForm('flow-part-2');
 
@@ -258,7 +268,7 @@ export default {
       };
 
       if (this.stepType === this.stepTypes.GROUP) {
-        step.groupUsers = this.usersState.list.map((user) => {
+        step.groupUsers = this.groupUsersState.list.map((user) => {
           const userId = {};
           userId.tipoValorResponsableId = user.id;
           return userId;
@@ -301,6 +311,10 @@ export default {
         typeFlowId: this.wizardData.fileType,
         typeFlowText: `${ this.wizardData.fileType } - `,
         fileType: this.wizardData.fileType,
+        number: this.wizardData.fileNumber,
+        typeFlow: this.wizardData.fileCategory === 'numInt'
+          ? 'interna' : 'externa',
+        privado: 'N',
         ...this.step
       };
     }
@@ -329,6 +343,15 @@ export default {
   border-radius: 50%;
   color: white;
   font-size: 12px;
+}
+
+.step-delete {
+  position: absolute;
+  top: -10px;
+  right: -4px;
+  font-size: 10px;
+  color: #b11e0b;
+  cursor: pointer;
 }
 
 .step-rol {

@@ -5,7 +5,8 @@
     </div>
     <div class="chip-custom">
       ¡Al realizar esta acción se marcará
-      como finalizado el expediente para todos los participantes!
+      como finalizado el expediente para todos los participantes
+       y no se podrán hacer mas acciones sobre éste!
     </div>
     <div class="m-top-20" style="display: flex;justify-content: flex-end;">
       <vs-button color="dark" v-on:click="cancelProcess()" type="border">Cancelar</vs-button>

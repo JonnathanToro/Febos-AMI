@@ -6,17 +6,20 @@
     @mouseleave="collapseClose"
   >
     <b-card-header
-
       :class="{'collapsed': !visible}"
       :aria-expanded="visible ? 'true' : 'false'"
       :aria-controls="collapseItemID"
       role="tab"
       data-toggle="collapse"
-      @click="updateVisible(!visible)"
     >
-      <slot name="header">
-        <span class="lead collapse-title">{{ title }}</span>
+      <div class="header" @click="updateVisible(!visible)">
+      <slot name="header" v-bind:visible="visible" v-bind:title="title">
+        <span class="lead collapse-title" v-if="title">{{ title }}</span>
       </slot>
+      </div>
+      <div class="header-acction">
+        <slot name="header-acction"/>
+      </div>
     </b-card-header>
 
     <b-collapse
@@ -52,7 +55,7 @@ export default {
     },
     title: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   data() {
@@ -85,3 +88,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .header-acction {
+    position: relative;
+    float: right;
+  }
+  .header {
+    position: relative;
+    float: left;
+  }
+</style>

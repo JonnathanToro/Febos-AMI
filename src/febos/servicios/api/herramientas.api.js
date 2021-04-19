@@ -8,6 +8,16 @@ export const ioValidacionQr = (payload) => {
   return apiClient.get(`${RESOURCE}/validacion/qr?${params}`, { operacionId: 'cl.verificar.qr' });
 };
 
+export const ioListConfigurations = (payload) => {
+  const params = apiClient.queryParams(payload);
+  return apiClient.get(`/v2/configuraciones?${params}`, { operacionId: 'io.listar.configuraciones' });
+};
+
+export const ioSaveConfiguration = (requestParams, payload) => {
+  const params = apiClient.queryParams(requestParams);
+  return apiClient.post(`/configuracion/configuraciones?${params}`, { configuraciones: [payload] }, { operacionId: 'io.listar.configuraciones' });
+};
+
 export const ioDownloadPrivateFile = (payload) => {
   const params = apiClient.queryParams(payload);
   return apiClient.get(`${RESOURCE}/archivos/privados?${params}`, { operacionId: 'cl.download.file' });

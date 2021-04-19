@@ -1,5 +1,5 @@
 import facturaElectronica from '../../../../menu/cl/facturaElectronica';
-import aprobaciones from '../../../../menu/cl/aprobaciones';
+import approvals from '../../../../menu/cl/approvals';
 import expedientesEd from '../../../../menu/cl/escritorioDigitalDocumentos';
 import compras from '../../../../menu/cl/compras';
 import configuracion from '../../../../menu/cl/configuracion';
@@ -15,7 +15,7 @@ export default {
     // eslint-disable-next-line default-case
     switch (modulo) {
       case 'facturaElectronica': commit('SET_MENU', facturaElectronica); break;
-      case 'aprobaciones': commit('SET_MENU', aprobaciones); break;
+      case 'approvals': commit('SET_MENU', approvals); break;
       case 'expedientesEd': commit('SET_MENU', expedientesEd); break;
       case 'compras': commit('SET_MENU', compras); break;
       case 'gastos': commit('SET_MENU', gastos); break;

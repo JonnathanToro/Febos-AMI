@@ -1,11 +1,11 @@
 <template>
 <div>
   <vx-card title="Gestión de usuarios" title-color="primary">
-    <div style="display: flex;">
+    <!--<div style="display: flex;">
       <span v-if="treeView" class="pr-2">Cambiar a vista de árbol</span>
       <span v-if="!treeView" class="pr-2">Cambiar a vista de tabla</span>
       <vs-switch v-model="treeView"/>
-    </div>
+    </div>-->
     <div v-if="!treeView">
       <vs-table
         :data="usersCompany" :search="true"
@@ -53,13 +53,13 @@
                   size="small"
                   radius color="primary"
                   type="border" icon="edit"
-                  @click="editarUsuario(tr)"
+                  @click="editUser(tr)"
                 />
 
                 <!--              <vs-button-->
                 <!--                size="small"-->
                 <!--                color="success"-->
-                <!--                @click="editarUsuario(tr)">Permisos</vs-button>-->
+                <!--                @click="editUser(tr)">Permisos</vs-button>-->
                 <!--<vs-button
                   size="small"
                   color="warning"
@@ -92,26 +92,24 @@
             <tree-item
               class="item"
               :item="tree"
-              @make-folder="makeFolder"
-              @add-item="addItem"
               @get-children="getChildren"
-            ></tree-item>
+            />
           </div>
         </div>
         <div class="col-md-8" id="list-users">
           <div class="wrap-actions">
             <vs-button
-              v-if="selectedGroup.name"
+              v-if="selectedGroup.nombre"
               class="action mr-2"
               color="primary"
               type="border"
               @click="editGroup()"
               size="small"
               icon="edit">
-              Editar
+              Editar Grupo
             </vs-button>
             <vs-button
-              v-if="selectedGroup.name"
+              v-if="selectedGroup.nombre && selectedGroup.esOficina !== 'Y'"
               class="action mr-2"
               color="primary"
               type="border"
@@ -121,43 +119,94 @@
               Agregar SubGrupo
             </vs-button>
             <vs-button
-              class="action"
+              class="action mr-2"
               color="primary"
               type="border"
               @click="addGroup()"
+              v-if="!selectedGroup.nombre"
               size="small"
               icon="add_circle_outline">
               Agregar
             </vs-button>
+            <vs-button
+              class="action mr-2"
+              color="primary"
+              type="border"
+              @click="addUser()"
+              size="small"
+              icon="person_add">
+              Agregar Usuario
+            </vs-button>
+            <vs-button
+              class="action"
+              color="primary"
+              type="border"
+              v-if="selectedGroup.nombre"
+              @click="viewUsers()"
+              size="small"
+              icon="groups">
+              Usuarios
+            </vs-button>
           </div>
           <div>
-            <h5 class="mb-4" v-if="selectedGroup.name">
-              Usuarios del grupo {{selectedGroup.name}}
+            <h5 class="mb-3 mt-3" v-if="selectedGroup.nombre">
+              Usuarios del grupo {{selectedGroup.nombre}}
             </h5>
-            <ul v-if="usersTree.length" >
+            <ul v-if="usersTree.length" class="mt-4">
               <li v-for="user in usersTree" :key="user.id">
-                <div class="user-wrap">
-                  <div class="con-img mr-3">
-                    <img
-                      v-if="user.avatar"
-                      key="onlineImg"
-                      :src="user.avatar"
-                      alt="user-img"
-                      width="40"
-                      height="40"
-                      class="rounded-full shadow-md cursor-pointer block"
-                    />
-                    <img
-                      v-if="!user.avatar"
-                      key="onlineImg"
-                      :src="noAvatar"
-                      alt="user-img"
-                      width="40"
-                      height="40"
-                      class="rounded-full shadow-md cursor-pointer block"
+                <div class="row mb-2">
+                  <div class="col-1">
+                    <div class="mr-3">
+                      <img
+                        v-if="user.avatar"
+                        key="onlineImg"
+                        :src="user.avatar"
+                        alt="user-img"
+                        width="40"
+                        height="40"
+                        class="rounded-full shadow-md cursor-pointer block"
+                      />
+                      <img
+                        v-if="!user.avatar"
+                        key="onlineImg"
+                        :src="noAvatar"
+                        alt="user-img"
+                        width="40"
+                        height="40"
+                        class="rounded-full shadow-md cursor-pointer block"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <span style="line-height: 38px;">{{user.nombre}}</span>
+                  </div>
+                  <div class="col-1 text-right">
+                    <vs-button
+                      v-tooltip="'Editar datos'"
+                      size="small"
+                      radius color="primary"
+                      type="border" icon="edit"
+                      @click="editUser(user)"
                     />
                   </div>
-                  <span style="line-height: 38px;">{{user.nombre}}</span>
+                  <div class="col-2 text-right">
+                    <vs-chip
+                      v-tooltip="'Administrador'"
+                      color="warning"
+                      v-if="user.esAdministradorEmpresa === 'Y'"
+                    >
+                      <vs-avatar icon="verified_user" />
+                      admin
+                    </vs-chip>
+                    <vs-chip
+                      v-tooltip="'Lider'"
+                      v-if="user.esLider === 'Y'"
+                      color="warning"
+                    >
+                      <vs-avatar icon="flag" />
+                      lider
+                    </vs-chip>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -174,12 +223,20 @@
     </div>
   </vx-card>
 
-  <modal-usuario
-    :editar="editar"
-    :usuario="usuario"
-    @cerrarEdicionUsuario="cancelarEdicion"
+  <PopUpUser
+    :action="actionUser"
+    :user="user"
   />
-  <PopUpGroup :group="selectedGroup" />
+  <PopUpGroup
+    v-if="selectedGroup && action"
+    :group="selectedGroup"
+    :name="selectedGroup.nombre"
+    :action="action"
+  />
+  <PopUpUsersGroup
+    :usersGeneral="usersGeneral"
+    :group="selectedGroup"
+  />
 </div>
 </template>
 
@@ -187,26 +244,28 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import modalUsuario from '@/febos/global/empresas/componentes/gestUsuarios/modalUsuario';
+import PopUpUser from '@/febos/global/management/vistas/components/PopUpUser';
 import TreeItem from '@/febos/global/management/vistas/components/TreeItem';
 import FbPaginacion from '@/febos/chile/_vue/componentes/FbPaginacion';
 import PopUpGroup from '@/febos/global/management/vistas/components/PopUpGroup';
+import PopUpUsersGroup from '@/febos/global/management/vistas/components/PopUpUsersGroup';
 
 export default {
-  name: 'gestUsuarios',
+  name: 'UsersManagement',
   components: {
-    modalUsuario,
+    PopUpUser,
     TreeItem,
     FbPaginacion,
-    PopUpGroup
+    PopUpGroup,
+    PopUpUsersGroup
   },
   data() {
     return {
       page: 1,
       paginate: 10,
       treeView: true,
-      editar: false,
-      usuario: null,
+      actionUser: '',
+      user: {},
       editarEmpresa: false,
       empresas: null,
       noAvatar: require('../../../../assets/images/no-avatar.svg'),
@@ -214,9 +273,10 @@ export default {
         name: '',
         children: []
       },
+      usersGeneral: [],
       usersTree: [],
       selectedGroup: {},
-      group: {}
+      action: ''
     };
   },
   watch: {
@@ -230,9 +290,7 @@ export default {
       });
     },
     usersByGroup(newValue) {
-      this.usersTree = newValue;
-    },
-    usersCompany(newValue) {
+      console.log('WATCH usersByGroup', newValue);
       this.usersTree = newValue;
     },
     loading(value) {
@@ -246,6 +304,18 @@ export default {
         scale: 0.6
       });
     },
+    groupsCompany(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.tree.children = this.makeTree();
+      }
+    },
+    usersCompany(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (!this.selectedGroup.nombre) {
+          this.usersTree = this.usersCompany;
+        }
+      }
+    }
   },
   computed: {
     ...mapGetters('Empresas', [
@@ -256,60 +326,62 @@ export default {
       'pagination',
       'usersByGroup',
       'loading'
-    ]),
+    ])
   },
   methods: {
     ...mapActions('Empresas', [
       'getUsersCompany',
       'getGroupsCompany',
-      'getUsersGroup'
+      'getUsersGroup',
+      'setElement'
     ]),
     ...mapActions('Modals', [
       'showModals',
       'closeModal'
     ]),
-    makeFolder(item) {
-      // Vue.set(item, 'children', []);
-      this.addItem(item);
-      console.log('MAKE FOLDER', item);
-    },
-    addItem(item) {
-      item.children.push({
-        name: 'new stuff'
+    async viewUsers() {
+      this.showModals('modalUsersGroup');
+      await this.getUsersCompany({
+        empresaId: this.company.id,
+        pagina: 1,
+        filas: 100000,
+        buscarInfoExtra: 'si',
+        filtroInfoExtra: 'CARGO'
       });
+      this.usersGeneral = this.usersCompany;
     },
     editGroup() {
-      this.selectedGroup = this.group;
-      this.showModals('modalGroup');
+      this.action = 'edit';
+      this.showModals('modalEditGroup');
     },
     addGroup() {
+      this.action = 'addParent';
       this.selectedGroup = {
         nombre: '',
         descripcion: '',
-        codigo: '',
-        isOffice: false
+        codigo: ''
       };
-      this.showModals('modalGroup');
+      this.showModals('modalEditGroup');
     },
     addSubGroup() {
-      const parentId = this.selectedGroup.padreId;
+      console.log('ADD SUB - ', this);
+      this.action = 'add';
+      const padreId = this.selectedGroup.id;
       const parentName = this.selectedGroup.nombre;
       this.selectedGroup = {
-        ...this.selectedGroup,
         nombre: '',
         descripcion: '',
         codigo: '',
         isOffice: false,
-        padreId: parentId,
+        padreId,
         padreNombre: parentName
       };
-      this.showModals('modalGroup');
-      console.log('ACA', this.selectedGroup);
+      this.showModals('modalEditGroup');
     },
     getChildren(item) {
-      this.selectedGroup = item;
-      this.group = item;
-      if (item.name !== this.company.razonSocial) {
+      this.setElement(item.id);
+      this.selectedGroup = { ...item };
+      if (item.nombre !== this.company.razonSocial) {
         this.getUsersGroup(item.id);
         this.usersTree = this.usersByGroup;
       } else {
@@ -323,68 +395,57 @@ export default {
         this.usersTree = this.usersCompany;
       }
     },
-    agregarUsuario() {
-      this.usuario = {
-        id: null, iut: null, nombre: null, alias: null, correo: null
-      };
-      this.editar = true;
+    addUser() {
+      this.user = {};
+      this.actionUser = 'add';
+      this.showModals('modalUser');
     },
     viewData(user) {
-      this.editar = true;
-      this.usuario = user;
+      this.user = { ...user };
+      this.actionUser = 'watch';
+      this.showModals('modalUser');
     },
-    editarUsuario(val) {
-      this.editar = true;
-      this.usuario = val;
+    editUser(user) {
+      this.user = { ...user };
+      this.actionUser = 'edit';
+      this.showModals('modalUser');
     },
     eliminarUsuario(val) {
       console.log(val);
-    },
-    async cancelarEdicion(val) {
-      this.editar = false;
-      this.usuario = null;
-      if (val) this.obtenerUsuarios();
-      await this.$validator.reset();
     },
     cancelarEmpresas() {
       this.editarEmpresa = false;
       this.usuario = null;
     },
     checkParent(groupNode) {
-      return this.groupsCompany.filter((group) => group.padreId === groupNode.id).map((group) => {
-        console.log('jola==', group.padreId, groupNode.id);
-        return {
-          ...group,
-          children: this.checkParent(group),
-          name: group.nombre
-        };
-      });
+      return this.groupsCompany.filter((group) => group.padreId === groupNode.id).map((group) => ({
+        ...group,
+        children: this.checkParent(group)
+      }));
     },
     makeTree() {
       return this.firstGroupsCompany.map((group) => ({
         ...group,
-        children: this.checkParent(group),
-        name: group.nombre
+        children: this.checkParent(group)
       }));
     }
   },
-  created() {
+  async created() {
+    this.setElement({});
     this.closeModal();
-    this.getUsersCompany({
+    await this.getUsersCompany({
       empresaId: this.company.id,
       pagina: 1,
       filas: 10,
       buscarInfoExtra: 'si',
       filtroInfoExtra: 'CARGO'
     });
-    this.getGroupsCompany({
+    await this.getGroupsCompany({
       empresaId: this.company.id
     });
-    this.tree.name = this.company.razonSocial;
+    this.tree.nombre = this.company.razonSocial;
     this.tree.children = this.makeTree();
-    this.tree.isOpen = true;
     this.usersTree = this.usersCompany;
-    console.log('ACA', this.groupsCompany);
   }
 };
 </script>

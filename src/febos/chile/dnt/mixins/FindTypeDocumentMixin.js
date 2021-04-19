@@ -65,7 +65,9 @@ export default {
         APR: 'Acta de Aprobación',
         ACRE: 'Expediente',
         MEMO: 'Memorandum',
-        DTE: 'Documento Tributario'
+        DTE: 'Documento Tributario',
+        EXP: 'Expediente',
+        SSD: 'Proceso SSD'
       }
     };
   },

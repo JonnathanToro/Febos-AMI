@@ -7,6 +7,10 @@ export default {
     list: [],
     loading: false
   },
+  allDocuments: {
+    list: [],
+    loading: false
+  },
   institutionTypes: {
     list: [],
     loading: false
@@ -68,8 +72,25 @@ export default {
     list: [],
     loading: false
   },
-  users: {
+  groupUsers: {
     list: [],
+    loading: false
+  },
+  activities: {
+    list: [],
+    loading: false
+  },
+  activityStates: {
+    list: [],
+    loading: false
+  },
+  userGroups: {
+    list: [],
+    loading: false
+  },
+  users: {
+    value: {},
+    query: '',
     loading: false
   }
 };

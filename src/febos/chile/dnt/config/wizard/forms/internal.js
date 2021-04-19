@@ -1,6 +1,6 @@
 import StepIdentification from '@/febos/chile/dnt/components/wizard/internal/StepIdentification';
-import StepInformation from '@/febos/chile/dnt/components/wizard/internal/StepInformation';
-import StepFiles from '@/febos/chile/dnt/components/wizard/internal/StepFiles';
+import StepInformation from '@/febos/chile/dnt/components/wizard/sharedSteps/StepInformation';
+import StepFiles from '@/febos/chile/dnt/components/wizard/sharedSteps/StepFiles';
 
 export default () => ({
   currentStep: 0,
@@ -36,19 +36,21 @@ export default () => ({
 
     if (dnt) {
       data.fileNumber = dnt.numero;
-      data.documentType = dnt.emisorCentroCostoNumero;
-      data.document = dnt.emisorSucursalCodigo;
-      data.documentNumber = dnt.numeroInt;
+      data.documentType = dnt.emisorCentroCostoNumero || '';
+      data.document = dnt.emisorSucursalCodigo || '';
+      data.documentNumber = dnt.numeroInt || '';
       if (dnt.fechaEmision) {
         data.issueDate = Date.parse(dnt.fechaEmision);
       }
-      data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10);
+      data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
+      data.resumen = dnt.nombreDescriptivo;
       data.direccionId = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
       data.personPosition = dnt.emisorContactoCargo;
-      data.withAttachment = dnt.transporteViaTransporteCodigoTransporte;
+      data.withAttachment = dnt.transporteViaTransporteCodigoTransporte || 0;
       data.documentDetail = dnt.transporteNotas;
+      data.creatorGroup = dnt.solicitanteGrupoId;
     }
 
     if (observaciones && observaciones.length) {
@@ -147,7 +149,8 @@ export default () => ({
       const relatedDocuments = referencias.map((relatedDocument) => ({
         id: relatedDocument.linea,
         type: relatedDocument.tipoDocumento,
-        number: relatedDocument.folio
+        number: relatedDocument.folio,
+        otherReferenceId: relatedDocument.otraReferenciaId
       }));
 
       data.relatedDocuments = [...relatedDocuments];
@@ -177,6 +180,9 @@ export default () => ({
         emisorSucursalDireccion: input.documentName,
         condicionDespacho: input.formatDocument,
         transportePuertoTipo: input.isPrivate,
+        nombreDescriptivo: input.resumen,
+        solicitanteGrupoId: input.creatorGroup,
+        solicitanteGrupoNombre: input.creatorGroupName,
         compradorCodigo: input.directionId,
         compradorArea: input.directionName,
         emisorContactoNombre: input.personName,
@@ -236,7 +242,8 @@ export default () => ({
       referencias: (input.relatedDocumentsSelected || []).map((relatedDocument) => ({
         linea: relatedDocument.id,
         tipoDocumento: relatedDocument.type,
-        folio: relatedDocument.number
+        folio: relatedDocument.number,
+        otraReferenciaId: relatedDocument.otherReferenceId || ''
       }))
     };
 

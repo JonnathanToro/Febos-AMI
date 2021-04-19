@@ -9,7 +9,7 @@
       :key="item.id"
       :value="item.value"
       :text="item.label"
-      v-for="item in usersState.list"
+      v-for="item in activityStatesState.list"
     />
   </vs-select>
 </template>
@@ -26,7 +26,7 @@ export default {
     },
     label: {
       type: String,
-      default: 'Nombre de Persona que Genera Documento'
+      default: 'Estados'
     },
     value: {
       type: String
@@ -42,23 +42,24 @@ export default {
       default: true
     },
     parentValue: {
-      type: String
+      type: String,
+      required: true
     }
   },
   computed: {
     ...mapGetters('List', [
-      'usersState'
+      'activityStatesState'
     ]),
     disabled() {
-      return !this.usersState.list.length || !this.parentValue || this.usersState.loading;
+      return !this.activityStatesState.list.length || this.activityStatesState.loading;
     }
   },
   methods: {
     ...mapActions('List', [
-      'getUsersGroup'
+      'fetchActivityStates'
     ]),
     getOption() {
-      return this.usersState.list.find((option) => option.value === this.value);
+      return this.activityStatesState.list.find((option) => option.value === this.value);
     }
   },
   created() {
@@ -69,17 +70,15 @@ export default {
           if (oldValue !== '') {
             this.$emit('input', '');
           }
-          if (newValue !== '') {
-            this.getUsersGroup(newValue);
-          }
+          this.fetchActivityStates(newValue);
         }
       });
 
-      if (this.parentValue !== '') {
-        this.getUsersGroup(this.parentValue);
+      if (this.parentValue) {
+        this.fetchActivityStates(this.parentValue);
       }
-    } else if (this.parentValue !== '') {
-      this.getUsersGroup(this.parentValue);
+    } else {
+      this.fetchActivityStates(this.parentValue.value);
     }
   }
 };

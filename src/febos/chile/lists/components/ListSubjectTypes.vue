@@ -1,16 +1,27 @@
 <template>
-  <vs-select
-    v-bind="$props"
-    :value="value"
-    @input="$emit('input', $event)"
-  >
-    <vs-select-item
-      :key="item.id"
-      :value="item.value"
-      :text="item.label"
-      v-for="item in subjects"
-    />
-  </vs-select>
+  <div class="con-select w-100 autocompletex">
+    <label :for="name" class="vs-select--label">{{ label }}</label>
+    <v-select
+      :name="name"
+      :value="optionSelected"
+      :options="subjectTypesState.list"
+      :class="{ 'v-select-danger': danger }"
+      :disabled="isDisabled"
+      @input="onInput"
+    >
+      <template #spinner>
+        <div
+          v-if="subjectTypesState.loading"
+          style="border-left-color: rgba(88,151,251,0.71)"
+          :style="{ opacity: subjectTypesState.loading ? 1 : 0 }"
+          class="vs__spinner"
+        />
+      </template>
+      <template slot="no-options">
+        no hay destinos para el criterio de búsqueda
+      </template>
+    </v-select>
+  </div>
 </template>
 
 <script>
@@ -23,31 +34,23 @@ export default {
       subjects: []
     };
   },
-  props: {
-    autocomplete: {
-      type: Boolean,
-      default: false
-    },
-    label: {
-      type: String,
-      default: 'Tipo Destino'
-    },
-    value: {
-      type: String
-    },
-    danger: {
-      type: Boolean
-    },
-    dangerText: {
-      type: String
-    }
-  },
   computed: {
     ...mapGetters('List', [
       'subjectTypesState'
-    ])
+    ]),
+    optionSelected() {
+      return this.subjectTypesState.list.find((option) => option.value === this.value);
+    },
+    isDisabled() {
+      return this.disabled
+        || !this.subjectTypesState.list.length
+        || this.subjectTypesState.loading;
+    }
   },
   methods: {
+    onInput(event) {
+      this.$emit('input', event?.value);
+    },
     getOption() {
       return this.subjectTypesState.list.find((option) => option.value === this.value);
     }
@@ -61,6 +64,14 @@ export default {
     } else {
       this.subjects = this.subjectTypesState.list;
     }
+  },
+  props: {
+    name: { type: String, required: true },
+    label: { type: String, default: 'Tipo Destino' },
+    value: { type: String },
+    danger: { type: Boolean },
+    dangerText: { type: String },
+    disabled: { type: Boolean, default: false }
   }
 };
 

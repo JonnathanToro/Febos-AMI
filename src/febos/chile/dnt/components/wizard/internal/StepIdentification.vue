@@ -137,7 +137,7 @@ export default {
       step: {
         documentType: '',
         document: '',
-        formatDocument: '',
+        formatDocument: 0,
         matter: '',
         tags: [],
         isPrivate: 0,
@@ -168,6 +168,9 @@ export default {
         ...documentName
       };
     }
+  },
+  created() {
+    console.log('YO', this);
   }
 };
 

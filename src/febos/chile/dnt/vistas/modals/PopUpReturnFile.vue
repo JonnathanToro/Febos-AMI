@@ -1,7 +1,9 @@
 <template>
   <vs-popup :title="`Retornar Expediente ${file.numero}`" :active.sync="showModal">
-    <div class="chip-custom">
-      Por Favor deja un comentario sobre el motivo de la devolución del expediente
+    <div>
+      <span class="chip-custom">
+        Por Favor deja un comentario sobre el motivo de la devolución del expediente
+      </span>
       <div class="wrap-commentary">
         <vs-textarea
           maxlength="255"

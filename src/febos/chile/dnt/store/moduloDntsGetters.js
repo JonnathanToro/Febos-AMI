@@ -3,9 +3,6 @@ import Vue from 'vue';
 export default {
   // TODO: test return the same reference and not a copy.
   files: (state) => Object.values(state.list || {}),
-  dntByED: (state) => (
-    Object.values(state.list || {}).filter((dnt) => (dnt.tipo === 'ACRE' || dnt.tipo === 'MEMO'))
-  ),
   dntByDocDigital: (state) => (
     Object.values(state.list || {}).filter((dnt) => dnt.tipo === 'DDD')
   ),
@@ -41,4 +38,30 @@ export default {
   // TODO: this is the same object.
   pagination: (state) => state.pagination,
   timelineFile: (state) => state.timeline,
+  activities: (state) => state.activities
+    .sort((a, b) => new Date(a.fechaCreacion) - new Date(b.fechaCreacion)),
+  /*
+   state.activitiesHistory = (payload || [])
+      .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
+      .reduce((index, option) => ({
+        ...index,
+        [option.usuarioNombre]: [
+          ...(index[option.usuarioNombre] || []),
+          option
+        ]
+      }), {});
+   */
+  activitiesHistory: (state) => state.activitiesHistory
+    .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
+    .reduce((index, option) => ({
+      ...index,
+      [option.usuarioNombre]: [
+        ...(index[option.usuarioNombre] || []),
+        option
+      ]
+    }), {}),
+  activitiesHistoryDates: (state) => state.activitiesHistory
+    .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion)),
+  references: (state) => state.references,
+  selectedFile: (state) => state.selectedFile
 };

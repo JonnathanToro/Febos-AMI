@@ -34,10 +34,22 @@ export const isUserUpdate = (id, iut, name, alias, email) => (
   )
 );
 
+export const ioUpdateUser = (params, user) => {
+  const paramsRequest = apiClient.queryParams(params);
+  return apiClient.put(`${RESOURCE}/${user.id}?${paramsRequest}`,
+    user, { operacionId: 'io.update.user' });
+};
+
+export const ioCreateUser = (params, user) => {
+  const paramsRequest = apiClient.queryParams(params);
+  return apiClient.put(`${RESOURCE}?${paramsRequest}`,
+    user, { operacionId: 'io.create.user' });
+};
+
 export const getUsers = (payload) => {
   const params = apiClient.queryParams(payload);
 
-  return apiClient.get(`${RESOURCE }?${ params}`, {
+  return apiClient.get(`${RESOURCE}?${params}`, {
     operacionId: 'io.usuarios.listar'
   });
 };
@@ -47,6 +59,19 @@ export const ioGetAuthCode = (payload) => {
 
   return apiClient.get(`${RESOURCE}/autenticadoble?${params}`, {
     operacionId: 'io.user.authCode'
+  });
+};
+
+export const ioGetFileCode = (identification) => apiClient.post(`${RESOURCE}/autenticadoble`,
+  identification, {
+    operacionId: 'io.user.FileCode'
+  });
+
+export const getSharedFile = (payload) => {
+  const params = apiClient.queryParams(payload);
+
+  return apiClient.get(`${RESOURCE}/autenticadoble/${payload.id}?${params}`, {
+    operacionId: 'io.user.sharedFile'
   });
 };
 

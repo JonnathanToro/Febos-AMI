@@ -7,12 +7,10 @@ export const currentUserId = (state) => state.id;
 export const currentUserAlias = (state) => state.alias;
 
 export const isSessionAlive = (state) => {
-  const now = new Date().getTime();
-
-  if (!state || !state.vencimiento) {
+  if (!state || !state.vencimiento || !state.token) {
     return false;
   }
-
+  const now = new Date().getTime();
   return now < state.vencimiento;
 };
 
@@ -24,5 +22,6 @@ export const userPermissions = (state) => state.permisos;
 
 export const userToken = (state) => state.token;
 export const verificationCode = (state) => state.verificationCode;
+export const sharedFile = (state) => state.sharedFile;
 export const successAction = (state) => state.successAction;
 export const loading = (state) => state.loading;

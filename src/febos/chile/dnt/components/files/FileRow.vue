@@ -1,6 +1,7 @@
 <template>
   <vs-row
-    class="p-3 mt-2 bg-white shadow-sm"
+    :class="{ selected: file.febosId == selectedFile }"
+    class="p-3 mt-2 shadow-sm"
   >
     <vs-col vs-lg="11">
       <vs-row>
@@ -28,11 +29,11 @@
             Borrador
           </vs-chip>
           <vs-chip
-            title="Aprobado"
-            v-if="file.estado === '4'"
+            title="Tramitado"
+            v-if="file.estado === '10'"
           >
             <vs-avatar icon="thumb_up" color="#14AA59" />
-            Aprobado
+            Tramitado
           </vs-chip>
           <vs-chip
             title="Rechazado"
@@ -59,37 +60,53 @@
         <vs-col vs-lg="9">
           <vs-row>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-              {{file.compradorArea | capitalize }}
+              <b>{{file.compradorArea | capitalize }}</b>
+              <div v-tooltip="'Remitente'">
+                {{ file.emisorContactoNombre | capitalize }}
+              </div>
             </vs-col>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-              {{ file.emisorContactoNombre | capitalize }}
+              {{ file.solicitanteGrupoNombre }}
               <small
-                class="d-block" v-if="file.emisorContactoEmail"
-                v-tooltip="`${file.emisorContactoEmail}`"
+                v-if="file.solicitanteNombre"
+                class="d-block"
+                v-tooltip="`${file.solicitanteNombre}`"
               >
-                {{ file.emisorContactoEmail | truncate(20) }}
-              </small>
-            </vs-col>
-            <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
-              {{ file.solicitanteNombre }}
-              <small class="d-block" v-tooltip="`${file.solicitanteEmail}`">
-                {{ file.solicitanteEmail | truncate(20) }}
+                {{ file.solicitanteNombre | truncate(20) }}
               </small>
             </vs-col>
             <vs-col vs-lg="3" vs-sm="3" vs-xs="12" v-if="onPendingFiles">
               {{ file.derivadoPor }}
             </vs-col>
+            <vs-col vs-lg="3" vs-sm="3" vs-xs="12">
+              {{ file.nombreDescriptivo }}
+            </vs-col>
           </vs-row>
         </vs-col>
       </vs-row>
       <vs-row>
-        <vs-col vs-offset="2" vs-lg="8" vs-type="flex">
-          <vs-chip class="mr-3" v-tooltip="'Número de documento'">
-            <vs-avatar icon="description" />
+        <vs-col vs-offset="1" vs-lg="11" vs-type="flex" class="pt-2 border-top">
+          <vs-chip class="mr-4" v-tooltip="'Fecha de Actualización'">
+            <vs-avatar icon="date_range" />
+            {{ file.fechaActualizacion | dateFormat }}
+          </vs-chip>
+          <vs-chip class="mr-4" v-tooltip="'Fecha del documento'">
+            <vs-avatar icon="event" color="#ff9f43"/>
+            {{ file.fechaEmision | dateFormat }}
+          </vs-chip>
+          <vs-chip
+            class="mr-3"
+            v-tooltip="'Número de documento'"
+            v-if="file.numeroInt"
+          >
+            <vs-avatar icon="description" color="#ff9f43" />
             {{file.numeroInt}}
           </vs-chip>
-          <vs-chip class="mr-3">
-            <vs-avatar icon="description" />
+          <vs-chip
+            class="mr-3"
+            v-if="file.emisorSucursalDireccion || file.emisorCentroCostoNombre "
+          >
+            <vs-avatar icon="description" color="#ff9f43" />
             <span
               v-tooltip="`${file.emisorSucursalDireccion}`"
               v-if="file.emisorSucursalDireccion"
@@ -103,91 +120,86 @@
               {{(file.emisorCentroCostoNombre ||'')| truncate(20)}}
             </span>
           </vs-chip>
-          <vs-chip v-tooltip="'Fecha de documento'" class="mr-3">
-            <vs-avatar icon="event" />
-            {{ file.fechaEmision | dateFormat }}
-          </vs-chip>
-          <vs-chip v-tooltip="'Fecha de Actualización'" class="mr-3">
-            <vs-avatar icon="date_range" />
-            {{ file.fechaActualizacion | dateFormat }}
-          </vs-chip>
           <vs-chip
+            class="mr-3"
+            v-tooltip="'Documento en flujo'"
+            v-if="file.tieneAprobacionActiva === 'Y'"
+            color="#43C3B9" transparent
+          >
+            en flujo
+          </vs-chip>
+          <vs-chip class="mr-3"
             v-tooltip="'Documento externo'"
             v-if="file.claseMercadoPublico === 'ext'"
             color="primary" transparent
           >
             externo
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Documento interno'"
             v-if="file.claseMercadoPublico === 'int'"
             color="primary" transparent
           >
             interno
           </vs-chip>
-          <vs-chip
-            v-if="file.claseMercadoPublico === 'numInt'"
-            v-tooltip="'Documento interno'"
-            transparent color="primary">
-            interno
-          </vs-chip>
-          <vs-chip
-            v-tooltip="'Documento interno'"
-            v-if="file.claseMercadoPublico === 'numOf'"
-            color="primary" transparent
-          >
-            <span class="text-black">interno</span>
-          </vs-chip>
-          <vs-chip
-            v-tooltip="'Numeración interna'"
+          <vs-chip class="mr-3"
+            v-tooltip="'Numeración Interna'"
             v-if="file.claseMercadoPublico === 'numInt'"
             transparent color="primary"
           >
-            numeración interna
+            num. interna
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Numeración Oficina de Partes'"
             v-if="file.claseMercadoPublico === 'numOf'"
             color="primary" transparent
           >
-            numeración Ofic. Parte
+            num. oficial
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Estoy en copia'"
             v-if="file.enCopia === 'SI'"
             color="success" transparent
           >
-            en copia
+            copia
           </vs-chip>
-          <vs-chip
-            v-tooltip="'Estoy en grupo'"
-            v-if="file.enGrupo === 'SI'"
-            color="success" transparent
-          >
-            en grupo
-          </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'Soy destinatario/responsable'"
-            v-if="file.enResponsable === 'SI'"
+            v-if="file.enResponsable === 'SI' && onGeneralFiles"
             color="danger" transparent
           >
             responsable
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
+            v-tooltip="'Estoy en grupo'"
+            v-if="file.enGrupo === 'SI'"
+            color="danger" transparent
+          >
+            en grupo
+          </vs-chip>
+          <vs-chip class="mr-3"
             v-tooltip="'Acompaña físico'"
             v-if="file.transporteViaTransporteCodigoTransporte === '1'"
             color="#343a40" transparent
           >
             <vs-avatar icon="description" />
-            con físico
+            físico
           </vs-chip>
-          <vs-chip
+          <vs-chip class="mr-3"
             v-tooltip="'archivo privado'"
-            v-if="file.transportePuertoTipo === '1'"
+            v-if="file.transportePuertoTipo == '1'"
             color="warning" transparent
           >
             <vs-avatar icon="lock" />
             privado
+          </vs-chip>
+          <vs-chip class="mr-3"
+           v-tooltip="'archivo público'"
+           v-if="file.transportePuertoTipo == '0'"
+           color="warning" transparent
+          >
+            <vs-avatar icon="lock" />
+            público
           </vs-chip>
         </vs-col>
       </vs-row>
@@ -199,9 +211,10 @@
         :is-assigned="isAssigned"
         :is-processed="isProcessed"
         :is-cancelled="isCancelled"
-        :is-resposible="isResposible"
+        :is-responsible="isResponsible"
         :on-pending-files="onPendingFiles"
         :on-general-files="onGeneralFiles"
+        :is-intern-file="isInternFile"
         :select-file="selectFile"
       />
     </vs-col>
@@ -209,6 +222,8 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
 
 import FileOptions from '@/febos/chile/dnt/components/files/FileOptions';
 
@@ -221,13 +236,16 @@ export default {
     'selectFile'
   ],
   computed: {
+    ...mapGetters('Dnts', [
+      'selectedFile'
+    ]),
     isDraft() {
       return this.file.estado === '3';
     },
     isAssigned() {
       return this.file.enGrupo === 'NO';
     },
-    isResposible() {
+    isResponsible() {
       return this.file.enResponsable === 'SI';
     },
     isProcessed() {
@@ -235,8 +253,17 @@ export default {
     },
     isCancelled() {
       return this.file.estado === '8';
+    },
+    isInternFile() {
+      return this.file.claseMercadoPublico === 'numInt'
+        || this.file.claseMercadoPublico === 'numOf';
     }
   }
 };
 
 </script>
+<style>
+.selected {
+  background: #8e4aa01c !important;
+}
+</style>

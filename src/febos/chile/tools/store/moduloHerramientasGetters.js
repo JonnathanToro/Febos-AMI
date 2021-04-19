@@ -27,4 +27,14 @@ export default {
     const subjects = state.herramientas.mantenedores.subjects || {};
     return Object.values(subjects);
   },
+  selectedActivity: (state) => state.activity,
+  categoryActivities: (state) => {
+    const categories = state.herramientas.mantenedores.categoryActivities || {};
+    return Object.values(categories);
+  },
+  activityStates: (state) => {
+    const states = state.herramientas.mantenedores.activityStates || {};
+    return Object.values(states);
+  },
+  configSheetByDoc: (state) => state.configSheet
 };

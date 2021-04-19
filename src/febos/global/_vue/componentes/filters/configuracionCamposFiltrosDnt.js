@@ -24,7 +24,7 @@ export default {
     tipo: 'fecha'
   },
   numero: {
-    nombre: 'Numero Expediente',
+    nombre: 'Número Expediente',
     tipo: 'numero'
   },
   numeroInt: {
@@ -32,7 +32,7 @@ export default {
     tipo: 'texto'
   },
   estado: {
-    nombre: 'Estado de expedientes',
+    nombre: 'Estado',
     tipo: 'multi'
   },
   destinoCopiaIds: {

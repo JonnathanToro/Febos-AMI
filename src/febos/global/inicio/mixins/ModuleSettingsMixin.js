@@ -80,6 +80,15 @@ const moduleSettings = {
       permission: 'ED003'
     },
     {
+      nombre: 'approvals',
+      descripcion: 'Aprobaciones',
+      tooltip: '',
+      icono: 'done_all',
+      habilitado: true,
+      visible: true,
+      permission: 'ED052'
+    },
+    {
       nombre: 'gestionDocumentos',
       descripcion: 'Gest. Documentos',
       tooltip: '',

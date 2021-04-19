@@ -1,6 +1,24 @@
 <template>
   <div>
     <form data-vv-scope="step-2-part-1">
+      <div class="row mb-5">
+        <div class="col-12">
+          <h4>Datos de la persona que ingresa el documento</h4>
+        </div>
+        <div class="col-md-12">
+          <list-user-groups
+            class="w-100"
+            autocomplete
+            label="Grupo al que irá asociado el expediente"
+            name="creatorGroup"
+            v-model="step.creatorGroup"
+            :danger="errors.has('step-2-part-1.creatorGroup')"
+            :danger-text="errors.first('step-2-part-1.creatorGroup')"
+            v-validate="{ required: userGroupsState.list.length > 1 }"
+            ref="creatorGroup"
+          />
+        </div>
+      </div>
       <div class="row mb-3">
         <div class="col-12">
           <h4>Origen / Datos Remitente</h4>
@@ -96,14 +114,41 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(subjectForm.subjectType)"
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Destino"
             name="subject"
             v-model="subjectForm.subject"
             :parent-value="subjectForm.subjectType"
-            v-validate="{ required: !isInput.includes(subjectForm.subjectType) }"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType !== 'usuarios'
+            }"
+            :disabled="!subjectForm.subjectType"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
+            ref="subject"
+            key="subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="subject"
+            v-model="subjectForm.subject"
+            v-validate="{
+              required: !isInput.includes(subjectForm.subjectType)
+                && subjectForm.subjectType === 'usuarios'
+            }"
+            :disabled="!subjectForm.subjectType"
             :danger="errors.has('step-2-part-2.subject')"
             :danger-text="errors.first('step-2-part-2.subject')"
             ref="subject"
@@ -219,16 +264,43 @@
         </div>
         <div class="col-md-6">
           <list-subjects
-            v-if="!isInput.includes(copySubjectForm.copySubjectType)"
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            "
             class="w-100"
             autocomplete
             label="Lista de Distribución"
             name="copySubject"
             v-model="copySubjectForm.copySubject"
             :parent-value="copySubjectForm.copySubjectType"
-            v-validate="{ required: !isInput.includes(copySubjectForm.copySubject) }"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubject)
+                && copySubjectForm.copySubjectType !== 'usuarios'
+            }"
+            :disabled="!copySubjectForm.copySubjectType"
             :danger="errors.has('step-2-part-3.copySubject')"
             :danger-text="errors.first('step-2-part-3.copySubject')"
+            ref="copySubject"
+            key="copy-subject-select"
+          />
+          <list-user
+            v-if="
+              !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            "
+            class="w-100"
+            autocomplete
+            label="Lista de Destino"
+            name="copySubject"
+            v-model="copySubjectForm.copySubject"
+            v-validate="{
+              required: !isInput.includes(copySubjectForm.copySubjectType)
+                && copySubjectForm.copySubjectType === 'usuarios'
+            }"
+            :disabled="!copySubjectForm.copySubjectType"
+            :danger="errors.has('step-2-part-2.subject')"
+            :danger-text="errors.first('step-2-part-2.subject')"
             ref="copySubject"
             key="copy-subject-select"
           />
@@ -388,6 +460,8 @@ import ListInstitutionTypes from '@/febos/chile/lists/components/ListInstitution
 import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
 import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
 import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
+import ListUserGroups from '@/febos/chile/lists/components/ListUserGroups';
+import ListUser from '@/febos/chile/lists/components/ListUser';
 
 export default {
   mixins: [WizardStep],
@@ -396,7 +470,9 @@ export default {
     ListInstitutions,
     ListSubjects,
     ListSubjectTypes,
-    ListInstitutionsDocDigital
+    ListInstitutionsDocDigital,
+    ListUserGroups,
+    ListUser
   },
   data() {
     return {
@@ -418,6 +494,7 @@ export default {
         copySubjectEmail: '',
       },
       step: {
+        creatorGroup: '',
         institutionType: '',
         institution: '',
         personName: '',
@@ -435,9 +512,13 @@ export default {
     };
   },
   computed: {
+    // TODO: move this getter to the ListUserGroups component
+    ...mapGetters('List', [
+      'userGroupsState'
+    ]),
     ...mapGetters('Usuario', [
       'currentUserId'
-    ]),
+    ])
   },
   methods: {
     async addSubject() {
@@ -592,10 +673,17 @@ export default {
         }
         : {};
 
+      const creatorGroupName = this.step.creatorGroup
+        ? {
+          creatorGroupName: this.$refs.creatorGroup.getOption().label
+        }
+        : {};
+
       return {
         ...this.step,
         ...institutionTypeName,
-        ...institutionName
+        ...institutionName,
+        ...creatorGroupName
       };
     }
   }
