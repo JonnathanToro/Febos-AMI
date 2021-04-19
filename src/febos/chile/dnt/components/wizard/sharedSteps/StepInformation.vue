@@ -403,6 +403,17 @@
           />
         </div>
       </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <vs-input
+            class="w-100"
+            label="Resumen"
+            maxlength="250"
+            name="resumen"
+            v-model="step.resumen"
+          />
+        </div>
+      </div>
       <div class="row">
         <div class="col-12">
           <label for="observation">Observacion (5000 caracteres)</label>
@@ -478,6 +489,7 @@ export default {
         personPosition: '',
         withAttachment: 0,
         documentDetail: '',
+        resumen: '',
         observation: '',
         subjects: [],
         copies: [],
