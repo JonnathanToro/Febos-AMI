@@ -27,6 +27,19 @@
           />
         </vs-select>
       </div>
+      <div class="mt-3">
+        <list-user-groups
+          class="w-100"
+          autocomplete
+          label="Grupo al que irá asociado el expediente"
+          name="creatorGroup"
+          v-model="creatorGroup"
+          :danger="errors.has('step-2-part-1.creatorGroup')"
+          :danger-text="errors.first('step-2-part-1.creatorGroup')"
+          v-validate="{ required: userGroupsState.list.length > 1 }"
+          ref="creatorGroup"
+        />
+      </div>
     </div>
     <div class="m-top-20" style="display: flex;justify-content: flex-end;">
       <vs-button color="dark" v-on:click="cancelAsign()" type="border">Cancelar</vs-button>
@@ -45,12 +58,18 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
+import ListUserGroups from '@/febos/chile/lists/components/ListUserGroups';
+
 export default {
   name: 'PopUpAnswerFile',
+  components: {
+    ListUserGroups
+  },
   mixins: [],
   data() {
     return {
-      fileType: 'numInt'
+      fileType: 'numInt',
+      creatorGroup: ''
     };
   },
   props: {
@@ -63,6 +82,12 @@ export default {
   computed: {
     ...mapGetters('Modals', [
       'modalName'
+    ]),
+    ...mapGetters('List', [
+      'userGroupsState'
+    ]),
+    ...mapGetters('Usuario', [
+      'currentUser'
     ]),
     ...mapGetters('Empresas', [
       'company'
@@ -84,6 +109,9 @@ export default {
       'closeModal'
     ]),
     async attemptAnswerFile() {
+      const creatorGroupName = this.creatorGroup
+        ? this.$refs.creatorGroup.getOption().label
+        : '';
       const answerFile = {
         dnt: {
           tipo: 'EXP',
@@ -92,7 +120,12 @@ export default {
           emisorRazonSocial: this.company.razonSocial,
           receptorRazonSocial: this.company.razonSocial,
           claseMercadoPublico: this.fileType,
-          estado: 3
+          estado: 3,
+          solicitanteGrupoId: this.creatorGroup,
+          solicitanteGrupoNombre: creatorGroupName,
+          compradorCodigo: this.creatorGroup,
+          compradorArea: creatorGroupName,
+          emisorContactoNombre: this.currentUser.nombre
         },
         referencias: [
           {

@@ -44,7 +44,7 @@ export default () => ({
       }
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
       data.resumen = dnt.nombreDescriptivo;
-      data.direccionId = dnt.compradorCodigo;
+      data.directionId = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
       data.personPosition = dnt.emisorContactoCargo;

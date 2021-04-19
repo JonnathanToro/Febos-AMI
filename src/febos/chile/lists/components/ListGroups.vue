@@ -9,7 +9,7 @@
       :key="item.id"
       :value="item.value"
       :text="item.label"
-      v-for="item in groupsState.list"
+      v-for="item in listOptions"
     />
   </vs-select>
 </template>
@@ -23,6 +23,9 @@ export default {
     autocomplete: {
       type: Boolean,
       default: false
+    },
+    typeList: {
+      type: Number
     },
     label: {
       type: String,
@@ -44,6 +47,17 @@ export default {
     ]),
     disabled() {
       return !this.groupsState.list.length || this.groupsState.loading;
+    },
+    listOptions() {
+      if (this.typeList === 1) {
+        return this.groupsState.list
+          .filter((group) => group.esOficina === 'N');
+      }
+      if (this.typeList === 6) {
+        return this.groupsState.list
+          .filter((group) => group.esOficina && group.esOficina === 'Y');
+      }
+      return this.groupsState.list;
     }
   },
   methods: {

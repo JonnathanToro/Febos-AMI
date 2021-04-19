@@ -36,15 +36,15 @@ export default () => ({
 
     if (dnt) {
       data.fileNumber = dnt.numero;
-      data.documentType = dnt.emisorCentroCostoNumero;
-      data.document = dnt.emisorSucursalCodigo;
-      data.documentNumber = dnt.numeroInt;
+      data.documentType = dnt.emisorCentroCostoNumero || '';
+      data.document = dnt.emisorSucursalCodigo || '';
+      data.documentNumber = dnt.numeroInt || '';
       if (dnt.fechaEmision) {
         data.issueDate = Date.parse(dnt.fechaEmision);
       }
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
       data.resumen = dnt.nombreDescriptivo;
-      data.direccionId = dnt.compradorCodigo;
+      data.directionId = dnt.compradorCodigo;
       data.institution = dnt.emisorContactoCodigo;
       data.personName = dnt.emisorContactoNombre;
       data.personPosition = dnt.emisorContactoCargo;
@@ -146,6 +146,9 @@ export default () => ({
     }
 
     if (referencias && referencias.length) {
+      if (referencias[0].otraReferenciaId) {
+        data.responseFile = true;
+      }
       const relatedDocuments = referencias.map((relatedDocument) => ({
         id: relatedDocument.linea,
         type: relatedDocument.tipoDocumento,
