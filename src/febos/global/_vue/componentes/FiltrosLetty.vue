@@ -48,8 +48,7 @@
     </div>
     <vs-chip
       color="primary" transparent
-      v-for="(filtro, index) in filtrosAplicados"
-      v-if="filtro.valor !== ''"
+      v-for="(filtro, index) in filtrosAplicadosFiltered"
       :key="`filtro-aplicado-${ index }`"
       style="cursor: context-menu"
     >
@@ -534,7 +533,10 @@ export default {
     ]),
     ...mapState('Personalizacion', {
       colores: (state) => state.colores
-    })
+    }),
+    filtrosAplicadosFiltered() {
+      return this.filtrosAplicados.filter((filtro) => filtro.valor !== '');
+    }
   },
   methods: {
     clearOptions() {

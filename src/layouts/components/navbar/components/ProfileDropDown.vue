@@ -42,11 +42,13 @@
             <feather-icon icon="UserIcon" svgClasses="w-4 h-4"></feather-icon>
             <span class="ml-2">Perfil</span>
           </li>
-          <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
-              @click="$router.push('/administracion/usuarios')">
-            <feather-icon icon="UsersIcon" svgClasses="w-4 h-4" />
-            <span class="ml-2">Admin. Usuarios</span>
-          </li>
+          <CheckPermission permission="ED033">
+            <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white"
+                @click="$router.push('/administracion/usuarios')">
+              <feather-icon icon="UsersIcon" svgClasses="w-4 h-4" />
+              <span class="ml-2">Admin. Usuarios</span>
+            </li>
+          </CheckPermission>
           <!--
           <li class="flex py-2 px-4 cursor-pointer hover:bg-primary hover:text-white">
             <feather-icon icon="CheckSquareIcon" svgClasses="w-4 h-4"/>
@@ -77,8 +79,13 @@ import { mapActions, mapGetters } from 'vuex';
 
 import RutMixin from '../../../../febos/chile/_vue/mixins/RutMixin';
 
+import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
+
 export default {
   mixins: [RutMixin],
+  components: {
+    CheckPermission
+  },
   data() {
     return {
       view: this.$route.params.view,

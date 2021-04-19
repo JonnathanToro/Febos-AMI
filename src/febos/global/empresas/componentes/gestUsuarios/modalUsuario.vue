@@ -72,9 +72,11 @@
       </div>
       <div style="text-align: right" class="mt-3">
         <vs-button color="primary" type="filled"
-                   @click="crearUsuario" v-if="!user.id">Crear</vs-button>
+                   @click="crearUsuario" v-if="!user.id">Crear
+        </vs-button>
         <vs-button color="primary" type="filled"
-                   @click="actualizarUsuario" v-if="user.id">Actualizar</vs-button>
+                   @click="actualizarUsuario" v-if="user.id">Actualizar
+        </vs-button>
       </div>
 
     </form>
@@ -86,8 +88,6 @@
 import VsModal from 'vs-modal';
 import { Validator } from 'vee-validate';
 import es from 'vee-validate/dist/locale/es';
-
-import clienteFebosAPI from '@/febos/servicios/clienteFebosAPI';
 
 Validator.localize('es', es);
 
@@ -106,11 +106,10 @@ export default {
         name: null,
         alias: null,
         email: null
-      },
+      }
     };
   },
-  computed: {
-  },
+  computed: {},
   watch: {
     editar(val) {
       this.tabDefault = 0;
@@ -132,10 +131,9 @@ export default {
       return !!result;
     },
     async validarUsuario() {
-      const userValid = await Promise.all([
+      return Promise.all([
         this.validateForm('data-user')
       ]);
-      return userValid;
     },
     async actualizarUsuario() {
       if (!await this.validarUsuario()) {
@@ -183,40 +181,6 @@ export default {
       }
 
       console.log('ACREAr');
-      /* this.$vs.loading({ type: 'default' });
-      const datos = {
-        accesoWeb: 'si',
-        alias: this.user.alias,
-        cambiarClave: 'si',
-        clave: '',
-        correo: this.user.correo,
-        iut: this.user.iut,
-        nivel: 1,
-        nombre: this.user.nombre,
-        tipo: 1
-      };
-      clienteFebosAPI.put('/usuarios', datos).then((response) => {
-        this.$vs.loading.close();
-        if (response.data.codigo == 10) {
-          this.$vs.notify({
-            color: 'success', title: 'Usuarios', text: 'Usuario creado correctamente'
-          });
-          this.cerrarModal();
-        } else {
-          this.$vs.notify({
-            color: 'danger',
-            title: 'Usuario',
-            text: `${response.data.mensaje }<br/><b>Seguimiento: </b>${ response.data.seguimientoId}`,
-            time: 10000
-          });
-        }
-      }).catch((error) => {
-        this.$vs.loading.close();
-        console.log(error);
-        this.$vs.notify({
-          color: 'danger', title: 'Usuario', text: 'Error de plataforma', time: 10000
-        });
-      }); */
     },
     async cerrarModal() {
       this.$emit('cerrarEdicionUsuario', false);
@@ -224,22 +188,21 @@ export default {
 
     /* Validación Encabezado */
     getError(par) {
-      const retorno = null;
-      const ret = this.errors.items.find((elemento) => elemento.field == par);
-      if (ret !== undefined && retorno === null) {
-        if (par == 'iut' && ret.rule == 'validaRut') {
+      const ret = this.errors.items.find((elemento) => elemento.field === par);
+      if (ret !== undefined) {
+        if (par === 'iut' && ret.rule === 'validaRut') {
           return 'rut';
         }
-        if (par == 'correo' && ret.rule == 'email') {
+        if (par === 'correo' && ret.rule === 'email') {
           return 'correo';
         }
-        if (ret.rule == 'required') {
+        if (ret.rule === 'required') {
           return 'required';
         }
         console.log(ret);
       }
       return null;
-    },
+    }
 
   }
 

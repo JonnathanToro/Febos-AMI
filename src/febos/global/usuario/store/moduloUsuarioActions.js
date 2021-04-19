@@ -36,7 +36,7 @@ export default {
     const segundo = 1000;
     const minutos = 60 * segundo;
     commit('SET_ULTIMO_REQUEST', { ultimoRequest: new Date().getTime() });
-    commit('SET_VENCIMIENTO_SESION', { vencimiento: new Date().getTime() + (14 * minutos) });
+    commit('SET_VENCIMIENTO_SESION', { vencimiento: new Date().getTime() + (50 * minutos) });
   },
   async updateProfile({ commit }, payload) {
     const response = await isUserUpdate(

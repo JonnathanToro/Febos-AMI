@@ -88,6 +88,15 @@ const moduleSettings = {
       visible: true,
       permission: 'ED052'
     },
+    {
+      nombre: 'gestionDocumentos',
+      descripcion: 'Gest. Documentos',
+      tooltip: '',
+      icono: 'folder',
+      habilitado: true,
+      visible: true,
+      permission: '*'
+    }
   ]
 };
 

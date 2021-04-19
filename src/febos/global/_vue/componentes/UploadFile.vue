@@ -33,7 +33,8 @@ import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 import { ioGetPrivateUploadUrl, ioUploadFileToPrivateUrl } from '@/febos/servicios/api/herramientas.api';
 
 const paths = {
-  ed: `febos-io/chile/escritorio-digital/${process.env.VUE_APP_AMBIENTE}/archivos/expedientes/`
+  ed: `febos-io/chile/escritorio-digital/${process.env.VUE_APP_AMBIENTE}/archivos/expedientes/`,
+  saval: `febos-io/chile/saval-demo/${process.env.VUE_APP_AMBIENTE}/archivos/`
 };
 
 export default {
