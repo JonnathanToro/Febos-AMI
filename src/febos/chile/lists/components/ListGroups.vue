@@ -18,7 +18,14 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
+import StepTypes from '@/febos/chile/dnt/mixins/StepTypes';
+
 export default {
+  data() {
+    return {
+      stepTypes: StepTypes
+    };
+  },
   props: {
     autocomplete: {
       type: Boolean,
@@ -49,13 +56,13 @@ export default {
       return !this.groupsState.list.length || this.groupsState.loading;
     },
     listOptions() {
-      if (this.typeList === 1) {
+      if (this.typeList === this.stepTypes.GROUP) {
         return this.groupsState.list
-          .filter((group) => group.esOficina === 'N');
+          .filter((group) => group.isOffice === 'N');
       }
-      if (this.typeList === 6) {
+      if (this.typeList === this.stepTypes.OFFICE) {
         return this.groupsState.list
-          .filter((group) => group.esOficina && group.esOficina === 'Y');
+          .filter((group) => group.isOffice && group.isOffice === 'Y');
       }
       return this.groupsState.list;
     }

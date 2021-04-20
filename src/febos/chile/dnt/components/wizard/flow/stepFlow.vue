@@ -303,7 +303,7 @@ export default {
       }
 
       this.step.steps.push(step);
-      this.stepType = 1;
+      this.stepType = this.stepTypes.GROUP;
       this.rolType = '';
       this.groupStep = '';
       this.userStep = '';

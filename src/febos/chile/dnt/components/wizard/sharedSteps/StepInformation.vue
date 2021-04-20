@@ -657,9 +657,6 @@ export default {
         ...creatorGroupName
       };
     }
-  },
-  mounted() {
-    console.log('THIS', this);
   }
 };
 

@@ -119,8 +119,8 @@ export default {
         id: option.id,
         value: option.id,
         label: option.nombre,
-        esOficina: option.esOficina || 'N',
-        tipo: option.tipo
+        isOffice: option.esOficina || 'N',
+        type: option.tipo
       }));
   },
   SET_GROUPS_LOADING(state, payload) {

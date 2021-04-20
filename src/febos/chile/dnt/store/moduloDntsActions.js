@@ -403,7 +403,6 @@ export const updateActivityFile = async ({ commit }, payload) => {
 };
 
 export const answerCreateFile = async ({ commit }, payload) => {
-  console.log('RESPONDER ACTION', payload);
   try {
     commit('SET_LOADING', true);
     const response = await createDnt(payload);
