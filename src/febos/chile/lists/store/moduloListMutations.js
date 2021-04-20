@@ -118,7 +118,9 @@ export default {
       .map((option) => ({
         id: option.id,
         value: option.id,
-        label: option.nombre
+        label: option.nombre,
+        isOffice: option.esOficina || 'N',
+        type: option.tipo
       }));
   },
   SET_GROUPS_LOADING(state, payload) {

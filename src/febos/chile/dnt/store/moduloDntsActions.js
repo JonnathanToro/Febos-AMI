@@ -348,7 +348,6 @@ export const sendToFlow = async ({ commit }, { data }) => {
       params: {
         aprobacionId: 0,
         temporal: true,
-        enviarOficina: data.typeFlow,
         privado: 'N'
       },
       body: data
@@ -404,7 +403,6 @@ export const updateActivityFile = async ({ commit }, payload) => {
 };
 
 export const answerCreateFile = async ({ commit }, payload) => {
-  console.log('responder action', payload);
   try {
     commit('SET_LOADING', true);
     const response = await createDnt(payload);
