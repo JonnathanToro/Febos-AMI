@@ -10,7 +10,7 @@ env:
 phases:
   install:
     runtime-versions:
-      nodejs: 14
+      nodejs: 14.16
     commands:
       - npm i npm@latest -g
       - pip install --upgrade pip
@@ -21,7 +21,7 @@ phases:
       - chmod +x .notify
       - echo eyAiYWxsb3dfcm9vdCI6IHRydWUgfQ== | base64 --decode > /root/.bowerrc
       - echo eyAiYWxsb3dfcm9vdCI6IHRydWUgfQ== | base64 --decode > ~/.bowerrc
-      - npm install --scripts-prepend-node-path=auto
+      - npm install --scripts-prepend-node-path=auto --build-from-source
   build:
     commands:
       - ./.notify "Ha *iniciado* el proceso de *deploy* al ambiente de *${AMBIENTE}* de la web de *${PAIS}* (${APP}) desde la rama(${CODEBUILD_SOURCE_VERSION})"
