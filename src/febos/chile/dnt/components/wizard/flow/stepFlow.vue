@@ -4,6 +4,15 @@
       <div class="row mb-3">
         <div class="col-12">
           <h4>Datos para el flujo</h4>
+          <span>
+            Este expediente podrá ser tramitado por
+            <span v-if="wizardData.fileCategory === 'numInt'">
+              Oficina interna
+            </span>
+            <span v-if="wizardData.fileCategory === 'numOf'">
+              Oficina externa
+            </span>
+          </span>
         </div>
       </div>
       <div class="row mb-3">
@@ -124,6 +133,7 @@
             name="groupStep"
             v-model="groupStep"
             :typeList="stepType"
+            :officeType="wizardData.fileCategory"
             ref="groupStep"
             :danger="errors.has('flow-part-2.groupStep')"
             :danger-text="errors.first('flow-part-2.groupStep')"
