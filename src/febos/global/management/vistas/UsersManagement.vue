@@ -147,6 +147,16 @@
               icon="groups">
               Usuarios
             </vs-button>
+            <vs-button
+              class="action mr-2"
+              color="primary"
+              type="border"
+              v-if="selectedGroup.nombre"
+              @click="configNumeration()"
+              size="small"
+              icon="policy">
+              Numeración
+            </vs-button>
           </div>
           <div>
             <h5 class="mb-3 mt-3" v-if="selectedGroup.nombre">
@@ -237,27 +247,43 @@
     :usersGeneral="usersGeneral"
     :group="selectedGroup"
   />
+  <vs-modal
+    :title="`Configuración de folios para ${selectedGroup.nombre}`"
+    size="l"
+    ref="sheetsConfig"
+    dismiss-on="close-button esc"
+  >
+    <PopUpNumerationConfig
+      v-if="selectedGroup"
+      :group="selectedGroup"
+    />
+  </vs-modal>
+
 </div>
 </template>
 
 <script>
 
 import { mapActions, mapGetters } from 'vuex';
+import VsModal from 'vs-modal';
 
 import PopUpUser from '@/febos/global/management/vistas/components/PopUpUser';
 import TreeItem from '@/febos/global/management/vistas/components/TreeItem';
 import FbPaginacion from '@/febos/chile/_vue/componentes/FbPaginacion';
 import PopUpGroup from '@/febos/global/management/vistas/components/PopUpGroup';
 import PopUpUsersGroup from '@/febos/global/management/vistas/components/PopUpUsersGroup';
+import PopUpNumerationConfig from '@/febos/global/management/vistas/PopUpNumerationConfig';
 
 export default {
   name: 'UsersManagement',
   components: {
+    VsModal,
     PopUpUser,
     TreeItem,
     FbPaginacion,
     PopUpGroup,
-    PopUpUsersGroup
+    PopUpUsersGroup,
+    PopUpNumerationConfig
   },
   data() {
     return {
@@ -276,7 +302,8 @@ export default {
       usersGeneral: [],
       usersTree: [],
       selectedGroup: {},
-      action: ''
+      action: '',
+      configSheets: false
     };
   },
   watch: {
@@ -290,7 +317,6 @@ export default {
       });
     },
     usersByGroup(newValue) {
-      console.log('WATCH usersByGroup', newValue);
       this.usersTree = newValue;
     },
     loading(value) {
@@ -339,6 +365,14 @@ export default {
       'showModals',
       'closeModal'
     ]),
+    ...mapActions('List', [
+      'fetchAllDocuments'
+    ]),
+    configNumeration() {
+      console.log('ACA22222', this.selectedGroup);
+      this.configSheets = true;
+      this.$refs.sheetsConfig.open();
+    },
     async viewUsers() {
       this.showModals('modalUsersGroup');
       await this.getUsersCompany({
@@ -364,7 +398,6 @@ export default {
       this.showModals('modalEditGroup');
     },
     addSubGroup() {
-      console.log('ADD SUB - ', this);
       this.action = 'add';
       const padreId = this.selectedGroup.id;
       const parentName = this.selectedGroup.nombre;
@@ -431,6 +464,7 @@ export default {
     }
   },
   async created() {
+    await this.fetchAllDocuments();
     this.setElement({});
     this.closeModal();
     await this.getUsersCompany({
