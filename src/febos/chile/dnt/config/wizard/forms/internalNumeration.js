@@ -152,7 +152,8 @@ export default () => ({
       const relatedDocuments = referencias.map((relatedDocument) => ({
         id: relatedDocument.linea,
         type: relatedDocument.tipoDocumento,
-        number: relatedDocument.folio
+        number: relatedDocument.folio,
+        otherReferenceId: relatedDocument.otraReferenciaId
       }));
 
       data.relatedDocuments = [...relatedDocuments];

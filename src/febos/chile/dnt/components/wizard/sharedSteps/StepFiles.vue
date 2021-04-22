@@ -98,7 +98,7 @@
           <vs-input
             class="w-100"
             label="Contrato SAFI"
-            maxlength="6"
+            maxlength="10"
             name="safiContract"
             v-model="step.safiContract"
           />
