@@ -45,8 +45,7 @@ export default () => ({
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
       data.resumen = dnt.nombreDescriptivo;
       data.directionId = dnt.compradorCodigo;
-      data.institution = dnt.emisorContactoCodigo;
-      data.personName = dnt.emisorContactoNombre;
+      data.personId = dnt.emisorContactoCodigo;
       data.personPosition = dnt.emisorContactoCargo;
       data.withAttachment = dnt.transporteViaTransporteCodigoTransporte || 0;
       data.documentDetail = dnt.transporteNotas;
@@ -167,6 +166,7 @@ export default () => ({
     return data;
   },
   documentMapper(input, iutCompany, nameCompany, isDraft = false) {
+    console.log('INPUT', input);
     const data = {
       adjuntos: [],
       dnt: {
@@ -187,6 +187,7 @@ export default () => ({
         solicitanteGrupoId: input.creatorGroup,
         solicitanteGrupoNombre: input.creatorGroupName,
         compradorCodigo: input.directionId,
+        emisorContactoCodigo: input.personId,
         compradorArea: input.directionName,
         emisorContactoNombre: input.personName,
         emisorContactoCargo: input.personPosition,

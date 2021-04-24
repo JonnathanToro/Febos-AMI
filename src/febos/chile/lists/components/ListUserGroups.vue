@@ -58,6 +58,7 @@ export default {
     }
   },
   created() {
+    console.log('joder???');
     this.fetchUserGroups();
   }
 };

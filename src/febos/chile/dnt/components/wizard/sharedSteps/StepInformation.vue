@@ -1,7 +1,7 @@
 <template>
   <div>
     <form data-vv-scope="step-2-part-1">
-      <div class="row mb-5">
+      <div class="row mb-5" >
         <div class="col-12">
           <h4>Datos de la persona que ingresa el documento</h4>
         </div>
@@ -19,12 +19,15 @@
           />
         </div>
       </div>
-      <div class="row mb-3">
+      <div
+        class="row mb-3"
+        v-if="!isNumerationFile"
+      >
         <div class="col-12">
           <h4>Origen / Datos Remitente</h4>
         </div>
       </div>
-      <div class="row mb-3">
+      <div v-if="!isNumerationFile" class="row mb-3">
         <div class="col-md-12">
           <list-groups
             class="w-100"
@@ -36,31 +39,6 @@
             :danger-text="errors.first('step-2-part-1.directionId')"
             v-validate="'required'"
             ref="directionId"
-          />
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col-12" v-if="!step.responseFile">
-          <list-group-users
-            class="w-100"
-            autocomplete
-            label="Nombre de Persona que Genera Documento"
-            name="personName"
-            v-model="step.personName"
-            :parent-value="step.directionId"
-            :danger="errors.has('step-2-part-1.personName')"
-            :danger-text="errors.first('step-2-part-1.personName')"
-            v-validate="'required'"
-            ref="personName"
-          />
-        </div>
-        <div class="col-12" v-if="step.responseFile">
-          <vs-input
-            class="w-100"
-            label="Nombre de Persona que Genera Documento"
-            maxlength="150"
-            name="personName"
-            v-model="step.personName"
           />
         </div>
       </div>
@@ -416,7 +394,7 @@
         <div class="col-md-12">
           <vs-input
             class="w-100"
-            label="Resumen"
+            label="Asunto"
             maxlength="250"
             name="resumen"
             v-model="step.resumen"
@@ -457,7 +435,6 @@ import ListSubjects from '@/febos/chile/lists/components/ListSubjects';
 import ListInstitutionsDocDigital from '@/febos/chile/lists/components/ListInstitutionsDocDigital';
 import ListSubjectTypes from '@/febos/chile/lists/components/ListSubjectTypes';
 import ListGroups from '@/febos/chile/lists/components/ListGroups';
-import ListGroupUsers from '@/febos/chile/lists/components/ListGroupUsers';
 import ListUserGroups from '@/febos/chile/lists/components/ListUserGroups';
 import ListUser from '@/febos/chile/lists/components/ListUser';
 
@@ -465,7 +442,6 @@ export default {
   mixins: [WizardStep],
   components: {
     ListGroups,
-    ListGroupUsers,
     ListSubjects,
     ListSubjectTypes,
     ListInstitutionsDocDigital,
@@ -495,7 +471,7 @@ export default {
         responseFile: false,
         creatorGroup: '',
         directionId: '',
-        personName: '',
+        personId: '',
         personPosition: '',
         withAttachment: 0,
         documentDetail: '',
@@ -510,9 +486,16 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('Usuario', [
+      'currentUser'
+    ]),
     ...mapGetters('List', [
       'userGroupsState'
-    ])
+    ]),
+    isNumerationFile() {
+      const { wizard } = this.$route.params;
+      return wizard === 'numInt' || wizard === 'numOf';
+    }
   },
   methods: {
     async addSubject() {
@@ -631,16 +614,11 @@ export default {
       return true;
     },
     getStepData() {
+      this.step.directionId = this.step.creatorGroup;
+
       const directionName = this.step.directionId
         ? {
-          directionName: this.$refs.directionId.getOption().label
-        }
-        : {};
-
-      const personName = this.step.personName
-        ? {
-          personName: !this.step.responseFile ? this.$refs.personName.getOption().label
-            : this.step.personName
+          directionName: this.$refs.creatorGroup.getOption().label
         }
         : {};
 
@@ -651,11 +629,20 @@ export default {
         : {};
 
       return {
-        ...this.step,
         ...directionName,
-        ...personName,
-        ...creatorGroupName
+        ...creatorGroupName,
+        ...this.step
       };
+    }
+  },
+  created() {
+    this.step.personName = this.currentUser.nombre;
+    this.step.personId = this.currentUser.id;
+    if (this.userGroupsState.list.length === 1) {
+      this.step.creatorGroup = this.userGroupsState.list[0].id;
+      this.step.creatorGroupName = this.userGroupsState.list[0].label;
+      this.step.directionId = this.userGroupsState.list[0].id;
+      this.step.directionName = this.userGroupsState.list[0].label;
     }
   }
 };
