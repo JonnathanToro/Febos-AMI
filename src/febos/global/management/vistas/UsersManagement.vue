@@ -281,7 +281,6 @@ export default {
   },
   watch: {
     page(newValue) {
-      console.log('grupo', this.selectedGroup.nombre);
       if (this.selectedGroup.nombre
         && this.selectedGroup.nombre !== this.company.razonSocial) {
         this.getUsersGroup({
@@ -290,7 +289,6 @@ export default {
           filas: 10,
           groupId: this.selectedGroup.id
         });
-        console.log('buscando usuarios grupo', newValue);
       } else {
         this.getUsersCompany({
           empresaId: this.company.id,
@@ -299,11 +297,9 @@ export default {
           buscarInfoExtra: 'si',
           filtroInfoExtra: 'CARGO'
         });
-        console.log('buscando usuarios empresa', newValue);
       }
     },
     usersByGroup(newValue) {
-      console.log('WATCH usersByGroup', newValue);
       this.usersTree = newValue;
     },
     loading(value) {
