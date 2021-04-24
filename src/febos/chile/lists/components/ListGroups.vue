@@ -34,6 +34,9 @@ export default {
     typeList: {
       type: Number
     },
+    officeType: {
+      type: String
+    },
     label: {
       type: String,
       default: 'Dirección / Región'
@@ -56,13 +59,16 @@ export default {
       return !this.groupsState.list.length || this.groupsState.loading;
     },
     listOptions() {
+      const officeType = this.officeType === 'numOf' ? 'ext' : 'int';
+
       if (this.typeList === this.stepTypes.GROUP) {
         return this.groupsState.list
           .filter((group) => group.isOffice === 'N');
       }
       if (this.typeList === this.stepTypes.OFFICE) {
         return this.groupsState.list
-          .filter((group) => group.isOffice && group.isOffice === 'Y');
+          .filter((group) => (group.isOffice && group.isOffice === 'Y')
+            && group.type === officeType);
       }
       return this.groupsState.list;
     }

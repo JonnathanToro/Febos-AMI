@@ -27,6 +27,7 @@ import { fileDetails, sendToFlowFile } from '@/febos/servicios/api/aprobaciones.
 import { ioDownloadPrivateFile } from '@/febos/servicios/api/herramientas.api';
 import { clGetReferences } from '@/febos/servicios/api/documents.api';
 import { getSearchParams } from '@/febos/global/utils/router';
+import { types } from '@/febos/chile/dnt/config/wizard';
 
 export const listDocuments = async ({ commit }, { data, fromCS = false }) => {
   try {
@@ -293,7 +294,7 @@ export const saveDocument = async ({ commit }, {
       return router.push({
         name: 'files-wizard-update',
         params: {
-          wizard: response.data.dnt.claseMercadoPublico,
+          wizard: types[response.data.dnt.claseMercadoPublico],
           id: response.data.dnt.febosId
         },
         query: getSearchParams()
