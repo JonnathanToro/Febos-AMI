@@ -9,7 +9,7 @@
       :key="item.id"
       :value="item.value"
       :text="item.label"
-      v-for="item in groupsState.list"
+      v-for="item in listOptions"
     />
   </vs-select>
 </template>
@@ -18,11 +18,24 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
+import StepTypes from '@/febos/chile/dnt/mixins/StepTypes';
+
 export default {
+  data() {
+    return {
+      stepTypes: StepTypes
+    };
+  },
   props: {
     autocomplete: {
       type: Boolean,
       default: false
+    },
+    typeList: {
+      type: Number
+    },
+    officeType: {
+      type: String
     },
     label: {
       type: String,
@@ -44,6 +57,20 @@ export default {
     ]),
     disabled() {
       return !this.groupsState.list.length || this.groupsState.loading;
+    },
+    listOptions() {
+      const officeType = this.officeType === 'numOf' ? 'ext' : 'int';
+
+      if (this.typeList === this.stepTypes.GROUP) {
+        return this.groupsState.list
+          .filter((group) => group.isOffice === 'N');
+      }
+      if (this.typeList === this.stepTypes.OFFICE) {
+        return this.groupsState.list
+          .filter((group) => (group.isOffice && group.isOffice === 'Y')
+            && group.type === officeType);
+      }
+      return this.groupsState.list;
     }
   },
   methods: {

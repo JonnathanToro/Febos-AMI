@@ -1,0 +1,2 @@
+#!/bin/bash
+curl --data-urlencode 'payload={"text":"'"$1"'","channel":"febos_hola_mundo","username":"Asius","icon_emoji":":robot_face:"}'  https://hooks.slack.com/services/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

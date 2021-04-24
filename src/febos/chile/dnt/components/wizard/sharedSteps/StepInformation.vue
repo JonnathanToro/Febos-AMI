@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-12">
+        <div class="col-12" v-if="!step.responseFile">
           <list-group-users
             class="w-100"
             autocomplete
@@ -52,6 +52,15 @@
             :danger-text="errors.first('step-2-part-1.personName')"
             v-validate="'required'"
             ref="personName"
+          />
+        </div>
+        <div class="col-12" v-if="step.responseFile">
+          <vs-input
+            class="w-100"
+            label="Nombre de Persona que Genera Documento"
+            maxlength="150"
+            name="personName"
+            v-model="step.personName"
           />
         </div>
       </div>
@@ -483,6 +492,7 @@ export default {
         copySubjectEmail: '',
       },
       step: {
+        responseFile: false,
         creatorGroup: '',
         directionId: '',
         personName: '',
@@ -629,7 +639,8 @@ export default {
 
       const personName = this.step.personName
         ? {
-          personName: this.$refs.personName.getOption().label
+          personName: !this.step.responseFile ? this.$refs.personName.getOption().label
+            : this.step.personName
         }
         : {};
 

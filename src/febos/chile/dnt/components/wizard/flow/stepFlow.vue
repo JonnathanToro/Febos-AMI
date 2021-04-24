@@ -4,6 +4,15 @@
       <div class="row mb-3">
         <div class="col-12">
           <h4>Datos para el flujo</h4>
+          <span>
+            Este expediente podrá ser tramitado por
+            <span v-if="wizardData.fileCategory === 'numInt'">
+              Oficina interna
+            </span>
+            <span v-if="wizardData.fileCategory === 'numOf'">
+              Oficina externa
+            </span>
+          </span>
         </div>
       </div>
       <div class="row mb-3">
@@ -85,6 +94,10 @@
               :value="stepTypes.GROUP"
               text="Grupo"
             />
+            <vs-select-item
+              :value="stepTypes.OFFICE"
+              text="Oficina"
+            />
           </vs-select>
         </div>
         <div class="col-3">
@@ -119,10 +132,13 @@
             label="Grupo del responsable"
             name="groupStep"
             v-model="groupStep"
+            :typeList="stepType"
+            :officeType="wizardData.fileCategory"
             ref="groupStep"
             :danger="errors.has('flow-part-2.groupStep')"
             :danger-text="errors.first('flow-part-2.groupStep')"
-            v-validate="{ required: stepType === stepTypes.GROUP}"
+            v-validate="{ required: stepType === stepTypes.GROUP
+             || stepType === this.stepTypes.OFFICE}"
           />
         </div>
         <div class="col-3" v-show="stepType === stepTypes.USER">
@@ -169,20 +185,34 @@
             </span>
             <div class="text-center step-name">
               {{ step.responsibleName }}
-              <span v-if="step.stepType === stepTypes.GROUP">
+              <span
+                v-if="step.stepType === stepTypes.GROUP
+                || step.stepType === stepTypes.OFFICE"
+              >
                 {{(step.groupUsers.length) }}
               </span>
             </div>
+            <div class="step-type">
+              <span v-if="step.stepType === stepTypes.USER">
+                usuario
+              </span>
+              <span v-if="step.stepType === stepTypes.GROUP">
+                grupo
+              </span>
+              <span v-if="step.stepType === stepTypes.OFFICE">
+                oficina
+              </span>
+            </div>
             <div class="step-rol">
-            <span v-if="step.rolType === rolTypes.APPROVER">
-              Aprobador
-            </span>
-              <span v-if="step.rolType === rolTypes.SIGNER">
-              Firmante
-            </span>
-              <span v-if="step.rolType === rolTypes.REVIEWER">
-              Revisor
-            </span>
+              <span v-if="step.rolType === rolTypes.APPROVER">
+                aprobador
+              </span>
+                <span v-if="step.rolType === rolTypes.SIGNER">
+                firmante
+              </span>
+                <span v-if="step.rolType === rolTypes.REVIEWER">
+                revisor
+              </span>
             </div>
           </div>
         </div>
@@ -228,7 +258,7 @@ export default {
         steps: [],
         file: ''
       },
-      stepType: '',
+      stepType: 1,
       rolType: '',
       groupStep: '',
       userStep: ''
@@ -245,6 +275,7 @@ export default {
   watch: {},
   methods: {
     removeStep(index) {
+      this.error.message = '';
       this.step.step = this.step.steps.splice(index, 1);
     },
     async addStep() {
@@ -254,7 +285,13 @@ export default {
         return;
       }
 
-      const responsibleStep = this.stepType === this.stepTypes.GROUP
+      if (this.step.steps.find((step) => step.stepType === this.stepTypes.OFFICE)) {
+        this.error.message = 'Oops! El último paso debe ser la oficina y ya la agregaste';
+        return;
+      }
+
+      const responsibleStep = (this.stepType === this.stepTypes.GROUP
+        || this.stepType === this.stepTypes.OFFICE)
         ? this.$refs.groupStep.getOption()
         : this.$refs.userStep.getOption();
 
@@ -267,7 +304,7 @@ export default {
         responsibleEmail: responsibleStep.email || ''
       };
 
-      if (this.stepType === this.stepTypes.GROUP) {
+      if (this.stepType === this.stepTypes.GROUP || this.stepType === this.stepTypes.OFFICE) {
         step.groupUsers = this.groupUsersState.list.map((user) => {
           const userId = {};
           userId.tipoValorResponsableId = user.id;
@@ -276,7 +313,7 @@ export default {
       }
 
       this.step.steps.push(step);
-      this.stepType = '';
+      this.stepType = this.stepTypes.GROUP;
       this.rolType = '';
       this.groupStep = '';
       this.userStep = '';
@@ -312,8 +349,6 @@ export default {
         typeFlowText: `${ this.wizardData.fileType } - `,
         fileType: this.wizardData.fileType,
         number: this.wizardData.fileNumber,
-        typeFlow: this.wizardData.fileCategory === 'numInt'
-          ? 'interna' : 'externa',
         privado: 'N',
         ...this.step
       };
@@ -360,6 +395,17 @@ export default {
   right: -1px;
   padding: 2px 8px;
   background: #671e85;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.step-type {
+  position: absolute;
+  bottom: -10px;
+  left: -1px;
+  padding: 2px 8px;
+  background: #155f87;
   border-radius: 5px;
   color: white;
   font-size: 12px;

@@ -1,0 +1,37 @@
+version: 0.2
+
+env:
+  variables:
+    APP: "ED"
+    AMBIENTE: "desarrollo"
+    PORTAL: "cloud"
+    PAIS: "chile"
+    NODE_ENV: "development"
+    CHILD_CONCURRENCY: 1
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - npm i npm@latest -g
+      - pip install --upgrade pip
+      - pip install --upgrade awscli
+  pre_build:
+    commands:
+      # Pre-requisitos
+      - chmod +x .notify
+      - echo eyAiYWxsb3dfcm9vdCI6IHRydWUgfQ== | base64 --decode > /root/.bowerrc
+      - echo eyAiYWxsb3dfcm9vdCI6IHRydWUgfQ== | base64 --decode > ~/.bowerrc
+      - npm install --scripts-prepend-node-path=auto --build-from-source
+  build:
+    commands:
+      - ./.notify "Ha *iniciado* el proceso de *deploy* al ambiente de *${AMBIENTE}* de la web de *${PAIS}* (${APP}) desde la rama(${CODEBUILD_SOURCE_VERSION})"
+      - echo Iniciando build `date`
+      - ./deployWeb.sh ${APP} ${AMBIENTE} ${PORTAL} ${PAIS}
+  post_build:
+    commands:
+      - ./.notify "Ha *finalizado* el proceso de *deploy* al ambiente de *${AMBIENTE}* de la web de *${PAIS}* desde la (${APP})"
+
+cache:
+  paths:
+    - './node_modules/**/*'

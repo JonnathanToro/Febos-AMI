@@ -1,4 +1,14 @@
 {
   "pluginsFile": "tests/e2e/plugins/index.js",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "reporterOptions": {
+    "reporterEnabled": "mochawesome",
+    "mochawesomeReporterOptions": {
+      "reportDir": "mochawesome-report/",
+      "quiet": true,
+      "overwrite": false,
+      "html": false,
+      "json": true
+    }
+  }
 }

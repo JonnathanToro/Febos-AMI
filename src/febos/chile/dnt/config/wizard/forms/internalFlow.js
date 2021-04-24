@@ -21,7 +21,6 @@ export default () => ({
   },
   documentMapper(input) {
     const data = {
-      typeFlow: input.typeFlow,
       ejecucion: {
         descripcion: input.description,
         estampar: input.pdfStamp,
@@ -65,8 +64,7 @@ export default () => ({
           tipoObjetoId: input.typeFlowId,
           tipoObjetoTexto: input.typeFlowText
         }
-      ],
-      gatillacionesPreDefinidas: ['f13b799d-8640-4b42-a1e1-2e9044e038b5']
+      ]
     };
 
     return data;
