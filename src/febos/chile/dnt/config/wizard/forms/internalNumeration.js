@@ -45,8 +45,7 @@ export default () => ({
       data.isPrivate = Number.parseInt(dnt.transportePuertoTipo, 10) || 0;
       data.resumen = dnt.nombreDescriptivo;
       data.directionId = dnt.compradorCodigo;
-      data.institution = dnt.emisorContactoCodigo;
-      data.personName = dnt.emisorContactoNombre;
+      data.personId = dnt.emisorContactoCodigo;
       data.personPosition = dnt.emisorContactoCargo;
       data.withAttachment = dnt.transporteViaTransporteCodigoTransporte || 0;
       data.documentDetail = dnt.transporteNotas;
@@ -152,7 +151,8 @@ export default () => ({
       const relatedDocuments = referencias.map((relatedDocument) => ({
         id: relatedDocument.linea,
         type: relatedDocument.tipoDocumento,
-        number: relatedDocument.folio
+        number: relatedDocument.folio,
+        otherReferenceId: relatedDocument.otraReferenciaId
       }));
 
       data.relatedDocuments = [...relatedDocuments];
@@ -187,6 +187,7 @@ export default () => ({
         solicitanteGrupoNombre: input.creatorGroupName,
         compradorCodigo: input.directionId,
         compradorArea: input.directionName,
+        emisorContactoCodigo: input.personId,
         emisorContactoNombre: input.personName,
         emisorContactoCargo: input.personPosition,
         transporteViaTransporteCodigoTransporte: input.withAttachment,

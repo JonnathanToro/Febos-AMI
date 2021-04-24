@@ -93,7 +93,7 @@
           <CheckPermission permission="ED021">
             <vs-dropdown-item
               v-on:click="onOptionAssignFile(file)"
-              v-if="!isDraft  && onPendingFiles && !isAssigned
+              v-if="!isDraft && onPendingFiles && !isAssigned
               && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="how_to_reg"/>
@@ -103,7 +103,7 @@
           <CheckPermission permission="ED039">
             <vs-dropdown-item
               v-on:click="onAnswerFile(file)"
-              v-if="!isDraft  && onPendingFiles && isAssigned
+              v-if="!isDraft && onPendingFiles && isAssigned
             && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="storage"/>
@@ -113,7 +113,7 @@
           <CheckPermission permission="ED040">
             <vs-dropdown-item
               v-on:click="onOptionReturnFile(file)"
-              v-if="!isDraft  && onPendingFiles && isAssigned
+              v-if="!isDraft && onPendingFiles && isAssigned
               && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="keyboard_backspace"/>
@@ -123,7 +123,7 @@
           <CheckPermission permission="ED022">
             <vs-dropdown-item
               v-on:click="onOptionCancelFile(file)"
-              v-if="!isDraft  && onPendingFiles && isAssigned
+              v-if="!isDraft && onPendingFiles && isAssigned
              && isResponsible && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="clear"/>
@@ -133,7 +133,7 @@
           <CheckPermission permission="ED023">
             <vs-dropdown-item
               v-on:click="onOptionProcessFile(file)"
-              v-if="!isDraft  && (onGeneralFiles || onPendingFiles)
+              v-if="!isDraft && onPendingFiles
             && isAssigned && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="move_to_inbox"/>
@@ -152,7 +152,7 @@
           <CheckPermission permission="ED025">
             <vs-dropdown-item
               v-on:click="onOptionGetComments(file)"
-              v-if="!isDraft  && onPendingFiles && isAssigned
+              v-if="!isDraft && onPendingFiles && isAssigned
              && isResponsible && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="chat"/>
@@ -172,7 +172,7 @@
           <CheckPermission permission="ED041">
             <vs-dropdown-item
               v-on:click="onUpdateActivity(file)"
-              v-if="!isDraft  && onPendingFiles && isAssigned
+              v-if="!isDraft && onPendingFiles && isAssigned
              && isResponsible && !isProcessed && !isCancelled && !isShared"
             >
               <vs-icon icon="how_to_vote"/>
@@ -198,6 +198,7 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
+import { types } from '@/febos/chile/dnt/config/wizard';
 import CheckPermission from '@/febos/global/usuario/components/CheckPermission';
 import router from '@/router';
 
@@ -248,14 +249,6 @@ export default {
       'getGroupsCompany'
     ]),
     openDraft() {
-      // TODO: move this to another side, (why api doesn't save the full name? 😡😡)
-      const types = {
-        ext: 'externo',
-        int: 'interno',
-        numInt: 'numInt',
-        numOf: 'numOf'
-      };
-
       this.$router.push(`/documentos/${types[this.file.claseMercadoPublico]}/${this.file.febosId}`);
     },
     onOptionAssignFile(file) {

@@ -130,6 +130,9 @@ export default {
       'loadWizardData',
       'addWizardData'
     ]),
+    ...mapActions('List', [
+      'fetchUserGroups'
+    ]),
     onBack() {
       if (this.isFirstStep) {
         return;
@@ -205,7 +208,7 @@ export default {
       this.wizard.currentStep += 1;
     }
   },
-  created() {
+  async created() {
     this.clearWizardData();
 
     const { wizard, id } = this.$route.params;
@@ -220,6 +223,7 @@ export default {
         loadAllData: this.wizard.loadAllData
       });
     }
+    await this.fetchUserGroups();
   },
   destroyed() {
     this.clearWizardData();

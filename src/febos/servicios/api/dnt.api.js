@@ -89,6 +89,7 @@ export const createDnt = (payload) => {
     simular: 'no',
     foliar: 'si'
   });
+
   return apiClient.post(
     `${RESOURCE}/crear?${params}`,
     payload,
