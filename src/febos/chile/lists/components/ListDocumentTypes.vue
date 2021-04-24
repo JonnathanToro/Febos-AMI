@@ -1,5 +1,8 @@
 <template>
-  <div class="con-select w-100 autocompletex">
+  <div
+    class="con-select autocompletex"
+    :class="{ 'w-100': block }"
+  >
     <label :for="name" class="vs-select--label">{{ label }}</label>
     <v-select
       :name="name"
@@ -62,7 +65,8 @@ export default {
     value: { type: String },
     danger: { type: Boolean },
     dangerText: { type: String },
-    disabled: { type: Boolean, default: false }
+    disabled: { type: Boolean, default: false },
+    block: { type: Boolean, default: true }
   }
 };
 

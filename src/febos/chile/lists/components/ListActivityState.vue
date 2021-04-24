@@ -1,17 +1,30 @@
 <template>
-  <vs-select
-    v-bind="$props"
-    :value="value"
-    :disabled="disabled"
-    @input="$emit('input', $event)"
+  <div
+    class="con-select autocompletex"
+    :class="{ 'w-100': block }"
   >
-    <vs-select-item
-      :key="item.id"
-      :value="item.value"
-      :text="item.label"
-      v-for="item in activityStatesState.list"
-    />
-  </vs-select>
+    <label :for="name" class="vs-select--label">{{ label }}</label>
+    <v-select
+      :name="name"
+      :value="optionSelected"
+      :options="activityStatesState.list"
+      :class="{ 'v-select-danger': danger }"
+      :disabled="isDisabled"
+      @input="onInput"
+    >
+      <template #spinner>
+        <div
+          v-if="activityStatesState.loading"
+          style="border-left-color: rgba(88,151,251,0.71)"
+          :style="{ opacity: activityStatesState.loading ? 1 : 0 }"
+          class="vs__spinner"
+        />
+      </template>
+      <template slot="no-options">
+        no hay estados para el criterio de búsqueda
+      </template>
+    </v-select>
+  </div>
 </template>
 
 <script>
@@ -19,45 +32,26 @@
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  props: {
-    autocomplete: {
-      type: Boolean,
-      default: false
-    },
-    label: {
-      type: String,
-      default: 'Estados'
-    },
-    value: {
-      type: String
-    },
-    danger: {
-      type: Boolean
-    },
-    dangerText: {
-      type: String
-    },
-    nested: {
-      type: Boolean,
-      default: true
-    },
-    parentValue: {
-      type: String,
-      required: true
-    }
-  },
   computed: {
     ...mapGetters('List', [
       'activityStatesState'
     ]),
-    disabled() {
-      return !this.activityStatesState.list.length || this.activityStatesState.loading;
+    optionSelected() {
+      return this.activityStatesState.list.find((option) => option.value === this.value);
+    },
+    isDisabled() {
+      return this.disabled
+        || !this.activityStatesState.list.length
+        || this.activityStatesState.loading;
     }
   },
   methods: {
     ...mapActions('List', [
       'fetchActivityStates'
     ]),
+    onInput(event) {
+      this.$emit('input', event?.value);
+    },
     getOption() {
       return this.activityStatesState.list.find((option) => option.value === this.value);
     }
@@ -80,6 +74,17 @@ export default {
     } else {
       this.fetchActivityStates(this.parentValue.value);
     }
+  },
+  props: {
+    name: { type: String, required: true },
+    label: { type: String, default: 'Estados' },
+    value: { type: String },
+    danger: { type: Boolean },
+    dangerText: { type: String },
+    nested: { type: Boolean, default: true },
+    parentValue: { type: String },
+    disabled: { type: Boolean, default: false },
+    block: { type: Boolean, default: true }
   }
 };
 
