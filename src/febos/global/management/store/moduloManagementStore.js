@@ -1,6 +1,6 @@
 import state from './moduloManagementState';
 import mutations from './moduloManagementMutations';
-import * as actions from './moduloManagementActions';
+import actions from './moduloManagementActions';
 import getters from './moduloManagementGetters';
 
 export default {

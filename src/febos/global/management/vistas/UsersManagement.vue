@@ -272,7 +272,7 @@ import TreeItem from '@/febos/global/management/vistas/components/TreeItem';
 import FbPaginacion from '@/febos/chile/_vue/componentes/FbPaginacion';
 import PopUpGroup from '@/febos/global/management/vistas/components/PopUpGroup';
 import PopUpUsersGroup from '@/febos/global/management/vistas/components/PopUpUsersGroup';
-import PopUpNumerationConfig from '@/febos/global/management/vistas/PopUpNumerationConfig';
+import PopUpNumerationConfig from '@/febos/global/management/vistas/components/PopUpNumerationConfig';
 
 export default {
   name: 'UsersManagement',
@@ -368,9 +368,13 @@ export default {
     ...mapActions('List', [
       'fetchAllDocuments'
     ]),
-    configNumeration() {
+    ...mapActions('Management', [
+      'getDocConfigSheet'
+    ]),
+    async configNumeration() {
       console.log('ACA22222', this.selectedGroup);
       this.configSheets = true;
+      await this.getDocConfigSheet({ id: this.selectedGroup.id });
       this.$refs.sheetsConfig.open();
     },
     async viewUsers() {

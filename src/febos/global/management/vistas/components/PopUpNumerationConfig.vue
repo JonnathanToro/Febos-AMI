@@ -85,89 +85,44 @@
       </div>
 
     </div>-->
-    <form data-vv-scope="config-sheets" v-if="!configSheetByDoc.configFolios.length">
+    <form
+      data-vv-scope="config-sheets">
       <div class="row mb-3">
         <div class="col-5">
-          <vs-input
-            class="w-100"
-            label="Folio inicial"
-            maxlength="50"
-            name="initialSheet"
-            v-validate="'required'"
-            :danger="errors.has('config-sheets.initialSheet')"
-            :danger-text="errors.first('config-sheets.initialSheet')"
-            v-model="config.folioInicial"
-          />
+          <ul class="box-config">
+            <li>
+              <div v-for="doc in allDocumentsState" :key="doc.id">
+                {{doc.label}}
+              </div>
+            </li>
+          </ul>
         </div>
         <div class="col-5">
-          <vs-select
-            @change="setConfig"
-            class="w-100"
-            autocomplete
-            name="renew"
-            v-validate="'required'"
-            :danger="errors.has('config-sheets.renew')"
-            :danger-text="errors.first('config-sheets.renew')"
-            label="Reiniciar configuración"
-            v-model="configSheetDoc.reinicio"
-          >
-            <vs-select-item
-              :value="'A'"
-              text="Anual"
-            />
-            <vs-select-item
-              :value="'N'"
-              text="Nunca"
-            />
-          </vs-select>
+          <div class="row mt-3">
+            <vs-select
+              @change="setConfig"
+              class="w-100"
+              autocomplete
+              name="renew"
+              v-validate="'required'"
+              :danger="errors.has('config-sheets.renew')"
+              :danger-text="errors.first('config-sheets.renew')"
+              label="Reiniciar configuración"
+              v-model="configSheetDoc.reinicio"
+            >
+              <vs-select-item
+                :value="'N'"
+                text="Nunca"
+              />
+            </vs-select>
+          </div>
         </div>
         <div class="col-2">
         </div>
       </div>
       <div class="row mt-3">
-        <div
-          class="col-12"
-          v-if="configSheetDoc.alcance === 'grupos' || configSheetDoc.alcance === 'usuarios'"
-        >
+        <div class="col-12">
           <div class="row mt-3">
-            <div class="col-5">
-              <vs-select
-                v-if="configSheetDoc.alcance === 'grupos'"
-                class="w-100"
-                autocomplete
-                label="Grupos"
-                v-model="configId"
-                name="configId"
-                v-validate="'required'"
-                :danger="errors.has('config-sheets.configId')"
-                :danger-text="errors.first('config-sheets.configId')"
-              >
-                <vs-select-item
-                  v-for="group in groupsCompany"
-                  :key="group.id"
-                  :value="group.id"
-                  :text="group.nombre"
-                />
-              </vs-select>
-              <vs-select
-                v-if="configSheetDoc.alcance === 'usuarios'"
-                class="w-100"
-                autocomplete
-                label="Usuarios"
-                v-model="configId"
-                name="configIdUser"
-                v-validate="'required'"
-                :danger="errors.has('config-sheets.configIdUser')"
-                :danger-text="errors.first('config-sheets.configIdUser')"
-              >
-                <vs-select-item
-                  v-for="user in usersCompany"
-                  :key="user.id"
-                  :value="user.id"
-                  :text="user.nombre"
-                />
-              </vs-select>
-            </div>
             <div class="col-5">
               <vs-input
                 class="w-100"
@@ -193,51 +148,6 @@
             </div>
             <hr>
           </div>
-          <div class="mt-3 box-config">
-            <div
-              class="row"
-              v-for="(config, index) in configSheetDoc.configFolios" :key="index"
-            >
-              <div class="col-5" v-if="configSheetDoc.alcance === 'usuarios'">
-                <vs-input
-                  disabled
-                  class="w-100"
-                  label="Usuario"
-                  v-model="config.configNombre"
-                />
-
-              </div>
-              <div class="col-5" v-if="configSheetDoc.alcance === 'grupos'">
-                <vs-input
-                  disabled
-                  class="w-100"
-                  label="Grupo"
-                  v-model="config.configNombre"
-                />
-              </div>
-              <div class="col-5">
-                <vs-input
-                  disabled
-                  class="w-100"
-                  label="Folio inicial"
-                  maxlength="50"
-                  v-model="config.folioInicial"
-                />
-              </div>
-              <div class="col-2 button-add">
-                <vs-button
-                  radius
-                  class="ml-3"
-                  color="danger"
-                  type="border"
-                  icon="highlight_off"
-                  size="small"
-                  @click="removeConfig(config, index)"
-                />
-              </div>
-              <hr>
-            </div>
-          </div>
         </div>
       </div>
     </form>
@@ -261,6 +171,7 @@ export default {
   data() {
     return {
       sheetsDoc: {},
+      config: {},
       configSheetDoc: {},
       configOption: {},
       groupConfig: '',
@@ -296,15 +207,12 @@ export default {
       'company',
       'empresa'
     ]),
-    ...mapGetters('Herramientas', [
+    ...mapGetters('Management', [
       'configSheetByDoc'
     ])
   },
   methods: {
-    ...mapActions('Herramientas', [
-      'listDocuments',
-      'clearSelected',
-      'getDocConfigSheet',
+    ...mapActions('Management', [
       'saveDocConfigSheet'
     ]),
     setConfig() {
@@ -398,6 +306,7 @@ export default {
       }
       console.log('save', this.configSheetDoc);
     },
+    /*
     async configSheets(option) {
       this.sheetsDoc = { ...option };
 
@@ -408,8 +317,8 @@ export default {
         reinicio: '',
         configFolios: []
       };
-      await this.getDocConfigSheet({ id: option.opcionId });
     }
+    */
   }
 };
 </script>
