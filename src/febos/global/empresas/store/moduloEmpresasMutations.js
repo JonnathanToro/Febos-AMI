@@ -41,7 +41,8 @@ export default {
     state.usersGroup = payload.usuarios;
     state.pagination = {
       items: Number.parseInt(payload.totalElementos, 10),
-      pages: Number.parseInt(payload.totalPaginas, 10)
+      // pages: Number.parseInt(payload.totalPaginas, 10)
+      pages: Number.parseInt(2, 10)
     };
   },
   SET_LOADING(state, payload) {

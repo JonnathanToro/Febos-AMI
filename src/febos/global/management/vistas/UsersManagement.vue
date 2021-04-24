@@ -281,13 +281,26 @@ export default {
   },
   watch: {
     page(newValue) {
-      this.getUsersCompany({
-        empresaId: this.company.id,
-        pagina: newValue,
-        filas: 10,
-        buscarInfoExtra: 'si',
-        filtroInfoExtra: 'CARGO'
-      });
+      console.log('grupo', this.selectedGroup.nombre);
+      if (this.selectedGroup.nombre
+        && this.selectedGroup.nombre !== this.company.razonSocial) {
+        this.getUsersGroup({
+          empresaId: this.company.id,
+          pagina: newValue,
+          filas: 10,
+          groupId: this.selectedGroup.id
+        });
+        console.log('buscando usuarios grupo', newValue);
+      } else {
+        this.getUsersCompany({
+          empresaId: this.company.id,
+          pagina: newValue,
+          filas: 10,
+          buscarInfoExtra: 'si',
+          filtroInfoExtra: 'CARGO'
+        });
+        console.log('buscando usuarios empresa', newValue);
+      }
     },
     usersByGroup(newValue) {
       console.log('WATCH usersByGroup', newValue);
@@ -311,9 +324,7 @@ export default {
     },
     usersCompany(newValue, oldValue) {
       if (newValue !== oldValue) {
-        if (!this.selectedGroup.nombre) {
-          this.usersTree = this.usersCompany;
-        }
+        this.usersTree = this.usersCompany;
       }
     }
   },
@@ -364,7 +375,6 @@ export default {
       this.showModals('modalEditGroup');
     },
     addSubGroup() {
-      console.log('ADD SUB - ', this);
       this.action = 'add';
       const padreId = this.selectedGroup.id;
       const parentName = this.selectedGroup.nombre;
@@ -382,7 +392,12 @@ export default {
       this.setElement(item.id);
       this.selectedGroup = { ...item };
       if (item.nombre !== this.company.razonSocial) {
-        this.getUsersGroup(item.id);
+        this.getUsersGroup({
+          empresaId: this.company.id,
+          pagina: 1,
+          filas: 10,
+          groupId: item.id
+        });
         this.usersTree = this.usersByGroup;
       } else {
         this.getUsersCompany({
