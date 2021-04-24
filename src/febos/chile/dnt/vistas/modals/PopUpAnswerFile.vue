@@ -125,7 +125,8 @@ export default {
           solicitanteGrupoNombre: creatorGroupName,
           compradorCodigo: this.creatorGroup,
           compradorArea: creatorGroupName,
-          emisorContactoNombre: this.currentUser.nombre
+          emisorContactoNombre: this.currentUser.nombre,
+          emisorContactoCodigo: this.currentUser.id
         },
         referencias: [
           {
