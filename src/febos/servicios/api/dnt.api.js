@@ -82,7 +82,6 @@ export const sendFile = (payload) => apiClient.post(`${RESOURCE}/${payload.febos
   { operacionId: 'io.dnt.send.file' });
 
 export const createDnt = (payload) => {
-  console.log('CREAR', payload);
   const params = apiClient.queryParams({
     entrada: 'json',
     tipoDocumento: 'EXP',

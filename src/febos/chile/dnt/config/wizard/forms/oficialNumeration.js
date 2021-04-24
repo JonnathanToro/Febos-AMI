@@ -166,7 +166,6 @@ export default () => ({
     return data;
   },
   documentMapper(input, iutCompany, nameCompany, isDraft = false) {
-    console.log('INPUT', input);
     const data = {
       adjuntos: [],
       dnt: {
