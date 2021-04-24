@@ -63,15 +63,10 @@ export default {
       commit('SET_SAVING_CONFIGURATIONS', false);
     }
   },
-  async getUsersGroup({ commit, rootState }, groupId) {
+  async getUsersGroup({ commit }, payload) {
     try {
       commit('SET_LOADING', true);
-      const response = await getUsersByGroup({
-        empresaId: rootState.Empresas.empresa.id,
-        pagina: 1,
-        filas: 10,
-        groupId
-      });
+      const response = await getUsersByGroup(payload);
       commit('SET_USERS_GROUP', response.data);
     } finally {
       commit('SET_LOADING', false);
