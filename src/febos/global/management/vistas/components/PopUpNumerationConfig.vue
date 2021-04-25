@@ -88,66 +88,76 @@
     <form
       data-vv-scope="config-sheets">
       <div class="row mb-3">
-        <div class="col-5">
-          <ul class="box-config">
-            <li>
-              <div v-for="doc in allDocumentsState" :key="doc.id">
-                {{doc.label}}
-              </div>
-            </li>
-          </ul>
+        <div class="col-7">
+          <div class="box-config">
+            <vs-list>
+              <vs-list-item
+                v-for="doc in allDocuments" :key="doc.id"
+                :title="doc.value"
+                :subtitle="doc.label"
+              >
+                <vs-switch color="warning" @change="setConfig(doc)" v-model="doc.configured"/>
+              </vs-list-item>
+            </vs-list>
+          </div>
         </div>
         <div class="col-5">
-          <div class="row mt-3">
-            <vs-select
-              @change="setConfig"
-              class="w-100"
-              autocomplete
-              name="renew"
-              v-validate="'required'"
-              :danger="errors.has('config-sheets.renew')"
-              :danger-text="errors.first('config-sheets.renew')"
-              label="Reiniciar configuración"
-              v-model="configSheetDoc.reinicio"
-            >
-              <vs-select-item
-                :value="'N'"
-                text="Nunca"
-              />
-            </vs-select>
+          <div class="row">
+            <div class="col-12">
+              <div class="mt-3">
+                <vs-select
+                  @change="setConfig"
+                  class="w-100"
+                  autocomplete
+                  name="renew"
+                  v-validate="'required'"
+                  :danger="errors.has('config-sheets.renew')"
+                  :danger-text="errors.first('config-sheets.renew')"
+                  label="Reiniciar configuración"
+                  v-model="configDoc.renew"
+                >
+                  <vs-select-item
+                    :value="'N'"
+                    text="Nunca"
+                  />
+                  <vs-select-item
+                    :value="'A'"
+                    text="Anual"
+                  />
+                </vs-select>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mt-3">
+                <vs-input
+                  class="w-100"
+                  label="Folio inicial"
+                  maxlength="50"
+                  v-model="configDoc.folio"
+                  name="configFolio"
+                  v-validate="'required'"
+                  :danger="errors.has('config-sheets.configFolio')"
+                  :danger-text="errors.first('config-sheets.configFolio')"
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mt-3">
+                <vs-input
+                  class="w-100"
+                  label="Prefijo"
+                  maxlength="50"
+                  v-model="configDoc.prefix"
+                  name="configFolio"
+                  v-validate="'required'"
+                  :danger="errors.has('config-sheets.configFolio')"
+                  :danger-text="errors.first('config-sheets.configFolio')"
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-2">
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-12">
-          <div class="row mt-3">
-            <div class="col-5">
-              <vs-input
-                class="w-100"
-                label="Folio inicial"
-                maxlength="50"
-                v-model="configFolio"
-                name="configFolio"
-                v-validate="'required'"
-                :danger="errors.has('config-sheets.configFolio')"
-                :danger-text="errors.first('config-sheets.configFolio')"
-              />
-            </div>
-            <div class="col-2 button-add">
-              <vs-button
-                radius
-                class="ml-3"
-                color="primary"
-                type="border"
-                icon="add"
-                size="small"
-                @click="addConfig()"
-              />
-            </div>
-            <hr>
-          </div>
         </div>
       </div>
     </form>
@@ -170,11 +180,10 @@ export default {
   mixins: [],
   data() {
     return {
-      sheetsDoc: {},
-      config: {},
-      configSheetDoc: {},
-      configOption: {},
-      groupConfig: '',
+      configDoc: {},
+      configSheetDoc: {
+        configFolios: []
+      },
       configIds: [],
       configId: '',
       configFolio: ''
@@ -188,17 +197,6 @@ export default {
       type: Array
     }
   },
-  watch: {
-    group() {
-      if (this.group === this.company.razonSocial) {
-        this.configSheetDoc.configFolios = [{
-          folioInicial: '',
-          configId: this.company.id,
-          configNombre: this.company.razonSocial
-        }];
-      }
-    }
-  },
   computed: {
     ...mapGetters('List', [
       'allDocumentsState',
@@ -209,71 +207,29 @@ export default {
     ]),
     ...mapGetters('Management', [
       'configSheetByDoc'
-    ])
+    ]),
+    allDocuments() {
+      return this.allDocumentsState.list
+        .map((documentMap) => ({
+          configured: false,
+          ...documentMap
+        }))
+        .filter((document) => document.groupId.includes('.item'));
+    }
   },
   methods: {
     ...mapActions('Management', [
       'saveDocConfigSheet'
     ]),
-    setConfig() {
-      if (this.configSheetDoc.alcance === 'empresa') {
-        this.configSheetDoc.configFolios = [{
-          folioInicial: '',
-          configId: this.company.id,
-          configNombre: this.company.razonSocial
-        }];
-      } else {
-        this.configIds = [];
-        this.configSheetDoc.configFolios = [];
-        /*
-        this.configSheetDoc.configFolios = [{
-          folioInicial: '',
-          configId: '',
-          configNombre: ''
-        }];
-        */
-      }
+    setConfig(doc) {
+      this.configSheetDoc.configFolios.push({
+        configId: doc.id,
+        configNombre: doc.label,
+        initialSheet: '',
+        prefix: '',
+        renew: ''
+      });
       console.log('config', this.configSheetDoc);
-    },
-    searchGroup(groupId) {
-      return this.groupsCompany.find((group) => group.id === groupId);
-    },
-    searchUser(userId) {
-      return this.usersCompany.find((user) => user.id === userId);
-    },
-    removeConfig(configRemove,) { // index) {
-      this.configSheetDoc.configFolios = this.configSheetDoc.configFolios
-        .filter((config) => config.configId !== configRemove.configId);
-      this.configIds = this.configIds
-        .filter((config) => config.configId !== configRemove.configId);
-    },
-    async addConfig() {
-      const isSelected = this.configIds
-        .some((configAdded) => configAdded.configId === this.configId);
-
-      if (!isSelected) {
-        const configName = this.configSheetDoc.alcance === 'grupos'
-          ? this.searchGroup(this.configId) : this.searchUser(this.configId);
-        this.configSheetDoc.configFolios.push({
-          folioInicial: this.configFolio,
-          configId: this.configId,
-          configNombre: configName.nombre
-        });
-        this.configIds.push({ configId: this.configId });
-
-        this.configId = '';
-        this.configFolio = '';
-
-        await this.$validator.reset();
-      } else {
-        this.$vs.notify({
-          title: 'Oops!',
-          text: 'Ya agregaste la configuración para este elemento',
-          color: 'warning',
-          time: 3000,
-          position: 'top-center'
-        });
-      }
     },
     async validateForm(scope) {
       const result = await this.$validator.validateAll(scope);
@@ -319,6 +275,9 @@ export default {
       };
     }
     */
+  },
+  created() {
+    console.log('DOC', this.allDocumentsState);
   }
 };
 </script>
