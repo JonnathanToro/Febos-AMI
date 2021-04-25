@@ -1,4 +1,4 @@
-import StepFlow from '@/febos/chile/dnt/components/wizard/flow/stepFlow';
+import StepFlow from '@/febos/chile/dnt/components/wizard/flow/StepFlow';
 
 export default () => ({
   currentStep: 0,

@@ -100,6 +100,42 @@
             />
           </vs-select>
         </div>
+        <div
+          class="col-6"
+          v-if="stepType === stepTypes.GROUP || stepType === this.stepTypes.OFFICE"
+        >
+          <list-groups
+            class="w-100"
+            autocomplete
+            label="Grupo del responsable"
+            name="groupStep"
+            v-model="groupStep"
+            :typeList="stepType"
+            :officeType="wizardData.fileCategory"
+            ref="groupStep"
+            :danger="errors.has('flow-part-2.groupStep')"
+            :danger-text="errors.first('flow-part-2.groupStep')"
+            v-validate="{
+              required: stepType === stepTypes.GROUP || stepType === this.stepTypes.OFFICE
+            }"
+          />
+        </div>
+        <div
+          class="col-6"
+          v-if="stepType === stepTypes.USER"
+        >
+          <list-user
+            class="w-100"
+            autocomplete
+            label="Usuario"
+            name="userStep"
+            v-model="userStep"
+            ref="userStep"
+            :danger="errors.has('flow-part-2.userStep')"
+            :danger-text="errors.first('flow-part-2.userStep')"
+            v-validate="{ required: stepType === stepTypes.USER }"
+          />
+        </div>
         <div class="col-3">
           <vs-select
             class="w-100"
@@ -125,36 +161,6 @@
             />
           </vs-select>
         </div>
-        <div class="col-3">
-          <list-groups
-            class="w-100"
-            autocomplete
-            label="Grupo del responsable"
-            name="groupStep"
-            v-model="groupStep"
-            :typeList="stepType"
-            :officeType="wizardData.fileCategory"
-            ref="groupStep"
-            :danger="errors.has('flow-part-2.groupStep')"
-            :danger-text="errors.first('flow-part-2.groupStep')"
-            v-validate="{ required: stepType === stepTypes.GROUP
-             || stepType === this.stepTypes.OFFICE}"
-          />
-        </div>
-        <div class="col-3" v-show="stepType === stepTypes.USER">
-          <list-group-users
-            class="w-100"
-            autocomplete
-            label="Usuario del grupo"
-            name="userStep"
-            v-model="userStep"
-            :parent-value="groupStep"
-            ref="userStep"
-            :danger="errors.has('flow-part-2.userStep')"
-            :danger-text="errors.first('flow-part-2.userStep')"
-            v-validate="{ required: stepType === stepTypes.USER}"
-          />
-        </div>
       </div>
       <div class="row mb-3">
         <div class="col-12 d-flex align-items-end justify-content-end">
@@ -179,15 +185,15 @@
               <vs-icon
                 icon="highlight_off"
                 size="small"
-                bg="white" round
+                bg="white"
+                round
                 @click="removeStep(index)"
               />
             </span>
             <div class="text-center step-name">
               {{ step.responsibleName }}
               <span
-                v-if="step.stepType === stepTypes.GROUP
-                || step.stepType === stepTypes.OFFICE"
+                v-if="step.stepType === stepTypes.GROUP || step.stepType === stepTypes.OFFICE"
               >
                 {{(step.groupUsers.length) }}
               </span>
@@ -235,12 +241,13 @@ import Vue from 'vue';
 import RolTypes from '@/febos/chile/dnt/mixins/RolTypes';
 import StepTypes from '@/febos/chile/dnt/mixins/StepTypes';
 import ListGroups from '@/febos/chile/lists/components/ListGroups';
-import ListGroupUsers from '@/febos/chile/lists/components/ListGroupUsers';
+import ListUser from '@/febos/chile/lists/components/ListUser';
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
+import { getUsersByGroup } from '@/febos/servicios/api/empresas.api';
 
 export default {
   mixins: [WizardStep],
-  components: { ListGroups, ListGroupUsers },
+  components: { ListGroups, ListUser },
   data() {
     return {
       error: {
@@ -258,7 +265,7 @@ export default {
         steps: [],
         file: ''
       },
-      stepType: 1,
+      stepType: StepTypes.GROUP,
       rolType: '',
       groupStep: '',
       userStep: ''
@@ -271,6 +278,9 @@ export default {
     ...mapGetters('Dnts', [
       'wizardData'
     ]),
+    ...mapGetters('Empresas', [
+      'company'
+    ])
   },
   watch: {},
   methods: {
@@ -285,13 +295,14 @@ export default {
         return;
       }
 
-      if (this.step.steps.find((step) => step.stepType === this.stepTypes.OFFICE)) {
+      if (this.step.steps.find((step) => step.stepType === StepTypes.OFFICE)) {
         this.error.message = 'Oops! El último paso debe ser la oficina y ya la agregaste';
         return;
       }
 
-      const responsibleStep = (this.stepType === this.stepTypes.GROUP
-        || this.stepType === this.stepTypes.OFFICE)
+      const responsibleStep = (
+        this.stepType === StepTypes.GROUP || this.stepType === StepTypes.OFFICE
+      )
         ? this.$refs.groupStep.getOption()
         : this.$refs.userStep.getOption();
 
@@ -304,15 +315,22 @@ export default {
         responsibleEmail: responsibleStep.email || ''
       };
 
-      if (this.stepType === this.stepTypes.GROUP || this.stepType === this.stepTypes.OFFICE) {
-        step.groupUsers = this.groupUsersState.list.map((user) => {
-          const userId = {};
-          userId.tipoValorResponsableId = user.id;
-          return userId;
+      if (this.stepType === StepTypes.GROUP || this.stepType === StepTypes.OFFICE) {
+        const { data: { usuarios: users } } = await getUsersByGroup({
+          empresaId: this.company.id,
+          pagina: 1,
+          filas: 9999,
+          groupId: responsibleStep.id
         });
+
+        step.groupUsers = users.map((user) => ({
+          ...user,
+          tipoValorResponsableId: user.id
+        }));
       }
 
       this.step.steps.push(step);
+
       this.stepType = this.stepTypes.GROUP;
       this.rolType = '';
       this.groupStep = '';
@@ -349,13 +367,11 @@ export default {
         typeFlowText: `${ this.wizardData.fileType } - `,
         fileType: this.wizardData.fileType,
         number: this.wizardData.fileNumber,
+        // TODO: mover al mapper. @lettunia
         privado: 'N',
         ...this.step
       };
     }
-  },
-  mounted() {
-    console.log('THIS', this);
   }
 };
 </script>

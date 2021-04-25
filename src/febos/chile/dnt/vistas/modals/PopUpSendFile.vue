@@ -12,37 +12,23 @@
         v-if="subject.typeSend === 'moodUser' && usersCompany && usersCompany.length"
         class="wrap-form"
       >
-        <vs-select
-          autocomplete
-          class="selectExample"
+        <list-user
+          name="user"
+          :block="false"
           label="Usuarios"
           v-model="subject.user"
-        >
-          <vs-select-item
-            v-for="user in usersCompany"
-            :key="user.id"
-            :value="user.id"
-            :text="user.nombre"
-          />
-        </vs-select>
+        />
       </div>
       <div
         v-if="subject.typeSend === 'moodGroup' && groupsCompany && groupsCompany.length"
         class="wrap-form"
       >
-        <vs-select
-          autocomplete
-          class="selectExample"
+        <list-groups
+          name="group"
+          :block="false"
           label="Unidad"
           v-model="subject.group"
-        >
-          <vs-select-item
-            v-for="group in groupsCompany"
-            :key="group.id"
-            :value="group.id"
-            :text="group.nombre"
-          />
-        </vs-select>
+        />
       </div>
       <div class="wrap-commentary">
         <vs-textarea
@@ -126,7 +112,11 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
+import ListUser from '@/febos/chile/lists/components/ListUser';
+import ListGroups from '@/febos/chile/lists/components/ListGroups';
+
 export default {
+  components: { ListUser, ListGroups },
   name: 'PopUpSendFile',
   props: {
     file: {
