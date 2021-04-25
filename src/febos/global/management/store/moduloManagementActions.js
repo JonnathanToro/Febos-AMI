@@ -1,6 +1,16 @@
 import { getSheetsConfig, saveSheetsConfig } from '@/febos/servicios/api/dnt.api';
+import { listOptions } from '@/febos/servicios/api/opciones.api';
 
 export default {
+  async fetchAllDocuments({ commit }) {
+    const response = await listOptions({
+      grupoOpcion: 'tipos.documentos-ed',
+      deshabilitado: 'no',
+      agrupar: 'si'
+    });
+
+    commit('SET_ALL_DOCUMENTS', response.data.opciones);
+  },
   async getDocConfigSheet({ commit }, payload) {
     try {
       commit('SET_CONFIG_SHEET', {});
@@ -24,5 +34,8 @@ export default {
     } finally {
       // commit('SET_LOADING', false);
     }
+  },
+  updateConfig({ commit }, configDoc) {
+    commit('UPDATE_CONFIG_DOC', configDoc);
   }
 };

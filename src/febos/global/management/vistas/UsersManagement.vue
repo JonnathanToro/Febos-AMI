@@ -365,11 +365,9 @@ export default {
       'showModals',
       'closeModal'
     ]),
-    ...mapActions('List', [
-      'fetchAllDocuments'
-    ]),
     ...mapActions('Management', [
-      'getDocConfigSheet'
+      'getDocConfigSheet',
+      'fetchAllDocuments'
     ]),
     async configNumeration() {
       console.log('ACA22222', this.selectedGroup);

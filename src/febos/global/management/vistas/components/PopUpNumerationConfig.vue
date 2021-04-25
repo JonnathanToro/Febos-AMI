@@ -95,8 +95,14 @@
                 v-for="doc in allDocuments" :key="doc.id"
                 :title="doc.value"
                 :subtitle="doc.label"
+                :class="{ selected: doc.id === configDoc.configId }"
               >
-                <vs-switch color="warning" @change="setConfig(doc)" v-model="doc.configured"/>
+                <vs-button
+                  color="primary"
+                  type="border"
+                  @click="setConfig(doc)"
+                  icon="search"
+                />
               </vs-list-item>
             </vs-list>
           </div>
@@ -104,9 +110,11 @@
         <div class="col-5">
           <div class="row">
             <div class="col-12">
+              <h5>
+                Configuración para {{configDoc.configNombre}}
+              </h5>
               <div class="mt-3">
                 <vs-select
-                  @change="setConfig"
                   class="w-100"
                   autocomplete
                   name="renew"
@@ -133,7 +141,7 @@
                   class="w-100"
                   label="Folio inicial"
                   maxlength="50"
-                  v-model="configDoc.folio"
+                  v-model="configDoc.initialSheet"
                   name="configFolio"
                   v-validate="'required'"
                   :danger="errors.has('config-sheets.configFolio')"
@@ -155,9 +163,18 @@
                 />
               </div>
             </div>
+            <div class="col-12">
+              <div class="mt-3">
+                <vs-button
+                  class="mt-4"
+                  color="primary"
+                  v-on:click="updateDocConfig()"
+                >
+                  Guardar
+                </vs-button>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-2">
         </div>
       </div>
     </form>
@@ -198,8 +215,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('List', [
-      'allDocumentsState',
+    ...mapGetters('Management', [
+      'allDocuments',
     ]),
     ...mapGetters('Empresas', [
       'company',
@@ -207,29 +224,18 @@ export default {
     ]),
     ...mapGetters('Management', [
       'configSheetByDoc'
-    ]),
-    allDocuments() {
-      return this.allDocumentsState.list
-        .map((documentMap) => ({
-          configured: false,
-          ...documentMap
-        }))
-        .filter((document) => document.groupId.includes('.item'));
-    }
+    ])
   },
   methods: {
     ...mapActions('Management', [
-      'saveDocConfigSheet'
+      'saveDocConfigSheet',
+      'updateConfig'
     ]),
     setConfig(doc) {
-      this.configSheetDoc.configFolios.push({
-        configId: doc.id,
-        configNombre: doc.label,
-        initialSheet: '',
-        prefix: '',
-        renew: ''
-      });
-      console.log('config', this.configSheetDoc);
+      this.configDoc = { ...doc };
+    },
+    updateDocConfig() {
+      this.updateConfig(this.configDoc);
     },
     async validateForm(scope) {
       const result = await this.$validator.validateAll(scope);
@@ -284,52 +290,12 @@ export default {
 
 <style lang="css" scoped>
 
-.button-add {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.margin-top {
-  margin-top: 20px;
-}
-.margin-right {
-  margin-right: 10px;
-}
-
-.wrap-option {
-  background:  #f8f8f8;
-  margin-bottom: 6px;
-}
-
-.input-option {
-  color: inherit;
-  margin-top: 4px;
-  width: 80%;
-  background: transparent;
-}
-
-.input-blocked {
-  color: inherit;
-  pointer-events: none;
-  border: none !important;
-  padding: 4px 4px 6px 4px;
-  border-radius: 5px;
-}
-
-.input-edit {
-  color: inherit;
-  border: 1px solid #66258324;
-  padding: 4px 4px 6px 4px;
-  border-radius: 5px;
-}
-
 .selected {
-  background: #cfe7f3;
+  background: #eddaf3;
 }
 
 .box-config {
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: scroll;
   overflow-x: hidden;
 }

@@ -1,4 +1,5 @@
 export default {
   selectedElement: '',
-  configSheet: {}
+  configSheet: {},
+  allDocuments: {}
 };
