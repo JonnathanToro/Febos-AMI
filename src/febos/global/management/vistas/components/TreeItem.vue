@@ -97,9 +97,6 @@ export default {
     getChildren() {
       this.$emit('get-children', this.item);
     }
-  },
-  mounted() {
-    console.log('this', this.item);
   }
 };
 </script>
