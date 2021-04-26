@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="col-5">
-          <div class="row">
+          <div class="row" v-show="configDoc.configNombre">
             <div class="col-12">
               <h5>
                 Configuración para {{configDoc.configNombre}}
@@ -142,10 +142,10 @@
                   label="Folio inicial"
                   maxlength="50"
                   v-model="configDoc.initialSheet"
-                  name="configFolio"
+                  name="initialSheet"
                   v-validate="'required'"
-                  :danger="errors.has('config-sheets.configFolio')"
-                  :danger-text="errors.first('config-sheets.configFolio')"
+                  :danger="errors.has('config-sheets.initialSheet')"
+                  :danger-text="errors.first('config-sheets.initialSheet')"
                 />
               </div>
             </div>
@@ -156,18 +156,20 @@
                   label="Prefijo"
                   maxlength="50"
                   v-model="configDoc.prefix"
-                  name="configFolio"
-                  v-validate="'required'"
-                  :danger="errors.has('config-sheets.configFolio')"
-                  :danger-text="errors.first('config-sheets.configFolio')"
+                  name="prefix"
                 />
               </div>
             </div>
             <div class="col-12">
-              <div class="mt-3">
+              <div class="mt-3 text-center">
                 <vs-button
-                  class="mt-4"
+                  class="vs-con-loading__container mt-4"
+                  ref="loadableButton"
+                  id="button-with-loading"
+                  vslor="primary"
+                  type="border"
                   color="primary"
+                  size="small"
                   v-on:click="updateDocConfig()"
                 >
                   Guardar
@@ -232,41 +234,65 @@ export default {
       'updateConfig'
     ]),
     setConfig(doc) {
-      this.configDoc = { ...doc };
-    },
-    updateDocConfig() {
-      this.updateConfig(this.configDoc);
+      this.configDoc = {
+        ...doc,
+        configured: true
+      };
     },
     async validateForm(scope) {
       const result = await this.$validator.validateAll(scope);
       return !!result;
     },
-    async validateConfig() {
-      const configValid = await Promise.all([
-        this.validateForm('config-sheets')
-      ]);
-      return configValid;
-    },
-    async saveConfig() {
-      if (!await this.validateConfig()) {
+    async updateDocConfig() {
+      const isValid = await this.validateForm('config-sheets');
+      if (!isValid) {
         return;
       }
+      this.$vs.loading({
+        background: '#ffffff',
+        color: '#8958db',
+        container: '#button-with-loading',
+        scale: 0.45
+      });
+      setTimeout(() => {
+        this.configDoc = {};
+        this.$vs.loading.close('#button-with-loading');
+      }, 2000);
+      this.updateConfig(this.configDoc);
+    },
+    async saveConfig() {
+      const isExternalOffice = (this.group.esOficina === 'Y' || this.group.esficina === 'si')
+      && this.group.tipo === 'externa';
 
-      if (this.configSheetDoc.configFolios.length) {
-        this.saveDocConfigSheet({
-          id: this.sheetsDoc.opcionId,
-          config: this.configSheetDoc
+      // const isInternalOffice = (this.group.esOficina === 'Y' || this.group.esficina === 'si')
+      //  && this.group.tipo === 'interna';
+
+      const isGroup = this.group.nombre !== this.company.razonSocial;
+
+      const instance = isExternalOffice
+        ? 'final' : '-';
+
+      const configuredDocs = this.allDocuments
+        .filter((document) => document.configured)
+        .map((documentMap) => {
+          const docConfig = {};
+          docConfig.configid = documentMap.configId;
+          docConfig.configNombre = documentMap.configNombre;
+          docConfig.folioInicial = documentMap.initialSheet;
+          docConfig.prefijo = documentMap.prefix;
+          docConfig.renueva = documentMap.renew;
+          return docConfig;
         });
-      } else {
-        this.$vs.notify({
-          title: 'Oops!',
-          text: 'Te faltó añadir la configuración de los elementos',
-          color: 'warning',
-          time: 4000,
-          position: 'top-center'
-        });
+      const configSheets = {
+        referenciaId: isGroup ? this.group.id : this.company.id,
+        alcance: isGroup ? 'grupo' : 'empresa',
+        instancia: instance,
+        configFolios: configuredDocs
+      };
+      if (configuredDocs.length) {
+        // this.saveDocConfigSheet(configSheets);
+        console.log('save', configSheets);
       }
-      console.log('save', this.configSheetDoc);
     },
     /*
     async configSheets(option) {
@@ -281,9 +307,6 @@ export default {
       };
     }
     */
-  },
-  created() {
-    console.log('DOC', this.allDocumentsState);
   }
 };
 </script>

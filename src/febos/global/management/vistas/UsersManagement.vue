@@ -100,7 +100,7 @@
           <div class="wrap-actions">
             <vs-button
               v-if="selectedGroup.nombre"
-              class="action mr-2"
+              class="action mr-2 p-2"
               color="primary"
               type="border"
               @click="editGroup()"
@@ -110,7 +110,7 @@
             </vs-button>
             <vs-button
               v-if="selectedGroup.nombre && selectedGroup.esOficina !== 'Y'"
-              class="action mr-2"
+              class="action mr-2 p-2"
               color="primary"
               type="border"
               @click="addSubGroup()"
@@ -119,7 +119,7 @@
               Agregar SubGrupo
             </vs-button>
             <vs-button
-              class="action mr-2"
+              class="action mr-2 p-2"
               color="primary"
               type="border"
               @click="addGroup()"
@@ -129,7 +129,7 @@
               Agregar
             </vs-button>
             <vs-button
-              class="action mr-2"
+              class="action mr-2 p-2"
               color="primary"
               type="border"
               @click="addUser()"
@@ -138,17 +138,17 @@
               Agregar Usuario
             </vs-button>
             <vs-button
-              class="action"
+              class="action mr-2 p-2"
               color="primary"
               type="border"
               v-if="selectedGroup.nombre"
               @click="viewUsers()"
               size="small"
-              icon="groups">
+              icon="group">
               Usuarios
             </vs-button>
             <vs-button
-              class="action mr-2"
+              class="action p-2"
               color="primary"
               type="border"
               v-if="selectedGroup.nombre"
