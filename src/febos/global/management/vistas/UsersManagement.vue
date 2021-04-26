@@ -308,13 +308,23 @@ export default {
   },
   watch: {
     page(newValue) {
-      this.getUsersCompany({
-        empresaId: this.company.id,
-        pagina: newValue,
-        filas: 10,
-        buscarInfoExtra: 'si',
-        filtroInfoExtra: 'CARGO'
-      });
+      if (this.selectedGroup.nombre
+        && this.selectedGroup.nombre !== this.company.razonSocial) {
+        this.getUsersGroup({
+          empresaId: this.company.id,
+          pagina: newValue,
+          filas: 10,
+          groupId: this.selectedGroup.id
+        });
+      } else {
+        this.getUsersCompany({
+          empresaId: this.company.id,
+          pagina: newValue,
+          filas: 10,
+          buscarInfoExtra: 'si',
+          filtroInfoExtra: 'CARGO'
+        });
+      }
     },
     usersByGroup(newValue) {
       this.usersTree = newValue;
@@ -337,9 +347,7 @@ export default {
     },
     usersCompany(newValue, oldValue) {
       if (newValue !== oldValue) {
-        if (!this.selectedGroup.nombre) {
-          this.usersTree = this.usersCompany;
-        }
+        this.usersTree = this.usersCompany;
       }
     }
   },
@@ -417,7 +425,12 @@ export default {
       this.setElement(item.id);
       this.selectedGroup = { ...item };
       if (item.nombre !== this.company.razonSocial) {
-        this.getUsersGroup(item.id);
+        this.getUsersGroup({
+          empresaId: this.company.id,
+          pagina: 1,
+          filas: 10,
+          groupId: item.id
+        });
         this.usersTree = this.usersByGroup;
       } else {
         this.getUsersCompany({
