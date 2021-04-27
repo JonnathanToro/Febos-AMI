@@ -118,6 +118,7 @@
                   class="w-100"
                   autocomplete
                   name="renew"
+                  :disabled="configDoc.referenciaId"
                   v-validate="'required'"
                   :danger="errors.has('config-sheets.renew')"
                   :danger-text="errors.first('config-sheets.renew')"
@@ -125,6 +126,7 @@
                   v-model="configDoc.renew"
                 >
                   <vs-select-item
+                    is-selected="true"
                     :value="'N'"
                     text="Nunca"
                   />
@@ -138,6 +140,7 @@
             <div class="col-12">
               <div class="mt-3">
                 <vs-input
+                  :disabled="configDoc.referenciaId"
                   class="w-100"
                   label="Folio inicial"
                   maxlength="50"
@@ -152,6 +155,7 @@
             <div class="col-12">
               <div class="mt-3">
                 <vs-input
+                  :disabled="configDoc.referenciaId"
                   class="w-100"
                   label="Prefijo"
                   maxlength="50"
@@ -160,13 +164,10 @@
                 />
               </div>
             </div>
-            <div class="col-12">
+            <div class="col-12" v-if="!configDoc.referenciaId">
               <div class="mt-3 text-center">
                 <vs-button
-                  class="vs-con-loading__container mt-4"
-                  ref="loadableButton"
-                  id="button-with-loading"
-                  vslor="primary"
+                  class="mt-4"
                   type="border"
                   color="primary"
                   size="small"
@@ -180,7 +181,7 @@
         </div>
       </div>
     </form>
-    <div class="text-center" v-if="!configSheetByDoc.configFolios">
+    <div class="text-center">
       <vs-button
         class="mt-4"
         color="primary"
@@ -205,7 +206,8 @@ export default {
       },
       configIds: [],
       configId: '',
-      configFolio: ''
+      configFolio: '',
+      activeLoading: true
     };
   },
   props: {
@@ -219,14 +221,12 @@ export default {
   computed: {
     ...mapGetters('Management', [
       'allDocuments',
+      'configSheet'
     ]),
     ...mapGetters('Empresas', [
       'company',
       'empresa'
     ]),
-    ...mapGetters('Management', [
-      'configSheetByDoc'
-    ])
   },
   methods: {
     ...mapActions('Management', [
@@ -234,10 +234,21 @@ export default {
       'updateConfig'
     ]),
     setConfig(doc) {
-      this.configDoc = {
-        ...doc,
-        configured: true
-      };
+      const config = (this.configSheet[doc.configId] || {});
+
+      if (Object.keys(config).length && config.folioInicial) {
+        this.configDoc = {
+          ...doc,
+          referenciaId: config.referenciaId,
+          initialSheet: config.folioInicial,
+          prefix: config.prefijo,
+          renew: config.renueva
+        };
+        this.configDoc.configured = true;
+      } else {
+        this.configDoc = { ...doc };
+      }
+      console.log('SET', this.configDoc);
     },
     async validateForm(scope) {
       const result = await this.$validator.validateAll(scope);
@@ -248,17 +259,16 @@ export default {
       if (!isValid) {
         return;
       }
-      this.$vs.loading({
-        background: '#ffffff',
-        color: '#8958db',
-        container: '#button-with-loading',
-        scale: 0.45
-      });
-      setTimeout(() => {
-        this.configDoc = {};
-        this.$vs.loading.close('#button-with-loading');
-      }, 2000);
+      this.configDoc.configured = true;
       this.updateConfig(this.configDoc);
+      this.$vs.notify({
+        title: 'Genial!',
+        text: 'Numeración configurada',
+        iconPack: 'feather',
+        icon: 'icon-alert-circle',
+        color: 'success'
+      });
+      this.configDoc = {};
     },
     async saveConfig() {
       const isExternalOffice = (this.group.esOficina === 'Y' || this.group.esficina === 'si')
@@ -270,19 +280,20 @@ export default {
       const isGroup = this.group.nombre !== this.company.razonSocial;
 
       const instance = isExternalOffice
-        ? 'final' : '-';
+        ? 'final' : 'final'; // TODO: Braulio confirma el 28 abril si es al final siempre
 
       const configuredDocs = this.allDocuments
-        .filter((document) => document.configured)
+        .filter((document) => document.configured && !document.referenciaId)
         .map((documentMap) => {
           const docConfig = {};
-          docConfig.configid = documentMap.configId;
+          docConfig.configId = documentMap.configId;
           docConfig.configNombre = documentMap.configNombre;
           docConfig.folioInicial = documentMap.initialSheet;
           docConfig.prefijo = documentMap.prefix;
           docConfig.renueva = documentMap.renew;
           return docConfig;
         });
+      console.log('SAVE', configuredDocs);
       const configSheets = {
         referenciaId: isGroup ? this.group.id : this.company.id,
         alcance: isGroup ? 'grupo' : 'empresa',
@@ -293,20 +304,7 @@ export default {
         // this.saveDocConfigSheet(configSheets);
         console.log('save', configSheets);
       }
-    },
-    /*
-    async configSheets(option) {
-      this.sheetsDoc = { ...option };
-
-      this.configSheetDoc = {
-        tipoDoc: option.opcionId,
-        iut: this.company.iut,
-        alcance: '',
-        reinicio: '',
-        configFolios: []
-      };
     }
-    */
   }
 };
 </script>

@@ -102,14 +102,7 @@ export default {
     return {
       editMood: false,
       createMood: false,
-      selected: this.option.deshabilitado !== 1,
-      sheetsDoc: {},
-      configSheetDoc: {},
-      configOption: {},
-      groupConfig: '',
-      configIds: [],
-      configId: '',
-      configFolio: ''
+      selected: this.option.deshabilitado !== 1
     };
   },
   props: {
@@ -127,12 +120,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    usersCompany: {
-      type: Array
-    },
-    groupsCompany: {
-      type: Array
     }
   },
   watch: {},
@@ -140,9 +127,6 @@ export default {
     ...mapGetters('Empresas', [
       'company',
       'empresa'
-    ]),
-    ...mapGetters('Herramientas', [
-      'configSheetByDoc'
     ])
   },
   methods: {
@@ -150,9 +134,7 @@ export default {
       'listDocuments',
       'toggleEnableOption',
       'saveOptions',
-      'clearSelected',
-      'getDocConfigSheet',
-      'saveDocConfigSheet'
+      'clearSelected'
     ]),
 
     editOption() {
@@ -161,137 +143,6 @@ export default {
       if (this.type === 'category') {
         this.clearSelected({ type: 'CATEGORY', option: this.option });
       }
-    },
-    setConfig() {
-      if (this.configSheetDoc.alcance === 'empresa') {
-        this.configSheetDoc.configFolios = [{
-          folioInicial: '',
-          configId: this.company.id,
-          configNombre: this.company.razonSocial
-        }];
-      } else {
-        this.configIds = [];
-        this.configSheetDoc.configFolios = [];
-        /*
-        this.configSheetDoc.configFolios = [{
-          folioInicial: '',
-          configId: '',
-          configNombre: ''
-        }];
-        */
-      }
-      console.log('config', this.configSheetDoc);
-    },
-    searchGroup(groupId) {
-      return this.groupsCompany.find((group) => group.id === groupId);
-    },
-    searchUser(userId) {
-      return this.usersCompany.find((user) => user.id === userId);
-    },
-    removeConfig(configRemove,) { // index) {
-      this.configSheetDoc.configFolios = this.configSheetDoc.configFolios
-        .filter((config) => config.configId !== configRemove.configId);
-      this.configIds = this.configIds
-        .filter((config) => config.configId !== configRemove.configId);
-    },
-    async addConfig() {
-      const isSelected = this.configIds
-        .some((configAdded) => configAdded.configId === this.configId);
-
-      if (!isSelected) {
-        const configName = this.configSheetDoc.alcance === 'grupos'
-          ? this.searchGroup(this.configId) : this.searchUser(this.configId);
-        this.configSheetDoc.configFolios.push({
-          folioInicial: this.configFolio,
-          configId: this.configId,
-          configNombre: configName.nombre
-        });
-        this.configIds.push({ configId: this.configId });
-
-        this.configId = '';
-        this.configFolio = '';
-
-        await this.$validator.reset();
-      } else {
-        this.$vs.notify({
-          title: 'Oops!',
-          text: 'Ya agregaste la configuración para este elemento',
-          color: 'warning',
-          time: 3000,
-          position: 'top-center'
-        });
-      }
-
-      /*
-      const isSelected = this.configIds
-        .some((configAdded) => configAdded.configId === config.configId);
-
-      if (!isSelected) {
-        this.configIds.push({ configId: config.configId });
-        const configName = this.configSheetDoc.alcance === 'grupos'
-          ? this.searchGroup(config.configId) : this.searchUser(config.configId);
-
-        const configAdd = {
-          folioInicial: config.folio,
-          configId: config.configId,
-          configNombre: configName.nombre
-        };
-        this.configSheetDoc.configFolios.push(configAdd);
-        console.log('ADD', this.configSheetDoc.configFolios);
-      } else {
-        this.$vs.notify({
-          title: 'Oops!',
-          text: 'Ya agregaste la configuración para este elemento',
-          color: 'warning',
-          time: 3000,
-          position: 'top-center'
-        });
-      }
-      */
-    },
-    async validateForm(scope) {
-      const result = await this.$validator.validateAll(scope);
-      return !!result;
-    },
-    async validateConfig() {
-      const configValid = await Promise.all([
-        this.validateForm('config-sheets')
-      ]);
-      return configValid;
-    },
-    async saveConfig() {
-      if (!await this.validateConfig()) {
-        return;
-      }
-
-      if (this.configSheetDoc.configFolios.length) {
-        this.saveDocConfigSheet({
-          id: this.sheetsDoc.opcionId,
-          config: this.configSheetDoc
-        });
-      } else {
-        this.$vs.notify({
-          title: 'Oops!',
-          text: 'Te faltó añadir la configuración de los elementos',
-          color: 'warning',
-          time: 4000,
-          position: 'top-center'
-        });
-      }
-      console.log('save', this.configSheetDoc);
-    },
-    async configSheets(option) {
-      this.sheetsDoc = { ...option };
-
-      this.$refs.sheetsConfig.open();
-      this.configSheetDoc = {
-        tipoDoc: option.opcionId,
-        iut: this.company.iut,
-        alcance: '',
-        reinicio: '',
-        configFolios: []
-      };
-      await this.getDocConfigSheet({ id: option.opcionId });
     },
     saveOption(option) {
       this.editMood = false;

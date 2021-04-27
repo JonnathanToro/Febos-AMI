@@ -1,6 +1,14 @@
 export default {
   SET_CONFIG_SHEET(state, payload) {
-    state.configSheet = payload;
+    state.configSheet = (payload.configFolios || [])
+      .map((option) => ({
+        ...option,
+        configId: option.referenciaId
+      }))
+      .reduce((index, optionReduce) => ({
+        ...index,
+        [optionReduce.referenciaId]: optionReduce
+      }), {});
   },
   SET_ALL_DOCUMENTS(state, payload) {
     state.allDocuments = payload
