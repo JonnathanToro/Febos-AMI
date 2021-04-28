@@ -378,9 +378,9 @@ export default {
       'fetchAllDocuments'
     ]),
     async configNumeration() {
-      console.log('ACA22222', this.selectedGroup);
       this.configSheets = true;
       await this.getDocConfigSheet({ id: this.selectedGroup.id });
+      await this.fetchAllDocuments();
       this.$refs.sheetsConfig.open();
     },
     async viewUsers() {
@@ -479,7 +479,6 @@ export default {
     }
   },
   async created() {
-    await this.fetchAllDocuments();
     this.setElement({});
     this.closeModal();
     await this.getUsersCompany({

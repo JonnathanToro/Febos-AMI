@@ -31,5 +31,8 @@ export default {
   },
   UPDATE_CONFIG_DOC(state, payload) {
     state.allDocuments[payload.id] = payload;
+  },
+  SET_SUCCESS_MESSAGE(state, payload) {
+    state.successAction = payload;
   }
 };

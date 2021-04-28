@@ -24,13 +24,13 @@ export default {
     }
   },
   async saveDocConfigSheet({ commit }, config) {
-    console.log('ACTION', config);
     try {
       commit('SET_CONFIG_SHEET', []);
       // commit('SET_LOADING', true);
       const response = await saveSheetsConfig({ id: config.referenciaId }, config);
-      commit('SET_CONFIG_SHEET', config);
-      this.$refs.sheetsConfig.close();
+      commit('SET_SUCCESS_MESSAGE', response.data);
+      commit('SET_CONFIG_SHEET', response.data);
+      // this.$refs.sheetsConfig.close(); // TODO need help to close the modal or something
       return response;
     } finally {
       // commit('SET_LOADING', false);
