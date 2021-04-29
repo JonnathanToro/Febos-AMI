@@ -211,17 +211,17 @@ export default {
       'updateConfig'
     ]),
     setConfig(doc) {
-      const config = (this.configSheet[doc.configId] || {});
+      const config = this.configSheet[doc.configId];
 
-      if (Object.keys(config).length && config.folioInicial) {
+      if (config && config.folioInicial) {
         this.configDoc = {
           ...doc,
           referenciaId: config.referenciaId,
           initialSheet: config.folioInicial,
           prefix: config.prefijo,
-          renew: config.renueva
+          renew: config.renueva,
+          configured: true
         };
-        this.configDoc.configured = true;
       } else {
         this.configDoc = { ...doc };
       }
@@ -235,8 +235,7 @@ export default {
       if (!isValid) {
         return;
       }
-      this.configDoc.configured = true;
-      this.updateConfig(this.configDoc);
+      this.updateConfig({ ...this.configDoc, configured: true });
       this.$vs.notify({
         title: 'Genial!',
         text: 'Numeración configurada',
@@ -250,9 +249,6 @@ export default {
       const isExternalOffice = (this.group.esOficina === 'Y' || this.group.esficina === 'si')
       && this.group.tipo === 'externa';
 
-      // const isInternalOffice = (this.group.esOficina === 'Y' || this.group.esficina === 'si')
-      //  && this.group.tipo === 'interna';
-
       const isGroup = this.group.nombre !== this.company.razonSocial;
 
       const instance = isExternalOffice
@@ -260,15 +256,13 @@ export default {
 
       const configuredDocs = this.allDocuments
         .filter((document) => document.configured && !document.referenciaId)
-        .map((documentMap) => {
-          const docConfig = {};
-          docConfig.configId = documentMap.configId;
-          docConfig.configNombre = documentMap.configNombre;
-          docConfig.folioInicial = documentMap.initialSheet;
-          docConfig.prefijo = documentMap.prefix;
-          docConfig.renueva = documentMap.renew;
-          return docConfig;
-        });
+        .map((documentMap) => ({
+          configId: documentMap.configId,
+          configNombre: documentMap.configNombre,
+          folioInicial: documentMap.initialSheet,
+          prefijo: documentMap.prefix,
+          renueva: documentMap.renew
+        }));
       this.configSheets = {
         referenciaId: isGroup ? this.group.id : this.company.id,
         alcance: isGroup ? 'grupo' : 'empresa',
