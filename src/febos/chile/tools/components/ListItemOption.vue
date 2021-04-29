@@ -34,18 +34,6 @@
         v-on:click="listDocuments(option)"
         icon="search"
       />
-      <CheckPermission permission="ED051">
-        <vs-button
-          v-if="type !== 'category' && !editMood"
-          v-tooltip="'Configurar Folios'"
-          color="primary"
-          class="margin-right"
-          size="small"
-          type="border"
-          v-on:click="configSheets(option)"
-          icon="settings_remote"
-        />
-      </CheckPermission>
       <CheckPermission permission="ED029" v-if="!editMood">
         <vs-button
           v-tooltip="'Editar Opción'"
