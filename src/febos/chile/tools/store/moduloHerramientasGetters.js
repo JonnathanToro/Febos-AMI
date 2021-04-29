@@ -35,6 +35,5 @@ export default {
   activityStates: (state) => {
     const states = state.herramientas.mantenedores.activityStates || {};
     return Object.values(states);
-  },
-  configSheetByDoc: (state) => state.configSheet
+  }
 };

@@ -1,3 +1,6 @@
 export default {
-  selectedElement: ''
+  selectedElement: '',
+  successAction: '',
+  configSheet: {},
+  allDocuments: {}
 };
