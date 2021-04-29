@@ -44,12 +44,6 @@ export default [
     component: () => import('@/febos/global/empresas/vistas/gestUsuarios.vue')
   },
   {
-    path: 'administracion/usuarios',
-    name: 'settings-users',
-    meta: { permiso: 'WB001', requiereLogin: true },
-    component: () => import('@/febos/global/empresas/vistas/gestUsuarios.vue')
-  },
-  {
     path: 'configuraciones/cafs',
     name: 'settings-cafs',
     meta: { permiso: 'WB001', requiereLogin: true },
