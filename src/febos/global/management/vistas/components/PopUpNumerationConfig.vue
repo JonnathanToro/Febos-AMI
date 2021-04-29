@@ -256,7 +256,7 @@ export default {
       const isGroup = this.group.nombre !== this.company.razonSocial;
 
       const instance = isExternalOffice
-        ? 'final' : 'final'; // TODO: Braulio confirma el 28 abril si es al final siempre
+        ? 'final' : 'inicio';
 
       const configuredDocs = this.allDocuments
         .filter((document) => document.configured && !document.referenciaId)
