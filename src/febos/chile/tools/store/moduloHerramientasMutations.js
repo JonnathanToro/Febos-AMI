@@ -102,8 +102,5 @@ export default {
   },
   SET_ERROR_MESSAGE(state, payload) {
     state.error = payload;
-  },
-  SET_CONFIG_SHEET(state, payload) {
-    state.configSheet = payload;
   }
 };
