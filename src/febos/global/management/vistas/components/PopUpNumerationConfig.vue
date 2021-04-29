@@ -133,7 +133,7 @@
         </li>
       </ul>
       <div class="chip-custom">
-        Una vez configurada la numeración podrá ser modificada, en caso de ser necesario
+        Una vez configurada la numeración no podrá ser modificada, en caso de ser necesario
         deberás comunicarte con nuestra mesa de ayuda.
       </div>
       <div class="text-center">
