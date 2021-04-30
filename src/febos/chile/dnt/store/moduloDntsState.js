@@ -14,6 +14,8 @@ export default {
   timeline: [],
   wizardData: {},
   selectedFile: {},
+  numerationFile: '',
+  loadingNumeration: false,
   activities: [],
   activitiesHistory: [],
   references: [],

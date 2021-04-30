@@ -19,7 +19,8 @@ import {
   // eslint-disable-next-line import/named
   activitiesFile,
   addActivity,
-  updateActivity
+  updateActivity,
+  getNumerationFile
 } from '@/febos/servicios/api/dnt.api';
 import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
@@ -432,4 +433,17 @@ export const searchReferences = async ({ commit }, febosId) => {
 
 export const selectFileState = ({ commit }, file) => {
   commit('SET_SELECTED_FILE', file);
+};
+
+export const searchNumeration = async ({ commit }, document) => {
+  commit('SET_NUMERATION_DNT', 11);
+  try {
+    commit('SET_NUMERATION_DNT', '');
+    commit('SET_LOADING_NUMERATION', true);
+    const response = await getNumerationFile(document);
+    commit('SET_NUMERATION_DNT', response.data.folioDescripcion);
+    return response.data;
+  } finally {
+    commit('SET_LOADING_NUMERATION', false);
+  }
 };
