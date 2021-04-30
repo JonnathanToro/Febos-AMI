@@ -15,6 +15,7 @@ export default {
   wizardData: {},
   selectedFile: {},
   numerationFile: '',
+  numerationFebosId: '',
   loadingNumeration: false,
   activities: [],
   activitiesHistory: [],

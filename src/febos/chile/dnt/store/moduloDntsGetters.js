@@ -65,5 +65,6 @@ export default {
   references: (state) => state.references,
   selectedFile: (state) => state.selectedFile,
   loadingNumeration: (state) => state.loadingNumeration,
-  numerationFile: (state) => state.numerationFile
+  numerationFile: (state) => state.numerationFile,
+  numerationFebosId: (state) => state.numerationFebosId
 };

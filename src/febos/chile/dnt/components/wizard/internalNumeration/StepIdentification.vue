@@ -210,17 +210,17 @@ export default {
   computed: {
     ...mapGetters('Dnts', [
       'numerationFile',
-      'loadingNumeration'
+      'loadingNumeration',
+      'numerationFebosId'
     ]),
   },
   methods: {
     ...mapActions('Dnts', [
-      'searchNumeration'
+      'searchNumeration',
+      'releaseNumeration'
     ]),
     freeNumeration() {
-      const documentId = this.$refs.documents.getOption().id;
-      // this.searchNumeration(documentId);
-      console.log('LIBERAR', documentId);
+      this.releaseNumeration(this.numerationFebosId);
       this.step.documentNumber = '';
     },
     getNumeration() {

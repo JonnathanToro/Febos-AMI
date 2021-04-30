@@ -90,6 +90,7 @@ export default {
     state.loadingNumeration = payload;
   },
   SET_NUMERATION_DNT(state, payload) {
-    state.numerationFile = payload;
+    state.numerationFile = payload.folioDescripcion || '';
+    state.numerationFebosId = payload.febosId || '';
   }
 };

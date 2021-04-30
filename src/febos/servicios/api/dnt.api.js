@@ -157,6 +157,16 @@ export const getNumerationFile = (idOption) => {
   });
 };
 
+export const releaseNumerationFile = (idOption) => {
+  const params = apiClient.queryParams({
+    febosId: idOption
+  });
+
+  return apiClient.delete(`${RESOURCE}/cafs/configuraciones/solicitar?${params}`, {
+    operacionId: 'releaseNumerationFile'
+  });
+};
+
 export const saveSheetsConfig = (id, config) => {
   const params = apiClient.queryParams(id);
 

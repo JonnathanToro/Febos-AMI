@@ -20,7 +20,8 @@ import {
   activitiesFile,
   addActivity,
   updateActivity,
-  getNumerationFile
+  getNumerationFile,
+  releaseNumerationFile
 } from '@/febos/servicios/api/dnt.api';
 import { clDntCloudSearchList } from '@/febos/servicios/api/dte.api';
 import { sendTicket } from '@/febos/servicios/api/tickets.api';
@@ -436,12 +437,24 @@ export const selectFileState = ({ commit }, file) => {
 };
 
 export const searchNumeration = async ({ commit }, document) => {
-  commit('SET_NUMERATION_DNT', 11);
+  commit('SET_NUMERATION_DNT', '');
   try {
     commit('SET_NUMERATION_DNT', '');
     commit('SET_LOADING_NUMERATION', true);
     const response = await getNumerationFile(document);
-    commit('SET_NUMERATION_DNT', response.data.folioDescripcion);
+    commit('SET_NUMERATION_DNT', response.data);
+    return response.data;
+  } finally {
+    commit('SET_LOADING_NUMERATION', false);
+  }
+};
+
+export const releaseNumeration = async ({ commit }, configurationId) => {
+  try {
+    commit('SET_NUMERATION_DNT', '');
+    commit('SET_LOADING_NUMERATION', true);
+    const response = await releaseNumerationFile(configurationId);
+    commit('SET_NUMERATION_DNT', '');
     return response.data;
   } finally {
     commit('SET_LOADING_NUMERATION', false);
