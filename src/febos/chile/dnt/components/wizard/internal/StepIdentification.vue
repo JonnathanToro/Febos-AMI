@@ -202,9 +202,6 @@ export default {
   watch: {
     numerationFile(newValue) {
       this.step.documentNumber = newValue;
-    },
-    'step.documentType': function () {
-      this.step.documentNumber = '';
     }
   },
   computed: {
