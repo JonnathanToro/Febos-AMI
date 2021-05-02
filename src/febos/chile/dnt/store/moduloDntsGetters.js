@@ -63,5 +63,8 @@ export default {
   activitiesHistoryDates: (state) => state.activitiesHistory
     .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion)),
   references: (state) => state.references,
-  selectedFile: (state) => state.selectedFile
+  selectedFile: (state) => state.selectedFile,
+  loadingNumeration: (state) => state.loadingNumeration,
+  numerationFile: (state) => state.numerationFile,
+  numerationFebosId: (state) => state.numerationFebosId
 };

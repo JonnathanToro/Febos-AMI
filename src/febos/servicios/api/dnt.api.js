@@ -147,11 +147,30 @@ export const getSheetsConfig = (idOption) => {
   });
 };
 
+export const getNumerationFile = (idOption) => {
+  const params = apiClient.queryParams({
+    tipoDocId: idOption
+  });
+
+  return apiClient.get(`${RESOURCE}/cafs/configuraciones/solicitar?${params}`, {
+    operacionId: 'getNumerationFile'
+  });
+};
+
+export const releaseNumerationFile = (idOption) => {
+  const params = apiClient.queryParams({
+    febosId: idOption
+  });
+
+  return apiClient.delete(`${RESOURCE}/cafs/configuraciones/solicitar?${params}`, {
+    operacionId: 'releaseNumerationFile'
+  });
+};
+
 export const saveSheetsConfig = (id, config) => {
-  console.log('API', id, config);
   const params = apiClient.queryParams(id);
 
   return apiClient.post(`${RESOURCE}/cafs/configuraciones?${params}`, config, {
-    operacionId: 'io.dnt.save.config.sheets'
+    operacionId: 'saveSheetsConfig'
   });
 };

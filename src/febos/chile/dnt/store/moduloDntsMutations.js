@@ -85,5 +85,12 @@ export default {
   },
   SET_SELECTED_FILE(state, payload) {
     state.selectedFile = payload;
+  },
+  SET_LOADING_NUMERATION(state, payload) {
+    state.loadingNumeration = payload;
+  },
+  SET_NUMERATION_DNT(state, payload) {
+    state.numerationFile = payload.folioDescripcion || '';
+    state.numerationFebosId = payload.febosId || '';
   }
 };
