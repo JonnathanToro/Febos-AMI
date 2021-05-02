@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 import StepIdentification from '@/febos/chile/dnt/components/wizard/internalNumeration/StepIdentification';
 import StepInformation from '@/febos/chile/dnt/components/wizard/sharedSteps/StepInformation';
 import StepFiles from '@/febos/chile/dnt/components/wizard/sharedSteps/StepFiles';
@@ -181,6 +183,7 @@ export default () => ({
         emisorSucursalCodigo: input.document,
         emisorSucursalDireccion: input.documentName,
         condicionDespacho: input.formatDocument,
+        numeroInt: input.documentNumber,
         transportePuertoTipo: input.isPrivate,
         nombreDescriptivo: input.resumen,
         solicitanteGrupoId: input.creatorGroup,
@@ -248,6 +251,10 @@ export default () => ({
         folio: relatedDocument.number
       }))
     };
+
+    if (input.issueDate) {
+      data.dnt.fechaEmision = Vue.moment(input.issueDate).format('YYYY-MM-DD');
+    }
 
     if (input.matter) {
       data.observaciones = [

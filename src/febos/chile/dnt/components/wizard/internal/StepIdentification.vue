@@ -4,6 +4,7 @@
       <div class="col-md-6">
         <list-document-types
           class="w-100"
+          :disabled="step.documentNumber !== ''"
           autocomplete
           label="Tipo Documento"
           name="documentType"
@@ -17,6 +18,7 @@
       <div class="col-md-6">
         <list-documents
           class="w-100"
+          :disabled="step.documentNumber !== ''"
           autocomplete
           label="Documento"
           name="document"
@@ -27,7 +29,7 @@
       </div>
     </div>
     <div class="row mb-3">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <vs-select
           class="w-100"
           autocomplete
@@ -44,6 +46,48 @@
             text="Electrónico"
           />
         </vs-select>
+      </div>
+      <div class="col-md-6 text-center mt-3">
+        <vs-button
+          v-if="!step.documentNumber"
+          :disabled="!step.document"
+          @click="getNumeration()"
+        >
+          reservar folio
+        </vs-button>
+        <vs-button
+          v-if="step.documentNumber"
+          :disabled="!step.document"
+          @click="freeNumeration()"
+        >
+          liberar folio
+        </vs-button>
+        <div>
+        <span class="span-text-loading" v-if="loadingNumeration">
+          Buscando folio por favor espera
+        </span>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <vs-input
+          class="w-100"
+          disabled
+          label="Nº Documento"
+          name="documentNumber"
+          v-model="step.documentNumber"
+        />
+      </div>
+      <div class="col-md-6">
+        <label>Fecha Documento</label>
+        <datepicker
+          class="w-100"
+          name="issueDate"
+          :language="es"
+          :disabled-dates="disabledDates"
+          v-model="step.issueDate"
+        />
       </div>
     </div>
     <div class="row mb-3">
@@ -119,6 +163,9 @@
 <script>
 
 import VueTagsInput from '@johmun/vue-tags-input'; // docs: http://www.vue-tags-input.com/#/api/props
+import Datepicker from 'vuejs-datepicker';
+import { es } from 'vuejs-datepicker/dist/locale';
+import { mapActions, mapGetters } from 'vuex';
 
 import WizardStep from '@/febos/chile/dnt/mixins/WizardStep';
 import ListDocumentTypes from '@/febos/chile/lists/components/ListDocumentTypes';
@@ -129,14 +176,21 @@ export default {
   components: {
     VueTagsInput,
     ListDocumentTypes,
-    ListDocuments
+    ListDocuments,
+    Datepicker
   },
   data() {
     return {
+      es,
       tag: '',
+      disabledDates: {
+        from: new Date()
+      },
       step: {
         documentType: '',
         document: '',
+        documentNumber: '',
+        issueDate: '',
         formatDocument: 0,
         matter: '',
         tags: [],
@@ -145,7 +199,31 @@ export default {
       }
     };
   },
+  watch: {
+    numerationFile(newValue) {
+      this.step.documentNumber = newValue;
+    }
+  },
+  computed: {
+    ...mapGetters('Dnts', [
+      'numerationFile',
+      'loadingNumeration',
+      'numerationFebosId'
+    ]),
+  },
   methods: {
+    ...mapActions('Dnts', [
+      'searchNumeration',
+      'releaseNumeration'
+    ]),
+    freeNumeration() {
+      this.releaseNumeration(this.numerationFebosId);
+      this.step.documentNumber = '';
+    },
+    getNumeration() {
+      const documentId = this.$refs.documents.getOption().id;
+      this.searchNumeration(documentId);
+    },
     async isValid() {
       return this.validateForm('step-1');
     },
@@ -168,9 +246,6 @@ export default {
         ...documentName
       };
     }
-  },
-  created() {
-    console.log('YO', this);
   }
 };
 
@@ -179,5 +254,7 @@ export default {
 .ti-input {
   border-radius: 5px;
 }
-
+.span-text-loading {
+  color: #671e85;
+}
 </style>
